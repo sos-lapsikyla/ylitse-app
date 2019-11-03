@@ -7,7 +7,14 @@ module.exports = {
     'prettier/@typescript-eslint',
     'prettier/react',
   ],
-  plugins: ['react-hooks', '@typescript-eslint/eslint-plugin'],
+  plugins: [
+    'react-hooks',
+    '@typescript-eslint/eslint-plugin',
+    'import',
+    'react',
+    'react-hooks',
+    'react-native',
+],
   settings: {
     'import/resolver': {
       node: {
@@ -19,6 +26,17 @@ module.exports = {
   rules: {
     '@typescript-eslint/indent': ['error', 2],
     '@typescript-eslint/no-use-before-define': ['off'],
+    '@typescript-eslint/camelcase': 'off',
+    '@typescript-eslint/explicit-function-return-type': 'off',
+    '@typescript-eslint/no-unused-vars': [
+      'error',
+      {
+        'args': 'after-used',
+        'argsIgnorePattern': '^_$',
+        'ignoreRestSiblings': true
+      }
+    ],
+    '@typescript-eslint/restrict-plus-operands': 'error',
     'react/prop-types': ['off'],
     'react/destructuring-assignment': ['off'],
     'react-hooks/rules-of-hooks': 'error',
