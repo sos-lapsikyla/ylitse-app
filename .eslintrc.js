@@ -8,6 +8,14 @@ module.exports = {
     'prettier/react',
   ],
   plugins: ['react-hooks', '@typescript-eslint/eslint-plugin'],
+  settings: {
+    'import/resolver': {
+      node: {
+        paths: ['./'],
+        extensions: ['.js', '.jsx', '.ts', '.tsx', '.d.ts'],
+      },
+    },
+  },
   rules: {
     '@typescript-eslint/indent': ['error', 2],
     '@typescript-eslint/no-use-before-define': ['off'],
