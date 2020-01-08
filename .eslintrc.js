@@ -7,15 +7,22 @@ module.exports = {
     'prettier/@typescript-eslint',
     'prettier/react',
   ],
+  'parser': '@typescript-eslint/parser',
+  'parserOptions': {
+    'project': './tsconfig.json'
+  },
   plugins: [
-    'react-hooks',
-    '@typescript-eslint/eslint-plugin',
+    '@typescript-eslint',
     'import',
+    'react-hooks',
     'react',
     'react-hooks',
     'react-native',
 ],
   settings: {
+    'react': {
+      'version': 'detect'
+    },
     'import/resolver': {
       node: {
         paths: ['./'],
