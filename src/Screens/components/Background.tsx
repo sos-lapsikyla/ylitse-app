@@ -10,6 +10,7 @@ const Background: React.FC = ({ children }) => (
       style={styles.blob}
       colors={[colors.lightBlue, colors.darkBlue]}
     />
+    <RN.View style={styles.filler} />
     <RN.View style={styles.child}>{children}</RN.View>
   </RN.View>
 );
@@ -20,9 +21,12 @@ const styles = RN.StyleSheet.create({
     backgroundColor: colors.haze,
   },
   blob: {
-    height: '50%',
+    flex: 1,
     borderBottomLeftRadius: 40,
     borderBottomRightRadius: 40,
+  },
+  filler: {
+    flex: 1,
   },
   child: {
     ...RN.StyleSheet.absoluteFillObject,
