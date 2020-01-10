@@ -3,6 +3,7 @@ import RN from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 
 import colors from './colors';
+import fonts from './fonts';
 import Shadow from './Shadow';
 
 interface Props {
@@ -20,7 +21,7 @@ const MentorCard: React.FC<Props> = ({ children, style }) => (
         style={styles.userIcon}
       />
       <RN.View style={styles.column}>
-        <RN.Text>Matti-Pekka</RN.Text>
+        <RN.Text style={styles.name}>Matti-Pekka</RN.Text>
         <RN.Text>28 v. | Kuusamo, Perahikia </RN.Text>
       </RN.View>
     </LinearGradient>
@@ -51,6 +52,9 @@ const styles = RN.StyleSheet.create({
   },
   contentContainer: {
     padding: 24,
+  },
+  name: {
+    ...fonts.titleBold,
   },
 });
 
