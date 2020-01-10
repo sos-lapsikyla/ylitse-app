@@ -10,3 +10,7 @@ export default {
   darkTeal: '#51F5DB',
   black: '#000',
 };
+
+export const gradients = {
+  pillBlue: ['#639DEE', '#78B8F4'],
+};
