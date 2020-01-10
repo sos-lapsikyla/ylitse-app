@@ -2,9 +2,43 @@ import React from 'react';
 import RN from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 
-import colors from './colors';
+import Message from './Message';
+import colors, { gradients } from './colors';
 import fonts from './fonts';
-import shadow from './shadow';
+import shadow, { textShadow } from './shadow';
+
+const dummyText =
+  'Hi! I am Matti from Perähikiä and Lorem Ipsum is simply dummy text of the printing and typesetting industry. Because...';
+
+interface ChipProps {
+  name: string;
+}
+
+const Chip = ({ name }: ChipProps) => (
+  <LinearGradient style={chipStyles.chip} colors={gradients.pillBlue}>
+    <RN.Text style={chipStyles.nameText}>{name}</RN.Text>
+  </LinearGradient>
+);
+
+const chipStyles = RN.StyleSheet.create({
+  chip: {
+    ...shadow(),
+    borderRadius: 20,
+    justifyContent: 'center',
+    alignItems: 'center',
+    flex: 0,
+    alignSelf: 'baseline',
+    paddingVertical: 2,
+    paddingHorizontal: 16,
+    marginRight: 8,
+    marginBottom: 8,
+  },
+  nameText: {
+    ...textShadow,
+    ...fonts.smallBold,
+    color: colors.white,
+  },
+});
 
 interface Props {
   style?: RN.StyleProp<RN.ViewStyle>;
@@ -26,7 +60,16 @@ const MentorCard: React.FC<Props> = ({ children, style }) => (
       </RN.View>
     </LinearGradient>
     <RN.View style={styles.contentContainer}>
-      <RN.Text>JANTERI</RN.Text>
+      <Message style={styles.subtitle} id="components.mentorCard.aboutMe" />
+      <RN.Text style={styles.bodyText}>{dummyText}</RN.Text>
+      <Message style={styles.subtitle} id="components.mentorCard.iCanHelp" />
+      <RN.View style={styles.chipContainer}>
+        <Chip name="Kela" />
+        <Chip name="Drugs" />
+        <Chip name="Vim" />
+        <Chip name="React Native" />
+        <Chip name="Design" />
+      </RN.View>
       {children}
     </RN.View>
   </RN.View>
@@ -53,8 +96,22 @@ const styles = RN.StyleSheet.create({
   contentContainer: {
     padding: 24,
   },
+  chipContainer: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+  },
   name: {
     ...fonts.titleBold,
+  },
+  subtitle: {
+    ...fonts.regularBold,
+    color: colors.deepBlue,
+    marginTop: 24,
+    marginBottom: 8,
+  },
+  bodyText: {
+    ...fonts.regular,
+    color: colors.deepBlue,
   },
 });
 
