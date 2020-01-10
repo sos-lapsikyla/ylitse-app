@@ -4,14 +4,14 @@ import LinearGradient from 'react-native-linear-gradient';
 
 import colors from './colors';
 import fonts from './fonts';
-import Shadow from './Shadow';
+import shadow from './shadow';
 
 interface Props {
   style?: RN.StyleProp<RN.ViewStyle>;
 }
 
 const MentorCard: React.FC<Props> = ({ children, style }) => (
-  <Shadow style={[styles.container, style]}>
+  <RN.View style={[styles.container, style]}>
     <LinearGradient
       style={styles.blob}
       colors={[colors.darkTeal, colors.lightTeal]}
@@ -29,11 +29,11 @@ const MentorCard: React.FC<Props> = ({ children, style }) => (
       <RN.Text>JANTERI</RN.Text>
       {children}
     </RN.View>
-  </Shadow>
+  </RN.View>
 );
 
 const styles = RN.StyleSheet.create({
-  container: { borderRadius: 30, backgroundColor: colors.white },
+  container: { ...shadow(), borderRadius: 30, backgroundColor: colors.white },
   blob: {
     borderRadius: 30,
     paddingVertical: 16,

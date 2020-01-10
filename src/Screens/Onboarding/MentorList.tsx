@@ -6,6 +6,7 @@ import Background from '../components/Background';
 import MentorCard from '../components/MentorCard';
 import colors from '../components/colors';
 import fonts from '../components/fonts';
+import { textShadow } from '../components/shadow';
 
 const MentorList = () => (
   <Background>
@@ -28,10 +29,12 @@ const styles = RN.StyleSheet.create({
   },
   title1: {
     ...fonts.title,
+    ...textShadow,
     color: colors.white,
   },
   title2: {
     ...fonts.specialTitle,
+    ...textShadow,
     color: colors.white,
   },
 });
