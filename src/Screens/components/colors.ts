@@ -9,6 +9,8 @@ export default {
   lightTeal: '#75C9C3',
   darkTeal: '#51F5DB',
   black: '#000',
+
+  deepBlue: '#003363',
 };
 
 export const gradients = {

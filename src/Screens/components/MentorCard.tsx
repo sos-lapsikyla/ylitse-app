@@ -2,9 +2,13 @@ import React from 'react';
 import RN from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 
+import Message from './Message';
 import colors, { gradients } from './colors';
 import fonts from './fonts';
 import shadow, { textShadow } from './shadow';
+
+const dummyText =
+  'Hi! I am Matti from Perähikiä and Lorem Ipsum is simply dummy text of the printing and typesetting industry. Because...';
 
 interface ChipProps {
   name: string;
@@ -56,7 +60,9 @@ const MentorCard: React.FC<Props> = ({ children, style }) => (
       </RN.View>
     </LinearGradient>
     <RN.View style={styles.contentContainer}>
-      <RN.Text>JANTERI</RN.Text>
+      <Message style={styles.subtitle} id="components.mentorCard.aboutMe" />
+      <RN.Text style={styles.bodyText}>{dummyText}</RN.Text>
+      <Message style={styles.subtitle} id="components.mentorCard.iCanHelp" />
       <RN.View style={styles.chipContainer}>
         <Chip name="Kela" />
         <Chip name="Drugs" />
@@ -96,6 +102,16 @@ const styles = RN.StyleSheet.create({
   },
   name: {
     ...fonts.titleBold,
+  },
+  subtitle: {
+    ...fonts.regularBold,
+    color: colors.deepBlue,
+    marginTop: 24,
+    marginBottom: 8,
+  },
+  bodyText: {
+    ...fonts.regular,
+    color: colors.deepBlue,
   },
 });
 
