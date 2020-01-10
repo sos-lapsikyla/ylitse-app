@@ -62,3 +62,6 @@ buck-out/
 
 # CocoaPods
 /ios/Pods/
+
+# react-native-svg-asset-plugin
+src/Screens/images/.png-cache/

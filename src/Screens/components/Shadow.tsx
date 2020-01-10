@@ -1,8 +1,7 @@
 import React from 'react';
 import RN from 'react-native';
 
-interface Props {
-  style?: RN.ViewStyle;
+interface Props extends RN.ViewProps {
   shadowRadius?: number; // in range [1, 16]
 }
 
@@ -18,7 +17,7 @@ function interpolate(input: number, inputRange: [number, number], outputRange: [
 }
 
 
-const Shadow: React.FC<Props> = ({ style, shadowRadius: value, children }) => {
+const Shadow: React.FC<Props> = ({ style, shadowRadius: value, children, ...viewProps }) => {
   const shadowRadius = value ?? 7;
   const shadowRadiusRange: [number, number] = [1, 16];
   const elevation = interpolate(shadowRadius, shadowRadiusRange, [1, 24]);
@@ -36,9 +35,14 @@ const Shadow: React.FC<Props> = ({ style, shadowRadius: value, children }) => {
       shadowOpacity
   };
 
-  return (<RN.View
-      style={[shadowStyle, style]}
-    >{children}</RN.View>)
+  return (
+      <RN.View
+        style={[shadowStyle, style]}
+        {...viewProps}
+      >
+        {children}
+      </RN.View>
+  )
 }
 
 export default Shadow;

@@ -3,14 +3,12 @@ import RN from 'react-native';
 import { SafeAreaView } from 'react-navigation';
 
 import Background from '../components/Background';
-import Card from '../components/Card';
+import MentorCard from '../components/MentorCard';
 
 const MentorList = () => (
   <Background>
     <SafeAreaView style={styles.container}>
-      <Card style={styles.card}>
-        <RN.Text>JANTERI</RN.Text>
-      </Card>
+      <MentorCard style={styles.card} />
     </SafeAreaView>
   </Background>
 );

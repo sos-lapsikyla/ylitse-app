@@ -2,13 +2,14 @@ import React from 'react';
 import RN from 'react-native';
 
 import colors from './colors';
+import Shadow from './Shadow';
 
 interface Props {
-  style?: RN.ViewStyle;
+  style?: RN.StyleProp<RN.ViewStyle>;
 }
 
 const Card: React.FC<Props> = ({ children, style }) => (
-  <RN.View style={[styles.container, style]}>{children}</RN.View>
+  <Shadow style={[styles.container, style]}>{children}</Shadow>
 );
 
 const styles = RN.StyleSheet.create({
