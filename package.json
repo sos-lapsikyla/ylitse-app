@@ -6,7 +6,11 @@
     "android": "react-native run-android",
     "ios": "react-native run-ios",
     "start": "react-native start",
-    "test": "jest"
+    "test": "jest",
+    "eslint:check": "eslint --print-config ./src/index.ts | eslint-config-prettier-check",
+    "eslint": "npm run eslint:check && eslint 'src/**/*.{ts,tsx}'",
+    "prettier": "prettier --list-different 'src/**/*.{ts,tsx}'",
+    "lint": "npx tsc && npm run eslint && npm run prettier"
   },
   "dependencies": {
     "@react-native-community/masked-view": "^0.1.5",
@@ -31,7 +35,6 @@
     "babel-jest": "24.9.0",
     "babel-plugin-module-resolver": "3.2.0",
     "eslint": "6.5.1",
-    "eslint-config-airbnb-typescript": "6.0.0",
     "eslint-config-prettier": "6.5.0",
     "eslint-plugin-import": "2.18.2",
     "eslint-plugin-jsx-a11y": "6.2.3",

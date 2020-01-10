@@ -13,9 +13,12 @@ const MentorCard: React.FC<Props> = ({ children, style }) => (
   <Shadow style={[styles.container, style]}>
     <LinearGradient
       style={styles.blob}
-      colors={[colors.darkOrange, colors.lightOrange]}
+      colors={[colors.darkTeal, colors.lightTeal]}
     >
-      <RN.Image source={require('../images/user.svg')} />
+      <RN.Image
+        source={require('../images/user.svg')}
+        style={styles.userIcon}
+      />
       <RN.View style={styles.column}>
         <RN.Text>Matti-Pekka</RN.Text>
         <RN.Text>28 v. | Kuusamo, Perahikia </RN.Text>
@@ -35,6 +38,11 @@ const styles = RN.StyleSheet.create({
     paddingVertical: 16,
     paddingHorizontal: 24,
     flexDirection: 'row',
+  },
+  userIcon: {
+    tintColor: colors.black,
+    width: 64,
+    height: 64,
   },
   column: {
     flexDirection: 'column',
