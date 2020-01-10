@@ -4,10 +4,14 @@ import { SafeAreaView } from 'react-navigation';
 
 import Background from '../components/Background';
 import MentorCard from '../components/MentorCard';
+import colors from '../components/colors';
+import fonts from '../components/fonts';
 
 const MentorList = () => (
   <Background>
     <SafeAreaView style={styles.container}>
+      <RN.Text style={styles.title1}>Meet our</RN.Text>
+      <RN.Text style={styles.title2}>Mentors</RN.Text>
       <MentorCard style={styles.card} />
     </SafeAreaView>
   </Background>
@@ -18,10 +22,17 @@ const styles = RN.StyleSheet.create({
     flex: 1,
     paddingHorizontal: 30,
     alignItems: 'center',
-    justifyContent: 'center',
   },
   card: {
     alignSelf: 'stretch',
+  },
+  title1: {
+    ...fonts.title,
+    color: colors.white,
+  },
+  title2: {
+    ...fonts.specialTitle,
+    color: colors.white,
   },
 });
 
