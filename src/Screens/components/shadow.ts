@@ -1,9 +1,4 @@
-import React from 'react';
 import RN from 'react-native';
-
-interface Props extends RN.ViewProps {
-  shadowRadius?: number; // in range [1, 16]
-}
 
 function interpolate(
   input: number,
@@ -20,12 +15,7 @@ function interpolate(
   return value * multiplier;
 }
 
-const Shadow: React.FC<Props> = ({
-  style,
-  shadowRadius: value,
-  children,
-  ...viewProps
-}) => {
+function shadow(value?: number): RN.ViewStyle {
   const shadowRadius = value || 7;
   const shadowRadiusRange: [number, number] = [1, 16];
   const elevation = interpolate(shadowRadius, shadowRadiusRange, [1, 24]);
@@ -38,19 +28,21 @@ const Shadow: React.FC<Props> = ({
     0.58,
   ]);
 
-  const shadowStyle = {
+  return {
     shadowColor: '#000',
     shadowRadius,
     elevation,
     shadowOffset,
     shadowOpacity,
   };
+}
 
-  return (
-    <RN.View style={[shadowStyle, style]} {...viewProps}>
-      {children}
-    </RN.View>
-  );
+export const textShadow = {
+  ...shadow(2),
+  textShadowOffset: { width: 0, height: 2 },
+  textShadowRadius: 2,
+  textShadowColor: 'rgba(0,0,0,0.25)',
+  shadowColor: 'rgba(0,0,0,0.25)',
 };
 
-export default Shadow;
+export default shadow;
