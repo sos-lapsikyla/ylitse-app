@@ -7,8 +7,7 @@ import colors, { gradients } from './colors';
 import fonts from './fonts';
 import shadow, { textShadow } from './shadow';
 
-const dummyText =
-  'Hi! I am Matti from Perähikiä and Lorem Ipsum is simply dummy text of the printing and typesetting industry. Because...';
+import * as api from '../../api/mentors';
 
 interface ChipProps {
   name: string;
@@ -42,9 +41,14 @@ const chipStyles = RN.StyleSheet.create({
 
 interface Props {
   style?: RN.StyleProp<RN.ViewStyle>;
+  mentor: api.Mentor;
 }
 
-const MentorCard: React.FC<Props> = ({ children, style }) => (
+const MentorCard: React.FC<Props> = ({
+  children,
+  style,
+  mentor: { age, name, story, region },
+}) => (
   <RN.View style={[styles.container, style]}>
     <LinearGradient
       style={styles.blob}
@@ -55,13 +59,17 @@ const MentorCard: React.FC<Props> = ({ children, style }) => (
         style={styles.userIcon}
       />
       <RN.View style={styles.column}>
-        <RN.Text style={styles.name}>Matti-Pekka</RN.Text>
-        <RN.Text>28 v. | Kuusamo, Perahikia </RN.Text>
+        <RN.Text style={styles.name}>{name}</RN.Text>
+        <RN.Text>
+          <RN.Text>{age}</RN.Text>
+          <Message id={'components.mentorCard.yearsAbbrev'} /> {' | '}
+          <RN.Text>{region}</RN.Text>
+        </RN.Text>
       </RN.View>
     </LinearGradient>
     <RN.View style={styles.contentContainer}>
       <Message style={styles.subtitle} id="components.mentorCard.aboutMe" />
-      <RN.Text style={styles.bodyText}>{dummyText}</RN.Text>
+      <RN.Text style={styles.bodyText}>{story}</RN.Text>
       <Message style={styles.subtitle} id="components.mentorCard.iCanHelp" />
       <RN.View style={styles.chipContainer}>
         <Chip name="Kela" />

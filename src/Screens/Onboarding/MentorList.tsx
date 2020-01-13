@@ -8,12 +8,21 @@ import colors from '../components/colors';
 import fonts from '../components/fonts';
 import { textShadow } from '../components/shadow';
 
+const mentor = {
+  id: '1234',
+  age: 24,
+  name: 'Matti-Pekka',
+  story:
+    'Hi! I am Matti from Perähikiä and Lorem Ipsum is simply dummy text of the printing and typesetting industry. Because...',
+  region: 'Pasila, Helsinki',
+};
+
 const MentorList = () => (
   <Background>
     <SafeAreaView style={styles.container}>
       <RN.Text style={styles.title1}>Meet our</RN.Text>
       <RN.Text style={styles.title2}>Mentors</RN.Text>
-      <MentorCard style={styles.card} />
+      <MentorCard style={styles.card} mentor={mentor} />
     </SafeAreaView>
   </Background>
 );

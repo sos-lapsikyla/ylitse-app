@@ -2,12 +2,16 @@ import 'react-native-gesture-handler';
 
 import React from 'react';
 import RN from 'react-native';
+import * as ReactRedux from 'react-redux';
 
 import Screens from './Screens';
+import * as state from './state';
 
 const App: React.FC = () => (
   <RN.View style={styles.root}>
-    <Screens />
+    <ReactRedux.Provider store={state.store}>
+      <Screens />
+    </ReactRedux.Provider>
   </RN.View>
 );
 
