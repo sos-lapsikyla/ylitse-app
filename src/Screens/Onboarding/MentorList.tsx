@@ -18,15 +18,6 @@ import fonts from '../components/fonts';
 import { textShadow } from '../components/shadow';
 import RemoteData from '../components/RemoteData';
 
-const mentor = {
-  id: '1234',
-  age: 24,
-  name: 'Matti-Pekka',
-  story:
-    'Hi! I am Matti from Perähikiä and Lorem Ipsum is simply dummy text of the printing and typesetting industry. Because...',
-  region: 'Pasila, Helsinki',
-};
-
 interface StateProps {
   mentors: remoteData.RemoteData<Map<string, api.Mentor>>;
 }
@@ -50,33 +41,32 @@ const MentorList = (props: Props) => {
         <RN.Text style={styles.title2}>Mentors</RN.Text>
         <RemoteData data={props.mentors} fetchData={props.fetchMentors}>
           {value => (
-            <snapCarousel.default
-              data={[...value.values()]}
-              renderItem={renderMentorCard}
-              sliderWidth={measuredWidth}
-              itemWidth={measuredWidth * 0.9}
-              inactiveSlideOpacity={1}
-              inactiveSlideScale={1}
-            />
+            <RN.View style={styles.carouselContainer}>
+              <snapCarousel.default
+                data={[...value.values()].slice(2)}
+                renderItem={renderMentorCard}
+                sliderWidth={measuredWidth}
+                itemWidth={measuredWidth * 0.9}
+                inactiveSlideOpacity={1}
+                inactiveSlideScale={1}
+              />
+            </RN.View>
           )}
         </RemoteData>
+        <RN.View style={styles.bottom} />
       </SafeAreaView>
     </Background>
   );
 };
 
-const renderMentorCard = () => (
-  <MentorCard style={styles.card} mentor={mentor} />
+const renderMentorCard = ({ item }: { item: api.Mentor }) => (
+  <MentorCard style={styles.card} mentor={item} />
 );
 
 const styles = RN.StyleSheet.create({
   container: {
     flex: 1,
     alignItems: 'center',
-  },
-  card: {
-    alignSelf: 'stretch',
-    marginRight: 24,
   },
   title1: {
     ...fonts.title,
@@ -87,6 +77,18 @@ const styles = RN.StyleSheet.create({
     ...fonts.specialTitle,
     ...textShadow,
     color: colors.white,
+  },
+  carouselContainer: {
+    flexGrow: 1,
+  },
+  bottom: {
+    flex: 1,
+  },
+  card: {
+    alignSelf: 'stretch',
+    marginHorizontal: 12,
+    marginBottom: 300,
+    flexGrow: 1,
   },
 });
 

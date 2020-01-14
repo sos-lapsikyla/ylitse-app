@@ -9,6 +9,7 @@ const mentorType = t.strict({
   display_name: t.string,
   story: t.string,
   region: t.string,
+  skills: t.array(t.string),
 });
 const mentorListType = t.strict({ resources: t.array(mentorType) });
 

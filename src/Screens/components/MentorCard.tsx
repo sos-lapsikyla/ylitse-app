@@ -47,7 +47,7 @@ interface Props {
 const MentorCard: React.FC<Props> = ({
   children,
   style,
-  mentor: { age, name, story, region },
+  mentor: { age, name, story, region, skills },
 }) => (
   <RN.View style={[styles.container, style]}>
     <LinearGradient
@@ -67,19 +67,24 @@ const MentorCard: React.FC<Props> = ({
         </RN.Text>
       </RN.View>
     </LinearGradient>
-    <RN.View style={styles.contentContainer}>
+    <RN.ScrollView
+      style={styles.content}
+      contentContainerStyle={styles.contentContainer}
+    >
       <Message style={styles.subtitle} id="components.mentorCard.aboutMe" />
-      <RN.Text style={styles.bodyText}>{story}</RN.Text>
+      <RN.Text style={styles.bodyText} numberOfLines={5}>
+        {story}
+      </RN.Text>
       <Message style={styles.subtitle} id="components.mentorCard.iCanHelp" />
       <RN.View style={styles.chipContainer}>
-        <Chip name="Kela" />
-        <Chip name="Drugs" />
-        <Chip name="Vim" />
-        <Chip name="React Native" />
-        <Chip name="Design" />
+        <>
+          {skills.map(skillName => (
+            <Chip key={skillName} name={skillName} />
+          ))}
+        </>
       </RN.View>
       {children}
-    </RN.View>
+    </RN.ScrollView>
   </RN.View>
 );
 
@@ -101,6 +106,7 @@ const styles = RN.StyleSheet.create({
     justifyContent: 'center',
     marginLeft: 24,
   },
+  content: { flexShrink: 1 },
   contentContainer: {
     padding: 24,
   },
