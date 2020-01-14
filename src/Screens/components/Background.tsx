@@ -4,8 +4,10 @@ import LinearGradient from 'react-native-linear-gradient';
 
 import colors from './colors';
 
-const Background: React.FC = ({ children }) => (
-  <RN.View style={styles.container}>
+interface Props extends RN.ViewProps {}
+
+const Background: React.FC<Props> = ({ children, ...ViewProps }) => (
+  <RN.View style={styles.container} {...ViewProps}>
     <LinearGradient
       style={styles.blob}
       colors={[colors.lightBlue, colors.darkBlue]}
