@@ -43,7 +43,7 @@ const MentorList = (props: Props) => {
           {value => (
             <RN.View style={styles.carouselContainer}>
               <snapCarousel.default
-                data={[...value.values()].slice(2)}
+                data={[...value.values()]}
                 renderItem={renderMentorCard}
                 sliderWidth={measuredWidth}
                 itemWidth={measuredWidth * 0.9}
