@@ -25,12 +25,15 @@ function reducer(state: State | undefined, action: Action): State {
 }
 
 export function* rootSaga() {
-  yield all([mentors.saga]);
+  yield all([mentors.saga()]);
 }
 
 const sagaMiddleware = createSagaMiddleware();
+
 export const store = redux.createStore(
   reducer,
   initialState,
-  redux.compose(redux.applyMiddleware(sagaMiddleware)),
+  redux.applyMiddleware(sagaMiddleware),
 );
+
+sagaMiddleware.run(rootSaga);

@@ -13,12 +13,12 @@ export const loading: Loading = {
   type: 'Loading',
 };
 
-type Failure<A> = {
+export type Failure<A> = {
   type: 'Failure';
   error: A;
 };
 
-type Success<A> = {
+export type Success<A> = {
   type: 'Success';
   value: A;
 };
