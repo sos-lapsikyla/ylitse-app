@@ -48,45 +48,50 @@ const MentorCard: React.FC<Props> = ({
   children,
   style,
   mentor: { age, name, story, region, skills },
-}) => (
-  <RN.View style={[styles.container, style]}>
-    <LinearGradient
-      style={styles.blob}
-      colors={[colors.darkTeal, colors.lightTeal]}
-    >
-      <RN.Image
-        source={require('../images/user.svg')}
-        style={styles.userIcon}
-      />
-      <RN.View style={styles.column}>
-        <RN.Text style={styles.name}>{name}</RN.Text>
-        <RN.Text>
-          <RN.Text>{age}</RN.Text>
-          <Message id={'components.mentorCard.yearsAbbrev'} /> {' | '}
-          <RN.Text>{region}</RN.Text>
+}) => {
+  const gradientMap: { [i: number]: string[] } = {
+    0: gradients.teal,
+    1: gradients.pink,
+    2: gradients.orange,
+  };
+  const gradient: string[] = gradientMap[name.length % 3];
+  return (
+    <RN.View style={[styles.container, style]}>
+      <LinearGradient style={styles.blob} colors={gradient}>
+        <RN.Image
+          source={require('../images/user.svg')}
+          style={styles.userIcon}
+        />
+        <RN.View style={styles.column}>
+          <RN.Text style={styles.name}>{name}</RN.Text>
+          <RN.Text>
+            <RN.Text>{age}</RN.Text>
+            <Message id={'components.mentorCard.yearsAbbrev'} /> {' | '}
+            <RN.Text>{region}</RN.Text>
+          </RN.Text>
+        </RN.View>
+      </LinearGradient>
+      <RN.ScrollView
+        style={styles.content}
+        contentContainerStyle={styles.contentContainer}
+      >
+        <Message style={styles.subtitle} id="components.mentorCard.aboutMe" />
+        <RN.Text style={styles.bodyText} numberOfLines={5}>
+          {story}
         </RN.Text>
-      </RN.View>
-    </LinearGradient>
-    <RN.ScrollView
-      style={styles.content}
-      contentContainerStyle={styles.contentContainer}
-    >
-      <Message style={styles.subtitle} id="components.mentorCard.aboutMe" />
-      <RN.Text style={styles.bodyText} numberOfLines={5}>
-        {story}
-      </RN.Text>
-      <Message style={styles.subtitle} id="components.mentorCard.iCanHelp" />
-      <RN.View style={styles.chipContainer}>
-        <>
-          {skills.map(skillName => (
-            <Chip key={skillName} name={skillName} />
-          ))}
-        </>
-      </RN.View>
-      {children}
-    </RN.ScrollView>
-  </RN.View>
-);
+        <Message style={styles.subtitle} id="components.mentorCard.iCanHelp" />
+        <RN.View style={styles.chipContainer}>
+          <>
+            {skills.map(skillName => (
+              <Chip key={skillName} name={skillName} />
+            ))}
+          </>
+        </RN.View>
+        {children}
+      </RN.ScrollView>
+    </RN.View>
+  );
+};
 
 const styles = RN.StyleSheet.create({
   container: { ...shadow(), borderRadius: 30, backgroundColor: colors.white },
