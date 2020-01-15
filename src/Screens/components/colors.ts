@@ -1,10 +1,12 @@
-export default {
+const colors = {
   haze: '#F4F8FC',
   white: '#FFFFFF',
   darkBlue: '#5AD5FC',
   lightBlue: '#639DEE',
   lightOrange: '#FFBE73',
   darkOrange: '#FFD9A2',
+  lightPink: '#FDB8D1',
+  darkPink: '#FFDFF5',
 
   lightTeal: '#75C9C3',
   darkTeal: '#51F5DB',
@@ -14,5 +16,10 @@ export default {
 };
 
 export const gradients = {
-  pillBlue: ['#639DEE', '#78B8F4'],
+  pillBlue: [colors.lightBlue, '#78B8F4'],
+  teal: [colors.darkTeal, colors.lightTeal],
+  orange: [colors.darkOrange, colors.lightOrange],
+  pink: [colors.darkPink, colors.lightPink],
 };
+
+export default colors;
