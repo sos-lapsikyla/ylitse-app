@@ -8,9 +8,11 @@ import * as remoteData from '../../lib/remote-data';
 import assertNever from '../../lib/assert-never';
 
 import Spinner from './Spinner';
+import Button from './Button';
 import Message from './Message';
 import fonts from './fonts';
-import colors from './colors';
+import colors, { gradients } from './colors';
+import shadow, { textShadow } from './shadow';
 
 interface Props<A> {
   data: remoteData.RemoteData<A>;
@@ -30,14 +32,10 @@ function RemoteData<A>({
   });
   switch (data.type) {
     case 'NotAsked':
-      return (
-        <RN.View>
-          <RN.Text>NotAsked</RN.Text>
-        </RN.View>
-      );
+      return <></>;
     case 'Loading':
       return (
-        <RN.View style={styles.loadingScreen}>
+        <RN.View style={styles.container}>
           <Spinner />
           <Message
             style={styles.loadingText}
@@ -47,8 +45,21 @@ function RemoteData<A>({
       );
     case 'Failure':
       return (
-        <RN.View>
-          <RN.Text>Failure</RN.Text>
+        <RN.View style={styles.errorCard}>
+          <RN.Image
+            style={styles.errorImage}
+            source={require('../images/cog.svg')}
+          />
+          <Message
+            style={styles.failureText}
+            id="components.remoteData.loadingFailed"
+          />
+          <Button colors={gradients.pillBlue} onPress={fetchData}>
+            <Message
+              style={styles.retryButtonText}
+              id="components.remoteData.retry"
+            />
+          </Button>
         </RN.View>
       );
     case 'Success':
@@ -59,7 +70,7 @@ function RemoteData<A>({
 }
 
 const styles = RN.StyleSheet.create({
-  loadingScreen: {
+  container: {
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -67,6 +78,30 @@ const styles = RN.StyleSheet.create({
     marginTop: 8,
     color: colors.deepBlue,
     ...fonts.largeBold,
+  },
+  errorCard: {
+    ...shadow(7),
+    borderRadius: 7,
+    padding: 30,
+    margin: 30,
+    alignSelf: 'stretch',
+    justifyContent: 'space-evenly',
+    alignItems: 'center',
+    backgroundColor: colors.white,
+  },
+  errorImage: {
+    tintColor: colors.danger,
+    marginBottom: 32,
+  },
+  failureText: {
+    marginBottom: 32,
+    color: colors.deepBlue,
+    ...fonts.largeBold,
+  },
+  retryButtonText: {
+    color: colors.white,
+    ...fonts.largeBold,
+    ...textShadow,
   },
 });
 
