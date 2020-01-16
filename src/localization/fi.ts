@@ -12,6 +12,12 @@ export const messages = {
   'onboarding.mentorlist.lowerTitle': 'Mentorimme',
   'onboarding.mentorlist.start': 'Aloita',
   'onboarding.mentorlist.upperTitle': 'Tapaa',
+
+  'onboarding.signUp.back': 'Takaisin',
+  'onboarding.signUp.nickName': 'Nikki',
+  'onboarding.signUp.password': 'Salasana',
+  'onboarding.signUp.signUp': 'Luo tunnnus',
+  'onboarding.signUp.title': 'Luo tunnnus',
 };
 
 export type MessageId = keyof typeof messages;
