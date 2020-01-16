@@ -1,6 +1,10 @@
+// TODO Improve naming
+
 const colors = {
   haze: '#F4F8FC',
   white: '#FFFFFF',
+  gray: '#8F9EAC',
+  faintGray: '#EBF2F8',
   darkBlue: '#5AD5FC',
   lightBlue: '#639DEE',
   lightOrange: '#FFBE73',
@@ -13,6 +17,9 @@ const colors = {
   black: '#000',
 
   deepBlue: '#003363',
+
+  acidGreen1: '#5BD858',
+  acidGreen2: '#46E769',
 };
 
 export const gradients = {
@@ -20,6 +27,7 @@ export const gradients = {
   teal: [colors.darkTeal, colors.lightTeal],
   orange: [colors.darkOrange, colors.lightOrange],
   pink: [colors.darkPink, colors.lightPink],
+  acidGreen: [colors.acidGreen1, colors.acidGreen2],
 };
 
 export default colors;

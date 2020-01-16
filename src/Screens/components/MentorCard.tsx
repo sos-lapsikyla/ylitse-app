@@ -1,6 +1,8 @@
 import React from 'react';
 import RN from 'react-native';
-import LinearGradient from 'react-native-linear-gradient';
+import LinearGradient, {
+  LinearGradientProps,
+} from 'react-native-linear-gradient';
 
 import Message from './Message';
 import colors, { gradients } from './colors';
@@ -9,12 +11,17 @@ import shadow, { textShadow } from './shadow';
 
 import * as api from '../../api/mentors';
 
-interface ChipProps {
+interface ChipProps extends Omit<LinearGradientProps, 'colors'> {
   name: string;
+  gradient?: string[];
 }
 
-const Chip = ({ name }: ChipProps) => (
-  <LinearGradient style={chipStyles.chip} colors={gradients.pillBlue}>
+const Chip = ({ name, gradient, ...linearGradientProps }: ChipProps) => (
+  <LinearGradient
+    style={chipStyles.chip}
+    colors={gradient ? gradient : gradients.pillBlue}
+    {...linearGradientProps}
+  >
     <RN.Text style={chipStyles.nameText}>{name}</RN.Text>
   </LinearGradient>
 );
@@ -36,6 +43,43 @@ const chipStyles = RN.StyleSheet.create({
     ...textShadow,
     ...fonts.smallBold,
     color: colors.white,
+  },
+});
+
+interface SkillListProps extends RN.ViewProps {
+  skillNames: string[];
+  style?: RN.StyleProp<RN.ViewStyle>;
+}
+
+const SkillList = (props: SkillListProps) => {
+  const [isAllVisible, setIsAllVisible] = React.useState(false);
+  const showAll = () => {
+    setIsAllVisible(true);
+  };
+
+  const skills = isAllVisible ? props.skillNames : props.skillNames.slice(0, 3);
+
+  return (
+    <RN.View style={[skillListStyles.container, props.style]}>
+      {skills.map(name => (
+        <Chip key={name} name={name} />
+      ))}
+      {isAllVisible ? null : (
+        <RN.TouchableOpacity onPress={showAll}>
+          <Chip gradient={gradients.acidGreen} name="..." />
+        </RN.TouchableOpacity>
+      )}
+    </RN.View>
+  );
+};
+
+const skillListStyles = RN.StyleSheet.create({
+  container: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+  },
+  name: {
+    ...fonts.titleBold,
   },
 });
 
@@ -79,14 +123,15 @@ const MentorCard: React.FC<Props> = ({
         <RN.Text style={styles.bodyText} numberOfLines={5}>
           {story}
         </RN.Text>
-        <Message style={styles.subtitle} id="components.mentorCard.iCanHelp" />
-        <RN.View style={styles.chipContainer}>
+        {skills.length === 0 ? null : (
           <>
-            {skills.map(skillName => (
-              <Chip key={skillName} name={skillName} />
-            ))}
+            <Message
+              style={styles.subtitle}
+              id="components.mentorCard.iCanHelp"
+            />
+            <SkillList skillNames={skills} />
           </>
-        </RN.View>
+        )}
         {children}
       </RN.ScrollView>
     </RN.View>
