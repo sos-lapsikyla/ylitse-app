@@ -19,6 +19,16 @@ const fonts = {
     fontSize: 18,
     lineHeight: 24,
   },
+  large: {
+    fontFamily: 'Nunito-Regular',
+    fontSize: 20,
+    lineHeight: 28,
+  },
+  largeBold: {
+    fontFamily: 'Nunito-Bold',
+    fontSize: 20,
+    lineHeight: 28,
+  },
   title: {
     fontFamily: 'Nunito-Regular',
     fontSize: 32,
