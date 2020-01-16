@@ -1,3 +1,5 @@
+// Idea from https://package.elm-lang.org/packages/krisajenkins/remotedata/latest/
+
 type NotAsked = {
   type: 'NotAsked';
 };

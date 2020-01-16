@@ -1,3 +1,6 @@
+// TODO add spinner for loading screen
+// TODO add button for Failure screen to retry
+
 import React from 'react';
 import RN from 'react-native';
 

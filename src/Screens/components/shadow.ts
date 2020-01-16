@@ -1,3 +1,5 @@
+// Idea from https://ethercreative.github.io/react-native-shadow-generator/
+
 import RN from 'react-native';
 
 function interpolate(
@@ -7,11 +9,8 @@ function interpolate(
 ): number {
   const inputRangeLen = inputRange[1] - inputRange[0];
   const outputRangeLen = outputRange[1] - outputRange[0];
-
   const multiplier = outputRangeLen / inputRangeLen;
-
   const value = input - inputRange[0];
-
   return value * multiplier;
 }
 
