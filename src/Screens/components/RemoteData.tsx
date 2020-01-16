@@ -7,6 +7,11 @@ import RN from 'react-native';
 import * as remoteData from '../../lib/remote-data';
 import assertNever from '../../lib/assert-never';
 
+import Spinner from './Spinner';
+import Message from './Message';
+import fonts from './fonts';
+import colors from './colors';
+
 interface Props<A> {
   data: remoteData.RemoteData<A>;
   fetchData: () => void | undefined;
@@ -32,8 +37,12 @@ function RemoteData<A>({
       );
     case 'Loading':
       return (
-        <RN.View>
-          <RN.Text>Loading</RN.Text>
+        <RN.View style={styles.loadingScreen}>
+          <Spinner />
+          <Message
+            style={styles.loadingText}
+            id="components.remoteData.loading"
+          />
         </RN.View>
       );
     case 'Failure':
@@ -48,4 +57,17 @@ function RemoteData<A>({
       assertNever(data);
   }
 }
+
+const styles = RN.StyleSheet.create({
+  loadingScreen: {
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  loadingText: {
+    marginTop: 8,
+    color: colors.deepBlue,
+    ...fonts.largeBold,
+  },
+});
+
 export default RemoteData;
