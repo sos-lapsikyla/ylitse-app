@@ -44,6 +44,11 @@ const fonts = {
     fontSize: 48,
     lineHeight: 64,
   },
+  specialTitleLarge: {
+    fontFamily: 'Baloo-Regular',
+    fontSize: 96,
+    lineHeight: 120,
+  },
 };
 
 export default fonts;

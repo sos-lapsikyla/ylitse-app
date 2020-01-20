@@ -19,6 +19,7 @@ import { textShadow } from '../components/shadow';
 import RemoteData from '../components/RemoteData';
 import Button from '../components/Button';
 import Message from '../components/Message';
+import CreatedBySosBanner from '../components/CreatedBySosBanner';
 
 import { SignUpRoute } from './SignUp';
 
@@ -73,7 +74,7 @@ const MentorList = (props: Props) => {
             messageStyle={styles.buttonMessage}
             messageId="onboarding.mentorlist.start"
           />
-          <Message style={styles.banner} id="onboarding.mentorlist.banner" />
+          <CreatedBySosBanner />
         </RN.View>
       </SafeAreaView>
     </Background>
@@ -136,9 +137,6 @@ const styles = RN.StyleSheet.create({
     marginRight: 16,
   },
   banner: {
-    ...fonts.regular,
-    color: colors.gray,
-    textAlign: 'center',
     marginTop: 16,
     marginBottom: 8,
   },
