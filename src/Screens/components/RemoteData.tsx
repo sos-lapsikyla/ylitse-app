@@ -15,7 +15,7 @@ import { textShadow } from './shadow';
 interface Props<A> {
   data: remoteData.RemoteData<A>;
   fetchData: () => void | undefined;
-  children: (value: remoteData.Success<A>['value']) => React.ReactElement;
+  children: (value: A) => React.ReactElement;
 }
 
 function RemoteData<A>({
