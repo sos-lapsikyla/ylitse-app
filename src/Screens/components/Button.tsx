@@ -70,7 +70,7 @@ const styles = RN.StyleSheet.create({
     flex: 1,
   },
   arrow: {
-    marginLeft: 8,
+    marginLeft: 24,
   },
   message: {
     ...fonts.largeBold,

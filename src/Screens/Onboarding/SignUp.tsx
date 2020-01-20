@@ -1,15 +1,12 @@
 import React from 'react';
 import RN from 'react-native';
-import { SafeAreaView } from 'react-navigation';
 
 import * as navigationProps from '../../lib/navigation-props';
 
-import AppTitle from '../components/AppTitle';
-import Background from '../components/Background';
+import OnboardingBackground from '../components/OnboardingBackground';
 import Card from '../components/Card';
 import fonts from '../components/fonts';
 import Message from '../components/Message';
-import CreatedBySosBanner from '../components/CreatedBySosBanner';
 import colors, { gradients } from '../components/colors';
 import InputField from '../components/InputField';
 import Button from '../components/Button';
@@ -36,14 +33,15 @@ const SignUpCard = ({ goBack, onSignUp, ...viewProps }: SignUpCardProps) => (
     />
     <RN.View style={signUpCardStyles.buttonContainer}>
       <Button
-        gradient={[colors.faintGray, colors.faintGray]}
-        messageId="onboarding.signUp.back"
-        onPress={goBack}
-      />
-      <Button
         style={signUpCardStyles.signUpButton}
         messageId="onboarding.signUp.signUp"
         onPress={onSignUp}
+        hasArrow={true}
+      />
+      <Button
+        gradient={[colors.faintGray, colors.faintGray]}
+        messageId="onboarding.signUp.back"
+        onPress={goBack}
       />
     </RN.View>
   </Card>
@@ -65,11 +63,11 @@ const signUpCardStyles = RN.StyleSheet.create({
   buttonContainer: {
     justifyContent: 'space-between',
     alignItems: 'center',
-    flexDirection: 'row',
+    flexDirection: 'column',
   },
   signUpButton: {
     flexGrow: 1,
-    marginLeft: 16,
+    marginBottom: 16,
   },
 });
 
@@ -82,59 +80,24 @@ const SignUp = (props: OwnProps) => {
   const onSignUp = () => {};
 
   return (
-    <Background>
-      <AppTitle style={styles.appTitle} />
-      <CreatedBySosBanner style={styles.banner} />
-      <RN.KeyboardAvoidingView style={styles.keyboardAvoider} behavior="height">
-        <RN.ScrollView contentContainerStyle={styles.scrollContent}>
-          <SafeAreaView
-            style={styles.container}
-            forceInset={{ top: 'always', bottom: 'always' }}
-          >
-            <SignUpCard
-              style={styles.card}
-              goBack={goBack}
-              onSignUp={onSignUp}
-            />
-            <Card style={styles.card}>
-              <Message
-                style={styles.loginOldTitle}
-                id="onboarding.signUp.existingAccount.title"
-              />
-              <Button
-                onPress={() => {}}
-                messageId="onboarding.signUp.existingAccount.login"
-                gradient={gradients.faintGray}
-              />
-            </Card>
-          </SafeAreaView>
-        </RN.ScrollView>
-      </RN.KeyboardAvoidingView>
-    </Background>
+    <OnboardingBackground>
+      <SignUpCard style={styles.card} goBack={goBack} onSignUp={onSignUp} />
+      <Card style={styles.card}>
+        <Message
+          style={styles.loginOldTitle}
+          id="onboarding.signUp.existingAccount.title"
+        />
+        <Button
+          onPress={() => {}}
+          messageId="onboarding.signUp.existingAccount.login"
+          gradient={gradients.faintGray}
+        />
+      </Card>
+    </OnboardingBackground>
   );
 };
 
 const styles = RN.StyleSheet.create({
-  keyboardAvoider: {
-    flex: 1,
-  },
-  scrollContent: {
-    flexGrow: 1,
-    paddingTop: 160,
-    paddingBottom: 40,
-  },
-  container: {
-    flex: 1,
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    paddingHorizontal: 8,
-  },
-  appTitle: {
-    position: 'absolute',
-    top: 40,
-    alignSelf: 'center',
-  },
-  banner: { position: 'absolute', bottom: 16, alignSelf: 'center' },
   card: { marginVertical: 24, padding: 24, alignSelf: 'stretch' },
   loginOldTitle: {
     ...fonts.largeBold,
