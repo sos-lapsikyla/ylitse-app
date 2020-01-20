@@ -20,6 +20,7 @@ const colors = {
 
   acidGreen1: '#5BD858',
   acidGreen2: '#46E769',
+  danger: '#E93C66',
 };
 
 export const gradients = {

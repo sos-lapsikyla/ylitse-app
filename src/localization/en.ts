@@ -3,6 +3,11 @@ export const messages = {
   'components.mentorCard.aboutMe': 'About me',
   'components.mentorCard.iCanHelp': 'I can help with',
   'components.mentorCard.yearsAbbrev': 'y.',
+
+  'components.remoteData.loading': 'Loading...',
+  'components.remoteData.loadingFailed': 'Loading failed',
+  'components.remoteData.retry': 'Try again',
+
   'onboarding.mentorlist.banner': 'Brought to you by SOS-lapsikylä',
   'onboarding.mentorlist.lowerTitle': 'Mentors',
   'onboarding.mentorlist.start': 'Get started',
