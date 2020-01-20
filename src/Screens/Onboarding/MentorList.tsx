@@ -7,7 +7,7 @@ import * as snapCarousel from 'react-native-snap-carousel';
 import { SafeAreaView } from 'react-navigation';
 
 import * as remoteData from '../../lib/remote-data';
-import useWidth from '../../lib/use-width';
+import useLayout from '../../lib/use-layout';
 import * as api from '../../api/mentors';
 import * as state from '../../state';
 
@@ -17,6 +17,8 @@ import colors from '../components/colors';
 import fonts from '../components/fonts';
 import { textShadow } from '../components/shadow';
 import RemoteData from '../components/RemoteData';
+import Button from '../components/Button';
+import Message from '../components/Message';
 
 interface StateProps {
   mentors: remoteData.RemoteData<Map<string, api.Mentor>>;
@@ -31,36 +33,59 @@ interface OwnProps {}
 interface Props extends StateProps, DispatchProps, OwnProps {}
 
 const MentorList = (props: Props) => {
-  const [width, onLayout] = useWidth();
+  const [{ width, height }, onLayout] = useLayout();
   const measuredWidth = width || RN.Dimensions.get('window').width;
 
   return (
-    <Background onLayout={onLayout}>
-      <SafeAreaView style={styles.container}>
-        <RN.Text style={styles.title1}>Meet our</RN.Text>
-        <RN.Text style={styles.title2}>Mentors</RN.Text>
-        <RemoteData data={props.mentors} fetchData={props.fetchMentors}>
-          {value => (
-            <RN.View style={styles.carouselContainer}>
-              <snapCarousel.default
-                data={[...value.values()]}
-                renderItem={renderMentorCard}
-                sliderWidth={measuredWidth}
-                itemWidth={measuredWidth * 0.9}
-                inactiveSlideOpacity={1}
-                inactiveSlideScale={1}
-              />
-            </RN.View>
-          )}
-        </RemoteData>
-        <RN.View style={styles.bottom} />
+    <Background>
+      <SafeAreaView
+        style={styles.container}
+        forceInset={{ top: 'always', bottom: 'always' }}
+      >
+        <Message style={styles.title1} id="onboarding.mentorlist.upperTitle" />
+        <Message style={styles.title2} id="onboarding.mentorlist.lowerTitle" />
+        <RN.View onLayout={onLayout} style={styles.mentorListContainer}>
+          <RemoteData data={props.mentors} fetchData={props.fetchMentors}>
+            {value => (
+              <RN.View style={styles.carouselContainer}>
+                <snapCarousel.default
+                  data={[...value.values()]}
+                  renderItem={renderMentorCard(height)}
+                  sliderWidth={measuredWidth}
+                  itemWidth={measuredWidth * 0.9}
+                  inactiveSlideOpacity={1}
+                  inactiveSlideScale={1}
+                />
+              </RN.View>
+            )}
+          </RemoteData>
+        </RN.View>
+        <RN.View style={styles.bottom}>
+          <Button style={styles.button} onPress={() => {}}>
+            <Message
+              style={styles.buttonMessage}
+              id="onboarding.mentorlist.start"
+            />
+            <RN.Image source={require('../images/arrow.svg')} />
+          </Button>
+          <Message style={styles.banner} id="onboarding.mentorlist.banner" />
+        </RN.View>
       </SafeAreaView>
     </Background>
   );
 };
 
-const renderMentorCard = ({ item }: { item: api.Mentor }) => (
-  <MentorCard style={styles.card} mentor={item} />
+const mentorCardBottomMargin = 16;
+
+const renderMentorCard = (maxHeight: number) => ({
+  item,
+}: {
+  item: api.Mentor;
+}) => (
+  <MentorCard
+    style={[styles.card, { maxHeight: maxHeight - mentorCardBottomMargin }]}
+    mentor={item}
+  />
 );
 
 const styles = RN.StyleSheet.create({
@@ -78,17 +103,39 @@ const styles = RN.StyleSheet.create({
     ...textShadow,
     color: colors.white,
   },
-  carouselContainer: {
-    flexGrow: 1,
+  mentorListContainer: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    flex: 1,
+    alignSelf: 'stretch',
   },
-  bottom: {
+  carouselContainer: {
     flex: 1,
   },
   card: {
     alignSelf: 'stretch',
     marginHorizontal: 12,
-    marginBottom: 300,
     flexGrow: 1,
+    marginBottom: mentorCardBottomMargin,
+  },
+  bottom: {
+    alignSelf: 'stretch',
+    paddingHorizontal: 24,
+    justifyContent: 'center',
+  },
+  button: { marginHorizontal: 24, alignSelf: 'stretch' },
+  buttonMessage: {
+    textAlign: 'center',
+    color: colors.deepBlue,
+    ...fonts.titleBold,
+    marginRight: 16,
+  },
+  banner: {
+    ...fonts.regular,
+    color: colors.gray,
+    textAlign: 'center',
+    marginTop: 16,
+    marginBottom: 8,
   },
 });
 

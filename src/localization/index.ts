@@ -1,7 +1,10 @@
+// TODO get language from redux/somewhere
+// Desing todo, how is default language chosen?
+
 import * as fi from './fi';
 import * as en from './fi';
 
-export type MessageKey = fi.MessageKey & en.MessageKey;
+export type MessageId = fi.MessageId & en.MessageId;
 
 type Language = 'fi' | 'en';
 
@@ -10,5 +13,5 @@ export const translator = (lang: Language) => {
     fi: fi.messages,
     en: en.messages,
   };
-  return (k: MessageKey) => messages[lang][k];
+  return (k: MessageId) => messages[lang][k];
 };

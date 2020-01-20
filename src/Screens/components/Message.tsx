@@ -4,7 +4,7 @@ import RN from 'react-native';
 import * as localization from '../../localization';
 
 interface Props extends RN.TextProps {
-  id: localization.MessageKey;
+  id: localization.MessageId;
 }
 
 const translator = localization.translator('fi');
