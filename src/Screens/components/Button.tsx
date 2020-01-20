@@ -16,17 +16,18 @@ interface Props {
   contentContainerStyle?: RN.StyleProp<RN.ViewStyle>;
   messageId: localization.MessageId;
   messageStyle?: RN.StyleProp<RN.TextStyle>;
+  hasArrow?: boolean;
 }
 
-const Button: React.FC<Props> = ({
-  children,
+const Button = ({
   gradient,
   contentContainerStyle,
   messageId,
   messageStyle,
   onPress,
   style,
-}) => {
+  hasArrow,
+}: Props) => {
   return (
     <RN.TouchableOpacity style={[styles.container, style]} onPress={onPress}>
       <LinearGradient
@@ -34,7 +35,12 @@ const Button: React.FC<Props> = ({
         colors={gradient ? gradient : gradients.acidGreen}
       >
         <Message style={[styles.message, messageStyle]} id={messageId} />
-        {children}
+        {!hasArrow ? null : (
+          <RN.Image
+            style={styles.arrow}
+            source={require('../images/arrow.svg')}
+          />
+        )}
       </LinearGradient>
     </RN.TouchableOpacity>
   );
@@ -47,6 +53,7 @@ const styles = RN.StyleSheet.create({
     alignSelf: 'stretch',
     borderRadius,
     ...shadow(7),
+    overflow: 'scroll',
   },
   gradient: {
     minHeight: 64,
@@ -58,10 +65,18 @@ const styles = RN.StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
+  messageContainer: {
+    flexDirection: 'column',
+    flex: 1,
+  },
+  arrow: {
+    marginLeft: 8,
+  },
   message: {
     ...fonts.largeBold,
     textAlign: 'center',
     color: colors.deepBlue,
+    flexDirection: 'column',
   },
 });
 

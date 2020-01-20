@@ -8,7 +8,7 @@ import Background from '../components/Background';
 import Card from '../components/Card';
 import fonts from '../components/fonts';
 import Message from '../components/Message';
-import colors, { gradients } from '../components/colors';
+import colors from '../components/colors';
 import InputField from '../components/InputField';
 import Button from '../components/Button';
 
@@ -25,45 +25,50 @@ const SignUp = (props: OwnProps) => {
   const onSignUp = () => {};
 
   return (
-    <Background>
-      <SafeAreaView
-        style={styles.container}
-        forceInset={{ top: 'always', bottom: 'always' }}
-      >
-        <Card style={styles.card}>
-          <Message style={styles.title} id="onboarding.signUp.title" />
-          <InputField
-            style={styles.nickNameInput}
-            name="onboarding.signUp.nickName"
-          />
-          <InputField
-            style={styles.passwordInput}
-            name="onboarding.signUp.password"
-          />
-          <RN.View style={styles.buttonContainer}>
-            <Button
-              gradient={gradients.pillBlue}
-              messageId="onboarding.signUp.back"
-              onPress={goBack}
-            />
-            <Button
-              style={styles.signUpButton}
-              messageId="onboarding.signUp.signUp"
-              onPress={onSignUp}
-            >
-              <RN.Image
-                style={styles.arrow}
-                source={require('../images/arrow.svg')}
+    <RN.KeyboardAvoidingView style={styles.keyboardAvoider} behavior="height">
+      <Background>
+        <RN.ScrollView contentContainerStyle={styles.scrollContent}>
+          <SafeAreaView
+            style={styles.container}
+            forceInset={{ top: 'always', bottom: 'always' }}
+          >
+            <Card style={styles.card}>
+              <Message style={styles.title} id="onboarding.signUp.title" />
+              <InputField
+                style={styles.nickNameInput}
+                name="onboarding.signUp.nickName"
               />
-            </Button>
-          </RN.View>
-        </Card>
-      </SafeAreaView>
-    </Background>
+              <InputField
+                style={styles.passwordInput}
+                name="onboarding.signUp.password"
+              />
+              <RN.View style={styles.buttonContainer}>
+                <Button
+                  gradient={[colors.faintGray, colors.faintGray]}
+                  messageId="onboarding.signUp.back"
+                  onPress={goBack}
+                />
+                <Button
+                  style={styles.signUpButton}
+                  messageId="onboarding.signUp.signUp"
+                  onPress={onSignUp}
+                />
+              </RN.View>
+            </Card>
+          </SafeAreaView>
+        </RN.ScrollView>
+      </Background>
+    </RN.KeyboardAvoidingView>
   );
 };
 
 const styles = RN.StyleSheet.create({
+  keyboardAvoider: {
+    flex: 1,
+  },
+  scrollContent: {
+    flexGrow: 1,
+  },
   container: {
     flex: 1,
     justifyContent: 'center',
@@ -94,9 +99,6 @@ const styles = RN.StyleSheet.create({
   signUpButton: {
     flexGrow: 1,
     marginLeft: 16,
-  },
-  arrow: {
-    marginLeft: 8,
   },
 });
 

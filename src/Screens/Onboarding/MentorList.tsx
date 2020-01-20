@@ -72,9 +72,7 @@ const MentorList = (props: Props) => {
             onPress={navigateNext}
             messageStyle={styles.buttonMessage}
             messageId="onboarding.mentorlist.start"
-          >
-            <RN.Image source={require('../images/arrow.svg')} />
-          </Button>
+          />
           <Message style={styles.banner} id="onboarding.mentorlist.banner" />
         </RN.View>
       </SafeAreaView>
