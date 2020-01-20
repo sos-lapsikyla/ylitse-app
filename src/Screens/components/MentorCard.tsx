@@ -5,6 +5,7 @@ import LinearGradient, {
 } from 'react-native-linear-gradient';
 
 import Message from './Message';
+import Card, { cardBorderRadius } from './Card';
 import colors, { gradients } from './colors';
 import fonts from './fonts';
 import shadow, { textShadow } from './shadow';
@@ -100,7 +101,7 @@ const MentorCard: React.FC<Props> = ({
   };
   const gradient: string[] = gradientMap[name.length % 3];
   return (
-    <RN.View style={[styles.container, style]}>
+    <Card style={style}>
       <LinearGradient style={styles.blob} colors={gradient}>
         <RN.Image
           source={require('../images/user.svg')}
@@ -134,14 +135,13 @@ const MentorCard: React.FC<Props> = ({
         )}
         {children}
       </RN.ScrollView>
-    </RN.View>
+    </Card>
   );
 };
 
 const styles = RN.StyleSheet.create({
-  container: { ...shadow(), borderRadius: 30, backgroundColor: colors.white },
   blob: {
-    borderRadius: 30,
+    borderRadius: cardBorderRadius,
     paddingVertical: 16,
     paddingHorizontal: 24,
     flexDirection: 'row',

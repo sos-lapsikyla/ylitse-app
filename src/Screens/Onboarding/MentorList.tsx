@@ -3,7 +3,6 @@ import RN from 'react-native';
 import * as redux from 'redux';
 import * as ReactRedux from 'react-redux';
 import * as snapCarousel from 'react-native-snap-carousel';
-
 import { SafeAreaView } from 'react-navigation';
 
 import * as remoteData from '../../lib/remote-data';

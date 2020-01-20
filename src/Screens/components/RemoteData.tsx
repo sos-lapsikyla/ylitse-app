@@ -7,6 +7,7 @@ import RN from 'react-native';
 import * as remoteData from '../../lib/remote-data';
 import assertNever from '../../lib/assert-never';
 
+import Card from './Card';
 import Spinner from './Spinner';
 import Button from './Button';
 import Message from './Message';
@@ -45,21 +46,23 @@ function RemoteData<A>({
       );
     case 'Failure':
       return (
-        <RN.View style={styles.errorCard}>
-          <RN.Image
-            style={styles.errorImage}
-            source={require('../images/cog.svg')}
-          />
-          <Message
-            style={styles.failureText}
-            id="components.remoteData.loadingFailed"
-          />
-          <Button colors={gradients.pillBlue} onPress={fetchData}>
-            <Message
-              style={styles.retryButtonText}
-              id="components.remoteData.retry"
+        <RN.View style={styles.container}>
+          <Card style={styles.errorCard}>
+            <RN.Image
+              style={styles.errorImage}
+              source={require('../images/cog.svg')}
             />
-          </Button>
+            <Message
+              style={styles.failureText}
+              id="components.remoteData.loadingFailed"
+            />
+            <Button colors={gradients.pillBlue} onPress={fetchData}>
+              <Message
+                style={styles.retryButtonText}
+                id="components.remoteData.retry"
+              />
+            </Button>
+          </Card>
         </RN.View>
       );
     case 'Success':
@@ -71,6 +74,7 @@ function RemoteData<A>({
 
 const styles = RN.StyleSheet.create({
   container: {
+    alignSelf: 'stretch',
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -80,14 +84,11 @@ const styles = RN.StyleSheet.create({
     ...fonts.largeBold,
   },
   errorCard: {
-    ...shadow(7),
-    borderRadius: 7,
     padding: 30,
     margin: 30,
     alignSelf: 'stretch',
     justifyContent: 'space-evenly',
     alignItems: 'center',
-    backgroundColor: colors.white,
   },
   errorImage: {
     tintColor: colors.danger,
