@@ -5,6 +5,7 @@ import * as ReactRedux from 'react-redux';
 import * as snapCarousel from 'react-native-snap-carousel';
 import { SafeAreaView } from 'react-navigation';
 
+import * as navigationProps from '../../lib/navigation-props';
 import * as remoteData from '../../lib/remote-data';
 import useLayout from '../../lib/use-layout';
 import * as api from '../../api/mentors';
@@ -19,22 +20,28 @@ import RemoteData from '../components/RemoteData';
 import Button from '../components/Button';
 import Message from '../components/Message';
 
-interface StateProps {
+import { SignUpRoute } from './SignUp';
+
+export type MentorListRoute = {
+  'Onboarding/MentorList': {};
+};
+
+type StateProps = {
   mentors: remoteData.RemoteData<Map<string, api.Mentor>>;
-}
-
-interface DispatchProps {
+};
+type DispatchProps = {
   fetchMentors: () => void | undefined;
-}
-
-interface OwnProps {}
-
-interface Props extends StateProps, DispatchProps, OwnProps {}
+};
+type OwnProps = navigationProps.NavigationProps<MentorListRoute, SignUpRoute>;
+type Props = StateProps & DispatchProps & OwnProps;
 
 const MentorList = (props: Props) => {
   const [{ width, height }, onLayout] = useLayout();
   const measuredWidth = width || RN.Dimensions.get('window').width;
 
+  const navigateNext = () => {
+    props.navigation.navigate('Onboarding/SignUp', {});
+  };
   return (
     <Background>
       <SafeAreaView
@@ -60,11 +67,12 @@ const MentorList = (props: Props) => {
           </RemoteData>
         </RN.View>
         <RN.View style={styles.bottom}>
-          <Button style={styles.button} onPress={() => {}}>
-            <Message
-              style={styles.buttonMessage}
-              id="onboarding.mentorlist.start"
-            />
+          <Button
+            style={styles.button}
+            onPress={navigateNext}
+            messageStyle={styles.buttonMessage}
+            messageId="onboarding.mentorlist.start"
+          >
             <RN.Image source={require('../images/arrow.svg')} />
           </Button>
           <Message style={styles.banner} id="onboarding.mentorlist.banner" />

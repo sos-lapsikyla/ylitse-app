@@ -1,6 +1,3 @@
-// TODO add spinner for loading screen
-// TODO add button for Failure screen to retry
-
 import React from 'react';
 import RN from 'react-native';
 
@@ -13,7 +10,7 @@ import Button from './Button';
 import Message from './Message';
 import fonts from './fonts';
 import colors, { gradients } from './colors';
-import shadow, { textShadow } from './shadow';
+import { textShadow } from './shadow';
 
 interface Props<A> {
   data: remoteData.RemoteData<A>;
@@ -56,12 +53,12 @@ function RemoteData<A>({
               style={styles.failureText}
               id="components.remoteData.loadingFailed"
             />
-            <Button colors={gradients.pillBlue} onPress={fetchData}>
-              <Message
-                style={styles.retryButtonText}
-                id="components.remoteData.retry"
-              />
-            </Button>
+            <Button
+              gradient={gradients.pillBlue}
+              onPress={fetchData}
+              messageStyle={styles.retryButtonText}
+              messageId="components.remoteData.retry"
+            />
           </Card>
         </RN.View>
       );
