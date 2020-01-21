@@ -2,6 +2,8 @@ import * as t from 'io-ts';
 
 import * as http from '../lib/http';
 
+import * as config from './config';
+
 type ApiMentor = t.TypeOf<typeof mentorType>;
 const mentorType = t.strict({
   id: t.string,
@@ -20,7 +22,7 @@ const toMentor = ({ birth_year, display_name, ...props }: ApiMentor) => ({
   name: display_name,
 });
 
-const mentorsUrl = 'https://admin.ylitse.fi/api/mentors';
+const mentorsUrl = config.baseUrl + 'mentors';
 export async function fetchMentors(): Promise<Map<string, Mentor>> {
   const { resources } = await http.get(mentorsUrl, mentorListType);
   return resources.reduce((acc: Map<string, Mentor>, apiMentor: ApiMentor) => {
