@@ -121,13 +121,13 @@ const styles = RN.StyleSheet.create({
   },
   card: {
     alignSelf: 'stretch',
-    marginHorizontal: 12,
+    marginHorizontal: 8,
     flexGrow: 1,
     marginBottom: mentorCardBottomMargin,
   },
   bottom: {
+    marginTop: 8,
     alignSelf: 'stretch',
-    paddingHorizontal: 24,
     justifyContent: 'center',
   },
   button: { marginHorizontal: 24, alignSelf: 'stretch' },

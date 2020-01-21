@@ -7,6 +7,7 @@ export const messages = {
 
   'components.mentorCard.aboutMe': 'About me',
   'components.mentorCard.iCanHelp': 'I can help with',
+  'components.mentorCard.showMore': 'Show more...',
   'components.mentorCard.yearsAbbrev': 'y.',
 
   'components.remoteData.loading': 'Loading...',

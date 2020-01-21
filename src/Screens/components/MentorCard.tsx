@@ -4,6 +4,8 @@ import LinearGradient, {
   LinearGradientProps,
 } from 'react-native-linear-gradient';
 
+import * as localization from '../../localization';
+
 import Message from './Message';
 import Card, { cardBorderRadius } from './Card';
 import colors, { gradients } from './colors';
@@ -60,6 +62,10 @@ const SkillList = (props: SkillListProps) => {
 
   const skills = isAllVisible ? props.skillNames : props.skillNames.slice(0, 3);
 
+  const showMoreText = localization.translator('fi')(
+    'components.mentorCard.showMore',
+  );
+
   return (
     <RN.View style={[skillListStyles.container, props.style]}>
       {skills.map(name => (
@@ -67,7 +73,7 @@ const SkillList = (props: SkillListProps) => {
       ))}
       {isAllVisible ? null : (
         <RN.TouchableOpacity onPress={showAll}>
-          <Chip gradient={gradients.acidGreen} name="..." />
+          <Chip gradient={gradients.acidGreen} name={showMoreText} />
         </RN.TouchableOpacity>
       )}
     </RN.View>
@@ -109,7 +115,7 @@ const MentorCard: React.FC<Props> = ({
         />
         <RN.View style={styles.column}>
           <RN.Text style={styles.name}>{name}</RN.Text>
-          <RN.Text>
+          <RN.Text style={styles.infoText}>
             <RN.Text>{age}</RN.Text>
             <Message id={'components.mentorCard.yearsAbbrev'} /> {' | '}
             <RN.Text>{region}</RN.Text>
@@ -143,7 +149,7 @@ const styles = RN.StyleSheet.create({
   blob: {
     borderRadius: cardBorderRadius,
     paddingVertical: 16,
-    paddingHorizontal: 24,
+    paddingHorizontal: 16,
     flexDirection: 'row',
   },
   userIcon: {
@@ -152,9 +158,17 @@ const styles = RN.StyleSheet.create({
     height: 64,
   },
   column: {
+    marginLeft: 16,
+    marginRight: 16,
     flexDirection: 'column',
     justifyContent: 'center',
-    marginLeft: 24,
+    flexGrow: 1,
+  },
+  name: {
+    ...fonts.titleBold,
+  },
+  infoText: {
+    ...fonts.small,
   },
   content: { flexShrink: 1 },
   contentContainer: {
@@ -163,9 +177,6 @@ const styles = RN.StyleSheet.create({
   chipContainer: {
     flexDirection: 'row',
     flexWrap: 'wrap',
-  },
-  name: {
-    ...fonts.titleBold,
   },
   subtitle: {
     ...fonts.regularBold,
