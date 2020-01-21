@@ -7,90 +7,46 @@ import OnboardingBackground from '../components/OnboardingBackground';
 import Card from '../components/Card';
 import fonts from '../components/fonts';
 import Message from '../components/Message';
-import colors, { gradients } from '../components/colors';
-import InputField from '../components/InputField';
+import { gradients } from '../components/colors';
 import Button from '../components/Button';
+import LoginCard from '../components/LoginCard';
+
+import { SignInRoute } from './SignIn';
 
 export type SignUpRoute = {
   'Onboarding/SignUp': {};
 };
 
-interface SignUpCardProps extends RN.ViewProps {
-  goBack: () => void | undefined;
-  onSignUp: () => void | undefined;
-}
+type OwnProps = navigationProps.NavigationProps<SignUpRoute, SignInRoute>;
 
-const SignUpCard = ({ goBack, onSignUp, ...viewProps }: SignUpCardProps) => (
-  <Card {...viewProps}>
-    <Message style={signUpCardStyles.title} id="onboarding.signUp.title" />
-    <InputField
-      style={signUpCardStyles.nickNameInput}
-      name="onboarding.signUp.nickName"
-    />
-    <InputField
-      style={signUpCardStyles.passwordInput}
-      name="onboarding.signUp.password"
-    />
-    <RN.View style={signUpCardStyles.buttonContainer}>
-      <Button
-        style={signUpCardStyles.signUpButton}
-        messageId="onboarding.signUp.signUp"
-        onPress={onSignUp}
-        hasArrow={true}
-      />
-      <Button
-        gradient={[colors.faintGray, colors.faintGray]}
-        messageId="onboarding.signUp.back"
-        onPress={goBack}
-      />
-    </RN.View>
-  </Card>
-);
-
-const signUpCardStyles = RN.StyleSheet.create({
-  title: {
-    ...fonts.titleBold,
-    textAlign: 'center',
-    color: colors.deepBlue,
-    marginBottom: 40,
-  },
-  nickNameInput: {
-    marginBottom: 24,
-  },
-  passwordInput: {
-    marginBottom: 40,
-  },
-  buttonContainer: {
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    flexDirection: 'column',
-  },
-  signUpButton: {
-    flexGrow: 1,
-    marginBottom: 16,
-  },
-});
-
-type OwnProps = navigationProps.NavigationProps<SignUpRoute, SignUpRoute>;
-
-const SignUp = (props: OwnProps) => {
+const SignUp = ({ navigation }: OwnProps) => {
   const goBack = () => {
-    props.navigation.goBack();
+    navigation.goBack();
   };
   const onSignUp = () => {};
+  const navigateLogin = () => {
+    navigation.navigate('Onboarding/SignIn', {});
+  };
 
   return (
     <OnboardingBackground>
-      <SignUpCard style={styles.card} goBack={goBack} onSignUp={onSignUp} />
+      <LoginCard
+        style={styles.card}
+        titleMessageId="onboarding.signUp.title"
+        nextMessageId="onboarding.signUp.signUp"
+        onPressBack={goBack}
+        onPressNext={onSignUp}
+      />
       <Card style={styles.card}>
         <Message
           style={styles.loginOldTitle}
           id="onboarding.signUp.existingAccount.title"
         />
         <Button
-          onPress={() => {}}
+          onPress={navigateLogin}
           messageId="onboarding.signUp.existingAccount.login"
           gradient={gradients.faintGray}
+          noShadow={true}
         />
       </Card>
     </OnboardingBackground>

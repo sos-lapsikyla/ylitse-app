@@ -17,6 +17,9 @@ export const messages = {
   'onboarding.mentorlist.start': 'Aloita',
   'onboarding.mentorlist.upperTitle': 'Tapaa',
 
+  'onboarding.signIn.button': 'Kirjaudu',
+  'onboarding.signIn.title': 'Kirjaudu',
+
   'onboarding.signUp.back': 'Takaisin',
   'onboarding.signUp.existingAccount.login': 'Kirjaudu sisään',
   'onboarding.signUp.existingAccount.title': 'Minulla on jo tunnus',

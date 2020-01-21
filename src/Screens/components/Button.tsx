@@ -8,6 +8,7 @@ import Message from './Message';
 import shadow from './shadow';
 import colors, { gradients } from './colors';
 import fonts from './fonts';
+import Spinner from './Spinner';
 
 interface Props {
   onPress: () => void | undefined;
@@ -16,7 +17,10 @@ interface Props {
   contentContainerStyle?: RN.StyleProp<RN.ViewStyle>;
   messageId: localization.MessageId;
   messageStyle?: RN.StyleProp<RN.TextStyle>;
-  hasArrow?: boolean;
+  badge?: RN.ImageSourcePropType;
+  disabled?: boolean;
+  loading?: boolean;
+  noShadow?: boolean;
 }
 
 const Button = ({
@@ -26,21 +30,31 @@ const Button = ({
   messageStyle,
   onPress,
   style,
-  hasArrow,
+  badge,
+  loading,
+  disabled,
+  noShadow,
 }: Props) => {
   return (
-    <RN.TouchableOpacity style={[styles.container, style]} onPress={onPress}>
+    <RN.TouchableOpacity
+      style={[
+        styles.container,
+        disabled ? styles.disabled : undefined,
+        !noShadow ? styles.shadow : undefined,
+        style,
+      ]}
+      onPress={onPress}
+      disabled={disabled || loading}
+    >
       <LinearGradient
         style={[styles.gradient, contentContainerStyle]}
         colors={gradient ? gradient : gradients.acidGreen}
       >
         <Message style={[styles.message, messageStyle]} id={messageId} />
-        {!hasArrow ? null : (
-          <RN.Image
-            style={styles.arrow}
-            source={require('../images/arrow.svg')}
-          />
+        {!badge || loading ? null : (
+          <RN.Image style={styles.badge} source={badge} />
         )}
+        {loading ? <Spinner style={styles.badge} /> : null}
       </LinearGradient>
     </RN.TouchableOpacity>
   );
@@ -52,8 +66,16 @@ const styles = RN.StyleSheet.create({
     minHeight: 64,
     alignSelf: 'stretch',
     borderRadius,
-    ...shadow(7),
-    overflow: 'scroll',
+  },
+  shadow: shadow(7),
+  disabled: {
+    opacity: 0.3,
+  },
+  badge: {
+    position: 'absolute',
+    right: 16,
+    width: 48,
+    height: 48,
   },
   gradient: {
     minHeight: 64,
@@ -68,9 +90,6 @@ const styles = RN.StyleSheet.create({
   messageContainer: {
     flexDirection: 'column',
     flex: 1,
-  },
-  arrow: {
-    marginLeft: 24,
   },
   message: {
     ...fonts.largeBold,

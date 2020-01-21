@@ -13,7 +13,11 @@ const OnboardinBackground: React.FC<Props> = ({ children, ...viewProps }) => (
     <AppTitle style={styles.appTitle} />
     <CreatedBySosBanner style={styles.banner} />
     <RN.KeyboardAvoidingView style={styles.keyboardAvoider} behavior="height">
-      <RN.ScrollView contentContainerStyle={styles.scrollContent}>
+      <RN.ScrollView
+        contentContainerStyle={styles.scrollContent}
+        showsVerticalScrollIndicator={false}
+        showsHorizontalScrollIndicator={false}
+      >
         <SafeAreaView
           style={styles.container}
           forceInset={{ top: 'always', bottom: 'always' }}

@@ -73,8 +73,9 @@ const MentorList = (props: Props) => {
             onPress={navigateNext}
             messageStyle={styles.buttonMessage}
             messageId="onboarding.mentorlist.start"
+            badge={require('../images/arrow.svg')}
           />
-          <CreatedBySosBanner />
+          <CreatedBySosBanner style={styles.banner} />
         </RN.View>
       </SafeAreaView>
     </Background>

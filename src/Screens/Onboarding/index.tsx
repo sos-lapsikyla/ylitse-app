@@ -2,9 +2,10 @@ import * as reactNavigationStack from 'react-navigation-stack';
 
 import MentorList, { MentorListRoute } from './MentorList';
 import SignUp, { SignUpRoute } from './SignUp';
+import SignIn, { SignInRoute } from './SignIn';
 
-type RouteName = keyof (MentorListRoute & SignUpRoute);
-type Screen = typeof MentorList | typeof SignUp;
+type RouteName = keyof (MentorListRoute & SignUpRoute & SignInRoute);
+type Screen = typeof MentorList | typeof SignUp | typeof SignIn;
 
 export type Route = keyof typeof routes;
 const routes: {
@@ -16,9 +17,12 @@ const routes: {
   'Onboarding/SignUp': {
     screen: SignUp,
   },
+  'Onboarding/SignIn': {
+    screen: SignIn,
+  },
 };
 
-const initialRouteName: RouteName = 'Onboarding/SignUp';
+const initialRouteName: RouteName = 'Onboarding/MentorList';
 const config = {
   initialRouteName,
   headerMode: 'none' as const,
