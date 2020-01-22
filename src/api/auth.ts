@@ -62,3 +62,9 @@ export async function refreshAccessToken(accessToken: AccessToken) {
   );
   return { ...accessToken, accessToken: apiToken.access_token };
 }
+
+export function authHeader({
+  accessToken,
+}: AccessToken): RequestInit['headers'] {
+  return { Authorization: `Bearer ${accessToken}` };
+}

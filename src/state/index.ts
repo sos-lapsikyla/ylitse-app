@@ -8,17 +8,20 @@ import { makeSaga } from '../lib/remote-data-saga';
 
 import * as mentorsApi from '../api/mentors';
 import * as authApi from '../api/auth';
+import * as buddyApi from '../api/buddies';
 
 export type State = {
   mentors: remoteData.RemoteData<Map<string, mentorsApi.Mentor>>;
   accessToken: remoteData.RemoteData<authApi.AccessToken>;
+  buddies: remoteData.RemoteData<buddyApi.Buddy[]>;
 };
 export const initialState = {
   mentors: remoteData.notAsked,
   accessToken: remoteData.notAsked,
+  buddies: remoteData.notAsked,
 };
 
-export const {
+const {
   actions: mentorsActions,
   reducer: mentorsReducer,
   saga: mentorsSaga,
@@ -29,11 +32,22 @@ export const {
   mentorsApi.fetchMentors,
 );
 
-export const {
+const {
   actions: loginActions,
   reducer: loginReducer,
   saga: loginSaga,
 } = makeSaga('login', 'loginSucceed', 'loginFail', authApi.login);
+
+const {
+  actions: buddyActions,
+  reducer: buddyReducer,
+  saga: buddySaga,
+} = makeSaga(
+  'fetchBuddies',
+  'fetchBuddiesSucceed',
+  'fetchBuddiesFail',
+  buddyApi.fetchBuddies,
+);
 
 // MERGE ACTIONS
 export type Action = actionsUnion.ActionsUnion<
@@ -43,10 +57,11 @@ export type Action = actionsUnion.ActionsUnion<
 export const actions = {
   ...mentorsActions,
   ...loginActions,
+  ...buddyActions,
 };
 
 // MERGE REDUCERS
-export function rootReducer(state: State | undefined, action: Action): State {
+function rootReducer(state: State | undefined, action: Action): State {
   if (state === undefined) {
     return initialState;
   }
@@ -54,12 +69,13 @@ export function rootReducer(state: State | undefined, action: Action): State {
     ...state,
     mentors: mentorsReducer(state.mentors, action),
     accessToken: loginReducer(state.accessToken, action),
+    buddies: buddyReducer(state.buddies, action),
   };
 }
 
 // MERGE SAGAS
-export function* rootSaga() {
-  yield sagaEffects.all([mentorsSaga(), loginSaga()]);
+function* rootSaga() {
+  yield sagaEffects.all([mentorsSaga(), loginSaga(), buddySaga()]);
 }
 
 // INIT REDUX STORE
