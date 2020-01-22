@@ -35,6 +35,7 @@ const SignIn = (props: Props) => {
     <OnboardingBackground>
       <LoginCard
         style={styles.card}
+        remoteAction={props.accessToken}
         titleMessageId="onboarding.signIn.title"
         nextMessageId="onboarding.signIn.button"
         onPressBack={goBack}

@@ -8,7 +8,6 @@ class HTTPError extends Error {}
 async function request(url: string, options?: RequestInit) {
   const response = await fetch(url, options);
   if (!response.ok) {
-    console.warn(response);
     throw new HTTPError(`HTTPError, status: ${response.status}`);
   }
   return response.json();

@@ -35,6 +35,10 @@ export function isLoading<A, E>(remoteData: RemoteData<A, E>): boolean {
   return remoteData.type === 'Loading';
 }
 
+export function isFailure<A, E>(remoteData: RemoteData<A, E>): boolean {
+  return remoteData.type === 'Failure';
+}
+
 export function fail<E>(error: E) {
   return {
     type: 'Failure' as const,
@@ -47,17 +51,4 @@ export function succeed<Value>(value: Value) {
     type: 'Success' as const,
     value,
   };
-}
-
-type UnpackPromise<Value> = Value extends Promise<infer U> ? U : never;
-export async function fromPromise<F extends (...args: any[]) => any>(
-  promiseFunction: F,
-  args: Parameters<F>,
-): Promise<RemoteData<UnpackPromise<F>>> {
-  try {
-    const value = await promiseFunction(args);
-    return succeed(value);
-  } catch (e) {
-    return fail(e);
-  }
 }

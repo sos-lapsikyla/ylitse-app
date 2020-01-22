@@ -13,4 +13,11 @@ const Message = ({ id, ...textProps }: Props) => (
   <RN.Text {...textProps}>{translator(id)}</RN.Text>
 );
 
+export const AnimatedMessage = ({
+  id,
+  ...textProps
+}: Omit<Props, 'style'> & {
+  style?: any;
+}) => <RN.Animated.Text {...textProps}>{translator(id)}</RN.Animated.Text>;
+
 export default Message;

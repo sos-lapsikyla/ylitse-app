@@ -1,6 +1,8 @@
 import React from 'react';
 import RN from 'react-native';
 
+import * as remoteData from '../../lib/remote-data';
+
 import * as authApi from '../../api/auth';
 
 import * as localization from '../../localization';
@@ -11,12 +13,14 @@ import Message from '../components/Message';
 import colors from '../components/colors';
 import NamedInputField from '../components/NamedInputField';
 import Button from '../components/Button';
+import ErrorMessage from '../components/ErrorMessage';
 
 interface Props extends RN.ViewProps {
   onPressBack: () => void | undefined;
   onPressNext: (credentials: authApi.Credentials) => void | undefined;
   titleMessageId: localization.MessageId;
   nextMessageId: localization.MessageId;
+  remoteAction: remoteData.RemoteData<unknown>;
 }
 
 const LoginCard = ({
@@ -24,6 +28,7 @@ const LoginCard = ({
   onPressNext,
   titleMessageId,
   nextMessageId,
+  remoteAction,
   ...viewProps
 }: Props) => {
   const [credentials, setCredentials] = React.useState<authApi.Credentials>({
@@ -52,12 +57,18 @@ const LoginCard = ({
         onChangeText={onPasswordChange}
         autoCompleteType="off"
       />
+      <ErrorMessage
+        style={styles.errorText}
+        messageId="onboarding.signIn.failure"
+        data={remoteAction}
+      />
       <RN.View style={styles.buttonContainer}>
         <Button
           style={styles.signUpButton}
           messageId={nextMessageId}
           onPress={() => onPressNext(credentials)}
           badge={require('../images/arrow.svg')}
+          loading={remoteData.isLoading(remoteAction)}
         />
         <Button
           gradient={[colors.faintGray, colors.faintGray]}
@@ -81,7 +92,10 @@ const styles = RN.StyleSheet.create({
     marginBottom: 24,
   },
   passwordInput: {
-    marginBottom: 40,
+    marginBottom: 16,
+  },
+  errorText: {
+    marginBottom: 16,
   },
   buttonContainer: {
     justifyContent: 'space-between',

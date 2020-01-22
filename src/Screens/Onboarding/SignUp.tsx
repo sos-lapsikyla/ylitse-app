@@ -2,6 +2,7 @@ import React from 'react';
 import RN from 'react-native';
 
 import * as navigationProps from '../../lib/navigation-props';
+import * as remoteData from '../../lib/remote-data';
 
 import OnboardingBackground from '../components/OnboardingBackground';
 import Card from '../components/Card';
@@ -36,6 +37,7 @@ const SignUp = ({ navigation }: OwnProps) => {
         nextMessageId="onboarding.signUp.signUp"
         onPressBack={goBack}
         onPressNext={onSignUp}
+        remoteAction={remoteData.notAsked}
       />
       <Card style={styles.card}>
         <Message
