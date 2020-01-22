@@ -74,6 +74,7 @@ const MentorList = (props: Props) => {
             messageStyle={styles.buttonMessage}
             messageId="onboarding.mentorlist.start"
             badge={require('../images/arrow.svg')}
+            disabled={!remoteData.isSuccess(props.mentors)}
           />
           <CreatedBySosBanner style={styles.banner} />
         </RN.View>

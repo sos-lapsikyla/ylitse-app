@@ -39,6 +39,10 @@ export function isFailure<A, E>(remoteData: RemoteData<A, E>): boolean {
   return remoteData.type === 'Failure';
 }
 
+export function isSuccess<A, E>(remoteData: RemoteData<A, E>): boolean {
+  return remoteData.type === 'Success';
+}
+
 export function fail<E>(error: E) {
   return {
     type: 'Failure' as const,

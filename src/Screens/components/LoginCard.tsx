@@ -39,6 +39,7 @@ const LoginCard = ({
     setCredentials({ ...credentials, userName });
   const onPasswordChange = (password: string) =>
     setCredentials({ ...credentials, password });
+  const isEmptyFields = !credentials.password || !credentials.userName;
   return (
     <Card {...viewProps}>
       <Message style={styles.title} id={titleMessageId} />
@@ -69,6 +70,7 @@ const LoginCard = ({
           onPress={() => onPressNext(credentials)}
           badge={require('../images/arrow.svg')}
           loading={remoteData.isLoading(remoteAction)}
+          disabled={isEmptyFields}
         />
         <Button
           gradient={[colors.faintGray, colors.faintGray]}
