@@ -5,44 +5,59 @@ import * as record from './record';
 
 type UnpackPromise<Value> = Value extends Promise<infer U> ? U : never;
 
-type InitAction<A extends string, F extends (...args: any[]) => any> = {
-  type: A;
+type InitAction<
+  InitActionName extends string,
+  F extends (...args: any[]) => any
+> = {
+  type: InitActionName;
   payload: Parameters<F>;
 };
-type InitActionCreator<A extends string, F extends (...args: any[]) => any> = {
-  [k in A]: (payload: Parameters<F>) => InitAction<A, F>;
+type InitActionCreator<
+  InitActionName extends string,
+  F extends (...args: any[]) => any
+> = {
+  [k in InitActionName]: (
+    payload: Parameters<F>,
+  ) => InitAction<InitActionName, F>;
 };
 
-type SuccessAction<A extends string, F extends (...args: any[]) => any> = {
-  type: A;
+type SuccessAction<
+  InitActionName extends string,
+  F extends (...args: any[]) => any
+> = {
+  type: InitActionName;
   payload: UnpackPromise<ReturnType<F>>;
 };
 type SuccessActionCreator<
-  A extends string,
+  InitActionName extends string,
   F extends (...args: any[]) => any
 > = {
-  [k in A]: (payload: UnpackPromise<ReturnType<F>>) => SuccessAction<A, F>;
+  [k in InitActionName]: (
+    payload: UnpackPromise<ReturnType<F>>,
+  ) => SuccessAction<InitActionName, F>;
 };
 
-type FailAction<A extends string> = {
-  type: A;
+type FailAction<InitActionName extends string> = {
+  type: InitActionName;
   payload: Error;
 };
-type FailActionCreator<A extends string> = {
-  [k in A]: (payload: Error) => FailAction<A>;
+type FailActionCreator<InitActionName extends string> = {
+  [k in InitActionName]: (payload: Error) => FailAction<InitActionName>;
 };
 
 export function makeActionCreators<
-  A extends string,
-  B extends string,
-  C extends string,
+  InitActionName extends string,
+  SuccessActionName extends string,
+  FailureActionName extends string,
   F extends (...args: any[]) => any
 >(
-  initActionName: A,
-  successActionName: B,
-  failActionName: C,
+  initActionName: InitActionName,
+  successActionName: SuccessActionName,
+  failActionName: FailureActionName,
   _: F,
-): InitActionCreator<A, F> & SuccessActionCreator<B, F> & FailActionCreator<C> {
+): InitActionCreator<InitActionName, F> &
+  SuccessActionCreator<SuccessActionName, F> &
+  FailActionCreator<FailureActionName> {
   const init = record.singleton(initActionName, (payload: Parameters<F>) => ({
     type: initActionName,
     payload,
@@ -67,24 +82,29 @@ type UnknownAction = {
 };
 
 export function makeReducer<
-  A extends string,
-  B extends string,
-  C extends string,
+  InitActionName extends string,
+  SuccessActionName extends string,
+  FailureActionName extends string,
   F extends (...args: any[]) => any
->(init: A, success: B, fail: C, _: F) {
+>(
+  init: InitActionName,
+  success: SuccessActionName,
+  fail: FailureActionName,
+  _: F,
+) {
   const reducer: (
     state: remoteData.RemoteData<UnpackPromise<ReturnType<F>>>,
     action:
-      | InitAction<A, F>
-      | SuccessAction<B, F>
-      | FailAction<C>
+      | InitAction<InitActionName, F>
+      | SuccessAction<SuccessActionName, F>
+      | FailAction<FailureActionName>
       | UnknownAction,
   ) => remoteData.RemoteData<UnpackPromise<ReturnType<F>>> = (
     state: remoteData.RemoteData<UnpackPromise<ReturnType<F>>>,
     action:
-      | InitAction<A, F>
-      | SuccessAction<B, F>
-      | FailAction<C>
+      | InitAction<InitActionName, F>
+      | SuccessAction<SuccessActionName, F>
+      | FailAction<FailureActionName>
       | UnknownAction,
   ) => {
     switch (action.type) {
@@ -92,11 +112,18 @@ export function makeReducer<
         return remoteData.loading;
       }
       case success: {
-        const { payload }: SuccessAction<B, F> = action as SuccessAction<B, F>;
+        const {
+          payload,
+        }: SuccessAction<SuccessActionName, F> = action as SuccessAction<
+          SuccessActionName,
+          F
+        >;
         return remoteData.succeed(payload);
       }
       case fail: {
-        const { payload }: FailAction<C> = action as FailAction<C>;
+        const { payload }: FailAction<FailureActionName> = action as FailAction<
+          FailureActionName
+        >;
         return remoteData.fail(payload);
       }
       default:
@@ -107,11 +134,16 @@ export function makeReducer<
 }
 
 export function makeSaga<
-  A extends string,
-  B extends string,
-  C extends string,
+  InitActionName extends string,
+  SuccessActionName extends string,
+  FailureActionName extends string,
   F extends (...args: any[]) => any
->(initActionName: A, successActionName: B, failActionName: C, f: F) {
+>(
+  initActionName: InitActionName,
+  successActionName: SuccessActionName,
+  failActionName: FailureActionName,
+  f: F,
+) {
   const actions = makeActionCreators(
     initActionName,
     successActionName,
@@ -124,7 +156,7 @@ export function makeSaga<
     failActionName,
     f,
   );
-  const fetchHandler = function*(action: InitAction<A, F>) {
+  const fetchHandler = function*(action: InitAction<InitActionName, F>) {
     try {
       const value = yield reduxSagaEffects.call(f, ...action.payload);
       yield reduxSagaEffects.put(actions[successActionName](value));
