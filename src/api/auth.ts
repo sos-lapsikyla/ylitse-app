@@ -39,7 +39,7 @@ function toAccessToken({
   };
 }
 
-type Credentials = {
+export type Credentials = {
   userName: string;
   password: string;
 };

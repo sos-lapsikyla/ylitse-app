@@ -153,7 +153,7 @@ export default ReactRedux.connect<
 
   (dispatch: redux.Dispatch<state.Action>) => ({
     fetchMentors: () => {
-      dispatch(state.actions.fetchMentors());
+      dispatch(state.actions.fetchMentors([]));
     },
   }),
 )(MentorList);

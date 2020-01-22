@@ -9,7 +9,10 @@ import { State as StateType, initialState } from './types';
 
 export type State = StateType;
 
-export type Action = actionsUnion.ActionsUnion<typeof actions>;
+export type Action = actionsUnion.ActionsUnion<
+  keyof typeof actions,
+  typeof actions
+>;
 export const actions = {
   ...mentors.actions,
 };
