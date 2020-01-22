@@ -1,102 +1,64 @@
 import React from 'react';
 import RN from 'react-native';
-import { SafeAreaView } from 'react-navigation';
 
 import * as navigationProps from '../../lib/navigation-props';
 
-import Background from '../components/Background';
+import OnboardingBackground from '../components/OnboardingBackground';
 import Card from '../components/Card';
 import fonts from '../components/fonts';
 import Message from '../components/Message';
-import colors, { gradients } from '../components/colors';
-import InputField from '../components/InputField';
+import { gradients } from '../components/colors';
 import Button from '../components/Button';
+import LoginCard from '../components/LoginCard';
+
+import { SignInRoute } from './SignIn';
 
 export type SignUpRoute = {
   'Onboarding/SignUp': {};
 };
 
-type OwnProps = navigationProps.NavigationProps<SignUpRoute, SignUpRoute>;
+type OwnProps = navigationProps.NavigationProps<SignUpRoute, SignInRoute>;
 
-const SignUp = (props: OwnProps) => {
+const SignUp = ({ navigation }: OwnProps) => {
   const goBack = () => {
-    props.navigation.goBack();
+    navigation.goBack();
   };
   const onSignUp = () => {};
+  const navigateLogin = () => {
+    navigation.navigate('Onboarding/SignIn', {});
+  };
 
   return (
-    <Background>
-      <SafeAreaView
-        style={styles.container}
-        forceInset={{ top: 'always', bottom: 'always' }}
-      >
-        <Card style={styles.card}>
-          <Message style={styles.title} id="onboarding.signUp.title" />
-          <InputField
-            style={styles.nickNameInput}
-            name="onboarding.signUp.nickName"
-          />
-          <InputField
-            style={styles.passwordInput}
-            name="onboarding.signUp.password"
-          />
-          <RN.View style={styles.buttonContainer}>
-            <Button
-              gradient={gradients.pillBlue}
-              messageId="onboarding.signUp.back"
-              onPress={goBack}
-            />
-            <Button
-              style={styles.signUpButton}
-              messageId="onboarding.signUp.signUp"
-              onPress={onSignUp}
-            >
-              <RN.Image
-                style={styles.arrow}
-                source={require('../images/arrow.svg')}
-              />
-            </Button>
-          </RN.View>
-        </Card>
-      </SafeAreaView>
-    </Background>
+    <OnboardingBackground>
+      <LoginCard
+        style={styles.card}
+        titleMessageId="onboarding.signUp.title"
+        nextMessageId="onboarding.signUp.signUp"
+        onPressBack={goBack}
+        onPressNext={onSignUp}
+      />
+      <Card style={styles.card}>
+        <Message
+          style={styles.loginOldTitle}
+          id="onboarding.signUp.existingAccount.title"
+        />
+        <Button
+          onPress={navigateLogin}
+          messageId="onboarding.signUp.existingAccount.login"
+          gradient={gradients.faintGray}
+          noShadow={true}
+        />
+      </Card>
+    </OnboardingBackground>
   );
 };
 
 const styles = RN.StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    paddingHorizontal: 8,
-  },
-  card: {
-    padding: 24,
-    alignSelf: 'stretch',
-  },
-  title: {
-    ...fonts.titleBold,
+  card: { marginVertical: 24, padding: 24, alignSelf: 'stretch' },
+  loginOldTitle: {
+    ...fonts.largeBold,
     textAlign: 'center',
-    color: colors.deepBlue,
-    marginBottom: 40,
-  },
-  nickNameInput: {
     marginBottom: 24,
-  },
-  passwordInput: {
-    marginBottom: 40,
-  },
-  buttonContainer: {
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    flexDirection: 'row',
-  },
-  signUpButton: {
-    flexGrow: 1,
-    marginLeft: 16,
-  },
-  arrow: {
-    marginLeft: 8,
   },
 });
 

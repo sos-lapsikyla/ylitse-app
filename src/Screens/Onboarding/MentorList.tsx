@@ -19,6 +19,7 @@ import { textShadow } from '../components/shadow';
 import RemoteData from '../components/RemoteData';
 import Button from '../components/Button';
 import Message from '../components/Message';
+import CreatedBySosBanner from '../components/CreatedBySosBanner';
 
 import { SignUpRoute } from './SignUp';
 
@@ -72,10 +73,9 @@ const MentorList = (props: Props) => {
             onPress={navigateNext}
             messageStyle={styles.buttonMessage}
             messageId="onboarding.mentorlist.start"
-          >
-            <RN.Image source={require('../images/arrow.svg')} />
-          </Button>
-          <Message style={styles.banner} id="onboarding.mentorlist.banner" />
+            badge={require('../images/arrow.svg')}
+          />
+          <CreatedBySosBanner style={styles.banner} />
         </RN.View>
       </SafeAreaView>
     </Background>
@@ -121,13 +121,13 @@ const styles = RN.StyleSheet.create({
   },
   card: {
     alignSelf: 'stretch',
-    marginHorizontal: 12,
+    marginHorizontal: 8,
     flexGrow: 1,
     marginBottom: mentorCardBottomMargin,
   },
   bottom: {
+    marginTop: 8,
     alignSelf: 'stretch',
-    paddingHorizontal: 24,
     justifyContent: 'center',
   },
   button: { marginHorizontal: 24, alignSelf: 'stretch' },
@@ -138,9 +138,6 @@ const styles = RN.StyleSheet.create({
     marginRight: 16,
   },
   banner: {
-    ...fonts.regular,
-    color: colors.gray,
-    textAlign: 'center',
     marginTop: 16,
     marginBottom: 8,
   },

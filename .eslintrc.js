@@ -8,7 +8,7 @@ module.exports = {
     'prettier/@typescript-eslint',
     'prettier/react',
 
-    "plugin:import/typescript",
+    'plugin:import/typescript',
   ],
   'parser': '@typescript-eslint/parser',
   'parserOptions': {
@@ -50,5 +50,6 @@ module.exports = {
     'react/destructuring-assignment': ['off'],
     'react-hooks/rules-of-hooks': 'error',
     'react-hooks/exhaustive-deps': ['off'],
+    'import/no-unresolved': [2, { commonjs: true }]
   },
 };
