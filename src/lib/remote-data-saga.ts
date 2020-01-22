@@ -1,4 +1,4 @@
-import { call, put, takeEvery } from 'redux-saga/effects';
+import * as reduxSagaEffects from 'redux-saga/effects';
 
 import * as remoteData from './remote-data';
 import * as record from './record';
@@ -61,6 +61,11 @@ export function makeActionCreators<
   return { ...init, ...success, ...fail };
 }
 
+type UnknownAction = {
+  type: unknown;
+  payload: unknown;
+};
+
 export function makeReducer<
   A extends string,
   B extends string,
@@ -69,10 +74,18 @@ export function makeReducer<
 >(init: A, success: B, fail: C, _: F) {
   const reducer: (
     state: remoteData.RemoteData<UnpackPromise<ReturnType<F>>>,
-    action: InitAction<A, F> | SuccessAction<B, F> | FailAction<C>,
+    action:
+      | InitAction<A, F>
+      | SuccessAction<B, F>
+      | FailAction<C>
+      | UnknownAction,
   ) => remoteData.RemoteData<UnpackPromise<ReturnType<F>>> = (
     state: remoteData.RemoteData<UnpackPromise<ReturnType<F>>>,
-    action: InitAction<A, F> | SuccessAction<B, F> | FailAction<C>,
+    action:
+      | InitAction<A, F>
+      | SuccessAction<B, F>
+      | FailAction<C>
+      | UnknownAction,
   ) => {
     switch (action.type) {
       case init: {
@@ -112,18 +125,15 @@ export function makeSaga<
     f,
   );
   const fetchHandler = function*(action: InitAction<A, F>) {
-    console.warn(action);
     try {
-      const value = yield call(f, ...action.payload);
-      console.warn(value);
-      yield put(actions[successActionName](value));
+      const value = yield reduxSagaEffects.call(f, ...action.payload);
+      yield reduxSagaEffects.put(actions[successActionName](value));
     } catch (e) {
-      console.warn(e);
-      yield put(actions[failActionName](e));
+      yield reduxSagaEffects.put(actions[failActionName](e));
     }
   };
   const saga = function*() {
-    yield takeEvery(initActionName, fetchHandler);
+    yield reduxSagaEffects.takeEvery(initActionName, fetchHandler);
   };
 
   return { actions, reducer, saga };

@@ -1,1 +1,1 @@
-export const baseUrl = 'https://admin.ylitse.fi/api';
+export const baseUrl = 'https://admin.ylitse.fi/api/';
