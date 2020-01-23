@@ -1,5 +1,10 @@
 import React from 'react';
 import RN from 'react-native';
+import * as redux from 'redux';
+import * as ReactRedux from 'react-redux';
+
+import * as state from '../../state';
+import * as accountApi from '../../api/account';
 
 import * as navigationProps from '../../lib/navigation-props';
 import * as remoteData from '../../lib/remote-data';
@@ -13,22 +18,39 @@ import Button from '../components/Button';
 import LoginCard from '../components/LoginCard';
 
 import { SignInRoute } from './SignIn';
+import { BuddyListRoute } from './BuddyList';
 
 export type SignUpRoute = {
   'Onboarding/SignUp': {};
 };
 
-type OwnProps = navigationProps.NavigationProps<SignUpRoute, SignInRoute>;
+type StateProps = {
+  accessToken: state.State['accessToken'];
+};
+type DispatchProps = {
+  createUser: (newUser: accountApi.NewUser) => void | undefined;
+};
+type OwnProps = navigationProps.NavigationProps<
+  SignUpRoute,
+  SignInRoute & BuddyListRoute
+>;
+type Props = StateProps & DispatchProps & OwnProps;
 
-const SignUp = ({ navigation }: OwnProps) => {
+const SignUp = ({ navigation, createUser, accessToken }: Props) => {
+  React.useEffect(() => {
+    if (remoteData.isSuccess(accessToken)) {
+      navigation.navigate('BuddyList', {});
+    }
+  }, [accessToken]);
   const goBack = () => {
     navigation.goBack();
   };
-  const onSignUp = () => {};
+  const onSignUp = (user: accountApi.NewUser) => {
+    createUser(user);
+  };
   const navigateLogin = () => {
     navigation.navigate('Onboarding/SignIn', {});
   };
-
   return (
     <OnboardingBackground>
       <LoginCard
@@ -37,7 +59,7 @@ const SignUp = ({ navigation }: OwnProps) => {
         nextMessageId="onboarding.signUp.signUp"
         onPressBack={goBack}
         onPressNext={onSignUp}
-        remoteAction={remoteData.notAsked}
+        remoteAction={accessToken}
       />
       <Card style={styles.card}>
         <Message
@@ -64,4 +86,16 @@ const styles = RN.StyleSheet.create({
   },
 });
 
-export default SignUp;
+export default ReactRedux.connect<
+  StateProps,
+  DispatchProps,
+  OwnProps,
+  state.State
+>(
+  ({ accessToken }) => ({ accessToken }),
+  (dispatch: redux.Dispatch<state.Action>) => ({
+    createUser: (newUser: accountApi.NewUser) => {
+      dispatch(state.actions.createUser([newUser]));
+    },
+  }),
+)(SignUp);
