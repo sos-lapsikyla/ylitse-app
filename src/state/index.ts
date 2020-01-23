@@ -9,13 +9,14 @@ import { makeSaga } from '../lib/remote-data-saga';
 import * as mentorsApi from '../api/mentors';
 import * as authApi from '../api/auth';
 import * as buddyApi from '../api/buddies';
+import * as accountApi from '../api/account';
 
 export type State = {
   mentors: remoteData.RemoteData<Map<string, mentorsApi.Mentor>>;
   accessToken: remoteData.RemoteData<authApi.AccessToken>;
   buddies: remoteData.RemoteData<buddyApi.Buddy[]>;
 };
-export const initialState = {
+export const initialState: State = {
   mentors: remoteData.notAsked,
   accessToken: remoteData.notAsked,
   buddies: remoteData.notAsked,
@@ -39,6 +40,17 @@ const {
 } = makeSaga('login', 'loginSucceed', 'loginFail', authApi.login);
 
 const {
+  actions: createUserActions,
+  reducer: createUserReducer,
+  saga: createUserSaga,
+} = makeSaga(
+  'createUser',
+  'createUserSucceed',
+  'createUserFail',
+  accountApi.createUser,
+);
+
+const {
   actions: buddyActions,
   reducer: buddyReducer,
   saga: buddySaga,
@@ -57,6 +69,7 @@ export type Action = actionsUnion.ActionsUnion<
 export const actions = {
   ...mentorsActions,
   ...loginActions,
+  ...createUserActions,
   ...buddyActions,
 };
 
@@ -68,14 +81,22 @@ function rootReducer(state: State | undefined, action: Action): State {
   return {
     ...state,
     mentors: mentorsReducer(state.mentors, action),
-    accessToken: loginReducer(state.accessToken, action),
+    accessToken: createUserReducer(
+      loginReducer(state.accessToken, action),
+      action,
+    ),
     buddies: buddyReducer(state.buddies, action),
   };
 }
 
 // MERGE SAGAS
 function* rootSaga() {
-  yield sagaEffects.all([mentorsSaga(), loginSaga(), buddySaga()]);
+  yield sagaEffects.all([
+    mentorsSaga(),
+    loginSaga(),
+    createUserSaga(),
+    buddySaga(),
+  ]);
 }
 
 // INIT REDUX STORE

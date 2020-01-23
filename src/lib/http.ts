@@ -8,7 +8,11 @@ class HTTPError extends Error {}
 async function request(url: string, options?: RequestInit) {
   const response = await fetch(url, options);
   if (!response.ok) {
-    throw new HTTPError(`HTTPError, status: ${response.status}`);
+    throw new HTTPError(
+      `HTTPError, status: ${
+        response.status
+      }, url: ${url}, options: ${JSON.stringify(options)}`,
+    );
   }
   return response.json();
 }
@@ -28,11 +32,30 @@ export async function post<A extends {}, B>(
   outputType: t.Type<B, B, unknown>,
   options?: RequestInit,
 ): Promise<B> {
+  console.warn(`${url}\n\n\n${JSON.stringify(input)}`);
   const requestOptions: RequestInit = {
     ...options,
     method: 'POST',
     body: JSON.stringify(input),
   };
   const responseJson = await request(url, requestOptions);
+  console.warn(`${url}\n\n\n${JSON.stringify(responseJson)}`);
+  return tPromise.decode(outputType, responseJson);
+}
+
+export async function put<A extends {}, B>(
+  url: string,
+  input: A,
+  outputType: t.Type<B, B, unknown>,
+  options?: RequestInit,
+): Promise<B> {
+  console.warn(`${url}\n\n\n${JSON.stringify(input)}`);
+  const requestOptions: RequestInit = {
+    ...options,
+    method: 'PUT',
+    body: JSON.stringify(input),
+  };
+  const responseJson = await request(url, requestOptions);
+  console.warn(`${url}\n\n\n${JSON.stringify(responseJson)}`);
   return tPromise.decode(outputType, responseJson);
 }
