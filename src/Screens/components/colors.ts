@@ -17,6 +17,7 @@ const colors = {
   black: '#000',
 
   deepBlue: '#003363',
+  faintBlue: '#5A7C9B',
 
   acidGreen1: '#5BD858',
   acidGreen2: '#46E769',
