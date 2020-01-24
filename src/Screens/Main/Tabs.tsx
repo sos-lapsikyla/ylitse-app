@@ -9,6 +9,8 @@ import shadow from '../components/shadow';
 
 import BuddyList, { BuddyListRoute } from './BuddyList';
 
+export type TabsRoute = { 'Main/Tabs': {} };
+
 type RouteName = keyof (BuddyListRoute) | 'Mentors' | 'Settings';
 type Screen = typeof BuddyList;
 
@@ -128,4 +130,3 @@ const styles = RN.StyleSheet.create({
 });
 
 export default Main;
-export type MainRoute = { Main: {} };
