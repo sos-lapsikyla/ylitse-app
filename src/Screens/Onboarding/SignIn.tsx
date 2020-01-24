@@ -28,17 +28,17 @@ type OwnProps = navigationProps.NavigationProps<SignInRoute, BuddyListRoute>;
 type Props = StateProps & DispatchProps & OwnProps;
 
 const SignIn = (props: Props) => {
+  React.useEffect(() => {
+    if (remoteData.isSuccess(props.accessToken)) {
+      props.navigation.navigate('BuddyList', {});
+    }
+  }, [props.accessToken]);
   const goBack = () => {
     props.navigation.goBack();
   };
   const onLogin = (credentials: authApi.Credentials) => {
     props.login(credentials);
   };
-  React.useEffect(() => {
-    if (remoteData.isSuccess(props.accessToken)) {
-      props.navigation.navigate('BuddyList', {});
-    }
-  }, [props.accessToken]);
   return (
     <OnboardingBackground>
       <LoginCard
