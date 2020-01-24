@@ -12,7 +12,12 @@ export interface Props extends RN.TextInputProps {
   isPasswordInput?: boolean;
 }
 
-const NamedInputField = ({ name, isPasswordInput, style }: Props) => {
+const NamedInputField = ({
+  name,
+  isPasswordInput,
+  style,
+  ...textInputProps
+}: Props) => {
   const [isSecureText, setSecureText] = React.useState(
     isPasswordInput || false,
   );
@@ -26,6 +31,7 @@ const NamedInputField = ({ name, isPasswordInput, style }: Props) => {
           style={styles.inputText}
           editable={true}
           secureTextEntry={isSecureText}
+          {...textInputProps}
         />
         {isPasswordInput ? (
           <RN.TouchableOpacity

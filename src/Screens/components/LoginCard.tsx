@@ -1,6 +1,10 @@
 import React from 'react';
 import RN from 'react-native';
 
+import * as remoteData from '../../lib/remote-data';
+
+import * as authApi from '../../api/auth';
+
 import * as localization from '../../localization';
 
 import Card from '../components/Card';
@@ -9,12 +13,14 @@ import Message from '../components/Message';
 import colors from '../components/colors';
 import NamedInputField from '../components/NamedInputField';
 import Button from '../components/Button';
+import ErrorMessage from '../components/ErrorMessage';
 
 interface Props extends RN.ViewProps {
   onPressBack: () => void | undefined;
-  onPressNext: () => void | undefined;
+  onPressNext: (credentials: authApi.Credentials) => void | undefined;
   titleMessageId: localization.MessageId;
   nextMessageId: localization.MessageId;
+  remoteAction: remoteData.RemoteData<unknown>;
 }
 
 const LoginCard = ({
@@ -22,35 +28,60 @@ const LoginCard = ({
   onPressNext,
   titleMessageId,
   nextMessageId,
+  remoteAction,
   ...viewProps
-}: Props) => (
-  <Card {...viewProps}>
-    <Message style={styles.title} id={titleMessageId} />
-    <NamedInputField
-      style={styles.nickNameInput}
-      name="onboarding.signUp.nickName"
-    />
-    <NamedInputField
-      style={styles.passwordInput}
-      name="onboarding.signUp.password"
-      isPasswordInput={true}
-    />
-    <RN.View style={styles.buttonContainer}>
-      <Button
-        style={styles.signUpButton}
-        messageId={nextMessageId}
-        onPress={onPressNext}
-        badge={require('../images/arrow.svg')}
+}: Props) => {
+  const [credentials, setCredentials] = React.useState<authApi.Credentials>({
+    userName: '',
+    password: '',
+  });
+  const onUserNameChange = (userName: string) =>
+    setCredentials({ ...credentials, userName });
+  const onPasswordChange = (password: string) =>
+    setCredentials({ ...credentials, password });
+  const isEmptyFields = !credentials.password || !credentials.userName;
+  return (
+    <Card {...viewProps}>
+      <Message style={styles.title} id={titleMessageId} />
+      <NamedInputField
+        autoCapitalize="none"
+        style={styles.nickNameInput}
+        name="onboarding.signUp.nickName"
+        onChangeText={onUserNameChange}
+        autoCompleteType="off"
       />
-      <Button
-        gradient={[colors.faintGray, colors.faintGray]}
-        messageId="onboarding.signUp.back"
-        onPress={onPressBack}
-        noShadow={true}
+      <NamedInputField
+        autoCapitalize="none"
+        style={styles.passwordInput}
+        name="onboarding.signUp.password"
+        isPasswordInput={true}
+        onChangeText={onPasswordChange}
+        autoCompleteType="off"
       />
-    </RN.View>
-  </Card>
-);
+      <ErrorMessage
+        style={styles.errorText}
+        messageId="onboarding.signIn.failure"
+        data={remoteAction}
+      />
+      <RN.View style={styles.buttonContainer}>
+        <Button
+          style={styles.signUpButton}
+          messageId={nextMessageId}
+          onPress={() => onPressNext(credentials)}
+          badge={require('../images/arrow.svg')}
+          loading={remoteData.isLoading(remoteAction)}
+          disabled={isEmptyFields}
+        />
+        <Button
+          gradient={[colors.faintGray, colors.faintGray]}
+          messageId="onboarding.signUp.back"
+          onPress={onPressBack}
+          noShadow={true}
+        />
+      </RN.View>
+    </Card>
+  );
+};
 
 const styles = RN.StyleSheet.create({
   title: {
@@ -63,7 +94,10 @@ const styles = RN.StyleSheet.create({
     marginBottom: 24,
   },
   passwordInput: {
-    marginBottom: 40,
+    marginBottom: 16,
+  },
+  errorText: {
+    marginBottom: 16,
   },
   buttonContainer: {
     justifyContent: 'space-between',

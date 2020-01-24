@@ -19,6 +19,7 @@ export const messages = {
   'onboarding.mentorlist.upperTitle': 'Meet our',
 
   'onboarding.signIn.button': 'Login',
+  'onboarding.signIn.failure': 'Kirjautumien epäonnistui',
   'onboarding.signIn.title': 'Login',
 
   'onboarding.signUp.back': 'Back',

@@ -8,7 +8,7 @@ class HTTPError extends Error {}
 async function request(url: string, options?: RequestInit) {
   const response = await fetch(url, options);
   if (!response.ok) {
-    throw new HTTPError();
+    throw new HTTPError(`HTTPError, status: ${response.status}`);
   }
   return response.json();
 }
@@ -20,4 +20,19 @@ export async function get<A>(
 ): Promise<A> {
   const json = await request(url, options);
   return tPromise.decode(type, json);
+}
+
+export async function post<A extends {}, B>(
+  url: string,
+  input: A,
+  outputType: t.Type<B, B, unknown>,
+  options?: RequestInit,
+): Promise<B> {
+  const requestOptions: RequestInit = {
+    ...options,
+    method: 'POST',
+    body: JSON.stringify(input),
+  };
+  const responseJson = await request(url, requestOptions);
+  return tPromise.decode(outputType, responseJson);
 }

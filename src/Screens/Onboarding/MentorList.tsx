@@ -74,6 +74,7 @@ const MentorList = (props: Props) => {
             messageStyle={styles.buttonMessage}
             messageId="onboarding.mentorlist.start"
             badge={require('../images/arrow.svg')}
+            disabled={!remoteData.isSuccess(props.mentors)}
           />
           <CreatedBySosBanner style={styles.banner} />
         </RN.View>
@@ -153,7 +154,7 @@ export default ReactRedux.connect<
 
   (dispatch: redux.Dispatch<state.Action>) => ({
     fetchMentors: () => {
-      dispatch(state.actions.fetchMentors());
+      dispatch(state.actions.fetchMentors([]));
     },
   }),
 )(MentorList);
