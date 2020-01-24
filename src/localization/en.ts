@@ -1,5 +1,7 @@
 /*eslint sort-keys: "error"*/
 export const messages = {
+  'buddyList.title': 'Chats',
+
   'components.appTitle.subTitle': 'MentorApp',
   'components.appTitle.title': 'Ylitse',
 

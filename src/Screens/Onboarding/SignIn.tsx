@@ -7,9 +7,12 @@ import * as state from '../../state';
 import * as authApi from '../../api/auth';
 
 import * as navigationProps from '../../lib/navigation-props';
+import * as remoteData from '../../lib/remote-data';
 
 import OnboardingBackground from '../components/OnboardingBackground';
 import LoginCard from '../components/LoginCard';
+
+import { BuddyListRoute } from './BuddyList';
 
 export type SignInRoute = {
   'Onboarding/SignIn': {};
@@ -21,7 +24,7 @@ type StateProps = {
 type DispatchProps = {
   login: (credentials: authApi.Credentials) => void | undefined;
 };
-type OwnProps = navigationProps.NavigationProps<SignInRoute, SignInRoute>;
+type OwnProps = navigationProps.NavigationProps<SignInRoute, BuddyListRoute>;
 type Props = StateProps & DispatchProps & OwnProps;
 
 const SignIn = (props: Props) => {
@@ -31,6 +34,11 @@ const SignIn = (props: Props) => {
   const onLogin = (credentials: authApi.Credentials) => {
     props.login(credentials);
   };
+  React.useEffect(() => {
+    if (remoteData.isSuccess(props.accessToken)) {
+      props.navigation.navigate('BuddyList', {});
+    }
+  }, [props.accessToken]);
   return (
     <OnboardingBackground>
       <LoginCard
@@ -41,7 +49,6 @@ const SignIn = (props: Props) => {
         onPressBack={goBack}
         onPressNext={onLogin}
       />
-      <RN.Text>{JSON.stringify(props.accessToken)}</RN.Text>
     </OnboardingBackground>
   );
 };

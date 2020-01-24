@@ -3,9 +3,17 @@ import * as reactNavigationStack from 'react-navigation-stack';
 import MentorList, { MentorListRoute } from './MentorList';
 import SignUp, { SignUpRoute } from './SignUp';
 import SignIn, { SignInRoute } from './SignIn';
+import BuddyList, { BuddyListRoute } from './BuddyList';
 
-type RouteName = keyof (MentorListRoute & SignUpRoute & SignInRoute);
-type Screen = typeof MentorList | typeof SignUp | typeof SignIn;
+type RouteName = keyof (MentorListRoute &
+  SignUpRoute &
+  SignInRoute &
+  BuddyListRoute);
+type Screen =
+  | typeof MentorList
+  | typeof SignUp
+  | typeof SignIn
+  | typeof BuddyList;
 
 export type Route = keyof typeof routes;
 const routes: {
@@ -19,6 +27,9 @@ const routes: {
   },
   'Onboarding/SignIn': {
     screen: SignIn,
+  },
+  BuddyList: {
+    screen: BuddyList,
   },
 };
 
