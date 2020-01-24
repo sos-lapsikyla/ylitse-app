@@ -1,6 +1,6 @@
 <h1 align="center"> Ylites Mobile App</h1> <br>
 <p align="center">
-    <img alt="Ylitse" title="Ylitse" src="https://github.com/ylitse/ylitse-app/blob/update-readme/ylitse_logo.png">
+    <img alt="Ylitse" title="Ylitse" src="https://github.com/ylitse/ylitse-app/blob/master/ylitse_logo.png">
 </p>
 
 <p align="center">
@@ -35,7 +35,7 @@ Ylitse  connects young parents from a child protection background (mentees) to m
 **Available for both iOS and Android.**
 
 <p align="center">
-  <img src="https://github.com/ylitse/ylitse-app/blob/update-readme/main_screen.png" width=350>
+  <img src="https://github.com/ylitse/ylitse-app/blob/master/main_screen.png" width=350>
 </p>
 
 ## Features
