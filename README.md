@@ -1,5 +1,4 @@
 <h1 align="center"> Ylites Mobile App</h1> <br>
-
 <p align="center">
     <img alt="Ylitse" title="Ylitse" src="https://github.com/ylitse/ylitse-app/blob/update-readme/ylitse_logo.png">
 </p>
@@ -30,7 +29,6 @@
 
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](http://makeapullrequest.com)
 [![Commitizen friendly](https://img.shields.io/badge/commitizen-friendly-brightgreen.svg?style=flat-square)](http://commitizen.github.io/cz-cli/)
-
 
 Ylitse  connects young parents from a child protection background (mentees) to mentors from the same background who have the time to help and have been trained on how to. The Ylitse App supports this process, by allowing the mentees to find suitable mentors, connect with them and get chat advice anonymously.
 
