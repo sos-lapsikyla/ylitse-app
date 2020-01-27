@@ -88,8 +88,8 @@ const styles = RN.StyleSheet.create({
     alignItems: 'center',
   },
   title: {
-    marginTop: 8,
-    marginBottom: 16,
+    marginTop: 24,
+    marginBottom: 8,
     ...fonts.specialTitle,
     ...textShadow,
     color: colors.white,

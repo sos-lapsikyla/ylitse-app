@@ -34,10 +34,12 @@ const styles = RN.StyleSheet.create({
     position: 'absolute',
     top: 40,
     alignSelf: 'center',
+    zIndex: 1,
   },
   banner: { position: 'absolute', bottom: 16, alignSelf: 'center' },
   keyboardAvoider: {
     flex: 1,
+    zIndex: 2,
   },
   scrollContent: {
     flexGrow: 1,
