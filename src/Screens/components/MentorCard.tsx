@@ -8,10 +8,11 @@ import * as localization from '../../localization';
 
 import Button from './Button';
 import Message from './Message';
-import Card, { cardBorderRadius } from './Card';
+import Card from './Card';
 import colors, { gradients } from './colors';
 import fonts from './fonts';
 import shadow, { textShadow } from './shadow';
+import MentorTitle from './MentorTitle';
 
 import * as api from '../../api/mentors';
 
@@ -97,48 +98,25 @@ interface Props {
   onPress?: () => void | undefined;
 }
 
-const MentorCard: React.FC<Props> = ({
-  onPress,
-  style,
-  mentor: { age, name, story, region, skills },
-}) => {
-  const gradientMap: { [i: number]: string[] } = {
-    0: gradients.teal,
-    1: gradients.pink,
-    2: gradients.orange,
-  };
-  const gradient: string[] = gradientMap[name.length % 3];
+const MentorCard: React.FC<Props> = ({ onPress, style, mentor }) => {
   return (
     <Card style={style}>
-      <LinearGradient style={styles.blob} colors={gradient}>
-        <RN.Image
-          source={require('../images/user.svg')}
-          style={styles.userIcon}
-        />
-        <RN.View style={styles.column}>
-          <RN.Text style={styles.name}>{name}</RN.Text>
-          <RN.Text style={styles.infoText}>
-            <RN.Text>{age}</RN.Text>
-            <Message id={'components.mentorCard.yearsAbbrev'} /> {' | '}
-            <RN.Text>{region}</RN.Text>
-          </RN.Text>
-        </RN.View>
-      </LinearGradient>
+      <MentorTitle mentor={mentor} />
       <RN.ScrollView
         style={styles.content}
         contentContainerStyle={styles.contentContainer}
       >
         <Message style={styles.subtitle} id="components.mentorCard.aboutMe" />
         <RN.Text style={styles.bodyText} numberOfLines={5}>
-          {story}
+          {mentor.story}
         </RN.Text>
-        {skills.length === 0 ? null : (
+        {mentor.skills.length === 0 ? null : (
           <>
             <Message
               style={styles.subtitle}
               id="components.mentorCard.iCanHelp"
             />
-            <SkillList skillNames={skills} />
+            <SkillList skillNames={mentor.skills} />
           </>
         )}
         {!onPress ? null : (
@@ -156,34 +134,9 @@ const MentorCard: React.FC<Props> = ({
 };
 
 const styles = RN.StyleSheet.create({
-  blob: {
-    borderRadius: cardBorderRadius,
-    paddingVertical: 16,
-    paddingHorizontal: 16,
-    flexDirection: 'row',
-  },
-  userIcon: {
-    tintColor: colors.black,
-    width: 64,
-    height: 64,
-  },
-  column: {
-    marginLeft: 16,
-    marginRight: 16,
-    flexDirection: 'column',
-    justifyContent: 'center',
-    flexGrow: 1,
-  },
-  name: {
-    ...fonts.titleBold,
-  },
-  infoText: {
-    ...fonts.small,
-  },
-  content: { flexShrink: 1 /*backgroundColor: colors.darkPink*/ },
+  content: { flexShrink: 1 },
   contentContainer: {
     padding: 24,
-    // backgroundColor: colors.faintBlue,
     flexGrow: 1,
   },
   chipContainer: {
