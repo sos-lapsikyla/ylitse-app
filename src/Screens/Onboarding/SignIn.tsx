@@ -30,7 +30,15 @@ type Props = StateProps & DispatchProps & OwnProps;
 const SignIn = (props: Props) => {
   React.useEffect(() => {
     if (remoteData.isSuccess(props.accessToken)) {
-      props.navigation.navigate('Main/Tabs', {});
+      const resetAction = reactNavigation.StackActions.reset({
+        index: 0,
+        actions: [
+          reactNavigation.NavigationActions.navigate({
+            routeName: 'Main/Tabs',
+          }),
+        ],
+      });
+      props.navigation.dispatch(resetAction);
     }
   }, [props.accessToken]);
   const goBack = () => {

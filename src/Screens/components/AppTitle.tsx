@@ -26,7 +26,6 @@ const styles = RN.StyleSheet.create({
     marginTop: -32,
     ...fonts.title,
     ...textShadow,
-    ...textShadow,
     textAlign: 'center',
     color: colors.white,
   },
