@@ -13,7 +13,7 @@ import * as mentorApi from '../../api/mentors';
 type Props = {
   fetchMentors: () => void | undefined;
   mentors: remoteData.RemoteData<Map<string, mentorApi.Mentor>>;
-  onPress?: () => void | undefined;
+  onPress?: (mentor: mentorApi.Mentor) => void | undefined;
 };
 
 const MentorList = ({ fetchMentors, mentors, onPress }: Props) => {
@@ -43,7 +43,7 @@ const mentorCardBottomMargin = 16;
 
 const renderMentorCard = (
   maxHeight: number,
-  onPress?: () => void | undefined,
+  onPress?: (mentor: mentorApi.Mentor) => void | undefined,
 ) => ({ item }: { item: mentorApi.Mentor }) => (
   <MentorCard
     style={[styles.card, { maxHeight: maxHeight - mentorCardBottomMargin }]}

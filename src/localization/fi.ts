@@ -7,16 +7,18 @@ export const messages = {
 
   'components.createdBySosBanner': 'Palvelun tarjoaa SOS-lapsikylä',
 
-  'components.mentorCard.aboutMe': 'Tietoja minusta',
-  'components.mentorCard.iCanHelp': 'Voin auttaa',
   'components.mentorCard.readMore': 'Lue Lisää',
   'components.mentorCard.showMore': 'Näytä lisää...',
   'components.mentorCard.yearsAbbrev': 'v.',
+
+  'components.mentorSkills.title': 'Voin auttaa',
+  'components.mentorStory.title': 'Tietoja minusta',
 
   'components.remoteData.loading': 'Ladataan...',
   'components.remoteData.loadingFailed': 'Lataus epäonnistui',
   'components.remoteData.retry': 'Yritä uudelleen',
 
+  'main.mentorCardExpanded.button': 'Juttele',
   'main.mentorList.title': 'Mentorit',
 
   'onboarding.mentorlist.lowerTitle': 'Mentorimme',

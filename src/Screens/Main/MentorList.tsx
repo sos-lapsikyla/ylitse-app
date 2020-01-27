@@ -17,6 +17,8 @@ import MentorListComponent from '../components/MentorList';
 import colors from '../components/colors';
 import fonts from '../components/fonts';
 
+import { MentorCardExpandedRoute } from './MentorCardExpanded';
+
 export type MentorListRoute = {
   'Main/MentorList': {};
 };
@@ -29,11 +31,14 @@ type DispatchProps = {
 };
 type OwnProps = navigationProps.NavigationProps<
   MentorListRoute,
-  MentorListRoute
+  MentorCardExpandedRoute
 >;
 type Props = StateProps & DispatchProps & OwnProps;
 
 const MentorList = (props: Props) => {
+  const onPressMentor = (mentor: mentorApi.Mentor) => {
+    props.navigation.navigate('Main/MentorCardExpanded', { mentor });
+  };
   return (
     <Background>
       <SafeAreaView
@@ -44,7 +49,7 @@ const MentorList = (props: Props) => {
         <MentorListComponent
           mentors={props.mentors}
           fetchMentors={props.fetchMentors}
-          onPress={() => {}}
+          onPress={onPressMentor}
         />
         <RN.View style={styles.bottomSeparator} />
       </SafeAreaView>

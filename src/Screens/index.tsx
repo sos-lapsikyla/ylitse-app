@@ -6,12 +6,21 @@ import MentorList, { MentorListRoute } from './Onboarding/MentorList';
 import SignUp, { SignUpRoute } from './Onboarding/SignUp';
 import SignIn, { SignInRoute } from './Onboarding/SignIn';
 import Tabs, { TabsRoute } from './Main/Tabs';
+import MentorCardExpanded, {
+  MentorCardExpandedRoute,
+} from './Main/MentorCardExpanded';
 
 type RouteName = keyof (MentorListRoute &
   SignUpRoute &
   SignInRoute &
-  TabsRoute);
-type Screen = typeof MentorList | typeof SignUp | typeof SignIn | typeof Tabs;
+  TabsRoute &
+  MentorCardExpandedRoute);
+type Screen =
+  | typeof MentorList
+  | typeof SignUp
+  | typeof SignIn
+  | typeof Tabs
+  | typeof MentorCardExpanded;
 
 export type Route = keyof typeof routes;
 const routes: {
@@ -28,6 +37,9 @@ const routes: {
   },
   'Main/Tabs': {
     screen: Tabs,
+  },
+  'Main/MentorCardExpanded': {
+    screen: MentorCardExpanded,
   },
 };
 
