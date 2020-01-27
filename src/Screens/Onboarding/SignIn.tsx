@@ -12,7 +12,7 @@ import * as remoteData from '../../lib/remote-data';
 import OnboardingBackground from '../components/OnboardingBackground';
 import LoginCard from '../components/LoginCard';
 
-import { BuddyListRoute } from './BuddyList';
+import { TabsRoute } from '../Main/Tabs';
 
 export type SignInRoute = {
   'Onboarding/SignIn': {};
@@ -24,13 +24,13 @@ type StateProps = {
 type DispatchProps = {
   login: (credentials: authApi.Credentials) => void | undefined;
 };
-type OwnProps = navigationProps.NavigationProps<SignInRoute, BuddyListRoute>;
+type OwnProps = navigationProps.NavigationProps<SignInRoute, TabsRoute>;
 type Props = StateProps & DispatchProps & OwnProps;
 
 const SignIn = (props: Props) => {
   React.useEffect(() => {
     if (remoteData.isSuccess(props.accessToken)) {
-      props.navigation.navigate('BuddyList', {});
+      props.navigation.navigate('Main/Tabs', {});
     }
   }, [props.accessToken]);
   const goBack = () => {

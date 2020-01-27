@@ -18,7 +18,7 @@ import Button from '../components/Button';
 import LoginCard from '../components/LoginCard';
 
 import { SignInRoute } from './SignIn';
-import { BuddyListRoute } from './BuddyList';
+import { TabsRoute } from '../Main/Tabs';
 
 export type SignUpRoute = {
   'Onboarding/SignUp': {};
@@ -32,14 +32,14 @@ type DispatchProps = {
 };
 type OwnProps = navigationProps.NavigationProps<
   SignUpRoute,
-  SignInRoute & BuddyListRoute
+  SignInRoute & TabsRoute
 >;
 type Props = StateProps & DispatchProps & OwnProps;
 
 const SignUp = ({ navigation, createUser, accessToken }: Props) => {
   React.useEffect(() => {
     if (remoteData.isSuccess(accessToken)) {
-      navigation.navigate('BuddyList', {});
+      navigation.navigate('Main/Tabs', {});
     }
   }, [accessToken]);
   const goBack = () => {
