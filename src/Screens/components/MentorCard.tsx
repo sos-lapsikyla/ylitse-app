@@ -6,6 +6,7 @@ import LinearGradient, {
 
 import * as localization from '../../localization';
 
+import Button from './Button';
 import Message from './Message';
 import Card, { cardBorderRadius } from './Card';
 import colors, { gradients } from './colors';
@@ -93,10 +94,11 @@ const skillListStyles = RN.StyleSheet.create({
 interface Props {
   style?: RN.StyleProp<RN.ViewStyle>;
   mentor: api.Mentor;
+  onPress?: () => void | undefined;
 }
 
 const MentorCard: React.FC<Props> = ({
-  children,
+  onPress,
   style,
   mentor: { age, name, story, region, skills },
 }) => {
@@ -139,7 +141,15 @@ const MentorCard: React.FC<Props> = ({
             <SkillList skillNames={skills} />
           </>
         )}
-        {children}
+        {!onPress ? null : (
+          <RN.View style={styles.buttonContainer}>
+            <Button
+              style={styles.button}
+              messageId="components.mentorCard.readMore"
+              onPress={onPress}
+            />
+          </RN.View>
+        )}
       </RN.ScrollView>
     </Card>
   );
@@ -170,9 +180,11 @@ const styles = RN.StyleSheet.create({
   infoText: {
     ...fonts.small,
   },
-  content: { flexShrink: 1 },
+  content: { flexShrink: 1 /*backgroundColor: colors.darkPink*/ },
   contentContainer: {
     padding: 24,
+    // backgroundColor: colors.faintBlue,
+    flexGrow: 1,
   },
   chipContainer: {
     flexDirection: 'row',
@@ -188,6 +200,12 @@ const styles = RN.StyleSheet.create({
     ...fonts.regular,
     color: colors.deepBlue,
   },
+  buttonContainer: {
+    flex: 1,
+    flexGrow: 1,
+    justifyContent: 'flex-end',
+  },
+  button: { marginTop: 24 },
 });
 
 export default MentorCard;

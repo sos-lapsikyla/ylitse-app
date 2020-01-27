@@ -6,6 +6,7 @@ import { SafeAreaView } from 'react-navigation';
 import LinearGradient from 'react-native-linear-gradient';
 
 import * as navigationProps from '../../lib/navigation-props';
+
 import * as authApi from '../../api/auth';
 import * as buddyApi from '../../api/buddies';
 import * as state from '../../state';
@@ -18,7 +19,7 @@ import Message from '../components/Message';
 import RemoteData from '../components/RemoteData';
 
 export type BuddyListRoute = {
-  BuddyList: {};
+  'Main/BuddyList': {};
 };
 
 const BuddyButton = ({
