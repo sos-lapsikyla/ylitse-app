@@ -1,5 +1,6 @@
 import React from 'react';
 import RN from 'react-native';
+import * as reactNavigation from 'react-navigation';
 import * as redux from 'redux';
 import * as ReactRedux from 'react-redux';
 
@@ -39,7 +40,15 @@ type Props = StateProps & DispatchProps & OwnProps;
 const SignUp = ({ navigation, createUser, accessToken }: Props) => {
   React.useEffect(() => {
     if (remoteData.isSuccess(accessToken)) {
-      navigation.navigate('Main/Tabs', {});
+      const resetAction = reactNavigation.StackActions.reset({
+        index: 0,
+        actions: [
+          reactNavigation.NavigationActions.navigate({
+            routeName: 'Main/Tabs',
+          }),
+        ],
+      });
+      navigation.dispatch(resetAction);
     }
   }, [accessToken]);
   const goBack = () => {
@@ -78,7 +87,7 @@ const SignUp = ({ navigation, createUser, accessToken }: Props) => {
 };
 
 const styles = RN.StyleSheet.create({
-  card: { marginVertical: 24, padding: 24, alignSelf: 'stretch' },
+  card: { marginVertical: 24, padding: 24, alignSelf: 'stretch', zIndex: 2 },
   loginOldTitle: {
     ...fonts.largeBold,
     textAlign: 'center',

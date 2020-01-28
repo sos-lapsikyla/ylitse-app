@@ -54,6 +54,7 @@ const buddyButtonStyles = RN.StyleSheet.create({
   nameText: {
     ...fonts.titleBold,
     marginLeft: 32,
+    flex: 1,
   },
   blob: {
     borderRadius: 32,
