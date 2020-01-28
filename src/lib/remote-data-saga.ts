@@ -49,7 +49,7 @@ type ResetAction<ResetActionName extends string> = {
   payload: Error;
 };
 type ResetActionCreator<ResetActionName extends string> = {
-  [k in ResetActionName]: (payload: Error) => FailAction<ResetActionName>;
+  [k in ResetActionName]: () => ResetAction<ResetActionName>;
 };
 
 export function makeActionCreators<
@@ -64,7 +64,47 @@ export function makeActionCreators<
   successActionName: SuccessActionName,
 ): InitActionCreator<InitActionName, F> &
   FailActionCreator<FailureActionName> &
-  SuccessActionCreator<SuccessActionName, F> {
+  SuccessActionCreator<SuccessActionName, F>;
+
+export function makeActionCreators<
+  F extends (...args: any[]) => any,
+  InitActionName extends string,
+  FailureActionName extends string,
+  SuccessActionName extends string,
+  ResetActionName extends string
+>(
+  _: F,
+  initActionName: InitActionName,
+  failActionName: FailureActionName,
+  successActionName: SuccessActionName,
+  resetActionName: ResetActionName,
+): InitActionCreator<InitActionName, F> &
+  FailActionCreator<FailureActionName> &
+  SuccessActionCreator<SuccessActionName, F> &
+  ResetActionCreator<ResetActionName>;
+
+export function makeActionCreators<
+  F extends (...args: any[]) => any,
+  InitActionName extends string,
+  FailureActionName extends string,
+  SuccessActionName extends string,
+  ResetActionName extends string
+>(
+  _: F,
+  initActionName: InitActionName,
+  failActionName: FailureActionName,
+  successActionName: SuccessActionName,
+  resetActionName?: ResetActionName,
+):
+  | (InitActionCreator<InitActionName, F> &
+      FailActionCreator<FailureActionName> &
+      SuccessActionCreator<SuccessActionName, F>)
+  | (InitActionCreator<InitActionName, F> &
+      FailActionCreator<FailureActionName> &
+      SuccessActionCreator<SuccessActionName, F> &
+      ResetActionCreator<
+        ResetActionName extends string ? ResetActionName : never
+      >) {
   const init = record.singleton(initActionName, (payload: Parameters<F>) => ({
     type: initActionName,
     payload,
@@ -80,7 +120,19 @@ export function makeActionCreators<
     type: failActionName,
     payload,
   }));
-  return { ...init, ...fail, ...success };
+  const actions = { ...init, ...fail, ...success };
+  if (resetActionName === undefined) {
+    return actions;
+  } else {
+    const reset = record.singleton(resetActionName, () => ({
+      type: resetActionName,
+      payload: undefined,
+    }));
+    return {
+      ...actions,
+      ...reset,
+    };
+  }
 }
 
 type UnknownAction = {
