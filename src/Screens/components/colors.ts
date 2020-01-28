@@ -31,6 +31,7 @@ export const gradients = {
   pink: [colors.darkPink, colors.lightPink],
   acidGreen: [colors.acidGreen1, colors.acidGreen2],
   faintGray: [colors.faintGray, colors.faintGray],
+  whitegray: [colors.faintGray, colors.white],
 };
 
 export default colors;

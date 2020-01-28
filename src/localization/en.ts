@@ -7,16 +7,18 @@ export const messages = {
 
   'components.createdBySosBanner': 'Brought to you by SOS-lapsikylä',
 
-  'components.mentorCard.aboutMe': 'About me',
-  'components.mentorCard.iCanHelp': 'I can help with',
   'components.mentorCard.readMore': 'Read more',
   'components.mentorCard.showMore': 'Show more...',
   'components.mentorCard.yearsAbbrev': 'y.',
+
+  'components.mentorSkills.title': 'I can help with',
+  'components.mentorStory.title': 'About me',
 
   'components.remoteData.loading': 'Loading...',
   'components.remoteData.loadingFailed': 'Loading failed',
   'components.remoteData.retry': 'Try again',
 
+  'main.mentorCardExpanded.button': 'Chat',
   'main.mentorList.title': 'Mentors',
 
   'onboarding.mentorlist.lowerTitle': 'Mentors',

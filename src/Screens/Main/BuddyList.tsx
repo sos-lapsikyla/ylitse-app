@@ -78,10 +78,7 @@ type Props = StateProps & DispatchProps & OwnProps;
 
 const BuddyList = ({ buddies, accessToken, fetchBuddies }: Props) => {
   return (
-    <LinearGradient
-      style={styles.background}
-      colors={[colors.white, colors.faintGray]}
-    >
+    <LinearGradient style={styles.background} colors={gradients.whitegray}>
       <RN.View style={styles.shadow}>
         <LinearGradient style={styles.blob} colors={gradients.pillBlue}>
           <SafeAreaView forceInset={{ top: 'always' }}>
