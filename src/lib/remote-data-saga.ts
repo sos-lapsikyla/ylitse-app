@@ -22,27 +22,27 @@ type InitActionCreator<
 };
 
 type SuccessAction<
-  InitActionName extends string,
+  SuccessActionName extends string,
   F extends (...args: any[]) => any
 > = {
-  type: InitActionName;
+  type: SuccessActionName;
   payload: UnpackPromise<ReturnType<F>>;
 };
 type SuccessActionCreator<
-  InitActionName extends string,
+  SuccessActionName extends string,
   F extends (...args: any[]) => any
 > = {
-  [k in InitActionName]: (
+  [k in SuccessActionName]: (
     payload: UnpackPromise<ReturnType<F>>,
-  ) => SuccessAction<InitActionName, F>;
+  ) => SuccessAction<SuccessActionName, F>;
 };
 
-type FailAction<InitActionName extends string> = {
-  type: InitActionName;
+type FailAction<FailureActionName extends string> = {
+  type: FailureActionName;
   payload: Error;
 };
-type FailActionCreator<InitActionName extends string> = {
-  [k in InitActionName]: (payload: Error) => FailAction<InitActionName>;
+type FailActionCreator<FailureActionName extends string> = {
+  [k in FailureActionName]: (payload: Error) => FailAction<FailureActionName>;
 };
 
 export function makeActionCreators<
