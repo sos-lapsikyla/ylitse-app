@@ -14,6 +14,8 @@ import LoginCard from '../components/LoginCard';
 
 import { TabsRoute } from '../Main/Tabs';
 
+import navigateMain from './navigateMain';
+
 export type SignInRoute = {
   'Onboarding/SignIn': {};
 };
@@ -30,15 +32,7 @@ type Props = StateProps & DispatchProps & OwnProps;
 const SignIn = (props: Props) => {
   React.useEffect(() => {
     if (remoteData.isSuccess(props.accessToken)) {
-      const resetAction = reactNavigation.StackActions.reset({
-        index: 0,
-        actions: [
-          reactNavigation.NavigationActions.navigate({
-            routeName: 'Main/Tabs',
-          }),
-        ],
-      });
-      props.navigation.dispatch(resetAction);
+      navigateMain(props.navigation);
     }
   }, [props.accessToken]);
   const goBack = () => {
