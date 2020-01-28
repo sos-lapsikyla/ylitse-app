@@ -8,15 +8,20 @@ import fonts from '../components/fonts';
 import shadow from '../components/shadow';
 
 import BuddyList, { BuddyListRoute } from './BuddyList';
+import MentorList, { MentorListRoute } from './MentorList';
 
 export type TabsRoute = { 'Main/Tabs': {} };
 
-type RouteName = keyof (BuddyListRoute) | 'Mentors' | 'Settings';
-type Screen = typeof BuddyList;
+type RouteName = keyof (BuddyListRoute) | keyof MentorListRoute | 'Settings';
+type Screen = typeof BuddyList | typeof MentorList;
 
 const routeConfig: {
   [name in RouteName]: Screen;
-} = { BuddyList: BuddyList, Mentors: BuddyList, Settings: BuddyList };
+} = {
+  Settings: MentorList,
+  'Main/MentorList': MentorList,
+  'Main/BuddyList': BuddyList,
+};
 
 const Main = reactNavigationTab.createBottomTabNavigator(routeConfig, {
   tabBarComponent: props => (
