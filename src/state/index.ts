@@ -27,27 +27,27 @@ const {
   reducer: mentorsReducer,
   saga: mentorsSaga,
 } = makeSaga(
-  'fetchMentors',
-  'fetchMentorsSucceed',
-  'fetchMentorsFail',
   mentorsApi.fetchMentors,
+  'fetchMentors',
+  'fetchMentorsFail',
+  'fetchMentorsSucceed',
 );
 
 const {
   actions: loginActions,
   reducer: loginReducer,
   saga: loginSaga,
-} = makeSaga('login', 'loginSucceed', 'loginFail', authApi.login);
+} = makeSaga(authApi.login, 'login', 'loginFail', 'loginSucceed');
 
 const {
   actions: createUserActions,
   reducer: createUserReducer,
   saga: createUserSaga,
 } = makeSaga(
-  'createUser',
-  'createUserSucceed',
-  'createUserFail',
   accountApi.createUser,
+  'createUser',
+  'createUserFail',
+  'createUserSucceed',
 );
 
 const {
@@ -55,10 +55,10 @@ const {
   reducer: buddyReducer,
   saga: buddySaga,
 } = makeSaga(
-  'fetchBuddies',
-  'fetchBuddiesSucceed',
-  'fetchBuddiesFail',
   buddyApi.fetchBuddies,
+  'fetchBuddies',
+  'fetchBuddiesFail',
+  'fetchBuddiesSucceed',
 );
 
 // MERGE ACTIONS

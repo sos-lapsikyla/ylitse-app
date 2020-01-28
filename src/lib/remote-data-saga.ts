@@ -20,6 +20,13 @@ type InitActionCreator<
     payload: Parameters<F>,
   ) => InitAction<InitActionName, F>;
 };
+type FailAction<FailureActionName extends string> = {
+  type: FailureActionName;
+  payload: Error;
+};
+type FailActionCreator<FailureActionName extends string> = {
+  [k in FailureActionName]: (payload: Error) => FailAction<FailureActionName>;
+};
 
 type SuccessAction<
   SuccessActionName extends string,
@@ -37,27 +44,27 @@ type SuccessActionCreator<
   ) => SuccessAction<SuccessActionName, F>;
 };
 
-type FailAction<FailureActionName extends string> = {
-  type: FailureActionName;
+type ResetAction<ResetActionName extends string> = {
+  type: ResetActionName;
   payload: Error;
 };
-type FailActionCreator<FailureActionName extends string> = {
-  [k in FailureActionName]: (payload: Error) => FailAction<FailureActionName>;
+type ResetActionCreator<ResetActionName extends string> = {
+  [k in ResetActionName]: (payload: Error) => FailAction<ResetActionName>;
 };
 
 export function makeActionCreators<
+  F extends (...args: any[]) => any,
   InitActionName extends string,
-  SuccessActionName extends string,
   FailureActionName extends string,
-  F extends (...args: any[]) => any
+  SuccessActionName extends string
 >(
-  initActionName: InitActionName,
-  successActionName: SuccessActionName,
-  failActionName: FailureActionName,
   _: F,
+  initActionName: InitActionName,
+  failActionName: FailureActionName,
+  successActionName: SuccessActionName,
 ): InitActionCreator<InitActionName, F> &
-  SuccessActionCreator<SuccessActionName, F> &
-  FailActionCreator<FailureActionName> {
+  FailActionCreator<FailureActionName> &
+  SuccessActionCreator<SuccessActionName, F> {
   const init = record.singleton(initActionName, (payload: Parameters<F>) => ({
     type: initActionName,
     payload,
@@ -73,7 +80,7 @@ export function makeActionCreators<
     type: failActionName,
     payload,
   }));
-  return { ...init, ...success, ...fail };
+  return { ...init, ...fail, ...success };
 }
 
 type UnknownAction = {
@@ -82,15 +89,15 @@ type UnknownAction = {
 };
 
 export function makeReducer<
+  F extends (...args: any[]) => any,
   InitActionName extends string,
-  SuccessActionName extends string,
   FailureActionName extends string,
-  F extends (...args: any[]) => any
+  SuccessActionName extends string
 >(
-  init: InitActionName,
-  success: SuccessActionName,
-  fail: FailureActionName,
   _: F,
+  init: InitActionName,
+  fail: FailureActionName,
+  success: SuccessActionName,
 ) {
   const reducer: (
     state: remoteData.RemoteData<UnpackPromise<ReturnType<F>>>,
@@ -134,27 +141,27 @@ export function makeReducer<
 }
 
 export function makeSaga<
+  F extends (...args: any[]) => any,
   InitActionName extends string,
-  SuccessActionName extends string,
   FailureActionName extends string,
-  F extends (...args: any[]) => any
+  SuccessActionName extends string
 >(
-  initActionName: InitActionName,
-  successActionName: SuccessActionName,
-  failActionName: FailureActionName,
   f: F,
+  initActionName: InitActionName,
+  failActionName: FailureActionName,
+  successActionName: SuccessActionName,
 ) {
   const actions = makeActionCreators(
-    initActionName,
-    successActionName,
-    failActionName,
     f,
+    initActionName,
+    failActionName,
+    successActionName,
   );
   const reducer = makeReducer(
-    initActionName,
-    successActionName,
-    failActionName,
     f,
+    initActionName,
+    failActionName,
+    successActionName,
   );
   const fetchHandler = function*(action: InitAction<InitActionName, F>) {
     try {
