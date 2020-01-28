@@ -4,7 +4,7 @@ import createSagaMiddleware from 'redux-saga';
 
 import * as remoteData from '../lib/remote-data';
 import * as actionsUnion from '../lib/actions-union';
-import { makeSaga } from '../lib/remote-data-saga';
+import { makeRemoteDataStateHandlers } from '../lib/remote-data-saga';
 
 import * as mentorsApi from '../api/mentors';
 import * as authApi from '../api/auth';
@@ -26,7 +26,7 @@ const {
   actions: mentorsActions,
   reducer: mentorsReducer,
   saga: mentorsSaga,
-} = makeSaga(
+} = makeRemoteDataStateHandlers(
   mentorsApi.fetchMentors,
   'fetchMentors',
   'fetchMentorsFail',
@@ -37,13 +37,18 @@ const {
   actions: loginActions,
   reducer: loginReducer,
   saga: loginSaga,
-} = makeSaga(authApi.login, 'login', 'loginFail', 'loginSucceed');
+} = makeRemoteDataStateHandlers(
+  authApi.login,
+  'login',
+  'loginFail',
+  'loginSucceed',
+);
 
 const {
   actions: createUserActions,
   reducer: createUserReducer,
   saga: createUserSaga,
-} = makeSaga(
+} = makeRemoteDataStateHandlers(
   accountApi.createUser,
   'createUser',
   'createUserFail',
@@ -54,7 +59,7 @@ const {
   actions: buddyActions,
   reducer: buddyReducer,
   saga: buddySaga,
-} = makeSaga(
+} = makeRemoteDataStateHandlers(
   buddyApi.fetchBuddies,
   'fetchBuddies',
   'fetchBuddiesFail',

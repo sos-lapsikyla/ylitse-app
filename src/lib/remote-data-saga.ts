@@ -52,6 +52,26 @@ type ResetActionCreator<ResetActionName extends string> = {
   [k in ResetActionName]: () => ResetAction<ResetActionName>;
 };
 
+type ActionCreators4<
+  F extends (...args: any[]) => any,
+  InitActionName extends string,
+  FailureActionName extends string,
+  SuccessActionName extends string,
+  ResetActionName extends string
+> = InitActionCreator<InitActionName, F> &
+  FailActionCreator<FailureActionName> &
+  SuccessActionCreator<SuccessActionName, F> &
+  ResetActionCreator<ResetActionName>;
+
+type ActionCreators3<
+  F extends (...args: any[]) => any,
+  InitActionName extends string,
+  FailureActionName extends string,
+  SuccessActionName extends string
+> = InitActionCreator<InitActionName, F> &
+  FailActionCreator<FailureActionName> &
+  SuccessActionCreator<SuccessActionName, F>;
+
 export function makeActionCreators<
   F extends (...args: any[]) => any,
   InitActionName extends string,
@@ -62,9 +82,7 @@ export function makeActionCreators<
   initActionName: InitActionName,
   failActionName: FailureActionName,
   successActionName: SuccessActionName,
-): InitActionCreator<InitActionName, F> &
-  FailActionCreator<FailureActionName> &
-  SuccessActionCreator<SuccessActionName, F>;
+): ActionCreators3<F, InitActionName, FailureActionName, SuccessActionName>;
 
 export function makeActionCreators<
   F extends (...args: any[]) => any,
@@ -78,10 +96,13 @@ export function makeActionCreators<
   failActionName: FailureActionName,
   successActionName: SuccessActionName,
   resetActionName: ResetActionName,
-): InitActionCreator<InitActionName, F> &
-  FailActionCreator<FailureActionName> &
-  SuccessActionCreator<SuccessActionName, F> &
-  ResetActionCreator<ResetActionName>;
+): ActionCreators4<
+  F,
+  InitActionName,
+  FailureActionName,
+  SuccessActionName,
+  ResetActionName
+>;
 
 export function makeActionCreators<
   F extends (...args: any[]) => any,
@@ -96,15 +117,14 @@ export function makeActionCreators<
   successActionName: SuccessActionName,
   resetActionName?: ResetActionName,
 ):
-  | (InitActionCreator<InitActionName, F> &
-      FailActionCreator<FailureActionName> &
-      SuccessActionCreator<SuccessActionName, F>)
-  | (InitActionCreator<InitActionName, F> &
-      FailActionCreator<FailureActionName> &
-      SuccessActionCreator<SuccessActionName, F> &
-      ResetActionCreator<
-        ResetActionName extends string ? ResetActionName : never
-      >) {
+  | ActionCreators4<
+      F,
+      InitActionName,
+      FailureActionName,
+      SuccessActionName,
+      ResetActionName
+    >
+  | ActionCreators3<F, InitActionName, FailureActionName, SuccessActionName> {
   const init = record.singleton(initActionName, (payload: Parameters<F>) => ({
     type: initActionName,
     payload,
@@ -140,6 +160,35 @@ type UnknownAction = {
   payload: unknown;
 };
 
+type Reducer3<
+  F extends (...args: any[]) => any,
+  InitActionName extends string,
+  FailureActionName extends string,
+  SuccessActionName extends string
+> = (
+  state: remoteData.RemoteData<UnpackPromise<ReturnType<F>>>,
+  action:
+    | InitAction<InitActionName, F>
+    | FailAction<FailureActionName>
+    | SuccessAction<SuccessActionName, F>
+    | UnknownAction,
+) => remoteData.RemoteData<UnpackPromise<ReturnType<F>>>;
+type Reducer4<
+  F extends (...args: any[]) => any,
+  InitActionName extends string,
+  FailureActionName extends string,
+  SuccessActionName extends string,
+  ResetActionName extends string
+> = (
+  state: remoteData.RemoteData<UnpackPromise<ReturnType<F>>>,
+  action:
+    | InitAction<InitActionName, F>
+    | FailAction<FailureActionName>
+    | SuccessAction<SuccessActionName, F>
+    | ResetAction<ResetActionName>
+    | UnknownAction,
+) => remoteData.RemoteData<UnpackPromise<ReturnType<F>>>;
+
 export function makeReducer<
   F extends (...args: any[]) => any,
   InitActionName extends string,
@@ -150,22 +199,60 @@ export function makeReducer<
   init: InitActionName,
   fail: FailureActionName,
   success: SuccessActionName,
-) {
-  const reducer: (
+): Reducer3<F, InitActionName, FailureActionName, SuccessActionName>;
+export function makeReducer<
+  F extends (...args: any[]) => any,
+  InitActionName extends string,
+  FailureActionName extends string,
+  SuccessActionName extends string,
+  ResetActionName extends string
+>(
+  _: F,
+  init: InitActionName,
+  fail: FailureActionName,
+  success: SuccessActionName,
+  reset: ResetActionName,
+): Reducer4<
+  F,
+  InitActionName,
+  FailureActionName,
+  SuccessActionName,
+  ResetActionName
+>;
+
+export function makeReducer<
+  F extends (...args: any[]) => any,
+  InitActionName extends string,
+  FailureActionName extends string,
+  SuccessActionName extends string,
+  ResetActionName extends string
+>(
+  _: F,
+  init: InitActionName,
+  fail: FailureActionName,
+  success: SuccessActionName,
+  reset?: ResetActionName,
+):
+  | Reducer3<F, InitActionName, FailureActionName, SuccessActionName>
+  | Reducer4<
+      F,
+      InitActionName,
+      FailureActionName,
+      SuccessActionName,
+      ResetActionName
+    > {
+  return (
     state: remoteData.RemoteData<UnpackPromise<ReturnType<F>>>,
     action:
       | InitAction<InitActionName, F>
-      | SuccessAction<SuccessActionName, F>
       | FailAction<FailureActionName>
-      | UnknownAction,
-  ) => remoteData.RemoteData<UnpackPromise<ReturnType<F>>> = (
-    state: remoteData.RemoteData<UnpackPromise<ReturnType<F>>>,
-    action:
-      | InitAction<InitActionName, F>
       | SuccessAction<SuccessActionName, F>
-      | FailAction<FailureActionName>
+      | ResetAction<ResetActionName>
       | UnknownAction,
   ) => {
+    if (!!reset && action.type === reset) {
+      return remoteData.notAsked;
+    }
     switch (action.type) {
       case init: {
         return remoteData.loading;
@@ -189,10 +276,9 @@ export function makeReducer<
         return state;
     }
   };
-  return reducer;
 }
 
-export function makeSaga<
+function makeSaga<
   F extends (...args: any[]) => any,
   InitActionName extends string,
   FailureActionName extends string,
@@ -202,19 +288,13 @@ export function makeSaga<
   initActionName: InitActionName,
   failActionName: FailureActionName,
   successActionName: SuccessActionName,
+  actions: ActionCreators3<
+    F,
+    InitActionName,
+    FailureActionName,
+    SuccessActionName
+  >,
 ) {
-  const actions = makeActionCreators(
-    f,
-    initActionName,
-    failActionName,
-    successActionName,
-  );
-  const reducer = makeReducer(
-    f,
-    initActionName,
-    failActionName,
-    successActionName,
-  );
   const fetchHandler = function*(action: InitAction<InitActionName, F>) {
     try {
       const value = yield reduxSagaEffects.call(f, ...action.payload);
@@ -223,9 +303,149 @@ export function makeSaga<
       yield reduxSagaEffects.put(actions[failActionName](e));
     }
   };
-  const saga = function*() {
+  return function*() {
     yield reduxSagaEffects.takeEvery(initActionName, fetchHandler);
   };
+}
 
-  return { actions, reducer, saga };
+export function makeRemoteDataStateHandlers<
+  F extends (...args: any[]) => any,
+  InitActionName extends string,
+  FailureActionName extends string,
+  SuccessActionName extends string
+>(
+  f: F,
+  initActionName: InitActionName,
+  failActionName: FailureActionName,
+  successActionName: SuccessActionName,
+): {
+  actions: ActionCreators3<
+    F,
+    InitActionName,
+    FailureActionName,
+    SuccessActionName
+  >;
+  reducer: Reducer3<F, InitActionName, FailureActionName, SuccessActionName>;
+  saga: () => Generator<reduxSagaEffects.ForkEffect<never>, void, unknown>;
+};
+export function makeRemoteDataStateHandlers<
+  F extends (...args: any[]) => any,
+  InitActionName extends string,
+  FailureActionName extends string,
+  SuccessActionName extends string,
+  ResetActionName extends string
+>(
+  f: F,
+  initActionName: InitActionName,
+  failActionName: FailureActionName,
+  successActionName: SuccessActionName,
+  resetActionName?: ResetActionName,
+): {
+  actions: ActionCreators4<
+    F,
+    InitActionName,
+    FailureActionName,
+    SuccessActionName,
+    ResetActionName
+  >;
+  reducer: Reducer4<
+    F,
+    InitActionName,
+    FailureActionName,
+    SuccessActionName,
+    ResetActionName
+  >;
+  saga: () => Generator<reduxSagaEffects.ForkEffect<never>, void, unknown>;
+};
+
+export function makeRemoteDataStateHandlers<
+  F extends (...args: any[]) => any,
+  InitActionName extends string,
+  FailureActionName extends string,
+  SuccessActionName extends string,
+  ResetActionName extends string
+>(
+  f: F,
+  initActionName: InitActionName,
+  failActionName: FailureActionName,
+  successActionName: SuccessActionName,
+  resetActionName?: ResetActionName,
+):
+  | {
+      actions: ActionCreators4<
+        F,
+        InitActionName,
+        FailureActionName,
+        SuccessActionName,
+        ResetActionName
+      >;
+      reducer: Reducer4<
+        F,
+        InitActionName,
+        FailureActionName,
+        SuccessActionName,
+        ResetActionName
+      >;
+      saga: () => Generator<reduxSagaEffects.ForkEffect<never>, void, unknown>;
+    }
+  | {
+      actions: ActionCreators3<
+        F,
+        InitActionName,
+        FailureActionName,
+        SuccessActionName
+      >;
+      reducer: Reducer3<
+        F,
+        InitActionName,
+        FailureActionName,
+        SuccessActionName
+      >;
+      saga: () => Generator<reduxSagaEffects.ForkEffect<never>, void, unknown>;
+    } {
+  if (resetActionName) {
+    const actions = makeActionCreators(
+      f,
+      initActionName,
+      failActionName,
+      successActionName,
+      resetActionName,
+    );
+    const reducer = makeReducer(
+      f,
+      initActionName,
+      failActionName,
+      successActionName,
+      resetActionName,
+    );
+    const saga = makeSaga(
+      f,
+      initActionName,
+      failActionName,
+      successActionName,
+      actions,
+    );
+    return { actions, reducer, saga };
+  } else {
+    const actions = makeActionCreators(
+      f,
+      initActionName,
+      failActionName,
+      successActionName,
+    );
+    const reducer = makeReducer(
+      f,
+      initActionName,
+      failActionName,
+      successActionName,
+    );
+    const saga = makeSaga(
+      f,
+      initActionName,
+      failActionName,
+      successActionName,
+      actions,
+    );
+    return { actions, reducer, saga };
+  }
 }
