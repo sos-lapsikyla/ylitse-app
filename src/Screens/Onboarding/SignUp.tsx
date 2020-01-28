@@ -1,6 +1,5 @@
 import React from 'react';
 import RN from 'react-native';
-import * as reactNavigation from 'react-navigation';
 import * as redux from 'redux';
 import * as ReactRedux from 'react-redux';
 
@@ -18,8 +17,10 @@ import { gradients } from '../components/colors';
 import Button from '../components/Button';
 import LoginCard from '../components/LoginCard';
 
-import { SignInRoute } from './SignIn';
 import { TabsRoute } from '../Main/Tabs';
+
+import { SignInRoute } from './SignIn';
+import navigateMain from './navigateMain';
 
 export type SignUpRoute = {
   'Onboarding/SignUp': {};
@@ -40,15 +41,7 @@ type Props = StateProps & DispatchProps & OwnProps;
 const SignUp = ({ navigation, createUser, accessToken }: Props) => {
   React.useEffect(() => {
     if (remoteData.isSuccess(accessToken)) {
-      const resetAction = reactNavigation.StackActions.reset({
-        index: 0,
-        actions: [
-          reactNavigation.NavigationActions.navigate({
-            routeName: 'Main/Tabs',
-          }),
-        ],
-      });
-      navigation.dispatch(resetAction);
+      navigateMain(navigation);
     }
   }, [accessToken]);
   const goBack = () => {
