@@ -14,7 +14,16 @@ async function request(url: string, options?: RequestInit) {
       }, url: ${url}, options: ${JSON.stringify(options)}`,
     );
   }
+  return response;
+}
+
+async function request_json(url: string, options?: RequestInit) {
+  const response = await request(url, options);
   return response.json();
+}
+
+export async function head(url: string, options?: RequestInit) {
+  return request(url, { ...options, method: 'HEAD' });
 }
 
 export async function get<A>(
@@ -22,7 +31,7 @@ export async function get<A>(
   type: t.Type<A, A, unknown>,
   options?: RequestInit,
 ): Promise<A> {
-  const json = await request(url, options);
+  const json = await request_json(url, options);
   return tPromise.decode(type, json);
 }
 
@@ -37,7 +46,7 @@ export async function post<A extends {}, B>(
     method: 'POST',
     body: JSON.stringify(input),
   };
-  const responseJson = await request(url, requestOptions);
+  const responseJson = await request_json(url, requestOptions);
   return tPromise.decode(outputType, responseJson);
 }
 
@@ -52,6 +61,6 @@ export async function put<A extends {}, B>(
     method: 'PUT',
     body: JSON.stringify(input),
   };
-  const responseJson = await request(url, requestOptions);
+  const responseJson = await request_json(url, requestOptions);
   return tPromise.decode(outputType, responseJson);
 }

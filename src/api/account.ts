@@ -63,6 +63,44 @@ export async function createUser(user: NewUser): Promise<authApi.AccessToken> {
   return accessToken;
 }
 
+type UserNameAvailability =
+  | { type: 'UserNameTaken'; userName: string }
+  | { type: 'UserNameFree'; userName: string };
+const SEARCH_URL = `${config.baseUrl}search?login_name=`;
+async function isUserNameFree(userName: string): Promise<UserNameAvailability> {
+  const { status } = await http.head(`${SEARCH_URL}${userName}`);
+  return { type: status === 204 ? 'UserNameFree' : 'UserNameTaken', userName };
+}
+
+type CredentialsCheckFail = {
+  type:
+    | 'UserNameTooLong'
+    | 'UserNameTooShort'
+    | 'UserNameTaken'
+    | 'PasswordTooShort'
+    | 'PasswordTooLong';
+};
+type CredentialsCheckOk = { type: 'Ok'; credentials: authApi.Credentials };
+export type CredentialsCheck = CredentialsCheckFail | CredentialsCheckOk;
+export async function checkCredentialsForUserCreation({
+  userName,
+  password,
+}: authApi.Credentials): Promise<CredentialsCheck> {
+  if (userName.length < 3) return { type: 'UserNameTooShort' };
+  if (userName.length > 30) return { type: 'UserNameTooLong' };
+  if (password.length < 5) return { type: 'PasswordTooShort' };
+  if (password.length > 30) return { type: 'PasswordTooLong' };
+  const availability = await isUserNameFree(userName);
+  if (availability.type === 'UserNameTaken') {
+    return { type: 'UserNameTaken' };
+  } else {
+    return {
+      type: 'Ok',
+      credentials: { userName, password },
+    };
+  }
+}
+
 /*
 type Account =
   | {
