@@ -21,6 +21,7 @@ interface Props extends RN.ViewProps {
   titleMessageId: localization.MessageId;
   nextMessageId: localization.MessageId;
   remoteAction: remoteData.RemoteData<unknown>;
+  errorMessageId: localization.MessageId;
 }
 
 const LoginCard = ({
@@ -29,6 +30,7 @@ const LoginCard = ({
   titleMessageId,
   nextMessageId,
   remoteAction,
+  errorMessageId,
   ...viewProps
 }: Props) => {
   const [credentials, setCredentials] = React.useState<authApi.Credentials>({
@@ -60,7 +62,7 @@ const LoginCard = ({
       />
       <ErrorMessage
         style={styles.errorText}
-        messageId="onboarding.signIn.failure"
+        messageId={errorMessageId}
         data={remoteAction}
       />
       <RN.View style={styles.buttonContainer}>

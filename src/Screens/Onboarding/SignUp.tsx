@@ -59,6 +59,7 @@ const SignUp = ({ navigation, createUser, accessToken }: Props) => {
         style={styles.card}
         titleMessageId="onboarding.signUp.title"
         nextMessageId="onboarding.signUp.signUp"
+        errorMessageId="onboarding.signUp.errorMessageId"
         onPressBack={goBack}
         onPressNext={onSignUp}
         remoteAction={accessToken}

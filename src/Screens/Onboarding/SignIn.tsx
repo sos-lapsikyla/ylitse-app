@@ -48,6 +48,7 @@ const SignIn = (props: Props) => {
         remoteAction={props.accessToken}
         titleMessageId="onboarding.signIn.title"
         nextMessageId="onboarding.signIn.button"
+        errorMessageId="onboarding.signIn.failure"
         onPressBack={goBack}
         onPressNext={onLogin}
       />

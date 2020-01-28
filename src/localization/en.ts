@@ -30,6 +30,7 @@ export const messages = {
   'onboarding.signIn.title': 'Login',
 
   'onboarding.signUp.back': 'Back',
+  'onboarding.signUp.errorMessageId': 'Käyttäjänimi on varattu',
   'onboarding.signUp.existingAccount.login': 'Kirjaudu sisään',
   'onboarding.signUp.existingAccount.title': 'Minulla on jo tunnus',
   'onboarding.signUp.nickName': 'Nickname',
