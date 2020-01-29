@@ -15,11 +15,15 @@ export type State = {
   mentors: remoteData.RemoteData<Map<string, mentorsApi.Mentor>>;
   accessToken: remoteData.RemoteData<authApi.AccessToken>;
   buddies: remoteData.RemoteData<buddyApi.Buddy[]>;
+  newCredentialsSanityCheck: remoteData.RemoteData<
+    accountApi.CredentialsSanityCheck
+  >;
 };
 export const initialState: State = {
   mentors: remoteData.notAsked,
   accessToken: remoteData.notAsked,
   buddies: remoteData.notAsked,
+  newCredentialsSanityCheck: remoteData.notAsked,
 };
 
 const {
@@ -31,6 +35,18 @@ const {
   'fetchMentors',
   'fetchMentorsFail',
   'fetchMentorsSucceed',
+);
+
+const {
+  actions: credentialsSanityCheckActions,
+  reducer: credentialsSanityCheckReducer,
+  saga: credentialsSanityCheckSaga,
+} = makeRemoteDataStateHandlers(
+  accountApi.makeCredentialsSanityCheck,
+  'requestCredentialsSanityCheck',
+  'credentialsSanityCheckFail',
+  'credentialsSanityCheckSucceed',
+  'resetCredentialsSanityCheck',
 );
 
 const {
@@ -73,6 +89,7 @@ export type Action = actionsUnion.ActionsUnion<
 >;
 export const actions = {
   ...mentorsActions,
+  ...credentialsSanityCheckActions,
   ...loginActions,
   ...createUserActions,
   ...buddyActions,
@@ -91,6 +108,10 @@ function rootReducer(state: State | undefined, action: Action): State {
       action,
     ),
     buddies: buddyReducer(state.buddies, action),
+    newCredentialsSanityCheck: credentialsSanityCheckReducer(
+      state.newCredentialsSanityCheck,
+      action,
+    ),
   };
 }
 
@@ -101,6 +122,7 @@ function* rootSaga() {
     loginSaga(),
     createUserSaga(),
     buddySaga(),
+    credentialsSanityCheckSaga(),
   ]);
 }
 

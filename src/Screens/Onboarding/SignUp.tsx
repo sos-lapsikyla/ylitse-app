@@ -4,10 +4,11 @@ import * as redux from 'redux';
 import * as ReactRedux from 'react-redux';
 
 import * as state from '../../state';
-import * as accountApi from '../../api/account';
+// import * as accountApi from '../../api/account';
+import * as authApi from '../../api/auth';
 
 import * as navigationProps from '../../lib/navigation-props';
-import * as remoteData from '../../lib/remote-data';
+// import * as remoteData from '../../lib/remote-data';
 
 import OnboardingBackground from '../components/OnboardingBackground';
 import Card from '../components/Card';
@@ -20,17 +21,17 @@ import LoginCard from '../components/LoginCard';
 import { TabsRoute } from '../Main/Tabs';
 
 import { SignInRoute } from './SignIn';
-import navigateMain from './navigateMain';
+// import navigateMain from './navigateMain';
 
 export type SignUpRoute = {
   'Onboarding/SignUp': {};
 };
 
 type StateProps = {
-  accessToken: state.State['accessToken'];
+  newCredentialsSanityCheck: state.State['newCredentialsSanityCheck'];
 };
 type DispatchProps = {
-  createUser: (newUser: accountApi.NewUser) => void | undefined;
+  checkCredentials: (credentials: authApi.Credentials) => void | undefined;
 };
 type OwnProps = navigationProps.NavigationProps<
   SignUpRoute,
@@ -38,17 +39,21 @@ type OwnProps = navigationProps.NavigationProps<
 >;
 type Props = StateProps & DispatchProps & OwnProps;
 
-const SignUp = ({ navigation, createUser, accessToken }: Props) => {
-  React.useEffect(() => {
-    if (remoteData.isSuccess(accessToken)) {
-      navigateMain(navigation);
-    }
-  }, [accessToken]);
+const SignUp = ({
+  navigation,
+  checkCredentials,
+  newCredentialsSanityCheck,
+}: Props) => {
+  // React.useEffect(() => {
+  //   if (remoteData.isSuccess(accessToken)) {
+  //     navigateMain(navigation);
+  //   }
+  // }, [accessToken]);
   const goBack = () => {
     navigation.goBack();
   };
-  const onSignUp = (user: accountApi.NewUser) => {
-    createUser(user);
+  const onSignUp = (credentials: authApi.Credentials) => {
+    checkCredentials(credentials);
   };
   const navigateLogin = () => {
     navigation.navigate('Onboarding/SignIn', {});
@@ -62,7 +67,7 @@ const SignUp = ({ navigation, createUser, accessToken }: Props) => {
         errorMessageId="onboarding.signUp.errorMessageId"
         onPressBack={goBack}
         onPressNext={onSignUp}
-        remoteAction={accessToken}
+        remoteAction={newCredentialsSanityCheck}
       />
       <Card style={styles.card}>
         <Message
@@ -95,10 +100,10 @@ export default ReactRedux.connect<
   OwnProps,
   state.State
 >(
-  ({ accessToken }) => ({ accessToken }),
+  ({ newCredentialsSanityCheck }) => ({ newCredentialsSanityCheck }),
   (dispatch: redux.Dispatch<state.Action>) => ({
-    createUser: (newUser: accountApi.NewUser) => {
-      dispatch(state.actions.createUser([newUser]));
+    checkCredentials: (newUser: authApi.Credentials) => {
+      dispatch(state.actions.requestCredentialsSanityCheck([newUser]));
     },
   }),
 )(SignUp);

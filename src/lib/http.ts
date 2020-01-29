@@ -5,7 +5,7 @@ import * as tPromise from 'io-ts-promise';
 
 class HTTPError extends Error {}
 
-async function request(url: string, options?: RequestInit) {
+async function request(url: string, options?: RequestInit): Promise<Response> {
   const response = await fetch(url, options);
   if (!response.ok) {
     throw new HTTPError(
@@ -17,12 +17,18 @@ async function request(url: string, options?: RequestInit) {
   return response;
 }
 
-async function request_json(url: string, options?: RequestInit) {
+async function request_json(
+  url: string,
+  options?: RequestInit,
+): Promise<Response> {
   const response = await request(url, options);
   return response.json();
 }
 
-export async function head(url: string, options?: RequestInit) {
+export async function head(
+  url: string,
+  options?: RequestInit,
+): Promise<Response> {
   return request(url, { ...options, method: 'HEAD' });
 }
 

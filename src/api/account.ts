@@ -72,7 +72,7 @@ async function isUserNameFree(userName: string): Promise<UserNameAvailability> {
   return { type: status === 204 ? 'UserNameFree' : 'UserNameTaken', userName };
 }
 
-type CredentialsCheckFail = {
+type CredentialsSanityCheckFail = {
   type:
     | 'UserNameTooLong'
     | 'UserNameTooShort'
@@ -80,12 +80,17 @@ type CredentialsCheckFail = {
     | 'PasswordTooShort'
     | 'PasswordTooLong';
 };
-type CredentialsCheckOk = { type: 'Ok'; credentials: authApi.Credentials };
-export type CredentialsCheck = CredentialsCheckFail | CredentialsCheckOk;
-export async function checkCredentialsForUserCreation({
+type CredentialsSanityCheckOk = {
+  type: 'Ok';
+  credentials: authApi.Credentials;
+};
+export type CredentialsSanityCheck =
+  | CredentialsSanityCheckFail
+  | CredentialsSanityCheckOk;
+export async function makeCredentialsSanityCheck({
   userName,
   password,
-}: authApi.Credentials): Promise<CredentialsCheck> {
+}: authApi.Credentials): Promise<CredentialsSanityCheck> {
   if (userName.length < 3) return { type: 'UserNameTooShort' };
   if (userName.length > 30) return { type: 'UserNameTooLong' };
   if (password.length < 5) return { type: 'PasswordTooShort' };

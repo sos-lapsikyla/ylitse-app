@@ -56,3 +56,15 @@ export function succeed<Value>(value: Value) {
     value,
   };
 }
+
+export function unwrap<A, E, Output>(
+  remoteData: RemoteData<A, E>,
+  f: (v: A) => Output,
+  defaultValue: Output,
+): Output {
+  if (remoteData.type === 'Success') {
+    return f(remoteData.value);
+  } else {
+    return defaultValue;
+  }
+}
