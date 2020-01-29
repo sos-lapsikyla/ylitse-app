@@ -22,10 +22,10 @@ type InitActionCreator<
 };
 type FailAction<FailureActionName extends string> = {
   type: FailureActionName;
-  payload: Error;
+  payload: unknown;
 };
 type FailActionCreator<FailureActionName extends string> = {
-  [k in FailureActionName]: (payload: Error) => FailAction<FailureActionName>;
+  [k in FailureActionName]: (payload: unknown) => FailAction<FailureActionName>;
 };
 
 type SuccessAction<
@@ -46,7 +46,7 @@ type SuccessActionCreator<
 
 type ResetAction<ResetActionName extends string> = {
   type: ResetActionName;
-  payload: Error;
+  payload: unknown;
 };
 type ResetActionCreator<ResetActionName extends string> = {
   [k in ResetActionName]: () => ResetAction<ResetActionName>;
@@ -136,7 +136,7 @@ export function makeActionCreators<
       payload,
     }),
   );
-  const fail = record.singleton(failActionName, (payload: Error) => ({
+  const fail = record.singleton(failActionName, (payload: unknown) => ({
     type: failActionName,
     payload,
   }));

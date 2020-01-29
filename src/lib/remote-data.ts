@@ -25,7 +25,7 @@ export type Success<A> = {
   value: A;
 };
 
-export type RemoteData<A, E = Error> =
+export type RemoteData<A, E = unknown> =
   | Success<A>
   | Failure<E>
   | Loading
