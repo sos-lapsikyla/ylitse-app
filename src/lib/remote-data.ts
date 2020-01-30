@@ -36,18 +36,6 @@ export function isSuccess<A, E>(remoteData: RemoteData<A, E>): boolean {
 export const ok = result.ok;
 export const err = result.err;
 
-export function unwrap<A, E, Output>(
-  remoteData: RemoteData<A, E>,
-  f: (v: A) => Output,
-  defaultValue: Output,
-): Output {
-  if (remoteData.type === 'Ok') {
-    return f(remoteData.value);
-  } else {
-    return defaultValue;
-  }
-}
-
 function id<A>(a: A): A {
   return a;
 }
@@ -78,4 +66,27 @@ export function mapErr<A, E, F>(
   g: (e: E) => F,
 ): RemoteData<A, F> {
   return bimap(remoteData, id, g);
+}
+
+export function unwrap<A, E, Output>(
+  remoteData: RemoteData<A, E>,
+  f: (v: A) => Output,
+  defaultValue: Output,
+): Output {
+  if (remoteData.type === 'Ok') {
+    return f(remoteData.value);
+  } else {
+    return defaultValue;
+  }
+}
+export function unwrapErr<A, E, F>(
+  remoteData: RemoteData<A, E>,
+  g: (e: E) => F,
+  defaultValue: F,
+): F {
+  if (remoteData.type === 'Err') {
+    return g(remoteData.error);
+  } else {
+    return defaultValue;
+  }
 }

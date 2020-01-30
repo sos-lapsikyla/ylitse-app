@@ -8,13 +8,13 @@ import { AnimatedMessage } from './Message';
 import fonts from '../components/fonts';
 import colors from '../components/colors';
 
-interface Props {
-  data: remoteData.RemoteData<unknown>;
-  messageId: localization.MessageId;
+interface Props<E> {
+  data: remoteData.RemoteData<unknown, E>;
+  getMessageId: (e: E) => localization.MessageId;
   style?: RN.StyleProp<RN.TextStyle>;
 }
 
-const ErrorMessage = ({ style, data, messageId }: Props) => {
+function ErrorMessage<E>({ style, data, getMessageId }: Props<E>) {
   const opacity = React.useRef(new RN.Animated.Value(0)).current;
   React.useEffect(() => {
     if (remoteData.isFailure(data)) {
@@ -37,10 +37,10 @@ const ErrorMessage = ({ style, data, messageId }: Props) => {
   return (
     <AnimatedMessage
       style={[styles.message, { opacity }, style]}
-      id={messageId}
+      id={remoteData.unwrapErr(data, getMessageId, 'meta.blank')}
     />
   );
-};
+}
 
 const styles = RN.StyleSheet.create({
   message: {

@@ -21,6 +21,8 @@ export const messages = {
   'main.mentorCardExpanded.button': 'Juttele',
   'main.mentorList.title': 'Mentorit',
 
+  'meta.blank': ' ',
+
   'onboarding.mentorlist.lowerTitle': 'Mentorimme',
   'onboarding.mentorlist.start': 'Aloita',
   'onboarding.mentorlist.upperTitle': 'Tapaa',
@@ -30,7 +32,14 @@ export const messages = {
   'onboarding.signIn.title': 'Kirjaudu',
 
   'onboarding.signUp.back': 'Takaisin',
-  'onboarding.signUp.errorMessageId': 'Käyttäjänimi on varattu',
+
+  'onboarding.signUp.error.passwordLong': 'Salasana on liian pitkä',
+  'onboarding.signUp.error.passwordShort': 'Salasana on liian lyhyt',
+  'onboarding.signUp.error.probablyNetwork': 'Yhteys virhe',
+  'onboarding.signUp.error.userNameLong': 'Käyttäjänimi on liian Pitkä',
+  'onboarding.signUp.error.userNameShort': 'Käyttäjänimi on liian lyhyt',
+  'onboarding.signUp.error.userNameTaken': 'Käyttäjänimi on varattu',
+
   'onboarding.signUp.existingAccount.login': 'Kirjaudu sisään',
   'onboarding.signUp.existingAccount.title': 'Minulla on jo tunnus',
   'onboarding.signUp.nickName': 'Nikki',

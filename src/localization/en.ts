@@ -21,6 +21,8 @@ export const messages = {
   'main.mentorCardExpanded.button': 'Chat',
   'main.mentorList.title': 'Mentors',
 
+  'meta.blank': ' ',
+
   'onboarding.mentorlist.lowerTitle': 'Mentors',
   'onboarding.mentorlist.start': 'Get started',
   'onboarding.mentorlist.upperTitle': 'Meet our',
@@ -30,7 +32,14 @@ export const messages = {
   'onboarding.signIn.title': 'Login',
 
   'onboarding.signUp.back': 'Back',
-  'onboarding.signUp.errorMessageId': 'Käyttäjänimi on varattu',
+
+  'onboarding.signUp.error.passwordLong': 'Password is too long',
+  'onboarding.signUp.error.passwordShort': 'Password is too short',
+  'onboarding.signUp.error.probablyNetwork': 'Network error',
+  'onboarding.signUp.error.userNameLong': 'Username is too long',
+  'onboarding.signUp.error.userNameShort': 'Username is too short',
+  'onboarding.signUp.error.userNameTaken': 'Username is taken',
+
   'onboarding.signUp.existingAccount.login': 'Kirjaudu sisään',
   'onboarding.signUp.existingAccount.title': 'Minulla on jo tunnus',
   'onboarding.signUp.nickName': 'Nickname',

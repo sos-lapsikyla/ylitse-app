@@ -21,7 +21,8 @@ interface Props extends RN.ViewProps {
   titleMessageId: localization.MessageId;
   nextMessageId: localization.MessageId;
   remoteAction: remoteData.RemoteData<unknown>;
-  errorMessageId: localization.MessageId;
+  getErrorMessageId: (u: unknown) => localization.MessageId;
+  onChange?: (credentials: authApi.Credentials) => void | undefined;
 }
 
 const LoginCard = ({
@@ -30,17 +31,24 @@ const LoginCard = ({
   titleMessageId,
   nextMessageId,
   remoteAction,
-  errorMessageId,
+  getErrorMessageId,
+  onChange,
   ...viewProps
 }: Props) => {
   const [credentials, setCredentials] = React.useState<authApi.Credentials>({
     userName: '',
     password: '',
   });
+  const onChangeCredentials = (newCredentials: authApi.Credentials) => {
+    if (onChange) {
+      onChange(credentials);
+    }
+    setCredentials(newCredentials);
+  };
   const onUserNameChange = (userName: string) =>
-    setCredentials({ ...credentials, userName });
+    onChangeCredentials({ ...credentials, userName });
   const onPasswordChange = (password: string) =>
-    setCredentials({ ...credentials, password });
+    onChangeCredentials({ ...credentials, password });
   const isEmptyFields = !credentials.password || !credentials.userName;
   return (
     <Card {...viewProps}>
@@ -62,7 +70,7 @@ const LoginCard = ({
       />
       <ErrorMessage
         style={styles.errorText}
-        messageId={errorMessageId}
+        getMessageId={getErrorMessageId}
         data={remoteAction}
       />
       <RN.View style={styles.buttonContainer}>
