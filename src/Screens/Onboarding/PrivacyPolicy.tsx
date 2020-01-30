@@ -3,6 +3,7 @@ import RN from 'react-native';
 import * as redux from 'redux';
 import * as ReactRedux from 'react-redux';
 
+import * as config from '../../api/config';
 import * as accountApi from '../../api/account';
 import * as state from '../../state';
 import * as navigationProps from '../../lib/navigation-props';
@@ -15,6 +16,7 @@ import colors, { gradients } from '../components/colors';
 import Button from '../components/Button';
 import ImmediatelyNavigateBack from '../components/ImmediatelyNavigateBack';
 import ErrorMessage from '../components/ErrorMessage';
+import Link from '../components/Link';
 
 import { TabsRoute } from '../Main/Tabs';
 import navigateMain from './navigateMain';
@@ -82,6 +84,11 @@ const PrivacyPolicy = ({
           style={styles.bodyText3}
           id="onboarding.privacyPolicy.bodyText3"
         />
+        <Link
+          style={styles.link}
+          linkName="onboarding.privacyPolicy.link"
+          url={config.termsUrl}
+        />
         <ErrorMessage
           style={styles.errorText}
           getMessageId={() => 'meta.error'}
@@ -135,8 +142,9 @@ const styles = RN.StyleSheet.create({
   bodyText3: {
     ...fonts.regular,
     color: colors.deepBlue,
-    marginBottom: 16,
+    marginBottom: 40,
   },
+  link: { alignSelf: 'center' },
   errorText: {
     marginBottom: 16,
   },

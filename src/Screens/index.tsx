@@ -61,7 +61,7 @@ const routes: {
   },
 };
 
-const initialRouteName: RouteName = 'Onboarding/SignUp';
+const initialRouteName: RouteName = 'Onboarding/MentorList';
 const config = {
   initialRouteName,
   headerMode: 'none' as const,

@@ -48,6 +48,7 @@ export const messages = {
     'Huomaathan, että keräämme anonyymejä tilastoja, jotta voimme kehittää palvelua entistä paremmaksi.',
   'onboarding.privacyPolicy.bodyText3':
     'Rekisteröitymällä palvelun käyttäjäksi hyväksyt, että käsittelemme sinua koskevia tietoja. Voit lukea lisää seuraavista linkeistä:',
+  'onboarding.privacyPolicy.link': 'Tietoja yksityisyydensuojasta',
   'onboarding.privacyPolicy.nextButton': 'Jatka',
   'onboarding.privacyPolicy.title': 'Yksityisyydensuoja',
 

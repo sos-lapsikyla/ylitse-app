@@ -48,6 +48,7 @@ export const messages = {
     'Please note that we use anonymous statistics to evaluate the service and its usefulness.',
   'onboarding.privacyPolicy.bodyText3':
     'By continuing you agree to trust us with your data. Read these for more details:',
+  'onboarding.privacyPolicy.link': 'About privacy policy',
   'onboarding.privacyPolicy.nextButton': 'Continue',
   'onboarding.privacyPolicy.title': 'Data Privacy & Security',
 

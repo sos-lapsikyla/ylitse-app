@@ -46,10 +46,6 @@ const SignUp = ({
   credentialsSanityCheck,
   resetCredentialsCheck,
 }: Props) => {
-  React.useEffect(
-    () => checkCredentials({ userName: 'pyry1234', password: 'pyry1234' }),
-    [],
-  );
   React.useEffect(() => resetCredentialsCheck(), []);
   React.useEffect(() => {
     if (credentialsSanityCheck.type === 'Ok') {
