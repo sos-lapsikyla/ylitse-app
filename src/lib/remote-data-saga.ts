@@ -264,13 +264,13 @@ export function makeReducer<
           SuccessActionName,
           F
         >;
-        return remoteData.succeed(payload);
+        return remoteData.ok(payload);
       }
       case fail: {
         const { payload }: FailAction<FailureActionName> = action as FailAction<
           FailureActionName
         >;
-        return remoteData.fail(payload);
+        return remoteData.err(payload);
       }
       default:
         return state;

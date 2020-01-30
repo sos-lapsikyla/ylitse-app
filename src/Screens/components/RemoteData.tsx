@@ -41,7 +41,7 @@ function RemoteData<A>({
           />
         </RN.View>
       );
-    case 'Failure':
+    case 'Err':
       return (
         <RN.View style={styles.container}>
           <Card style={styles.errorCard}>
@@ -62,7 +62,7 @@ function RemoteData<A>({
           </Card>
         </RN.View>
       );
-    case 'Success':
+    case 'Ok':
       return <>{children(data.value)}</>;
     default:
       assertNever(data);

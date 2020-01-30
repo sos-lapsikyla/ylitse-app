@@ -22,13 +22,13 @@ export function toRemoteData<A, E>(
 ): remoteData.RemoteData<A, E> {
   switch (refreshable.type) {
     case 'NotAsked':
-    case 'Failure':
+    case 'Err':
     case 'Loading':
-    case 'Success':
+    case 'Ok':
       return refreshable;
     case 'Refreshing':
     case 'RefreshingFailure':
-      return remoteData.succeed(refreshable.value);
+      return remoteData.ok(refreshable.value);
     default:
       assertNever(refreshable);
   }
