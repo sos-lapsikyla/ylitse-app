@@ -21,11 +21,35 @@ export const messages = {
   'main.mentorCardExpanded.button': 'Juttele',
   'main.mentorList.title': 'Mentorit',
 
+  'meta.back': 'Takaisin',
   'meta.blank': ' ',
+  'meta.error': 'Virhe',
+
+  'onboarding.displayName.bodyText':
+    '*Jos haluat pysyä nimettömänä, valitse itsellesi nimimerkki, josta et ole tunnistettavissa.',
+  'onboarding.displayName.inputTitle': 'Valitse itsellesi nimimerkki*',
+  'onboarding.displayName.nextButton': 'Jatka',
+  'onboarding.displayName.title': 'Melkein valmista',
+
+  'onboarding.email.bodyText':
+    '* Sähköpostiosoitteen tallentaminen mahdollistaa salasanan palauttamisen. Sähköpostiosoitetta ei käytetä muihin tarkoituksiin, eikä sitä luovuteta kolmansille osapuolille.',
+  'onboarding.email.inputTitle': 'Sähköpostiosoite (vapaaehtoinen)*',
+  'onboarding.email.nextButton': 'Jatka',
+  'onboarding.email.title': 'Sähköpostiosoite',
 
   'onboarding.mentorlist.lowerTitle': 'Mentorimme',
   'onboarding.mentorlist.start': 'Aloita',
   'onboarding.mentorlist.upperTitle': 'Tapaa',
+
+  'onboarding.privacyPolicy.agreeButton': 'Hyväksy',
+  'onboarding.privacyPolicy.bodyText1':
+    'Käytämme tietojasi ainoastaan tämän palvelun mahdollistamiseksi. Noudatamme tarkkoja tietoturvastandardeja ja teemme parhaamme, jotta tietosi säilyvät turvassa ja yksityisinä.',
+  'onboarding.privacyPolicy.bodyText2':
+    'Huomaathan, että keräämme anonyymejä tilastoja, jotta voimme kehittää palvelua entistä paremmaksi.',
+  'onboarding.privacyPolicy.bodyText3':
+    'Rekisteröitymällä palvelun käyttäjäksi hyväksyt, että käsittelemme sinua koskevia tietoja. Voit lukea lisää seuraavista linkeistä:',
+  'onboarding.privacyPolicy.nextButton': 'Jatka',
+  'onboarding.privacyPolicy.title': 'Yksityisyydensuoja',
 
   'onboarding.signIn.button': 'Kirjaudu',
   'onboarding.signIn.failure': 'Kirjautumien epäonnistui',

@@ -20,6 +20,7 @@ import LoginCard from '../components/LoginCard';
 
 import { TabsRoute } from '../Main/Tabs';
 
+import { DisplayNameRoute } from './DisplayName';
 import { SignInRoute } from './SignIn';
 
 export type SignUpRoute = {
@@ -27,7 +28,7 @@ export type SignUpRoute = {
 };
 
 type StateProps = {
-  newCredentialsSanityCheck: state.State['newCredentialsSanityCheck'];
+  credentialsSanityCheck: state.State['credentialsSanityCheck'];
 };
 type DispatchProps = {
   checkCredentials: (credentials: authApi.Credentials) => void | undefined;
@@ -35,17 +36,26 @@ type DispatchProps = {
 };
 type OwnProps = navigationProps.NavigationProps<
   SignUpRoute,
-  SignInRoute & TabsRoute
+  SignInRoute & TabsRoute & DisplayNameRoute
 >;
 type Props = StateProps & DispatchProps & OwnProps;
 
 const SignUp = ({
   navigation,
   checkCredentials,
-  newCredentialsSanityCheck,
+  credentialsSanityCheck,
   resetCredentialsCheck,
 }: Props) => {
+  React.useEffect(
+    () => checkCredentials({ userName: 'pyry1234', password: 'pyry1234' }),
+    [],
+  );
   React.useEffect(() => resetCredentialsCheck(), []);
+  React.useEffect(() => {
+    if (credentialsSanityCheck.type === 'Ok') {
+      navigation.navigate('Onboarding/DisplayName', {});
+    }
+  }, [credentialsSanityCheck]);
   const goBack = () => {
     navigation.goBack();
   };
@@ -84,7 +94,7 @@ const SignUp = ({
         getErrorMessageId={getErrorMessageId}
         onPressBack={goBack}
         onPressNext={onSignUp}
-        remoteAction={newCredentialsSanityCheck}
+        remoteAction={credentialsSanityCheck}
         onChange={resetCredentialsCheck}
       />
       <Card style={styles.card}>
@@ -118,7 +128,7 @@ export default ReactRedux.connect<
   OwnProps,
   state.State
 >(
-  ({ newCredentialsSanityCheck }) => ({ newCredentialsSanityCheck }),
+  ({ credentialsSanityCheck }) => ({ credentialsSanityCheck }),
   (dispatch: redux.Dispatch<state.Action>) => ({
     checkCredentials: (newUser: authApi.Credentials) => {
       dispatch(state.actions.requestCredentialsSanityCheck([newUser]));

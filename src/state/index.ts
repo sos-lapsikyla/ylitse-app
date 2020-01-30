@@ -15,7 +15,7 @@ export type State = {
   mentors: remoteData.RemoteData<Map<string, mentorsApi.Mentor>>;
   accessToken: remoteData.RemoteData<authApi.AccessToken>;
   buddies: remoteData.RemoteData<buddyApi.Buddy[]>;
-  newCredentialsSanityCheck: remoteData.RemoteData<
+  credentialsSanityCheck: remoteData.RemoteData<
     accountApi.CredentialsSanityCheckOk
   >;
 };
@@ -23,7 +23,7 @@ export const initialState: State = {
   mentors: remoteData.notAsked,
   accessToken: remoteData.notAsked,
   buddies: remoteData.notAsked,
-  newCredentialsSanityCheck: remoteData.notAsked,
+  credentialsSanityCheck: remoteData.notAsked,
 };
 
 const {
@@ -108,8 +108,8 @@ function rootReducer(state: State | undefined, action: Action): State {
       action,
     ),
     buddies: buddyReducer(state.buddies, action),
-    newCredentialsSanityCheck: credentialsSanityCheckReducer(
-      state.newCredentialsSanityCheck,
+    credentialsSanityCheck: credentialsSanityCheckReducer(
+      state.credentialsSanityCheck,
       action,
     ),
   };

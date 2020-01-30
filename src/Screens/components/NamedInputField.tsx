@@ -52,6 +52,7 @@ const NamedInputField = ({
 const styles = RN.StyleSheet.create({
   nameText: {
     ...fonts.regular,
+    color: colors.deepBlue,
     marginBottom: 8,
   },
   inputContainer: {

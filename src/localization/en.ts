@@ -21,11 +21,35 @@ export const messages = {
   'main.mentorCardExpanded.button': 'Chat',
   'main.mentorList.title': 'Mentors',
 
+  'meta.back': 'Back',
   'meta.blank': ' ',
+  'meta.error': 'Virhe, yritä uudelleen',
+
+  'onboarding.displayName.bodyText':
+    "*if you want to stay anonymous to our mentors, please enter a loginName that can't identify you.",
+  'onboarding.displayName.inputTitle': 'Display name*',
+  'onboarding.displayName.nextButton': 'Continue',
+  'onboarding.displayName.title': 'Almost ready',
+
+  'onboarding.email.bodyText':
+    '* Entering your email address wil help you retreive your password later, in case you lose it. We will not use it for anything else.',
+  'onboarding.email.inputTitle': 'Email*',
+  'onboarding.email.nextButton': 'Continue',
+  'onboarding.email.title': 'Email',
 
   'onboarding.mentorlist.lowerTitle': 'Mentors',
   'onboarding.mentorlist.start': 'Get started',
   'onboarding.mentorlist.upperTitle': 'Meet our',
+
+  'onboarding.privacyPolicy.agreeButton': 'I agree',
+  'onboarding.privacyPolicy.bodyText1':
+    'We only use your data and message history to make this service possible. We follow high security standards and do our best to keep your conversations private and safe.',
+  'onboarding.privacyPolicy.bodyText2':
+    'Please note that we use anonymous statistics to evaluate the service and its usefulness.',
+  'onboarding.privacyPolicy.bodyText3':
+    'By continuing you agree to trust us with your data. Read these for more details:',
+  'onboarding.privacyPolicy.nextButton': 'Continue',
+  'onboarding.privacyPolicy.title': 'Data Privacy & Security',
 
   'onboarding.signIn.button': 'Login',
   'onboarding.signIn.failure': 'Kirjautumien epäonnistui',
