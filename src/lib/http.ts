@@ -1,5 +1,3 @@
-// TODO post, put functionality
-
 import * as t from 'io-ts';
 import * as tPromise from 'io-ts-promise';
 

@@ -1,6 +1,7 @@
 import * as t from 'io-ts';
 
 import * as http from '../lib/http';
+import taggedError from '../lib/tagged-error';
 
 import * as config from './config';
 import * as authApi from './auth';
@@ -72,32 +73,31 @@ async function isUserNameFree(userName: string): Promise<UserNameAvailability> {
   return { type: status === 204 ? 'UserNameFree' : 'UserNameTaken', userName };
 }
 
-type CredentialsSanityCheckFail = {
-  type:
-    | 'UserNameTooLong'
-    | 'UserNameTooShort'
-    | 'UserNameTaken'
-    | 'PasswordTooShort'
-    | 'PasswordTooLong';
-};
-type CredentialsSanityCheckOk = {
+export type CredentialsSanityCheckOk = {
   type: 'Ok';
   credentials: authApi.Credentials;
 };
-export type CredentialsSanityCheck =
-  | CredentialsSanityCheckFail
-  | CredentialsSanityCheckOk;
+const errorNames = [
+  'UserNameTooLong',
+  'UserNameTooShort',
+  'UserNameTaken',
+  'PasswordTooShort',
+  'PasswordTooLong',
+] as const;
+const { errorType, errorMaker, errorDecoder } = taggedError(errorNames);
+export const credentialsSanityCheckErrorHandler = errorDecoder;
+export type CredentialsSanityCheckError = t.TypeOf<typeof errorType>;
 export async function makeCredentialsSanityCheck({
   userName,
   password,
-}: authApi.Credentials): Promise<CredentialsSanityCheck> {
-  if (userName.length < 3) return { type: 'UserNameTooShort' };
-  if (userName.length > 30) return { type: 'UserNameTooLong' };
-  if (password.length < 5) return { type: 'PasswordTooShort' };
-  if (password.length > 30) return { type: 'PasswordTooLong' };
+}: authApi.Credentials): Promise<CredentialsSanityCheckOk> {
+  if (userName.length < 3) throw errorMaker('UserNameTooShort');
+  if (userName.length > 30) throw errorMaker('UserNameTooLong');
+  if (password.length < 5) throw errorMaker('PasswordTooShort');
+  if (password.length > 30) throw errorMaker('PasswordTooLong');
   const availability = await isUserNameFree(userName);
   if (availability.type === 'UserNameTaken') {
-    return { type: 'UserNameTaken' };
+    throw errorMaker('UserNameTaken');
   } else {
     return {
       type: 'Ok',

@@ -16,7 +16,7 @@ export type State = {
   accessToken: remoteData.RemoteData<authApi.AccessToken>;
   buddies: remoteData.RemoteData<buddyApi.Buddy[]>;
   newCredentialsSanityCheck: remoteData.RemoteData<
-    accountApi.CredentialsSanityCheck
+    accountApi.CredentialsSanityCheckOk
   >;
 };
 export const initialState: State = {
