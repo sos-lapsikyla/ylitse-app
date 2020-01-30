@@ -45,11 +45,7 @@ const SignUp = ({
   newCredentialsSanityCheck,
   resetCredentialsCheck,
 }: Props) => {
-  // React.useEffect(() => {
-  //   if (remoteData.isSuccess(accessToken)) {
-  //     navigateMain(navigation);
-  //   }
-  // }, [accessToken]);
+  React.useEffect(() => resetCredentialsCheck(), []);
   const goBack = () => {
     navigation.goBack();
   };
