@@ -4,7 +4,7 @@ import createSagaMiddleware from 'redux-saga';
 
 import * as remoteData from '../lib/remote-data';
 import * as actionsUnion from '../lib/actions-union';
-import { makeSaga } from '../lib/remote-data-saga';
+import { makeRemoteDataStateHandlers } from '../lib/remote-data-saga';
 
 import * as mentorsApi from '../api/mentors';
 import * as authApi from '../api/auth';
@@ -15,50 +15,71 @@ export type State = {
   mentors: remoteData.RemoteData<Map<string, mentorsApi.Mentor>>;
   accessToken: remoteData.RemoteData<authApi.AccessToken>;
   buddies: remoteData.RemoteData<buddyApi.Buddy[]>;
+  credentialsSanityCheck: remoteData.RemoteData<
+    accountApi.CredentialsSanityCheckOk
+  >;
 };
 export const initialState: State = {
   mentors: remoteData.notAsked,
   accessToken: remoteData.notAsked,
   buddies: remoteData.notAsked,
+  credentialsSanityCheck: remoteData.notAsked,
 };
 
 const {
   actions: mentorsActions,
   reducer: mentorsReducer,
   saga: mentorsSaga,
-} = makeSaga(
-  'fetchMentors',
-  'fetchMentorsSucceed',
-  'fetchMentorsFail',
+} = makeRemoteDataStateHandlers(
   mentorsApi.fetchMentors,
+  'fetchMentors',
+  'fetchMentorsFail',
+  'fetchMentorsSucceed',
+);
+
+const {
+  actions: credentialsSanityCheckActions,
+  reducer: credentialsSanityCheckReducer,
+  saga: credentialsSanityCheckSaga,
+} = makeRemoteDataStateHandlers(
+  accountApi.makeCredentialsSanityCheck,
+  'requestCredentialsSanityCheck',
+  'credentialsSanityCheckFail',
+  'credentialsSanityCheckSucceed',
+  'resetCredentialsSanityCheck',
 );
 
 const {
   actions: loginActions,
   reducer: loginReducer,
   saga: loginSaga,
-} = makeSaga('login', 'loginSucceed', 'loginFail', authApi.login);
+} = makeRemoteDataStateHandlers(
+  authApi.login,
+  'login',
+  'loginFail',
+  'loginSucceed',
+);
 
 const {
   actions: createUserActions,
   reducer: createUserReducer,
   saga: createUserSaga,
-} = makeSaga(
-  'createUser',
-  'createUserSucceed',
-  'createUserFail',
+} = makeRemoteDataStateHandlers(
   accountApi.createUser,
+  'createUser',
+  'createUserFail',
+  'createUserSucceed',
 );
 
 const {
   actions: buddyActions,
   reducer: buddyReducer,
   saga: buddySaga,
-} = makeSaga(
-  'fetchBuddies',
-  'fetchBuddiesSucceed',
-  'fetchBuddiesFail',
+} = makeRemoteDataStateHandlers(
   buddyApi.fetchBuddies,
+  'fetchBuddies',
+  'fetchBuddiesFail',
+  'fetchBuddiesSucceed',
 );
 
 // MERGE ACTIONS
@@ -68,6 +89,7 @@ export type Action = actionsUnion.ActionsUnion<
 >;
 export const actions = {
   ...mentorsActions,
+  ...credentialsSanityCheckActions,
   ...loginActions,
   ...createUserActions,
   ...buddyActions,
@@ -86,6 +108,10 @@ function rootReducer(state: State | undefined, action: Action): State {
       action,
     ),
     buddies: buddyReducer(state.buddies, action),
+    credentialsSanityCheck: credentialsSanityCheckReducer(
+      state.credentialsSanityCheck,
+      action,
+    ),
   };
 }
 
@@ -96,6 +122,7 @@ function* rootSaga() {
     loginSaga(),
     createUserSaga(),
     buddySaga(),
+    credentialsSanityCheckSaga(),
   ]);
 }
 

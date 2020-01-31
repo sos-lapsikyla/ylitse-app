@@ -150,7 +150,7 @@ export default ReactRedux.connect<
 >(
   ({ accessToken, buddies }) => {
     // TODO  SEPARATE APP TO DIFFERENT PHASES
-    if (accessToken.type !== 'Success') {
+    if (accessToken.type !== 'Ok') {
       throw Error('bad state');
     }
     return {

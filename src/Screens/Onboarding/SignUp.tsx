@@ -5,9 +5,10 @@ import * as ReactRedux from 'react-redux';
 
 import * as state from '../../state';
 import * as accountApi from '../../api/account';
+import * as authApi from '../../api/auth';
 
 import * as navigationProps from '../../lib/navigation-props';
-import * as remoteData from '../../lib/remote-data';
+import assertNever from '../../lib/assert-never';
 
 import OnboardingBackground from '../components/OnboardingBackground';
 import Card from '../components/Card';
@@ -19,39 +20,66 @@ import LoginCard from '../components/LoginCard';
 
 import { TabsRoute } from '../Main/Tabs';
 
+import { DisplayNameRoute } from './DisplayName';
 import { SignInRoute } from './SignIn';
-import navigateMain from './navigateMain';
 
 export type SignUpRoute = {
   'Onboarding/SignUp': {};
 };
 
 type StateProps = {
-  accessToken: state.State['accessToken'];
+  credentialsSanityCheck: state.State['credentialsSanityCheck'];
 };
 type DispatchProps = {
-  createUser: (newUser: accountApi.NewUser) => void | undefined;
+  checkCredentials: (credentials: authApi.Credentials) => void | undefined;
+  resetCredentialsCheck: () => void | undefined;
 };
 type OwnProps = navigationProps.NavigationProps<
   SignUpRoute,
-  SignInRoute & TabsRoute
+  SignInRoute & TabsRoute & DisplayNameRoute
 >;
 type Props = StateProps & DispatchProps & OwnProps;
 
-const SignUp = ({ navigation, createUser, accessToken }: Props) => {
+const SignUp = ({
+  navigation,
+  checkCredentials,
+  credentialsSanityCheck,
+  resetCredentialsCheck,
+}: Props) => {
+  React.useEffect(() => resetCredentialsCheck(), []);
   React.useEffect(() => {
-    if (remoteData.isSuccess(accessToken)) {
-      navigateMain(navigation);
+    if (credentialsSanityCheck.type === 'Ok') {
+      navigation.navigate('Onboarding/DisplayName', {});
     }
-  }, [accessToken]);
+  }, [credentialsSanityCheck]);
   const goBack = () => {
     navigation.goBack();
   };
-  const onSignUp = (user: accountApi.NewUser) => {
-    createUser(user);
+  const onSignUp = (credentials: authApi.Credentials) => {
+    checkCredentials(credentials);
   };
   const navigateLogin = () => {
     navigation.navigate('Onboarding/SignIn', {});
+  };
+
+  const getErrorMessageId = (u: unknown) => {
+    const { tag } = accountApi.credentialsSanityCheckErrorHandler(u);
+    switch (tag) {
+      case 'UnknownError':
+        return 'onboarding.signUp.error.probablyNetwork';
+      case 'UserNameTooLong':
+        return 'onboarding.signUp.error.userNameLong';
+      case 'UserNameTooShort':
+        return 'onboarding.signUp.error.userNameShort';
+      case 'UserNameTaken':
+        return 'onboarding.signUp.error.userNameTaken';
+      case 'PasswordTooShort':
+        return 'onboarding.signUp.error.passwordShort';
+      case 'PasswordTooLong':
+        return 'onboarding.signUp.error.passwordLong';
+      default:
+        assertNever(tag);
+    }
   };
   return (
     <OnboardingBackground>
@@ -59,9 +87,11 @@ const SignUp = ({ navigation, createUser, accessToken }: Props) => {
         style={styles.card}
         titleMessageId="onboarding.signUp.title"
         nextMessageId="onboarding.signUp.signUp"
+        getErrorMessageId={getErrorMessageId}
         onPressBack={goBack}
         onPressNext={onSignUp}
-        remoteAction={accessToken}
+        remoteAction={credentialsSanityCheck}
+        onChange={resetCredentialsCheck}
       />
       <Card style={styles.card}>
         <Message
@@ -94,10 +124,13 @@ export default ReactRedux.connect<
   OwnProps,
   state.State
 >(
-  ({ accessToken }) => ({ accessToken }),
+  ({ credentialsSanityCheck }) => ({ credentialsSanityCheck }),
   (dispatch: redux.Dispatch<state.Action>) => ({
-    createUser: (newUser: accountApi.NewUser) => {
-      dispatch(state.actions.createUser([newUser]));
+    checkCredentials: (newUser: authApi.Credentials) => {
+      dispatch(state.actions.requestCredentialsSanityCheck([newUser]));
+    },
+    resetCredentialsCheck: () => {
+      dispatch(state.actions.resetCredentialsSanityCheck());
     },
   }),
 )(SignUp);
