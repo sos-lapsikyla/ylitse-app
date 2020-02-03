@@ -21,6 +21,18 @@ export const messages = {
   'main.mentorCardExpanded.button': 'Chat',
   'main.mentorList.title': 'Mentors',
 
+  'main.settings.account.changePasswordButton': 'Change password',
+  'main.settings.account.nickName': 'Nickname (public)',
+  'main.settings.account.password': 'Password',
+  'main.settings.account.title': 'Account settings',
+  'main.settings.account.userName': 'username (private)',
+  'main.settings.other.button.deleteAccount': 'Delete account',
+  'main.settings.other.button.logOut': 'Log out',
+  'main.settings.other.howTo': 'How should I use this application?',
+  'main.settings.other.title': 'Other',
+  'main.settings.other.whatToAgree': 'What do I agree when using this app?',
+  'main.settings.title': 'Settings',
+
   'meta.back': 'Back',
   'meta.blank': ' ',
   'meta.error': 'Virhe, yritä uudelleen',

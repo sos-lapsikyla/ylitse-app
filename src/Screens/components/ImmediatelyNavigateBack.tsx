@@ -1,5 +1,4 @@
 import React from 'react';
-import RN from 'react-native';
 
 type Props = {
   goBack: () => void | undefined;

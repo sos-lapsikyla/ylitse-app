@@ -21,6 +21,18 @@ export const messages = {
   'main.mentorCardExpanded.button': 'Juttele',
   'main.mentorList.title': 'Mentorit',
 
+  'main.settings.account.changePasswordButton': 'Vaihda salasana',
+  'main.settings.account.nickName': 'Nikki (Julkinen)',
+  'main.settings.account.password': 'Salasana',
+  'main.settings.account.title': 'Asetukset',
+  'main.settings.account.userName': 'Käyttäjänimi (Yksityinen)',
+  'main.settings.other.button.deleteAccount': 'Poista tili',
+  'main.settings.other.button.logOut': 'Kirjaudu ulos',
+  'main.settings.other.howTo': 'Kuinka tätä käytetään?',
+  'main.settings.other.title': 'Muuta',
+  'main.settings.other.whatToAgree': 'Mihin suostun, kun käytän tätä?',
+  'main.settings.title': 'Asetukset',
+
   'meta.back': 'Takaisin',
   'meta.blank': ' ',
   'meta.error': 'Virhe',

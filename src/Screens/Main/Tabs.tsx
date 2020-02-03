@@ -9,16 +9,20 @@ import shadow from '../components/shadow';
 
 import BuddyList, { BuddyListRoute } from './BuddyList';
 import MentorList, { MentorListRoute } from './MentorList';
+import Settings, { SettingsRoute } from './Settings';
 
 export type TabsRoute = { 'Main/Tabs': {} };
 
-type RouteName = keyof (BuddyListRoute) | keyof MentorListRoute | 'Settings';
-type Screen = typeof BuddyList | typeof MentorList;
+type RouteName =
+  | keyof BuddyListRoute
+  | keyof MentorListRoute
+  | keyof SettingsRoute;
+type Screen = typeof BuddyList | typeof MentorList | typeof Settings;
 
 const routeConfig: {
   [name in RouteName]: Screen;
 } = {
-  Settings: MentorList,
+  'Main/Settings': Settings,
   'Main/MentorList': MentorList,
   'Main/BuddyList': BuddyList,
 };

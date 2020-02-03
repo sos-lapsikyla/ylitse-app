@@ -2,7 +2,6 @@ import React from 'react';
 import RN from 'react-native';
 import * as redux from 'redux';
 import * as ReactRedux from 'react-redux';
-import { SafeAreaView } from 'react-navigation';
 import LinearGradient from 'react-native-linear-gradient';
 
 import * as navigationProps from '../../lib/navigation-props';
@@ -13,10 +12,11 @@ import * as state from '../../state';
 
 import colors, { gradients } from '../components/colors';
 import fonts from '../components/fonts';
-import shadow, { textShadow } from '../components/shadow';
+import { textShadow } from '../components/shadow';
 import Card from '../components/Card';
 import Message from '../components/Message';
 import RemoteData from '../components/RemoteData';
+import TitledContainer from '../components/TitledContainer';
 
 export type BuddyListRoute = {
   'Main/BuddyList': {};
@@ -78,14 +78,12 @@ type Props = StateProps & DispatchProps & OwnProps;
 
 const BuddyList = ({ buddies, accessToken, fetchBuddies }: Props) => {
   return (
-    <LinearGradient style={styles.background} colors={gradients.whitegray}>
-      <RN.View style={styles.shadow}>
-        <LinearGradient style={styles.blob} colors={gradients.pillBlue}>
-          <SafeAreaView forceInset={{ top: 'always' }}>
-            <Message id="buddyList.title" style={styles.screenTitleText} />
-          </SafeAreaView>
-        </LinearGradient>
-      </RN.View>
+    <TitledContainer
+      TitleComponent={
+        <Message id="buddyList.title" style={styles.screenTitleText} />
+      }
+      gradient={gradients.pillBlue}
+    >
       <RemoteData data={buddies} fetchData={() => fetchBuddies(accessToken)}>
         {value => (
           <RN.ScrollView
@@ -102,27 +100,11 @@ const BuddyList = ({ buddies, accessToken, fetchBuddies }: Props) => {
           </RN.ScrollView>
         )}
       </RemoteData>
-    </LinearGradient>
+    </TitledContainer>
   );
 };
 
 const styles = RN.StyleSheet.create({
-  background: {
-    flex: 1,
-  },
-  shadow: {
-    ...shadow(7),
-    borderBottomLeftRadius: 40,
-    borderBottomRightRadius: 40,
-    zIndex: 2,
-  },
-  blob: {
-    borderBottomLeftRadius: 40,
-    borderBottomRightRadius: 40,
-    alignSelf: 'stretch',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
   screenTitleText: {
     marginTop: 16,
     marginBottom: 16,

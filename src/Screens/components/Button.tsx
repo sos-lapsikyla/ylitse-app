@@ -63,7 +63,7 @@ const Button = ({
 const borderRadius = 16;
 const styles = RN.StyleSheet.create({
   container: {
-    minHeight: 64,
+    minHeight: 48,
     alignSelf: 'stretch',
     borderRadius,
   },
@@ -78,7 +78,7 @@ const styles = RN.StyleSheet.create({
     height: 48,
   },
   gradient: {
-    minHeight: 64,
+    minHeight: 48,
     paddingVertical: 8,
     paddingHorizontal: 16,
     borderRadius,
