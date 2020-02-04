@@ -2,9 +2,11 @@ import React from 'react';
 import RN from 'react-native';
 
 import * as navigationProps from '../../lib/navigation-props';
+import * as config from '../../api/config';
 
 import Button from '../components/Button';
 import Card from '../components/Card';
+import Link from '../components/Link';
 import Message from '../components/Message';
 import { textShadow } from '../components/shadow';
 import TitledContainer from '../components/TitledContainer';
@@ -29,6 +31,7 @@ const Settings = (_: Props) => {
       <RN.ScrollView
         style={styles.scrollView}
         contentContainerStyle={styles.scrollContent}
+        showsVerticalScrollIndicator={false}
       >
         <Card style={styles.card}>
           <Message
@@ -62,10 +65,26 @@ const Settings = (_: Props) => {
             style={styles.accountSettingsText}
             id="main.settings.other.title"
           />
+          <Message style={styles.fieldName} id="main.settings.other.feedBack" />
+          <Link
+            style={styles.link}
+            linkName="main.settings.other.feedBackLink"
+            url={config.feedBackUrl}
+          />
           <Message style={styles.fieldName} id="main.settings.other.howTo" />
+          <Link
+            style={styles.link}
+            linkName="main.settings.other.userGuide"
+            url={config.userGuideUrl}
+          />
           <Message
             style={styles.fieldName}
             id="main.settings.other.whatToAgree"
+          />
+          <Link
+            style={styles.link}
+            linkName="main.settings.other.termsLink"
+            url={config.termsUrl}
           />
           <Button
             style={styles.otherButton}
@@ -124,6 +143,10 @@ const styles = RN.StyleSheet.create({
     ...fonts.largeBold,
     color: colors.deepBlue,
     marginBottom: 16,
+  },
+  link: {
+    marginTop: 8,
+    marginBottom: 24,
   },
   changePasswordButton: {
     marginTop: 8,

@@ -28,8 +28,12 @@ export const messages = {
   'main.settings.account.userName': 'Käyttäjänimi (Yksityinen)',
   'main.settings.other.button.deleteAccount': 'Poista tili',
   'main.settings.other.button.logOut': 'Kirjaudu ulos',
+  'main.settings.other.feedBack': 'Anna palautetta : )',
+  'main.settings.other.feedBackLink': 'Palaute lomake',
   'main.settings.other.howTo': 'Kuinka tätä käytetään?',
+  'main.settings.other.termsLink': 'Yksityisyydensuoja',
   'main.settings.other.title': 'Muuta',
+  'main.settings.other.userGuide': 'Vertaismentorointiopas',
   'main.settings.other.whatToAgree': 'Mihin suostun, kun käytän tätä?',
   'main.settings.title': 'Asetukset',
 
