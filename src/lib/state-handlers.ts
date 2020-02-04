@@ -312,3 +312,129 @@ export function makeReducer<
     }
   };
 }
+
+export function makeRemoteDataStateHandlers<
+  F extends (...args: any[]) => any,
+  InitActionName extends string,
+  FailureActionName extends string,
+  SuccessActionName extends string
+>(
+  f: F,
+  initActionName: InitActionName,
+  failActionName: FailureActionName,
+  successActionName: SuccessActionName,
+): {
+  actions: ActionCreators3<
+    F,
+    InitActionName,
+    FailureActionName,
+    SuccessActionName
+  >;
+  reducer: Reducer3<F, InitActionName, FailureActionName, SuccessActionName>;
+};
+export function makeRemoteDataStateHandlers<
+  F extends (...args: any[]) => any,
+  InitActionName extends string,
+  FailureActionName extends string,
+  SuccessActionName extends string,
+  ResetActionName extends string
+>(
+  f: F,
+  initActionName: InitActionName,
+  failActionName: FailureActionName,
+  successActionName: SuccessActionName,
+  resetActionName?: ResetActionName,
+): {
+  actions: ActionCreators4<
+    F,
+    InitActionName,
+    FailureActionName,
+    SuccessActionName,
+    ResetActionName
+  >;
+  reducer: Reducer4<
+    F,
+    InitActionName,
+    FailureActionName,
+    SuccessActionName,
+    ResetActionName
+  >;
+};
+
+export function makeRemoteDataStateHandlers<
+  F extends (...args: any[]) => any,
+  InitActionName extends string,
+  FailureActionName extends string,
+  SuccessActionName extends string,
+  ResetActionName extends string
+>(
+  f: F,
+  initActionName: InitActionName,
+  failActionName: FailureActionName,
+  successActionName: SuccessActionName,
+  resetActionName?: ResetActionName,
+):
+  | {
+      actions: ActionCreators4<
+        F,
+        InitActionName,
+        FailureActionName,
+        SuccessActionName,
+        ResetActionName
+      >;
+      reducer: Reducer4<
+        F,
+        InitActionName,
+        FailureActionName,
+        SuccessActionName,
+        ResetActionName
+      >;
+    }
+  | {
+      actions: ActionCreators3<
+        F,
+        InitActionName,
+        FailureActionName,
+        SuccessActionName
+      >;
+      reducer: Reducer3<
+        F,
+        InitActionName,
+        FailureActionName,
+        SuccessActionName
+      >;
+    } {
+  if (resetActionName) {
+    const actions = makeActionCreators(
+      f,
+      initActionName,
+      failActionName,
+      successActionName,
+      resetActionName,
+    );
+    const reducer = makeReducer(
+      f,
+      actions,
+      initActionName,
+      failActionName,
+      successActionName,
+      resetActionName,
+    );
+    return { actions, reducer };
+  } else {
+    const actions = makeActionCreators(
+      f,
+      initActionName,
+      failActionName,
+      successActionName,
+    );
+    const reducer = makeReducer(
+      f,
+      actions,
+      initActionName,
+      failActionName,
+      successActionName,
+    );
+    return { actions, reducer };
+  }
+}
