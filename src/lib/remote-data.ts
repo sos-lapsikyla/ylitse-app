@@ -21,7 +21,9 @@ export type RemoteData<A, E = unknown> =
   | Loading
   | NotAsked;
 
-export function isLoading<A, E>(remoteData: RemoteData<A, E>): boolean {
+export function isLoading<A, E>(
+  remoteData: RemoteData<A, E>,
+): remoteData is Loading {
   return remoteData.type === 'Loading';
 }
 

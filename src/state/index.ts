@@ -1,47 +1,55 @@
 import * as redux from 'redux';
-import * as sagaEffects from 'redux-saga/effects';
-import createSagaMiddleware from 'redux-saga';
+import * as reduxLoop from 'redux-loop';
 
-import * as remoteData from '../lib/remote-data';
 import * as actionsUnion from '../lib/actions-union';
-import { makeRemoteDataStateHandlers } from '../lib/remote-data-saga';
+import * as remoteData from '../lib/remote-data';
+import * as stateHandlers from '../lib/state-handlers';
 
-import * as mentorsApi from '../api/mentors';
+import * as accountApi from '../api/account';
 import * as authApi from '../api/auth';
 import * as buddyApi from '../api/buddies';
-import * as accountApi from '../api/account';
+import * as mentorsApi from '../api/mentors';
 
 export type State = {
-  mentors: remoteData.RemoteData<Map<string, mentorsApi.Mentor>>;
   accessToken: remoteData.RemoteData<authApi.AccessToken>;
+  mentors: remoteData.RemoteData<Map<string, mentorsApi.Mentor>>;
   buddies: remoteData.RemoteData<buddyApi.Buddy[]>;
   credentialsSanityCheck: remoteData.RemoteData<
     accountApi.CredentialsSanityCheckOk
   >;
 };
-export const initialState: State = {
-  mentors: remoteData.notAsked,
+
+const initialState: State = {
   accessToken: remoteData.notAsked,
+  mentors: remoteData.notAsked,
   buddies: remoteData.notAsked,
   credentialsSanityCheck: remoteData.notAsked,
 };
 
 const {
-  actions: mentorsActions,
-  reducer: mentorsReducer,
-  saga: mentorsSaga,
-} = makeRemoteDataStateHandlers(
+  actions: mentorActions,
+  reducer: mentorReducer,
+} = stateHandlers.makeRemoteDataStateHandlers(
   mentorsApi.fetchMentors,
   'fetchMentors',
-  'fetchMentorsFail',
+  'fetchMentorsFailed',
   'fetchMentorsSucceed',
+);
+
+const {
+  actions: buddyActions,
+  reducer: buddyReducer,
+} = stateHandlers.makeRemoteDataStateHandlers(
+  buddyApi.fetchBuddies,
+  'fetchBuddies',
+  'fetchBuddiesFail',
+  'fetchBuddiesSucceed',
 );
 
 const {
   actions: credentialsSanityCheckActions,
   reducer: credentialsSanityCheckReducer,
-  saga: credentialsSanityCheckSaga,
-} = makeRemoteDataStateHandlers(
+} = stateHandlers.makeRemoteDataStateHandlers(
   accountApi.makeCredentialsSanityCheck,
   'requestCredentialsSanityCheck',
   'credentialsSanityCheckFail',
@@ -52,85 +60,56 @@ const {
 const {
   actions: loginActions,
   reducer: loginReducer,
-  saga: loginSaga,
-} = makeRemoteDataStateHandlers(
+} = stateHandlers.makeRemoteDataStateHandlers(
   authApi.login,
   'login',
   'loginFail',
   'loginSucceed',
 );
-
 const {
   actions: createUserActions,
   reducer: createUserReducer,
-  saga: createUserSaga,
-} = makeRemoteDataStateHandlers(
+} = stateHandlers.makeRemoteDataStateHandlers(
   accountApi.createUser,
   'createUser',
   'createUserFail',
   'createUserSucceed',
 );
+const accessTokenReducer = reduxLoop.reduceReducers<
+  State['accessToken'],
+  Action
+>(createUserReducer, loginReducer);
 
-const {
-  actions: buddyActions,
-  reducer: buddyReducer,
-  saga: buddySaga,
-} = makeRemoteDataStateHandlers(
-  buddyApi.fetchBuddies,
-  'fetchBuddies',
-  'fetchBuddiesFail',
-  'fetchBuddiesSucceed',
-);
-
-// MERGE ACTIONS
 export type Action = actionsUnion.ActionsUnion<
   keyof typeof actions,
   typeof actions
 >;
 export const actions = {
-  ...mentorsActions,
-  ...credentialsSanityCheckActions,
+  ...mentorActions,
+  ...buddyActions,
   ...loginActions,
   ...createUserActions,
-  ...buddyActions,
+  ...credentialsSanityCheckActions,
 };
 
-// MERGE REDUCERS
-function rootReducer(state: State | undefined, action: Action): State {
-  if (state === undefined) {
-    return initialState;
-  }
-  return {
-    ...state,
-    mentors: mentorsReducer(state.mentors, action),
-    accessToken: createUserReducer(
-      loginReducer(state.accessToken, action),
-      action,
-    ),
-    buddies: buddyReducer(state.buddies, action),
-    credentialsSanityCheck: credentialsSanityCheckReducer(
-      state.credentialsSanityCheck,
-      action,
-    ),
-  };
-}
+const reducer = reduxLoop.combineReducers<State, Action>({
+  accessToken: accessTokenReducer,
+  mentors: mentorReducer,
+  buddies: buddyReducer,
+  credentialsSanityCheck: credentialsSanityCheckReducer,
+});
 
-// MERGE SAGAS
-function* rootSaga() {
-  yield sagaEffects.all([
-    mentorsSaga(),
-    loginSaga(),
-    createUserSaga(),
-    buddySaga(),
-    credentialsSanityCheckSaga(),
-  ]);
-}
+const createStore = redux.createStore as ((
+  reducer: (
+    state: State,
+    action: Action,
+  ) => State | reduxLoop.Loop<State, Action>,
+  initialState: State,
+  enhancer: redux.StoreEnhancer,
+) => redux.Store<State, Action>);
 
-// INIT REDUX STORE
-const sagaMiddleware = createSagaMiddleware();
-export const store = redux.createStore(
-  rootReducer,
+export const store: redux.Store<State, Action> = createStore(
+  reducer,
   initialState,
-  redux.applyMiddleware(sagaMiddleware),
+  reduxLoop.install({ DONT_LOG_ERRORS_ON_HANDLED_FAILURES: true }),
 );
-sagaMiddleware.run(rootSaga);

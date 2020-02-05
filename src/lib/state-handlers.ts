@@ -1,21 +1,15 @@
-import * as reduxSagaEffects from 'redux-saga/effects';
-
-import * as remoteData from './remote-data';
 import * as record from './record';
+import * as remoteData from './remote-data';
+import * as reduxLoop from 'redux-loop';
 
+type Fn = (...args: any[]) => any;
 type UnpackPromise<Value> = Value extends Promise<infer U> ? U : never;
 
-type InitAction<
-  InitActionName extends string,
-  F extends (...args: any[]) => any
-> = {
+type InitAction<InitActionName extends string, F extends Fn> = {
   type: InitActionName;
   payload: Parameters<F>;
 };
-type InitActionCreator<
-  InitActionName extends string,
-  F extends (...args: any[]) => any
-> = {
+type InitActionCreator<InitActionName extends string, F extends Fn> = {
   [k in InitActionName]: (
     payload: Parameters<F>,
   ) => InitAction<InitActionName, F>;
@@ -28,17 +22,11 @@ type FailActionCreator<FailureActionName extends string> = {
   [k in FailureActionName]: (payload: unknown) => FailAction<FailureActionName>;
 };
 
-type SuccessAction<
-  SuccessActionName extends string,
-  F extends (...args: any[]) => any
-> = {
+type SuccessAction<SuccessActionName extends string, F extends Fn> = {
   type: SuccessActionName;
   payload: UnpackPromise<ReturnType<F>>;
 };
-type SuccessActionCreator<
-  SuccessActionName extends string,
-  F extends (...args: any[]) => any
-> = {
+type SuccessActionCreator<SuccessActionName extends string, F extends Fn> = {
   [k in SuccessActionName]: (
     payload: UnpackPromise<ReturnType<F>>,
   ) => SuccessAction<SuccessActionName, F>;
@@ -53,7 +41,7 @@ type ResetActionCreator<ResetActionName extends string> = {
 };
 
 type ActionCreators4<
-  F extends (...args: any[]) => any,
+  F extends Fn,
   InitActionName extends string,
   FailureActionName extends string,
   SuccessActionName extends string,
@@ -64,7 +52,7 @@ type ActionCreators4<
   ResetActionCreator<ResetActionName>;
 
 type ActionCreators3<
-  F extends (...args: any[]) => any,
+  F extends Fn,
   InitActionName extends string,
   FailureActionName extends string,
   SuccessActionName extends string
@@ -73,7 +61,7 @@ type ActionCreators3<
   SuccessActionCreator<SuccessActionName, F>;
 
 export function makeActionCreators<
-  F extends (...args: any[]) => any,
+  F extends Fn,
   InitActionName extends string,
   FailureActionName extends string,
   SuccessActionName extends string
@@ -85,7 +73,7 @@ export function makeActionCreators<
 ): ActionCreators3<F, InitActionName, FailureActionName, SuccessActionName>;
 
 export function makeActionCreators<
-  F extends (...args: any[]) => any,
+  F extends Fn,
   InitActionName extends string,
   FailureActionName extends string,
   SuccessActionName extends string,
@@ -105,7 +93,7 @@ export function makeActionCreators<
 >;
 
 export function makeActionCreators<
-  F extends (...args: any[]) => any,
+  F extends Fn,
   InitActionName extends string,
   FailureActionName extends string,
   SuccessActionName extends string,
@@ -160,54 +148,83 @@ type UnknownAction = {
   payload: unknown;
 };
 
+type State<F extends Fn> = remoteData.RemoteData<UnpackPromise<ReturnType<F>>>;
+
 type Reducer3<
-  F extends (...args: any[]) => any,
+  F extends Fn,
   InitActionName extends string,
   FailureActionName extends string,
   SuccessActionName extends string
 > = (
-  state: remoteData.RemoteData<UnpackPromise<ReturnType<F>>>,
+  state: State<F> | undefined,
   action:
     | InitAction<InitActionName, F>
     | FailAction<FailureActionName>
     | SuccessAction<SuccessActionName, F>
     | UnknownAction,
-) => remoteData.RemoteData<UnpackPromise<ReturnType<F>>>;
+) =>
+  | State<F>
+  | reduxLoop.Loop<
+      State<F>,
+      | InitAction<InitActionName, F>
+      | FailAction<FailureActionName>
+      | SuccessAction<SuccessActionName, F>
+    >;
 type Reducer4<
-  F extends (...args: any[]) => any,
+  F extends Fn,
   InitActionName extends string,
   FailureActionName extends string,
   SuccessActionName extends string,
   ResetActionName extends string
 > = (
-  state: remoteData.RemoteData<UnpackPromise<ReturnType<F>>>,
+  state: State<F> | undefined,
   action:
     | InitAction<InitActionName, F>
     | FailAction<FailureActionName>
     | SuccessAction<SuccessActionName, F>
     | ResetAction<ResetActionName>
     | UnknownAction,
-) => remoteData.RemoteData<UnpackPromise<ReturnType<F>>>;
+) =>
+  | State<F>
+  | reduxLoop.Loop<
+      State<F>,
+      | InitAction<InitActionName, F>
+      | FailAction<FailureActionName>
+      | SuccessAction<SuccessActionName, F>
+      | ResetAction<ResetActionName>
+    >;
 
 export function makeReducer<
-  F extends (...args: any[]) => any,
+  F extends Fn,
   InitActionName extends string,
   FailureActionName extends string,
   SuccessActionName extends string
 >(
-  _: F,
+  f: F,
+  actions: ActionCreators3<
+    F,
+    InitActionName,
+    FailureActionName,
+    SuccessActionName
+  >,
   init: InitActionName,
   fail: FailureActionName,
   success: SuccessActionName,
 ): Reducer3<F, InitActionName, FailureActionName, SuccessActionName>;
 export function makeReducer<
-  F extends (...args: any[]) => any,
+  F extends Fn,
   InitActionName extends string,
   FailureActionName extends string,
   SuccessActionName extends string,
   ResetActionName extends string
 >(
-  _: F,
+  f: F,
+  actions: ActionCreators3<
+    F,
+    InitActionName,
+    FailureActionName,
+    SuccessActionName
+  >,
   init: InitActionName,
   fail: FailureActionName,
   success: SuccessActionName,
@@ -221,13 +238,19 @@ export function makeReducer<
 >;
 
 export function makeReducer<
-  F extends (...args: any[]) => any,
+  F extends Fn,
   InitActionName extends string,
   FailureActionName extends string,
   SuccessActionName extends string,
   ResetActionName extends string
 >(
-  _: F,
+  f: F,
+  actions: ActionCreators3<
+    F,
+    InitActionName,
+    FailureActionName,
+    SuccessActionName
+  >,
   init: InitActionName,
   fail: FailureActionName,
   success: SuccessActionName,
@@ -242,7 +265,7 @@ export function makeReducer<
       ResetActionName
     > {
   return (
-    state: remoteData.RemoteData<UnpackPromise<ReturnType<F>>>,
+    state: State<F> | undefined = remoteData.notAsked,
     action:
       | InitAction<InitActionName, F>
       | FailAction<FailureActionName>
@@ -255,7 +278,19 @@ export function makeReducer<
     }
     switch (action.type) {
       case init: {
-        return remoteData.loading;
+        if (remoteData.isLoading(state)) {
+          return state;
+        } else {
+          const { payload } = action as InitAction<InitActionName, F>;
+          return reduxLoop.loop(
+            remoteData.loading,
+            reduxLoop.Cmd.run(f, {
+              args: payload,
+              successActionCreator: actions[success],
+              failActionCreator: actions[fail],
+            }),
+          );
+        }
       }
       case success: {
         const {
@@ -278,36 +313,6 @@ export function makeReducer<
   };
 }
 
-function makeSaga<
-  F extends (...args: any[]) => any,
-  InitActionName extends string,
-  FailureActionName extends string,
-  SuccessActionName extends string
->(
-  f: F,
-  initActionName: InitActionName,
-  failActionName: FailureActionName,
-  successActionName: SuccessActionName,
-  actions: ActionCreators3<
-    F,
-    InitActionName,
-    FailureActionName,
-    SuccessActionName
-  >,
-) {
-  const fetchHandler = function*(action: InitAction<InitActionName, F>) {
-    try {
-      const value = yield reduxSagaEffects.call(f, ...action.payload);
-      yield reduxSagaEffects.put(actions[successActionName](value));
-    } catch (e) {
-      yield reduxSagaEffects.put(actions[failActionName](e));
-    }
-  };
-  return function*() {
-    yield reduxSagaEffects.takeEvery(initActionName, fetchHandler);
-  };
-}
-
 export function makeRemoteDataStateHandlers<
   F extends (...args: any[]) => any,
   InitActionName extends string,
@@ -326,7 +331,6 @@ export function makeRemoteDataStateHandlers<
     SuccessActionName
   >;
   reducer: Reducer3<F, InitActionName, FailureActionName, SuccessActionName>;
-  saga: () => Generator<reduxSagaEffects.ForkEffect<never>, void, unknown>;
 };
 export function makeRemoteDataStateHandlers<
   F extends (...args: any[]) => any,
@@ -355,7 +359,6 @@ export function makeRemoteDataStateHandlers<
     SuccessActionName,
     ResetActionName
   >;
-  saga: () => Generator<reduxSagaEffects.ForkEffect<never>, void, unknown>;
 };
 
 export function makeRemoteDataStateHandlers<
@@ -386,7 +389,6 @@ export function makeRemoteDataStateHandlers<
         SuccessActionName,
         ResetActionName
       >;
-      saga: () => Generator<reduxSagaEffects.ForkEffect<never>, void, unknown>;
     }
   | {
       actions: ActionCreators3<
@@ -401,7 +403,6 @@ export function makeRemoteDataStateHandlers<
         FailureActionName,
         SuccessActionName
       >;
-      saga: () => Generator<reduxSagaEffects.ForkEffect<never>, void, unknown>;
     } {
   if (resetActionName) {
     const actions = makeActionCreators(
@@ -413,19 +414,13 @@ export function makeRemoteDataStateHandlers<
     );
     const reducer = makeReducer(
       f,
+      actions,
       initActionName,
       failActionName,
       successActionName,
       resetActionName,
     );
-    const saga = makeSaga(
-      f,
-      initActionName,
-      failActionName,
-      successActionName,
-      actions,
-    );
-    return { actions, reducer, saga };
+    return { actions, reducer };
   } else {
     const actions = makeActionCreators(
       f,
@@ -435,17 +430,11 @@ export function makeRemoteDataStateHandlers<
     );
     const reducer = makeReducer(
       f,
-      initActionName,
-      failActionName,
-      successActionName,
-    );
-    const saga = makeSaga(
-      f,
-      initActionName,
-      failActionName,
-      successActionName,
       actions,
+      initActionName,
+      failActionName,
+      successActionName,
     );
-    return { actions, reducer, saga };
+    return { actions, reducer };
   }
 }
