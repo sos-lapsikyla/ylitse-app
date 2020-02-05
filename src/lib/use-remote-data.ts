@@ -1,5 +1,5 @@
 import React from 'react';
-import * as result from './result';
+import * as future from './future';
 import * as remoteData from './remote-data';
 
 type RequestState<Args> =
@@ -12,7 +12,7 @@ type RequestState<Args> =
     };
 
 function useRemoteData<Args extends any[], Value, Err>(
-  apiCall: result.ResultPromise<Args, Value, Err>,
+  apiCall: future.Task<Args, Value, Err>,
 ): [
   remoteData.RemoteData<Value, Err>,
   (...args: Args) => void | undefined,

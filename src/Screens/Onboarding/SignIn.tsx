@@ -4,6 +4,7 @@ import * as redux from 'redux';
 import * as ReactRedux from 'react-redux';
 
 import * as state from '../../state';
+import * as actions from '../../state/actions';
 import * as authApi from '../../api/auth';
 
 import * as navigationProps from '../../lib/navigation-props';
@@ -21,7 +22,7 @@ export type SignInRoute = {
 };
 
 type StateProps = {
-  accessToken: state.State['accessToken'];
+  accessToken: state.AppState['accessToken'];
 };
 type DispatchProps = {
   login: (credentials: authApi.Credentials) => void | undefined;
@@ -64,13 +65,13 @@ export default ReactRedux.connect<
   StateProps,
   DispatchProps,
   OwnProps,
-  state.State
+  state.AppState
 >(
   ({ accessToken }) => ({ accessToken }),
 
-  (dispatch: redux.Dispatch<state.Action>) => ({
+  (dispatch: redux.Dispatch<actions.Action>) => ({
     login: (credentials: authApi.Credentials) => {
-      dispatch(state.actions.login([credentials]));
+      dispatch(actions.creators.login([credentials]));
     },
   }),
 )(SignIn);

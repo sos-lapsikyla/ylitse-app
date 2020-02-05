@@ -12,17 +12,17 @@ import fonts from './fonts';
 import colors, { gradients } from './colors';
 import { textShadow } from './shadow';
 
-interface Props<A> {
-  data: remoteData.RemoteData<A>;
+interface Props<A, E> {
+  data: remoteData.RemoteData<A, E>;
   fetchData: () => void | undefined;
   children: (value: A) => React.ReactElement;
 }
 
-function RemoteData<A>({
+function RemoteData<A, E>({
   data,
   children,
   fetchData,
-}: Props<A>): React.ReactElement {
+}: Props<A, E>): React.ReactElement {
   React.useEffect(() => {
     if (data.type === 'NotAsked') {
       fetchData();

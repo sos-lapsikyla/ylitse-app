@@ -3,24 +3,28 @@
 import * as result from './result';
 import assertNever from './assert-never';
 
-type NotAsked = {
+export type NotAsked = {
   type: 'NotAsked';
 };
 export const notAsked: NotAsked = {
   type: 'NotAsked',
 };
-
-type Loading = {
+export type Loading = {
   type: 'Loading';
 };
 export const loading: Loading = {
   type: 'Loading',
 };
+export type Err<E> = result.Err<E>;
+export const ok = result.ok;
+export type Ok<A> = result.Ok<A>;
+export const err = result.err;
 
-export type RemoteData<A, E = unknown> =
-  | result.Result<A, E>
-  | Loading
-  | NotAsked;
+export type RemoteData<A, E> = result.Result<A, E> | Loading | NotAsked;
+
+export function fromResult<A, E>(a: result.Result<A, E>): RemoteData<A, E> {
+  return a;
+}
 
 export function isNotAsked<A, E>(
   remoteData: RemoteData<A, E>,
@@ -41,9 +45,6 @@ export function isErr<A, E>(remoteData: RemoteData<A, E>): boolean {
 export function isOk<A, E>(remoteData: RemoteData<A, E>): boolean {
   return remoteData.type === 'Ok';
 }
-
-export const ok = result.ok;
-export const err = result.err;
 
 function id<A>(a: A): A {
   return a;
@@ -88,6 +89,39 @@ export function unwrap<A, E, Output>(
     return defaultValue;
   }
 }
+
+export function chain<A, E, Output>(
+  remoteData: RemoteData<A, E>,
+  f: (v: A) => Output,
+): NotAsked | Loading | result.Err<E> | Output {
+  switch (remoteData.type) {
+    case 'NotAsked':
+    case 'Loading':
+    case 'Err':
+      return remoteData;
+    case 'Ok':
+      return f(remoteData.value);
+    default:
+      assertNever(remoteData);
+  }
+}
+
+export function chainErr<A, E, Output>(
+  remoteData: RemoteData<A, E>,
+  f: (e: E) => Output,
+): NotAsked | Loading | result.Ok<A> | Output {
+  switch (remoteData.type) {
+    case 'NotAsked':
+    case 'Loading':
+    case 'Ok':
+      return remoteData;
+    case 'Err':
+      return f(remoteData.error);
+    default:
+      assertNever(remoteData);
+  }
+}
+
 export function unwrapErr<A, E, F>(
   remoteData: RemoteData<A, E>,
   g: (e: E) => F,
@@ -116,4 +150,11 @@ export function unwrapBoth<A, E, Output>(
     default:
       assertNever(remoteData);
   }
+}
+
+export function append<A, B, E>(
+  first: RemoteData<A, E>,
+  second: RemoteData<B, E>,
+): RemoteData<[A, B], E> {
+  return chain(first, a => chain(second, b => ok([a, b])));
 }

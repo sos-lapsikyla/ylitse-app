@@ -1,26 +1,45 @@
 import * as reduxLoop from 'redux-loop';
+import * as redux from 'redux';
 
-import * as actionsUnion from '../lib/actions-union';
-import * as stateHandlers from '../lib/state-handlers';
+import * as actions from './actions';
 
-import { State } from './state';
 import * as accessToken from './accessToken';
 import * as buddies from './buddies';
 import * as mentors from './mentors';
+import * as time from './time';
 
-export * from './state';
+export type AppState = time.State &
+  accessToken.State &
+  mentors.State &
+  buddies.State;
 
-export type Action =
-  | actionsUnion.ActionsUnion<keyof typeof actions, typeof actions>
-  | stateHandlers.UnknownAction;
-export const actions = {
-  ...mentors.actions,
-  ...buddies.actions,
-  ...accessToken.actions,
+export const initialState: AppState = {
+  time: time.initialState,
+  accessToken: accessToken.initialState,
+  mentors: mentors.initialState,
+  buddies: buddies.initialState,
 };
 
-export const reducer = reduxLoop.combineReducers<State, Action>({
+export const reducer: actions.Reducer<AppState> = reduxLoop.combineReducers<
+  AppState,
+  actions.Action
+>({
+  time: time.reducer,
   accessToken: accessToken.reducer,
   mentors: mentors.reducer,
   buddies: buddies.reducer,
 });
+
+const compose = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || redux.compose;
+const enhancer = compose(
+  reduxLoop.install({ DONT_LOG_ERRORS_ON_HANDLED_FAILURES: true }),
+);
+
+const createStore = redux.createStore as ((
+  reducer: actions.Reducer<AppState>,
+  initialState: AppState,
+  enhancer: redux.StoreEnhancer,
+) => redux.Store<AppState, actions.Action>);
+
+export const store = createStore(reducer, initialState, enhancer);
+store.dispatch(actions.creators.startTicking());

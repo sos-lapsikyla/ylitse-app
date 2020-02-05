@@ -3,10 +3,12 @@ import RN from 'react-native';
 import * as redux from 'redux';
 import * as ReactRedux from 'react-redux';
 
+import * as navigationProps from '../../lib/navigation-props';
+
 import * as config from '../../api/config';
 import * as accountApi from '../../api/account';
 import * as state from '../../state';
-import * as navigationProps from '../../lib/navigation-props';
+import * as actions from '../../state/actions';
 
 import OnboardingBackground from '../components/OnboardingBackground';
 import Card from '../components/Card';
@@ -25,7 +27,7 @@ export type PrivacyPolicyRoute = {
 };
 
 type StateProps = {
-  accessToken: state.State['accessToken'];
+  accessToken: state.AppState['accessToken'];
 };
 
 type DispatchProps = {
@@ -132,13 +134,13 @@ const styles = RN.StyleSheet.create({
   nextButton: { marginBottom: 16 },
 });
 
-export default ReactRedux.connect<StateProps, {}, OwnProps, state.State>(
+export default ReactRedux.connect<StateProps, {}, OwnProps, state.AppState>(
   ({ accessToken }) => ({
     accessToken,
   }),
-  (dispatch: redux.Dispatch<state.Action>) => ({
+  (dispatch: redux.Dispatch<actions.Action>) => ({
     createUser: (user: accountApi.NewUser) => {
-      dispatch(state.actions.createUser([user]));
+      dispatch(actions.creators.createUser([user]));
     },
   }),
 )(PrivacyPolicy);

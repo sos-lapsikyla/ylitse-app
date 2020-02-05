@@ -20,7 +20,7 @@ interface Props extends RN.ViewProps {
   onPressNext: (credentials: authApi.Credentials) => void | undefined;
   titleMessageId: localization.MessageId;
   nextMessageId: localization.MessageId;
-  remoteAction: remoteData.RemoteData<unknown>;
+  remoteAction: remoteData.RemoteData<unknown, unknown>;
   getErrorMessageId: (u: unknown) => localization.MessageId;
   onChange?: (credentials: authApi.Credentials) => void | undefined;
 }

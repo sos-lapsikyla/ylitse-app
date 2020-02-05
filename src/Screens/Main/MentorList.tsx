@@ -5,10 +5,10 @@ import * as ReactRedux from 'react-redux';
 import { SafeAreaView } from 'react-navigation';
 
 import * as navigationProps from '../../lib/navigation-props';
-import * as remoteData from '../../lib/remote-data';
 
 import * as mentorApi from '../../api/mentors';
 import * as state from '../../state';
+import * as actions from '../../state/actions';
 
 import Background from '../components/Background';
 import { textShadow } from '../components/shadow';
@@ -24,7 +24,7 @@ export type MentorListRoute = {
 };
 
 type StateProps = {
-  mentors: remoteData.RemoteData<Map<string, mentorApi.Mentor>>;
+  mentors: state.AppState['mentors'];
 };
 type DispatchProps = {
   fetchMentors: () => void | undefined;
@@ -78,13 +78,13 @@ export default ReactRedux.connect<
   StateProps,
   DispatchProps,
   OwnProps,
-  state.State
+  state.AppState
 >(
   ({ mentors }) => ({ mentors }),
 
-  (dispatch: redux.Dispatch<state.Action>) => ({
+  (dispatch: redux.Dispatch<actions.Action>) => ({
     fetchMentors: () => {
-      dispatch(state.actions.fetchMentors([]));
+      dispatch(actions.creators.fetchMentors([]));
     },
   }),
 )(MentorList);

@@ -1,41 +1,69 @@
 import * as reduxLoop from 'redux-loop';
 
-import * as stateHandlers from '../lib/state-handlers';
-import * as actionsUnion from '../lib/actions-union';
+import * as remoteData from '../lib/remote-data';
+import * as http from '../lib/http';
+import * as reduxHelpers from '../lib/redux-helpers';
 
 import * as accountApi from '../api/account';
 import * as authApi from '../api/auth';
 
-import { State } from './state';
+import * as actions from './actions';
 
-const {
-  actions: loginActions,
-  reducer: loginReducer,
-} = stateHandlers.makeRemoteDataStateHandlers(
-  authApi.login,
-  'login',
-  'loginFail',
-  'loginSucceed',
-);
-const {
-  actions: createUserActions,
-  reducer: createUserReducer,
-} = stateHandlers.makeRemoteDataStateHandlers(
+export type AccessToken = remoteData.RemoteData<authApi.AccessToken, http.Err>;
+export type State = { accessToken: AccessToken };
+export const initialState = remoteData.notAsked;
+
+const createUser = reduxHelpers.makeReducer(
   accountApi.createUser,
+  actions.createUser,
   'createUser',
-  'createUserFail',
-  'createUserSucceed',
+  'createUserCompleted',
+  'createUserReset',
 );
 
-export type Action =
-  | actionsUnion.ActionsUnion<keyof typeof actions, typeof actions>
-  | stateHandlers.UnknownAction;
-export const actions = {
-  ...loginActions,
-  ...createUserActions,
+const login = reduxHelpers.makeReducer(
+  authApi.login,
+  actions.login,
+  'login',
+  'loginCompleted',
+  'loginReset',
+);
+
+const refreshAccessToken: actions.Reducer<AccessToken> = (
+  state = initialState,
+  action,
+) => {
+  switch (action.type) {
+    case 'refreshAccessToken':
+      return remoteData.chain(state, accessToken => {
+        if (accessToken.isRefreshing) {
+          return state;
+        }
+        return reduxLoop.loop(
+          remoteData.ok({ ...accessToken, isRefreshing: true }),
+          reduxLoop.Cmd.run(authApi.refreshAccessToken, {
+            args: [accessToken],
+            successActionCreator: actions.creators.refreshAccessTokenCompleted,
+          }),
+        );
+      });
+    case 'refreshAccessTokenCompleted':
+      return remoteData.map(
+        remoteData.append(state, action.payload),
+        ([_, token]) => ({
+          ...token,
+          isRefreshing: false,
+        }),
+      );
+    default:
+      return state;
+  }
 };
 
-export const reducer = reduxLoop.reduceReducers<State['accessToken'], Action>(
-  createUserReducer,
-  loginReducer,
+export const reducer = reduxLoop.reduceReducers<AccessToken, actions.Action>(
+  createUser,
+  login,
+  refreshAccessToken,
 );
+
+export const get = ({ accessToken }: State) => accessToken;

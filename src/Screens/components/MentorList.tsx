@@ -2,17 +2,17 @@ import React from 'react';
 import RN from 'react-native';
 import * as snapCarousel from 'react-native-snap-carousel';
 
-import * as remoteData from '../../lib/remote-data';
 import useLayout from '../../lib/use-layout';
 
 import MentorCard from '../components/MentorCard';
 import RemoteData from '../components/RemoteData';
 
 import * as mentorApi from '../../api/mentors';
+import * as state from '../../state';
 
 type Props = {
   fetchMentors: () => void | undefined;
-  mentors: remoteData.RemoteData<Map<string, mentorApi.Mentor>>;
+  mentors: state.AppState['mentors'];
   onPress?: (mentor: mentorApi.Mentor) => void | undefined;
 };
 
