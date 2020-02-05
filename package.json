@@ -6,7 +6,7 @@
     "android": "react-native run-android",
     "ios": "react-native run-ios",
     "start": "react-native start",
-    "test": "jest",
+    "test": "npm run lint && jest",
     "eslint:check": "eslint --print-config ./src/index.ts | eslint-config-prettier-check",
     "eslint": "npm run eslint:check && eslint 'src/**/*.{ts,tsx}'",
     "prettier": "prettier --list-different 'src/**/*.{ts,tsx}'",

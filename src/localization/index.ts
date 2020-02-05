@@ -4,7 +4,7 @@
 import * as fi from './fi';
 import * as en from './fi';
 
-export type MessageId = fi.MessageId & en.MessageId;
+export type MessageId = fi.MessageId;
 
 type Language = 'fi' | 'en';
 

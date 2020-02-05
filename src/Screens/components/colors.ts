@@ -32,6 +32,7 @@ export const gradients = {
   acidGreen: [colors.acidGreen1, colors.acidGreen2],
   faintGray: [colors.faintGray, colors.faintGray],
   whitegray: [colors.faintGray, colors.white],
+  danger: [colors.danger, '#C50D2E'],
 };
 
 export default colors;
