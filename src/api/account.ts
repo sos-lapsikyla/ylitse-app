@@ -1,7 +1,9 @@
 import * as t from 'io-ts';
 
 import * as http from '../lib/http';
-import taggedError from '../lib/tagged-error';
+import * as result from '../lib/result';
+
+import * as localization from '../localization';
 
 import * as config from './config';
 import * as authApi from './auth';
@@ -31,13 +33,12 @@ const createdUserAccount = t.strict({
 });
 
 const accountUrl = `${config.baseUrl}accounts`;
-async function post_account({ userName, password, phone, email }: NewUser) {
+async function post_account({ userName, password, email }: NewUser) {
   const requestBody = {
     password,
     account: {
       role: 'mentee',
       login_name: userName,
-      phone,
       email,
     },
   };
@@ -52,8 +53,8 @@ async function put_user(token: authApi.AccessToken, user: User) {
 }
 
 export type NewUser = authApi.Credentials & {
-  phone?: string;
-  email?: string;
+  displayName: string;
+  email: string;
 };
 
 export async function createUser(user: NewUser): Promise<authApi.AccessToken> {
@@ -64,63 +65,41 @@ export async function createUser(user: NewUser): Promise<authApi.AccessToken> {
   return accessToken;
 }
 
-type UserNameAvailability =
-  | { type: 'UserNameTaken'; userName: string }
-  | { type: 'UserNameFree'; userName: string };
 const SEARCH_URL = `${config.baseUrl}search?login_name=`;
-async function isUserNameFree(userName: string): Promise<UserNameAvailability> {
+async function isUserNameFree(
+  userName: string,
+): Promise<result.Result<string, string>> {
   const { status } = await http.head(`${SEARCH_URL}${userName}`);
-  return { type: status === 204 ? 'UserNameFree' : 'UserNameTaken', userName };
+  return status === 204 ? result.ok(userName) : result.err(userName);
 }
 
-export type CredentialsSanityCheckOk = {
-  type: 'Ok';
-  credentials: authApi.Credentials;
-};
-const errorNames = [
-  'UserNameTooLong',
-  'UserNameTooShort',
-  'UserNameTaken',
-  'PasswordTooShort',
-  'PasswordTooLong',
-] as const;
-const { errorType, errorMaker, errorDecoder } = taggedError(errorNames);
-export const credentialsSanityCheckErrorHandler = errorDecoder;
-export type CredentialsSanityCheckError = t.TypeOf<typeof errorType>;
-export async function makeCredentialsSanityCheck({
+export async function checkCredentials({
   userName,
   password,
-}: authApi.Credentials): Promise<CredentialsSanityCheckOk> {
-  if (userName.length < 3) throw errorMaker('UserNameTooShort');
-  if (userName.length > 30) throw errorMaker('UserNameTooLong');
-  if (password.length < 5) throw errorMaker('PasswordTooShort');
-  if (password.length > 30) throw errorMaker('PasswordTooLong');
-  const availability = await isUserNameFree(userName);
-  if (availability.type === 'UserNameTaken') {
-    throw errorMaker('UserNameTaken');
-  } else {
-    return {
-      type: 'Ok',
-      credentials: { userName, password },
-    };
-  }
+}: authApi.Credentials): Promise<
+  result.Result<
+    { userName: string; password: string },
+    { errorMessageId: localization.MessageId }
+  >
+> {
+  const fail = (errorMessageId: localization.MessageId) =>
+    result.err({
+      userName,
+      errorMessageId,
+    });
+  if (userName.length < 3) fail('onboarding.signUp.error.userNameShort');
+  if (userName.length > 30) fail('onboarding.signUp.error.userNameLong');
+  if (password.length < 5) fail('onboarding.signUp.error.passwordShort');
+  if (password.length > 30) fail('onboarding.signUp.error.passwordLong');
+  return result.bimap(
+    await isUserNameFree(userName),
+    () => ({
+      userName,
+      password,
+    }),
+    () => ({
+      userName,
+      errorMessageId: 'onboarding.signUp.error.userNameTaken',
+    }),
+  );
 }
-
-/*
-type Account =
-  | {
-      role: 'mentee' | 'admin';
-      phone?: string;
-      email?: string;
-      accountId: string;
-      userId: string;
-    }
-  | {
-      role: 'mentor';
-      phone?: string;
-      email?: string;
-      accountId: string;
-      userId: string;
-      mentorId: string;
-    };
-*/

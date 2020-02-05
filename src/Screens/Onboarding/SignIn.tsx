@@ -31,7 +31,7 @@ type Props = StateProps & DispatchProps & OwnProps;
 
 const SignIn = (props: Props) => {
   React.useEffect(() => {
-    if (remoteData.isSuccess(props.accessToken)) {
+    if (remoteData.isOk(props.accessToken)) {
       navigateMain(props.navigation);
     }
   }, [props.accessToken]);

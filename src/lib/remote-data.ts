@@ -1,4 +1,5 @@
 // Idea from https://package.elm-lang.org/packages/krisajenkins/remotedata/latest/
+
 import * as result from './result';
 import assertNever from './assert-never';
 
@@ -21,17 +22,23 @@ export type RemoteData<A, E = unknown> =
   | Loading
   | NotAsked;
 
+export function isNotAsked<A, E>(
+  remoteData: RemoteData<A, E>,
+): remoteData is NotAsked {
+  return remoteData.type === 'NotAsked';
+}
+
 export function isLoading<A, E>(
   remoteData: RemoteData<A, E>,
 ): remoteData is Loading {
   return remoteData.type === 'Loading';
 }
 
-export function isFailure<A, E>(remoteData: RemoteData<A, E>): boolean {
+export function isErr<A, E>(remoteData: RemoteData<A, E>): boolean {
   return remoteData.type === 'Err';
 }
 
-export function isSuccess<A, E>(remoteData: RemoteData<A, E>): boolean {
+export function isOk<A, E>(remoteData: RemoteData<A, E>): boolean {
   return remoteData.type === 'Ok';
 }
 
@@ -90,5 +97,23 @@ export function unwrapErr<A, E, F>(
     return g(remoteData.error);
   } else {
     return defaultValue;
+  }
+}
+
+export function unwrapBoth<A, E, Output>(
+  remoteData: RemoteData<A, E>,
+  f: (a: A) => Output,
+  g: (e: E) => Output,
+  defaultValue: Output,
+): Output {
+  switch (remoteData.type) {
+    case 'NotAsked':
+    case 'Loading':
+      return defaultValue;
+    case 'Err':
+    case 'Ok':
+      return result.fold(remoteData, f, g);
+    default:
+      assertNever(remoteData);
   }
 }
