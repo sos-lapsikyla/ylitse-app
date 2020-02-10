@@ -1,12 +1,9 @@
 import React from 'react';
 import RN from 'react-native';
-import * as redux from 'redux';
-import * as ReactRedux from 'react-redux';
 
-import * as state from '../../state';
+import * as authApi from '../../api/auth';
 
 import * as navigationProps from '../../lib/navigation-props';
-import * as remoteData from '../../lib/remote-data';
 
 import OnboardingBackground from '../components/OnboardingBackground';
 import Card from '../components/Card';
@@ -15,47 +12,25 @@ import Message from '../components/Message';
 import colors from '../components/colors';
 import Button from '../components/Button';
 import NamedInputField from '../components/NamedInputField';
-import ImmediatelyNavigateBack from '../components/ImmediatelyNavigateBack';
 
 import { EmailRoute } from './Email';
 
 export type DisplayNameRoute = {
-  'Onboarding/DisplayName': {};
+  'Onboarding/DisplayName': { credentials: authApi.Credentials };
 };
 
-type StateProps = {
-  credentialsSanityCheck: state.State['credentialsSanityCheck'];
-};
-type DispatchProps = {
-  resetCredentialsCheck: () => void | undefined;
-};
+type Props = navigationProps.NavigationProps<DisplayNameRoute, EmailRoute>;
 
-type OwnProps = navigationProps.NavigationProps<DisplayNameRoute, EmailRoute>;
-
-type Props = StateProps & DispatchProps & OwnProps;
-
-const DisplayName = ({
-  navigation,
-  resetCredentialsCheck,
-  credentialsSanityCheck,
-}: Props) => {
-  const [displayName, setDisplayName] = React.useState(
-    remoteData.unwrap(
-      credentialsSanityCheck,
-      ({ credentials: { userName } }) => userName,
-      '',
-    ),
-  );
-
+const DisplayName = ({ navigation }: Props) => {
+  const { userName, password } = navigation.getParam('credentials');
+  const [displayName, setDisplayName] = React.useState(userName);
   const goBack = () => {
-    resetCredentialsCheck();
     navigation.goBack();
   };
-  if (credentialsSanityCheck.type !== 'Ok') {
-    return <ImmediatelyNavigateBack goBack={goBack} />;
-  }
   const navigateToEmailScreen = () => {
-    navigation.navigate('Onboarding/Email', { displayName });
+    navigation.navigate('Onboarding/Email', {
+      user: { userName, password, displayName },
+    });
   };
   return (
     <OnboardingBackground>
@@ -109,16 +84,4 @@ const styles = RN.StyleSheet.create({
   nextButton: { marginBottom: 16 },
 });
 
-export default ReactRedux.connect<
-  StateProps,
-  DispatchProps,
-  OwnProps,
-  state.State
->(
-  ({ credentialsSanityCheck }) => ({ credentialsSanityCheck }),
-  (dispatch: redux.Dispatch<state.Action>) => ({
-    resetCredentialsCheck: () => {
-      dispatch(state.actions.resetCredentialsSanityCheck());
-    },
-  }),
-)(DisplayName);
+export default DisplayName;

@@ -14,7 +14,6 @@ import fonts from '../components/fonts';
 import Message from '../components/Message';
 import colors, { gradients } from '../components/colors';
 import Button from '../components/Button';
-import ImmediatelyNavigateBack from '../components/ImmediatelyNavigateBack';
 import ErrorMessage from '../components/ErrorMessage';
 import Link from '../components/Link';
 
@@ -22,13 +21,13 @@ import { TabsRoute } from '../Main/Tabs';
 import navigateMain from './navigateMain';
 
 export type PrivacyPolicyRoute = {
-  'Onboarding/PrivacyPolicy': { displayName: string; email: string };
+  'Onboarding/PrivacyPolicy': { user: accountApi.NewUser };
 };
 
 type StateProps = {
-  credentialsSanityCheck: state.State['credentialsSanityCheck'];
   accessToken: state.State['accessToken'];
 };
+
 type DispatchProps = {
   createUser: (user: accountApi.NewUser) => void | undefined;
 };
@@ -36,12 +35,7 @@ type OwnProps = navigationProps.NavigationProps<PrivacyPolicyRoute, TabsRoute>;
 
 type Props = StateProps & DispatchProps & OwnProps;
 
-const PrivacyPolicy = ({
-  navigation,
-  accessToken,
-  credentialsSanityCheck,
-  createUser,
-}: Props) => {
+const PrivacyPolicy = ({ navigation, accessToken, createUser }: Props) => {
   React.useEffect(() => {
     if (accessToken.type === 'Ok') {
       navigateMain(navigation);
@@ -51,21 +45,8 @@ const PrivacyPolicy = ({
   const goBack = () => {
     navigation.goBack();
   };
-  if (credentialsSanityCheck.type !== 'Ok') {
-    return <ImmediatelyNavigateBack goBack={goBack} />;
-  }
   const onNextPress = () => {
-    const {
-      value: {
-        credentials: { userName = '', password = '' },
-      },
-    } = credentialsSanityCheck;
-    const user = {
-      userName,
-      password,
-      displayName: navigation.getParam('displayName'),
-      email: navigation.getParam('email'),
-    };
+    const user = navigation.getParam('user');
     createUser(user);
   };
   return (
@@ -152,8 +133,7 @@ const styles = RN.StyleSheet.create({
 });
 
 export default ReactRedux.connect<StateProps, {}, OwnProps, state.State>(
-  ({ credentialsSanityCheck, accessToken }) => ({
-    credentialsSanityCheck,
+  ({ accessToken }) => ({
     accessToken,
   }),
   (dispatch: redux.Dispatch<state.Action>) => ({

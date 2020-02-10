@@ -143,7 +143,7 @@ export function makeActionCreators<
   }
 }
 
-type UnknownAction = {
+export type UnknownAction = {
   type: unknown;
   payload: unknown;
 };

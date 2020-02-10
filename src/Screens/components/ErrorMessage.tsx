@@ -17,7 +17,7 @@ interface Props<E> {
 function ErrorMessage<E>({ style, data, getMessageId }: Props<E>) {
   const opacity = React.useRef(new RN.Animated.Value(0)).current;
   React.useEffect(() => {
-    if (remoteData.isFailure(data)) {
+    if (remoteData.isErr(data)) {
       RN.Animated.timing(opacity, {
         toValue: 1,
         duration: 500,

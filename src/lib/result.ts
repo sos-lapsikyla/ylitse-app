@@ -10,6 +10,12 @@ export type Ok<A> = {
 
 export type Result<A, E = unknown> = Ok<A> | Err<E>;
 
+export type PromisedResult<A, E> = Promise<Result<A, E>>;
+
+export type ResultPromise<Args extends any[], Value, Err> = (
+  ...args: Args
+) => PromisedResult<Value, Err>;
+
 export function err<E>(error: E) {
   return {
     type: 'Err' as const,
