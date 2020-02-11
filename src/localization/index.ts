@@ -15,3 +15,5 @@ export const translator = (lang: Language) => {
   };
   return (k: MessageId) => messages[lang][k];
 };
+
+export const blank: MessageId = 'meta.blank';

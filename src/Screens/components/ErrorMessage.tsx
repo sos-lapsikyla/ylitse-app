@@ -1,6 +1,7 @@
 import React from 'react';
 import RN from 'react-native';
 
+import * as taggedUnion from '../../lib/tagged-union';
 import * as remoteData from '../../lib/remote-data';
 import * as localization from '../../localization';
 
@@ -17,27 +18,34 @@ interface Props<E> {
 function ErrorMessage<E>({ style, data, getMessageId }: Props<E>) {
   const opacity = React.useRef(new RN.Animated.Value(0)).current;
   React.useEffect(() => {
-    if (remoteData.isErr(data)) {
-      RN.Animated.timing(opacity, {
+    const commonAnimationOptions = {
+      useNativeDriver: true,
+      easing: RN.Easing.linear,
+    };
+    const animation = taggedUnion.match(data, {
+      Err: () => ({
+        ...commonAnimationOptions,
         toValue: 1,
         duration: 500,
-        useNativeDriver: true,
-        easing: RN.Easing.linear,
-      }).start();
-    } else {
-      RN.Animated.timing(opacity, {
+      }),
+      default: () => ({
+        ...commonAnimationOptions,
         toValue: 0,
         duration: 300,
-        useNativeDriver: true,
-        easing: RN.Easing.linear,
-      }).start();
-    }
+      }),
+    });
+    RN.Animated.timing(opacity, animation).start();
   }, [data.type]);
+
+  const messageId = taggedUnion.match(data, {
+    Err: ({ error }) => getMessageId(error),
+    default: () => localization.blank,
+  });
 
   return (
     <AnimatedMessage
       style={[styles.message, { opacity }, style]}
-      id={remoteData.unwrapErr(data, getMessageId, 'meta.blank')}
+      id={messageId}
     />
   );
 }

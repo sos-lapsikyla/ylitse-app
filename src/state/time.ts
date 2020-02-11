@@ -3,11 +3,10 @@ import * as actions from './actions';
 
 import * as timestamped from '../lib/timestamped';
 
-export type Time = { ticking: boolean; time: number };
-export type State = { time: Time };
+export type State = { ticking: boolean; time: number };
 export const initialState = { ticking: false, time: Date.now() };
 
-export const reducer: actions.Reducer<Time> = (
+export const reducer: actions.Reducer<State> = (
   state = initialState,
   action,
 ) => {
@@ -19,7 +18,7 @@ export const reducer: actions.Reducer<Time> = (
       return reduxLoop.loop(
         { ...state, ticking: true },
         reduxLoop.Cmd.run(timestamped.tick, {
-          successActionCreator: actions.time.tick,
+          successActionCreator: actions.creators.tick,
         }),
       );
     case 'tick':
@@ -29,7 +28,7 @@ export const reducer: actions.Reducer<Time> = (
       return reduxLoop.loop(
         { ...state, time: action.payload.timestamp },
         reduxLoop.Cmd.run(timestamped.tick, {
-          successActionCreator: actions.time.tick,
+          successActionCreator: actions.creators.tick,
         }),
       );
 

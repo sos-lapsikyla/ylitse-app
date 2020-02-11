@@ -4,19 +4,22 @@ import * as authApi from '../api/auth';
 import * as buddyApi from '../api/buddies';
 import * as http from '../lib/http';
 import * as remoteData from '../lib/remote-data';
-import * as refreshable from '../lib/remote-data-refreshable';
+import * as refreshable from '../lib/remote-data-retryable-refreshable';
 import * as future from '../lib/future';
 import * as taggedUnion from '../lib/tagged-union';
 
 import * as actions from './actions';
 type Args = Parameters<typeof buddyApi.fetchBuddies>;
-export type Buddies = refreshable.Refreshable<buddyApi.Buddy[], http.Err, Args>;
-export type State = { buddies: Buddies };
-type LoopState = actions.LS<Buddies>;
+export type State = refreshable.RetryableRefreshable<
+  buddyApi.Buddy[],
+  http.Err,
+  Args
+>;
+type LoopState = actions.LS<State>;
 
 export const initialState = remoteData.notAsked;
 
-export const reducer: actions.Reducer<Buddies> = (
+export const reducer: actions.Reducer<State> = (
   state = initialState,
   action,
 ) => {
@@ -69,7 +72,7 @@ export const reducer: actions.Reducer<Buddies> = (
 
 function toLoading(
   token: authApi.AccessToken,
-  toState: (t: [authApi.AccessToken]) => Buddies,
+  toState: (t: [authApi.AccessToken]) => State,
 ): LoopState {
   return reduxLoop.loop(
     toState([token]),
@@ -80,20 +83,18 @@ function toLoading(
 }
 
 function tryAccessTokenRefresh(
-  state: Extract<Buddies, refreshable.Loading<Args>>,
+  { args }: Extract<State, refreshable.Loading<Args>>,
   err: http.Err,
 ): LoopState {
-  const defaultError = refreshable.err(err, state.args);
+  const defaultError = refreshable.err(err, args);
   return taggedUnion.match<http.Err, LoopState>(err, {
     BadStatus: ({ status }) =>
       status === 401
         ? reduxLoop.loop(
-            refreshable.deferred(state.args),
-            reduxLoop.Cmd.action(actions.creators.refreshAccessToken()),
+            refreshable.deferred(args),
+            reduxLoop.Cmd.action(actions.creators.refreshAccessToken(args[0])),
           )
         : defaultError,
     default: () => defaultError,
   });
 }
-
-export const get = ({ buddies }: State) => refreshable.toRemoteData(buddies);

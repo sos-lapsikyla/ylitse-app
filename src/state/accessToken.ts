@@ -1,69 +1,68 @@
 import * as reduxLoop from 'redux-loop';
 
-import * as remoteData from '../lib/remote-data';
+import assertNever from '../lib/assert-never';
+import * as taggedUnion from '../lib/tagged-union';
+import * as result from '../lib/result';
+import * as refreshable from '../lib/remote-data-refreshable';
 import * as http from '../lib/http';
-import * as reduxHelpers from '../lib/redux-helpers';
 
-import * as accountApi from '../api/account';
 import * as authApi from '../api/auth';
 
 import * as actions from './actions';
 
-export type AccessToken = remoteData.RemoteData<authApi.AccessToken, http.Err>;
-export type State = { accessToken: AccessToken };
-export const initialState = remoteData.notAsked;
+export type State = Exclude<
+  refreshable.Refreshable<authApi.AccessToken, http.Err>,
+  refreshable.Err<http.Err> | refreshable.Loading
+>;
 
-const createUser = reduxHelpers.makeReducer(
-  accountApi.createUser,
-  actions.createUser,
-  'createUser',
-  'createUserCompleted',
-  'createUserReset',
-);
+export const initialState = refreshable.notAsked;
 
-const login = reduxHelpers.makeReducer(
-  authApi.login,
-  actions.login,
-  'login',
-  'loginCompleted',
-  'loginReset',
-);
-
-const refreshAccessToken: actions.Reducer<AccessToken> = (
+export const reducer: actions.Reducer<State> = (
   state = initialState,
   action,
 ) => {
   switch (action.type) {
+    case 'login':
+      return refreshable.ok(action.payload);
     case 'refreshAccessToken':
-      return remoteData.chain(state, accessToken => {
-        if (accessToken.isRefreshing) {
+      switch (state.type) {
+        case 'NotAsked':
+        case 'Refreshing':
           return state;
-        }
-        return reduxLoop.loop(
-          remoteData.ok({ ...accessToken, isRefreshing: true }),
-          reduxLoop.Cmd.run(authApi.refreshAccessToken, {
-            args: [accessToken],
-            successActionCreator: actions.creators.refreshAccessTokenCompleted,
-          }),
-        );
-      });
+        case 'Ok':
+        case 'RefreshingFailure':
+          const { value: accessToken } = state;
+          // To omit unnecessary requests
+          if (action.payload.accessToken !== accessToken.accessToken) {
+            return reduxLoop.loop(
+              state,
+              reduxLoop.Cmd.action(
+                actions.creators.refreshAccessTokenCompleted(
+                  result.ok(accessToken),
+                ),
+              ),
+            );
+          }
+          return reduxLoop.loop(
+            refreshable.refreshing(accessToken),
+            reduxLoop.Cmd.run(authApi.refreshAccessToken, {
+              args: [accessToken],
+              successActionCreator:
+                actions.creators.refreshAccessTokenCompleted,
+            }),
+          );
+        default:
+          return assertNever(state);
+      }
     case 'refreshAccessTokenCompleted':
-      return remoteData.map(
-        remoteData.append(state, action.payload),
-        ([_, token]) => ({
-          ...token,
-          isRefreshing: false,
-        }),
-      );
+      if (state.type === 'NotAsked') {
+        return state;
+      }
+      return taggedUnion.match(action.payload, {
+        Ok: ({ value: token }) => refreshable.ok(token),
+        Err: ({ error }) => refreshable.refreshingFailure(state.value, error),
+      });
     default:
       return state;
   }
 };
-
-export const reducer = reduxLoop.reduceReducers<AccessToken, actions.Action>(
-  createUser,
-  login,
-  refreshAccessToken,
-);
-
-export const get = ({ accessToken }: State) => accessToken;

@@ -8,10 +8,9 @@ import * as buddies from './buddies';
 import * as mentors from './mentors';
 import * as time from './time';
 
-export type AppState = time.State &
-  accessToken.State &
-  mentors.State &
-  buddies.State;
+import * as selectors from './selectors';
+
+export type AppState = selectors.AppState;
 
 export const initialState: AppState = {
   time: time.initialState,

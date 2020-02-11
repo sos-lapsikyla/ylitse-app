@@ -47,29 +47,6 @@ export function chain<A, E, B>(
   }
 }
 
-export function unwrap<A, E, B>(
-  result: Result<A, E>,
-  f: (a: A) => B,
-  defaultValue: B,
-): B {
-  if (result.type === 'Ok') {
-    return f(result.value);
-  }
-  return defaultValue;
-}
-
-export function fold<A, E, B>(
-  result: Result<A, E>,
-  f: (a: A) => B,
-  g: (e: E) => B,
-): B {
-  if (result.type === 'Ok') {
-    return f(result.value);
-  } else {
-    return g(result.error);
-  }
-}
-
 function id<A>(a: A): A {
   return a;
 }

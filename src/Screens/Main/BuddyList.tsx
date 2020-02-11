@@ -12,8 +12,7 @@ import * as authApi from '../../api/auth';
 import * as buddyApi from '../../api/buddies';
 
 import * as state from '../../state';
-import * as buddyState from '../../state/buddies';
-import * as accessTokenState from '../../state/accessToken';
+import * as selectors from '../../state/selectors';
 import * as actions from '../../state/actions';
 
 import colors, { gradients } from '../components/colors';
@@ -137,8 +136,8 @@ export default ReactRedux.connect<
   state.AppState
 >(
   appState => {
-    const buddies = buddyState.get(appState);
-    const accessToken = accessTokenState.get(appState);
+    const buddies = selectors.getBuddies(appState);
+    const accessToken = selectors.getAccessToken(appState);
     if (accessToken.type !== 'Ok') {
       throw Error('bad state');
     }
