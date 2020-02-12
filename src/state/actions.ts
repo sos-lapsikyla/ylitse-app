@@ -1,5 +1,6 @@
 import * as reduxLoop from 'redux-loop';
 
+import * as taggedUnion from '../lib/tagged-union';
 import * as reduxHelpers from '../lib/redux-helpers';
 import * as actionType from '../lib/action-type';
 import * as http from '../lib/http';
@@ -53,3 +54,13 @@ export const creators = {
 
 export type LS<S> = S | reduxLoop.Loop<S, Action>;
 export type Reducer<S> = (state: S | undefined, action: Action) => LS<S>;
+
+export function match<S>(state: S, action: Action) {
+  return (matchers: Partial<taggedUnion.MatcherRecord<Action, LS<S>>>) =>
+    taggedUnion.match<Action, LS<S>>(action, {
+      ...matchers,
+      default() {
+        return state;
+      },
+    });
+}

@@ -3,47 +3,39 @@ import * as reduxLoop from 'redux-loop';
 import * as authApi from '../api/auth';
 import * as buddyApi from '../api/buddies';
 import * as http from '../lib/http';
-import * as remoteData from '../lib/remote-data';
-import * as refreshable from '../lib/remote-data-retryable-refreshable';
+import * as retryable from '../lib/remote-data-retryable';
 import * as future from '../lib/future';
 import * as taggedUnion from '../lib/tagged-union';
 
 import * as actions from './actions';
 type Args = Parameters<typeof buddyApi.fetchBuddies>;
-export type State = refreshable.RetryableRefreshable<
-  buddyApi.Buddy[],
+export type State = retryable.Retryable<
+  [buddyApi.Buddy[], Exclude<State, retryable.Ok<unknown, unknown[]>>],
   http.Err,
   Args
 >;
 type LoopState = actions.LS<State>;
 
-export const initialState = remoteData.notAsked;
+export const initialState = retryable.notAsked;
 
 export const reducer: actions.Reducer<State> = (
   state = initialState,
   action,
 ) => {
-  const matchAction = (
-    matchers: Partial<taggedUnion.MatcherRecord<actions.Action, LoopState>>,
-  ) =>
-    taggedUnion.match<actions.Action, LoopState>(action, {
-      ...matchers,
-      default() {
-        return state;
-      },
-    });
+  const matchAction = actions.match(state, action);
   switch (state.type) {
     case 'NotAsked':
     case 'Err':
       return matchAction({
         fetchBuddies: ({ payload: [accessToken] }) =>
-          toLoading(accessToken, refreshable.loading),
+          toLoading(accessToken, retryable.loading),
       });
     case 'Loading':
       return matchAction({
         fetchBuddiesCompleted: ({ payload: buddies }) =>
           taggedUnion.match(buddies, {
-            Ok: ({ value }) => refreshable.ok(value, state.args),
+            Ok: ({ value }) =>
+              retryable.ok([value, retryable.notAsked], state.args),
             Err: ({ error }) => tryAccessTokenRefresh(state, error),
           }),
       });
@@ -51,16 +43,17 @@ export const reducer: actions.Reducer<State> = (
       return matchAction({
         refreshAccessTokenCompleted: ({ payload: token }) =>
           taggedUnion.match(token, {
-            Ok: ({ value }) => toLoading(value, refreshable.retrying),
-            Err: ({ error }) => refreshable.err(error, state.args),
+            Ok: ({ value }) => toLoading(value, retryable.retrying),
+            Err: ({ error }) => retryable.err(error, state.args),
           }),
       });
     case 'Retrying':
       return matchAction({
         fetchBuddiesCompleted: ({ payload: buddies }) =>
           taggedUnion.match(buddies, {
-            Ok: ({ value }) => refreshable.ok(value, state.args),
-            Err: ({ error }) => refreshable.err(error, state.args),
+            Ok: ({ value }) =>
+              retryable.ok([value, retryable.notAsked], state.args),
+            Err: ({ error }) => retryable.err(error, state.args),
           }),
       });
     case 'Ok':
@@ -83,15 +76,15 @@ function toLoading(
 }
 
 function tryAccessTokenRefresh(
-  { args }: Extract<State, refreshable.Loading<Args>>,
+  { args }: Extract<State, retryable.Loading<Args>>,
   err: http.Err,
 ): LoopState {
-  const defaultError = refreshable.err(err, args);
+  const defaultError = retryable.err(err, args);
   return taggedUnion.match<http.Err, LoopState>(err, {
     BadStatus: ({ status }) =>
       status === 401
         ? reduxLoop.loop(
-            refreshable.deferred(args),
+            retryable.deferred(args),
             reduxLoop.Cmd.action(actions.creators.refreshAccessToken(args[0])),
           )
         : defaultError,

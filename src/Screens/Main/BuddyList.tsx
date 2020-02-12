@@ -138,7 +138,7 @@ export default ReactRedux.connect<
   appState => {
     const buddies = selectors.getBuddies(appState);
     const accessToken = selectors.getAccessToken(appState);
-    if (accessToken.type !== 'Ok') {
+    if (accessToken.type !== 'Some') {
       throw Error('bad state');
     }
     return {

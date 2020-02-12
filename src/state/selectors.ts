@@ -1,4 +1,7 @@
-import * as refreshable from '../lib/remote-data-retryable-refreshable';
+import * as retryable from '../lib/remote-data-retryable';
+import * as remoteData from '../lib/remote-data';
+import * as option from '../lib/option';
+import * as tuple from '../lib/tuple';
 
 import * as accessTokenState from './accessToken';
 import * as buddiesState from './buddies';
@@ -13,6 +16,7 @@ export type AppState = {
 };
 
 export const getBuddies = ({ buddies }: AppState) =>
-  refreshable.toRemoteData(buddies);
+  remoteData.map(retryable.toRemoteData(buddies), tuple.fst);
 export const getMentors = ({ mentors }: AppState) => mentors;
-export const getAccessToken = ({ accessToken }: AppState) => accessToken;
+export const getAccessToken = ({ accessToken }: AppState) =>
+  option.map(accessToken, tuple.fst);
