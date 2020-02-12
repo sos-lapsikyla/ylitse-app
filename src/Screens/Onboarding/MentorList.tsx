@@ -6,8 +6,8 @@ import { SafeAreaView } from 'react-navigation';
 
 import * as navigationProps from '../../lib/navigation-props';
 import * as remoteData from '../../lib/remote-data';
-import * as api from '../../api/mentors';
 import * as state from '../../state';
+import * as actions from '../../state/actions';
 
 import MentorListComponent from '../components/MentorList';
 import Background from '../components/Background';
@@ -25,7 +25,7 @@ export type MentorListRoute = {
 };
 
 type StateProps = {
-  mentors: remoteData.RemoteData<Map<string, api.Mentor>>;
+  mentors: state.AppState['mentors'];
 };
 type DispatchProps = {
   fetchMentors: () => void | undefined;
@@ -102,13 +102,13 @@ export default ReactRedux.connect<
   StateProps,
   DispatchProps,
   OwnProps,
-  state.State
+  state.AppState
 >(
   ({ mentors }) => ({ mentors }),
 
-  (dispatch: redux.Dispatch<state.Action>) => ({
+  (dispatch: redux.Dispatch<actions.Action>) => ({
     fetchMentors: () => {
-      dispatch(state.actions.fetchMentors([]));
+      dispatch(actions.creators.fetchMentors([]));
     },
   }),
 )(MentorList);

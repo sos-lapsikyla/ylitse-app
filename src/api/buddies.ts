@@ -1,6 +1,7 @@
 import * as t from 'io-ts';
 
 import * as http from '../lib/http';
+import * as result from '../lib/result';
 
 import * as config from './config';
 
@@ -18,14 +19,14 @@ const toBuddy = ({ account_id, display_name }: ApiBuddy) => ({
   name: display_name,
 });
 
-export async function fetchBuddies(accessToken: authApi.AccessToken) {
+export async function fetchBuddies(
+  accessToken: authApi.AccessToken,
+): http.Future<Buddy[]> {
   const buddiesUrl = `${config.baseUrl}users/${accessToken.userId}/contacts`;
-  const { resources } = await http.get(
-    buddiesUrl,
-    t.strict({ resources: t.array(buddyType) }),
-    {
+  return result.map(
+    await http.get(buddiesUrl, t.strict({ resources: t.array(buddyType) }), {
       headers: authApi.authHeader(accessToken),
-    },
+    }),
+    ({ resources }) => resources.map(toBuddy),
   );
-  return resources.map(toBuddy);
 }

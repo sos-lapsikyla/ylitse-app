@@ -5,10 +5,16 @@ import * as ReactRedux from 'react-redux';
 import LinearGradient from 'react-native-linear-gradient';
 
 import * as navigationProps from '../../lib/navigation-props';
+import * as http from '../../lib/http';
+import * as remoteData from '../../lib/remote-data';
 
 import * as authApi from '../../api/auth';
 import * as buddyApi from '../../api/buddies';
+
 import * as state from '../../state';
+import * as buddyState from '../../state/buddies';
+import * as accessTokenState from '../../state/accessToken';
+import * as actions from '../../state/actions';
 
 import colors, { gradients } from '../components/colors';
 import fonts from '../components/fonts';
@@ -68,7 +74,7 @@ const buddyButtonStyles = RN.StyleSheet.create({
 
 type StateProps = {
   accessToken: authApi.AccessToken;
-  buddies: state.State['buddies'];
+  buddies: remoteData.RemoteData<buddyApi.Buddy[], http.Err>;
 };
 type DispatchProps = {
   fetchBuddies: (token: authApi.AccessToken) => void | undefined;
@@ -128,10 +134,11 @@ export default ReactRedux.connect<
   StateProps,
   DispatchProps,
   OwnProps,
-  state.State
+  state.AppState
 >(
-  ({ accessToken, buddies }) => {
-    // TODO  SEPARATE APP TO DIFFERENT PHASES
+  appState => {
+    const buddies = buddyState.get(appState);
+    const accessToken = accessTokenState.get(appState);
     if (accessToken.type !== 'Ok') {
       throw Error('bad state');
     }
@@ -140,9 +147,9 @@ export default ReactRedux.connect<
       buddies,
     };
   },
-  (dispatch: redux.Dispatch<state.Action>) => ({
+  (dispatch: redux.Dispatch<actions.Action>) => ({
     fetchBuddies: (accessToken: authApi.AccessToken) => {
-      dispatch(state.actions.fetchBuddies([accessToken]));
+      dispatch(actions.creators.fetchBuddies([accessToken]));
     },
   }),
 )(BuddyList);

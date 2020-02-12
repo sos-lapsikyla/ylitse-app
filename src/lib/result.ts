@@ -8,13 +8,7 @@ export type Ok<A> = {
   value: A;
 };
 
-export type Result<A, E = unknown> = Ok<A> | Err<E>;
-
-export type PromisedResult<A, E> = Promise<Result<A, E>>;
-
-export type ResultPromise<Args extends any[], Value, Err> = (
-  ...args: Args
-) => PromisedResult<Value, Err>;
+export type Result<A, E> = Ok<A> | Err<E>;
 
 export function err<E>(error: E) {
   return {
@@ -44,13 +38,24 @@ export function bimap<A, E, B, F>(
 
 export function chain<A, E, B>(
   result: Result<A, E>,
-  f: (a: A) => Result<B, E>,
-): Result<B> {
+  f: (a: A) => B,
+): Err<E> | B {
   if (result.type === 'Ok') {
     return f(result.value);
   } else {
     return result;
   }
+}
+
+export function unwrap<A, E, B>(
+  result: Result<A, E>,
+  f: (a: A) => B,
+  defaultValue: B,
+): B {
+  if (result.type === 'Ok') {
+    return f(result.value);
+  }
+  return defaultValue;
 }
 
 export function fold<A, E, B>(
@@ -76,4 +81,13 @@ export function map<A, E, B>(
 }
 export function mapErr<A, E, F>(result: Result<A, E>, g: (e: E) => F) {
   return bimap(result, id, g);
+}
+
+export function append<A, E, B>(
+  first: Result<A, E>,
+  second: Result<B, E>,
+): Result<[A, B], E> {
+  if (first.type === 'Err') return first;
+  if (second.type === 'Err') return second;
+  return ok([first.value, second.value]);
 }

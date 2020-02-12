@@ -2,6 +2,7 @@ import * as t from 'io-ts';
 
 import * as http from '../lib/http';
 import * as result from '../lib/result';
+import * as f from '../lib/future';
 
 import * as localization from '../localization';
 
@@ -33,7 +34,11 @@ const createdUserAccount = t.strict({
 });
 
 const accountUrl = `${config.baseUrl}accounts`;
-async function post_account({ userName, password, email }: NewUser) {
+async function postAccount({
+  userName,
+  password,
+  email,
+}: NewUser): http.Future<t.TypeOf<typeof createdUserAccount>> {
   const requestBody = {
     password,
     account: {
@@ -46,7 +51,10 @@ async function post_account({ userName, password, email }: NewUser) {
 }
 
 const USERS_URL = `${config.baseUrl}users`;
-async function put_user(token: authApi.AccessToken, user: User) {
+async function putUser(
+  token: authApi.AccessToken,
+  user: User,
+): http.Future<User> {
   return http.put(`${USERS_URL}/${user.id}`, user, userType, {
     headers: authApi.authHeader(token),
   });
@@ -57,49 +65,56 @@ export type NewUser = authApi.Credentials & {
   email: string;
 };
 
-export async function createUser(user: NewUser): Promise<authApi.AccessToken> {
-  const { user: createdUser } = await post_account(user);
+export async function createUser(
+  user: NewUser,
+): http.Future<authApi.AccessToken> {
   const { userName, password } = user;
-  const accessToken = await authApi.login({ userName, password });
-  await put_user(accessToken, { ...createdUser, display_name: userName });
-  return accessToken;
+  const results = await f.seq(
+    f.lazy(postAccount, user),
+    f.lazy(authApi.login, { userName, password }),
+  );
+  return f.chain(results, async ([createdUser, token]) => {
+    await putUser(token, {
+      ...createdUser.user,
+      display_name: user.displayName,
+    });
+    return result.ok(token);
+  });
 }
 
 const SEARCH_URL = `${config.baseUrl}search?login_name=`;
-async function isUserNameFree(
-  userName: string,
-): Promise<result.Result<string, string>> {
-  const { status } = await http.head(`${SEARCH_URL}${userName}`);
-  return status === 204 ? result.ok(userName) : result.err(userName);
+async function isUserNameFree(userName: string): http.Future<boolean> {
+  return result.map(
+    await http.head(`${SEARCH_URL}${userName}`),
+    ({ status }) => status === 204,
+  );
 }
 
 export async function checkCredentials({
   userName,
   password,
-}: authApi.Credentials): Promise<
-  result.Result<
-    { userName: string; password: string },
-    { errorMessageId: localization.MessageId }
-  >
+}: authApi.Credentials): f.Future<
+  { userName: string; password: string },
+  { errorMessageId: localization.MessageId }
 > {
   const fail = (errorMessageId: localization.MessageId) =>
     result.err({
       userName,
       errorMessageId,
     });
-  if (userName.length < 3) fail('onboarding.signUp.error.userNameShort');
-  if (userName.length > 30) fail('onboarding.signUp.error.userNameLong');
-  if (password.length < 5) fail('onboarding.signUp.error.passwordShort');
-  if (password.length > 30) fail('onboarding.signUp.error.passwordLong');
-  return result.bimap(
+  if (userName.length < 3) return fail('onboarding.signUp.error.userNameShort');
+  if (userName.length > 30) return fail('onboarding.signUp.error.userNameLong');
+  if (password.length < 5) return fail('onboarding.signUp.error.passwordShort');
+  if (password.length > 30) return fail('onboarding.signUp.error.passwordLong');
+  return result.fold(
     await isUserNameFree(userName),
-    () => ({
-      userName,
-      password,
-    }),
-    () => ({
-      userName,
-      errorMessageId: 'onboarding.signUp.error.userNameTaken',
-    }),
+    isFree =>
+      isFree
+        ? result.ok({
+            userName,
+            password,
+          })
+        : fail('onboarding.signUp.error.userNameTaken'),
+    () => fail('onboarding.signUp.error.probablyNetwork'),
   );
 }

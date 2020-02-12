@@ -1,6 +1,7 @@
 import * as t from 'io-ts';
 
 import * as http from '../lib/http';
+import * as result from '../lib/result';
 
 import * as config from './config';
 
@@ -23,10 +24,13 @@ const toMentor = ({ birth_year, display_name, ...props }: ApiMentor) => ({
 });
 
 const mentorsUrl = config.baseUrl + 'mentors';
-export async function fetchMentors(): Promise<Map<string, Mentor>> {
-  const { resources } = await http.get(mentorsUrl, mentorListType);
-  return resources.reduce((acc: Map<string, Mentor>, apiMentor: ApiMentor) => {
-    const mentor = toMentor(apiMentor);
-    return acc.set(mentor.id, mentor);
-  }, new Map());
+export async function fetchMentors(): http.Future<Map<string, Mentor>> {
+  return result.map(
+    await http.get(mentorsUrl, mentorListType),
+    ({ resources }) =>
+      resources.reduce((acc: Map<string, Mentor>, apiMentor: ApiMentor) => {
+        const mentor = toMentor(apiMentor);
+        return acc.set(mentor.id, mentor);
+      }, new Map()),
+  );
 }
