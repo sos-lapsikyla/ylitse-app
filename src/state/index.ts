@@ -1,33 +1,51 @@
 import * as reduxLoop from 'redux-loop';
 import * as redux from 'redux';
 
-import * as actions from './actions';
+import * as taggedUnion from '../lib/tagged-union';
 
+import * as actions from './actions';
 import * as accessToken from './accessToken';
 import * as buddies from './buddies';
 import * as mentors from './mentors';
-import * as time from './time';
-
+import * as scheduler from './scheduler';
 import * as selectors from './selectors';
 
 export type AppState = selectors.AppState;
 
 export const initialState: AppState = {
-  time: time.initialState,
   accessToken: accessToken.initialState,
   mentors: mentors.initialState,
   buddies: buddies.initialState,
+  scheduler: scheduler.initialState,
 };
 
-export const reducer: actions.Reducer<AppState> = reduxLoop.combineReducers<
-  AppState,
-  actions.Action
->({
-  time: time.reducer,
-  accessToken: accessToken.reducer,
-  mentors: mentors.reducer,
-  buddies: buddies.reducer,
-});
+function reducer(state: AppState = initialState, action: actions.Action) {
+  const [tokenModel, tokenCmd] = reduxLoop.liftState(
+    accessToken.reducer(state.accessToken, action),
+  );
+  const [mentorsModel, mentorsCmd] = reduxLoop.liftState(
+    mentors.reducer(state.mentors, action),
+  );
+  const [buddiesModel, buddiesCmd] = reduxLoop.liftState(
+    taggedUnion.match<accessToken.State, buddies.LoopState>(state.accessToken, {
+      Some: ({ value: [token] }) =>
+        buddies.reducer(token)(state.buddies, action),
+      None: state.buddies,
+    }),
+  );
+  const [schedulerModel, schedulerCmd] = reduxLoop.liftState(
+    scheduler.reducer(state.scheduler, action),
+  );
+  return reduxLoop.loop(
+    {
+      accessToken: tokenModel,
+      mentors: mentorsModel,
+      buddies: buddiesModel,
+      scheduler: schedulerModel,
+    },
+    reduxLoop.Cmd.list([tokenCmd, mentorsCmd, buddiesCmd, schedulerCmd]),
+  );
+}
 
 const compose = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || redux.compose;
 const enhancer = compose(
@@ -41,4 +59,3 @@ const createStore = redux.createStore as ((
 ) => redux.Store<AppState, actions.Action>);
 
 export const store = createStore(reducer, initialState, enhancer);
-store.dispatch(actions.creators.startTicking());

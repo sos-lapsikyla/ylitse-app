@@ -5,17 +5,9 @@ import * as reduxHelpers from '../lib/redux-helpers';
 import * as actionType from '../lib/action-type';
 import * as http from '../lib/http';
 import * as result from '../lib/result';
-import * as timestamped from '../lib/timestamped';
-
 import * as mentorApi from '../api/mentors';
 import * as authApi from '../api/auth';
 import * as buddyApi from '../api/buddies';
-
-const time = {
-  ...actionType.make('startTicking'),
-  tick: (timestamp: timestamped.Timestamped) =>
-    actionType.make('tick', timestamp),
-};
 
 export const mentors = reduxHelpers.makeActionCreators(
   mentorApi.fetchMentors,
@@ -25,31 +17,55 @@ export const mentors = reduxHelpers.makeActionCreators(
 );
 
 const accessToken = {
-  login: (token: authApi.AccessToken) => actionType.make('login', token),
-  refreshAccessToken: (token: authApi.AccessToken) =>
-    actionType.make('refreshAccessToken', token),
-  refreshAccessTokenCompleted: (
-    token: result.Result<authApi.AccessToken, http.Err>,
-  ) => actionType.make('refreshAccessTokenCompleted', token),
+  ...actionType.make('login', (token: authApi.AccessToken) => token),
+  ...actionType.make('refreshAccessToken'),
+  ...actionType.make(
+    'refreshAccessTokenCompleted',
+    (response: result.Result<authApi.AccessToken, http.Err>) => response,
+  ),
 };
 
-const buddies = reduxHelpers.makeActionCreators(
-  buddyApi.fetchBuddies,
-  'fetchBuddies',
-  'fetchBuddiesCompleted',
-  'fetchBuddiesReset',
-);
+const buddies = {
+  ...actionType.make('fetchBuddies'),
+  ...actionType.make(
+    'fetchBuddiesCompleted',
+    (response: result.Result<buddyApi.Buddy[], http.Err>) => response,
+  ),
+};
 
-export type Action = actionType.ActionsUnion<
-  keyof typeof creators,
-  typeof creators
+export type SchedulerAction = actionType.ActionsUnion<
+  keyof typeof scheduler,
+  typeof scheduler
 >;
+const scheduler = {
+  ...actionType.make('startPolling', (action: NonSchedulerAction, delay) => ({
+    action,
+    delay,
+  })),
+  ...actionType.make(
+    'poll',
+    (actionName: NonSchedulerAction['type']) => actionName,
+  ),
+  ...actionType.make(
+    'pollComplete',
+    (actionName: NonSchedulerAction['type']) => actionName,
+  ),
+};
 
-export const creators = {
-  ...time,
+type NonSchedulerAction = actionType.ActionsUnion<
+  keyof typeof _creators,
+  typeof _creators
+>;
+export const _creators = {
   ...mentors,
   ...accessToken,
   ...buddies,
+};
+
+export type Action = SchedulerAction | NonSchedulerAction;
+export const creators = {
+  ..._creators,
+  ...scheduler,
 };
 
 export type LS<S> = S | reduxLoop.Loop<S, Action>;
