@@ -30,19 +30,21 @@ export type Action<Name extends string, Payload> = {
 export function make<Name extends string>(
   name: Name,
 ): { [K in Name]: () => Action<Name, undefined> };
-export function make<Name extends string, Payload>(
+export function make<Name extends string, Payload, Args extends any[]>(
   name: Name,
-  payload: Payload,
-): Action<Name, Payload>;
-export function make<Name extends string, Payload>(
+  func: (...args: Args) => Payload,
+): { [K in Name]: (...args: Args) => Action<Name, Payload> };
+export function make<Name extends string, Payload, Args extends any[]>(
   name: Name,
-  payload?: Payload,
-): Action<Name, Payload> | { [K in Name]: () => Action<Name, undefined> } {
-  if (payload !== undefined) {
-    return {
+  func?: (...args: Args) => Payload,
+):
+  | { [K in Name]: (...args: Args) => Action<Name, Payload> }
+  | { [K in Name]: () => Action<Name, undefined> } {
+  if (func !== undefined) {
+    return record.singleton(name, (...args: Args) => ({
       type: name,
-      payload,
-    };
+      payload: func(...args),
+    }));
   } else {
     return record.singleton(name, () => ({ type: name, payload: undefined }));
   }

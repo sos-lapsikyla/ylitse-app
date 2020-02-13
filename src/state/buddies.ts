@@ -4,90 +4,95 @@ import * as authApi from '../api/auth';
 import * as buddyApi from '../api/buddies';
 import * as http from '../lib/http';
 import * as retryable from '../lib/remote-data-retryable';
+import * as remoteData from '../lib/remote-data';
 import * as future from '../lib/future';
+import * as result from '../lib/result';
 import * as taggedUnion from '../lib/tagged-union';
+import * as tuple from '../lib/tuple';
 
 import * as actions from './actions';
-type Args = Parameters<typeof buddyApi.fetchBuddies>;
 export type State = retryable.Retryable<
-  [buddyApi.Buddy[], Exclude<State, retryable.Ok<unknown, unknown[]>>],
-  http.Err,
-  Args
+  [buddyApi.Buddy[], Exclude<State, remoteData.Ok<unknown>>],
+  http.Err
 >;
-type LoopState = actions.LS<State>;
+export type LoopState = actions.LS<State>;
 
-export const initialState = retryable.notAsked;
+export const initialState = remoteData.notAsked;
 
-export const reducer: actions.Reducer<State> = (
-  state = initialState,
-  action,
-) => {
+const identity = <A>(a: A) => a;
+
+export function reducer(
+  accessToken: authApi.AccessToken,
+  state: State = initialState,
+  action: actions.Action,
+): LoopState {
   const matchAction = actions.match(state, action);
   switch (state.type) {
     case 'NotAsked':
     case 'Err':
       return matchAction({
-        fetchBuddies: ({ payload: [accessToken] }) =>
-          toLoading(accessToken, retryable.loading),
+        fetchBuddies: () => toFetching(accessToken, remoteData.loading),
       });
     case 'Loading':
       return matchAction({
-        fetchBuddiesCompleted: ({ payload: buddies }) =>
-          taggedUnion.match(buddies, {
-            Ok: ({ value }) =>
-              retryable.ok([value, retryable.notAsked], state.args),
-            Err: ({ error }) => tryAccessTokenRefresh(state, error),
+        fetchBuddiesCompleted: ({ payload }) =>
+          taggedUnion.match(payload, {
+            Ok: toOk,
+            Err: tryAccessTokenRefresh,
           }),
       });
     case 'Deferred':
       return matchAction({
-        refreshAccessTokenCompleted: ({ payload: token }) =>
-          taggedUnion.match(token, {
-            Ok: ({ value }) => toLoading(value, retryable.retrying),
-            Err: ({ error }) => retryable.err(error, state.args),
+        refreshAccessTokenCompleted: ({ payload }) =>
+          taggedUnion.match(payload, {
+            Ok: ({ value: token }) => toFetching(token, retryable.retrying),
+            Err: identity,
           }),
       });
     case 'Retrying':
       return matchAction({
-        fetchBuddiesCompleted: ({ payload: buddies }) =>
-          taggedUnion.match(buddies, {
-            Ok: ({ value }) =>
-              retryable.ok([value, retryable.notAsked], state.args),
-            Err: ({ error }) => retryable.err(error, state.args),
+        fetchBuddiesCompleted: ({ payload }) =>
+          taggedUnion.match(payload, {
+            Ok: toOk,
+            Err: identity,
           }),
       });
     case 'Ok':
-      return state;
+      const [buddies, request] = state.value;
+      const [nextBuddies, cmd] = reduxLoop.liftState(
+        reducer(accessToken, request, action),
+      );
+      const nextState: State =
+        nextBuddies.type === 'Ok'
+          ? nextBuddies
+          : remoteData.ok(tuple.tuple(buddies, nextBuddies));
+      return reduxLoop.loop(nextState, cmd);
     default:
       return state;
   }
-};
+}
 
-function toLoading(
+function toFetching(
   token: authApi.AccessToken,
-  toState: (t: [authApi.AccessToken]) => State,
+  nextState: taggedUnion.Pick<State, 'Loading' | 'Retrying'>,
 ): LoopState {
   return reduxLoop.loop(
-    toState([token]),
+    nextState,
     reduxLoop.Cmd.run(future.lazy(buddyApi.fetchBuddies, token), {
       successActionCreator: actions.creators.fetchBuddiesCompleted,
     }),
   );
 }
 
-function tryAccessTokenRefresh(
-  { args }: Extract<State, retryable.Loading<Args>>,
-  err: http.Err,
-): LoopState {
-  const defaultError = retryable.err(err, args);
-  return taggedUnion.match<http.Err, LoopState>(err, {
-    BadStatus: ({ status }) =>
-      status === 401
-        ? reduxLoop.loop(
-            retryable.deferred(args),
-            reduxLoop.Cmd.action(actions.creators.refreshAccessToken(args[0])),
-          )
-        : defaultError,
-    default: () => defaultError,
-  });
+function toOk({ value: buddies }: result.Ok<buddyApi.Buddy[]>): LoopState {
+  return remoteData.ok([buddies, remoteData.notAsked]);
+}
+
+function tryAccessTokenRefresh(err: result.Err<http.Err>): LoopState {
+  return err.error.type === 'BadStatus' && err.error.status === 401
+    ? reduxLoop.loop(
+        retryable.deferred,
+        reduxLoop.Cmd.action(actions.creators.refreshAccessToken()),
+      )
+    : err;
 }

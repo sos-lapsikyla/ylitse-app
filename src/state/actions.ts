@@ -5,17 +5,9 @@ import * as reduxHelpers from '../lib/redux-helpers';
 import * as actionType from '../lib/action-type';
 import * as http from '../lib/http';
 import * as result from '../lib/result';
-import * as timestamped from '../lib/timestamped';
-
 import * as mentorApi from '../api/mentors';
 import * as authApi from '../api/auth';
 import * as buddyApi from '../api/buddies';
-
-const time = {
-  ...actionType.make('startTicking'),
-  tick: (timestamp: timestamped.Timestamped) =>
-    actionType.make('tick', timestamp),
-};
 
 export const mentors = reduxHelpers.makeActionCreators(
   mentorApi.fetchMentors,
@@ -25,28 +17,27 @@ export const mentors = reduxHelpers.makeActionCreators(
 );
 
 const accessToken = {
-  login: (token: authApi.AccessToken) => actionType.make('login', token),
-  refreshAccessToken: (token: authApi.AccessToken) =>
-    actionType.make('refreshAccessToken', token),
-  refreshAccessTokenCompleted: (
-    token: result.Result<authApi.AccessToken, http.Err>,
-  ) => actionType.make('refreshAccessTokenCompleted', token),
+  ...actionType.make('login', (token: authApi.AccessToken) => token),
+  ...actionType.make('refreshAccessToken'),
+  ...actionType.make(
+    'refreshAccessTokenCompleted',
+    (response: result.Result<authApi.AccessToken, http.Err>) => response,
+  ),
 };
 
-const buddies = reduxHelpers.makeActionCreators(
-  buddyApi.fetchBuddies,
-  'fetchBuddies',
-  'fetchBuddiesCompleted',
-  'fetchBuddiesReset',
-);
+const buddies = {
+  ...actionType.make('fetchBuddies', (token: authApi.AccessToken) => token),
+  ...actionType.make(
+    'fetchBuddiesCompleted',
+    (response: result.Result<buddyApi.Buddy[], http.Err>) => response,
+  ),
+};
 
 export type Action = actionType.ActionsUnion<
   keyof typeof creators,
   typeof creators
 >;
-
 export const creators = {
-  ...time,
   ...mentors,
   ...accessToken,
   ...buddies,

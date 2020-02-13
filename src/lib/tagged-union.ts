@@ -1,10 +1,17 @@
-/* Source: https://github.com/Microsoft/TypeScript/pull/21316#issuecomment-364982638 */ export type TaggedUnion<
+/* Idea from: https://github.com/Microsoft/TypeScript/pull/21316#issuecomment-364982638 */
+export type TaggedUnion<
   Union,
   TagKey extends keyof Union,
   TagValue extends Union[TagKey]
 > = Union extends Record<TagKey, TagValue> ? Union : never;
 
-/* Source: https://gist.github.com/frankpf/cde7f792580f731dfe886ed2d91bab45 */
+export type Pick<U extends { type: string }, K extends U['type']> = TaggedUnion<
+  U,
+  'type',
+  K
+>;
+
+/* Idea from: https://gist.github.com/frankpf/cde7f792580f731dfe886ed2d91bab45 */
 export type Matcher<A extends { type: string }, K extends A['type'], U> = (
   a: TaggedUnion<A, 'type', K>,
 ) => U;

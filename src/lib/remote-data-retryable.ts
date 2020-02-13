@@ -1,55 +1,20 @@
 import * as remoteData from './remote-data';
 import * as taggedUnion from './tagged-union';
 
-type Lift<A extends {}, Args extends any[]> = A & { args: Args };
-
-export type NotAsked = remoteData.NotAsked;
-export const notAsked = remoteData.notAsked;
-
-export type Loading<Args extends any[]> = Lift<remoteData.Loading, Args>;
-export function loading<Args extends any[]>(args: Args): Loading<Args> {
-  return { ...remoteData.loading, args: args };
-}
-
-export type Ok<Value, Args extends any[]> = Lift<remoteData.Ok<Value>, Args>;
-export function ok<Value, Args extends any[]>(
-  value: Value,
-  args: Args,
-): Ok<Value, Args> {
-  return { ...remoteData.ok(value), args: args };
-}
-
-export type Err<E, Args extends any[]> = Lift<remoteData.Err<E>, Args>;
-export function err<E, Args extends any[]>(error: E, args: Args): Err<E, Args> {
-  return { ...remoteData.err(error), args: args };
-}
-
-export type Deferred<Args extends any[]> = {
+export type Deferred = {
   type: 'Deferred';
-  args: Args;
 };
-export function deferred<Args extends any[]>(args: Args): Deferred<Args> {
-  return { type: 'Deferred', args: args };
-}
+export const deferred: Deferred = { type: 'Deferred' };
 
-export type Retrying<Args extends any[]> = {
+export type Retrying = {
   type: 'Retrying';
-  args: Args;
 };
-export function retrying<Args extends any[]>(args: Args): Retrying<Args> {
-  return { type: 'Retrying', args: args };
-}
+export const retrying: Retrying = { type: 'Retrying' };
 
-export type Retryable<A, E, Args extends any[]> =
-  | NotAsked
-  | Loading<Args>
-  | Deferred<Args>
-  | Retrying<Args>
-  | Err<E, Args>
-  | Ok<A, Args>;
+export type Retryable<A, E> = remoteData.RemoteData<A, E> | Deferred | Retrying;
 
-export function toRemoteData<A, E, Args extends any[]>(
-  retryable: Retryable<A, E, Args>,
+export function toRemoteData<A, E>(
+  retryable: Retryable<A, E>,
 ): remoteData.RemoteData<A, E> {
   return taggedUnion.match(retryable, {
     NotAsked: () => remoteData.notAsked,

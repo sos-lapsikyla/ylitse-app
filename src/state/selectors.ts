@@ -6,11 +6,9 @@ import * as tuple from '../lib/tuple';
 import * as accessTokenState from './accessToken';
 import * as buddiesState from './buddies';
 import * as mentorsState from './mentors';
-import * as timeState from './time';
 
 export type AppState = {
   accessToken: accessTokenState.State;
-  time: timeState.State;
   buddies: buddiesState.State;
   mentors: mentorsState.State;
 };

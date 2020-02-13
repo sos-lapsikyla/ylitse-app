@@ -4,7 +4,6 @@ import assertNever from '../lib/assert-never';
 import * as taggedUnion from '../lib/tagged-union';
 import * as option from '../lib/option';
 import * as remoteData from '../lib/remote-data';
-import * as result from '../lib/result';
 import * as http from '../lib/http';
 import * as tuple from '../lib/tuple';
 import * as f from '../lib/future';
@@ -53,26 +52,12 @@ function tokenReducer(
     case 'NotAsked':
     case 'Err':
       return matchAction({
-        refreshAccessToken: ({ payload: token }) =>
-          token.accessToken !== currentToken.accessToken
-            ? reduxLoop.loop(
-                state,
-                reduxLoop.Cmd.action(
-                  actions.creators.refreshAccessTokenCompleted(
-                    result.ok(currentToken),
-                  ),
-                ),
-              )
-            : reduxLoop.loop(
-                remoteData.loading,
-                reduxLoop.Cmd.run(
-                  f.lazy(authApi.refreshAccessToken, currentToken),
-                  {
-                    successActionCreator:
-                      actions.creators.refreshAccessTokenCompleted,
-                  },
-                ),
-              ),
+        refreshAccessToken: reduxLoop.loop(
+          remoteData.loading,
+          reduxLoop.Cmd.run(f.lazy(authApi.refreshAccessToken, currentToken), {
+            successActionCreator: actions.creators.refreshAccessTokenCompleted,
+          }),
+        ),
       });
     case 'Loading':
       return matchAction({

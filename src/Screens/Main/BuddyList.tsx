@@ -148,7 +148,7 @@ export default ReactRedux.connect<
   },
   (dispatch: redux.Dispatch<actions.Action>) => ({
     fetchBuddies: (accessToken: authApi.AccessToken) => {
-      dispatch(actions.creators.fetchBuddies([accessToken]));
+      dispatch(actions.creators.fetchBuddies(accessToken));
     },
   }),
 )(BuddyList);
