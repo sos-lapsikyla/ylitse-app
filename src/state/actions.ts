@@ -26,21 +26,46 @@ const accessToken = {
 };
 
 const buddies = {
-  ...actionType.make('fetchBuddies', (token: authApi.AccessToken) => token),
+  ...actionType.make('fetchBuddies'),
   ...actionType.make(
     'fetchBuddiesCompleted',
     (response: result.Result<buddyApi.Buddy[], http.Err>) => response,
   ),
 };
 
-export type Action = actionType.ActionsUnion<
-  keyof typeof creators,
-  typeof creators
+export type SchedulerAction = actionType.ActionsUnion<
+  keyof typeof scheduler,
+  typeof scheduler
 >;
-export const creators = {
+const scheduler = {
+  ...actionType.make('startPolling', (action: NonSchedulerAction, delay) => ({
+    action,
+    delay,
+  })),
+  ...actionType.make(
+    'poll',
+    (actionName: NonSchedulerAction['type']) => actionName,
+  ),
+  ...actionType.make(
+    'pollComplete',
+    (actionName: NonSchedulerAction['type']) => actionName,
+  ),
+};
+
+type NonSchedulerAction = actionType.ActionsUnion<
+  keyof typeof _creators,
+  typeof _creators
+>;
+export const _creators = {
   ...mentors,
   ...accessToken,
   ...buddies,
+};
+
+export type Action = SchedulerAction | NonSchedulerAction;
+export const creators = {
+  ..._creators,
+  ...scheduler,
 };
 
 export type LS<S> = S | reduxLoop.Loop<S, Action>;

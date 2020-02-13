@@ -8,7 +8,6 @@ import * as navigationProps from '../../lib/navigation-props';
 import * as http from '../../lib/http';
 import * as remoteData from '../../lib/remote-data';
 
-import * as authApi from '../../api/auth';
 import * as buddyApi from '../../api/buddies';
 
 import * as state from '../../state';
@@ -72,16 +71,16 @@ const buddyButtonStyles = RN.StyleSheet.create({
 });
 
 type StateProps = {
-  accessToken: authApi.AccessToken;
   buddies: remoteData.RemoteData<buddyApi.Buddy[], http.Err>;
 };
 type DispatchProps = {
-  fetchBuddies: (token: authApi.AccessToken) => void | undefined;
+  pollBuddies: () => void | undefined;
 };
+
 type OwnProps = navigationProps.NavigationProps<BuddyListRoute, BuddyListRoute>;
 type Props = StateProps & DispatchProps & OwnProps;
 
-const BuddyList = ({ buddies, accessToken, fetchBuddies }: Props) => {
+const BuddyList = ({ buddies, pollBuddies }: Props) => {
   return (
     <TitledContainer
       TitleComponent={
@@ -89,7 +88,7 @@ const BuddyList = ({ buddies, accessToken, fetchBuddies }: Props) => {
       }
       gradient={gradients.pillBlue}
     >
-      <RemoteData data={buddies} fetchData={() => fetchBuddies(accessToken)}>
+      <RemoteData data={buddies} fetchData={pollBuddies}>
         {value => (
           <RN.ScrollView
             style={styles.scrollView}
@@ -136,19 +135,15 @@ export default ReactRedux.connect<
   state.AppState
 >(
   appState => {
-    const buddies = selectors.getBuddies(appState);
-    const accessToken = selectors.getAccessToken(appState);
-    if (accessToken.type !== 'Some') {
-      throw Error('bad state');
-    }
     return {
-      accessToken: accessToken.value,
-      buddies,
+      buddies: selectors.getBuddies(appState),
     };
   },
   (dispatch: redux.Dispatch<actions.Action>) => ({
-    fetchBuddies: (accessToken: authApi.AccessToken) => {
-      dispatch(actions.creators.fetchBuddies(accessToken));
+    pollBuddies: () => {
+      dispatch(
+        actions.creators.startPolling(actions.creators.fetchBuddies(), 3000),
+      );
     },
   }),
 )(BuddyList);

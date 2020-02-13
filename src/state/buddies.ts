@@ -21,7 +21,12 @@ export const initialState = remoteData.notAsked;
 
 const identity = <A>(a: A) => a;
 
-export function reducer(
+export const reducer = (token: authApi.AccessToken) => (
+  state: State = initialState,
+  action: actions.Action,
+) => _reducer(token, state, action);
+
+export function _reducer(
   accessToken: authApi.AccessToken,
   state: State = initialState,
   action: actions.Action,
@@ -60,7 +65,7 @@ export function reducer(
     case 'Ok':
       const [buddies, request] = state.value;
       const [nextBuddies, cmd] = reduxLoop.liftState(
-        reducer(accessToken, request, action),
+        _reducer(accessToken, request, action),
       );
       const nextState: State =
         nextBuddies.type === 'Ok'

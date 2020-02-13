@@ -54,3 +54,12 @@ export async function seq<A, B, E>(
   if (secondResult.type === 'Err') return secondResult;
   return result.ok([firstResult.value, secondResult.value]);
 }
+
+export function sleep(delay: number): () => Promise<void> {
+  return () =>
+    new Promise(resolve => {
+      setTimeout(() => {
+        Promise.resolve(undefined).then(resolve);
+      }, delay);
+    });
+}
