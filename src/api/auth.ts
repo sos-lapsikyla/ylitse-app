@@ -22,7 +22,6 @@ const newAccessTokenType = t.strict({
 });
 
 export type AccessToken = {
-  isRefreshing: boolean;
   accountId: string;
   userId: string;
   accessToken: string;
@@ -35,7 +34,6 @@ function toAccessToken({
   tokens,
 }: ApiLoginToken): AccessToken {
   return {
-    isRefreshing: false,
     accountId: account_id,
     userId: user_id,
     accessToken: tokens.access_token,
