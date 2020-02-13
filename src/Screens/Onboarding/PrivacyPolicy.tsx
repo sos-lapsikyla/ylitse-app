@@ -4,9 +4,11 @@ import * as redux from 'redux';
 import * as ReactRedux from 'react-redux';
 
 import * as navigationProps from '../../lib/navigation-props';
+import useRemoteData from '../../lib/use-remote-data';
 
 import * as config from '../../api/config';
 import * as accountApi from '../../api/account';
+import * as authApi from '../../api/auth';
 import * as state from '../../state';
 import * as actions from '../../state/actions';
 
@@ -31,18 +33,25 @@ type StateProps = {
 };
 
 type DispatchProps = {
-  createUser: (user: accountApi.NewUser) => void | undefined;
+  login: (user: authApi.AccessToken) => void | undefined;
 };
 type OwnProps = navigationProps.NavigationProps<PrivacyPolicyRoute, TabsRoute>;
 
 type Props = StateProps & DispatchProps & OwnProps;
 
-const PrivacyPolicy = ({ navigation, accessToken, createUser }: Props) => {
+const PrivacyPolicy = ({ navigation, accessToken, login }: Props) => {
+  const [createUserRequest, createUser] = useRemoteData(accountApi.createUser);
   React.useEffect(() => {
-    if (accessToken.type === 'Ok') {
+    if (createUserRequest.type === 'Ok') {
+      login(createUserRequest.value);
+    }
+  }, [createUserRequest.type]);
+  React.useEffect(() => {
+    if (accessToken.type === 'Some') {
       navigateMain(navigation);
     }
   }, [accessToken]);
+
   const [isAgreed, setAgreed] = React.useState(false);
   const goBack = () => {
     navigation.goBack();
@@ -75,7 +84,7 @@ const PrivacyPolicy = ({ navigation, accessToken, createUser }: Props) => {
         <ErrorMessage
           style={styles.errorText}
           getMessageId={() => 'meta.error'}
-          data={accessToken}
+          data={createUserRequest}
         />
         <Button
           onPress={() => setAgreed(true)}
@@ -90,7 +99,7 @@ const PrivacyPolicy = ({ navigation, accessToken, createUser }: Props) => {
           messageId="onboarding.privacyPolicy.nextButton"
           badge={require('../images/arrow.svg')}
           disabled={!isAgreed}
-          loading={accessToken.type === 'Loading'}
+          loading={createUserRequest.type === 'Loading'}
         />
         <Button
           gradient={[colors.faintGray, colors.faintGray]}
@@ -139,8 +148,8 @@ export default ReactRedux.connect<StateProps, {}, OwnProps, state.AppState>(
     accessToken,
   }),
   (dispatch: redux.Dispatch<actions.Action>) => ({
-    createUser: (user: accountApi.NewUser) => {
-      dispatch(actions.creators.createUser([user]));
+    login: (token: authApi.AccessToken) => {
+      dispatch(actions.creators.login(token));
     },
   }),
 )(PrivacyPolicy);

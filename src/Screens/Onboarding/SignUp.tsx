@@ -4,9 +4,10 @@ import RN from 'react-native';
 import * as accountApi from '../../api/account';
 import * as authApi from '../../api/auth';
 
+import * as localization from '../../localization';
+import * as taggedUnion from '../../lib/tagged-union';
 import * as navigationProps from '../../lib/navigation-props';
 import useRemoteData from '../../lib/use-remote-data';
-import * as remoteData from '../../lib/remote-data';
 
 import OnboardingBackground from '../components/OnboardingBackground';
 import Card from '../components/Card';
@@ -55,12 +56,11 @@ const SignUp = ({ navigation }: Props) => {
     navigation.navigate('Onboarding/SignIn', {});
   };
 
-  const getErrorMessageId = () =>
-    remoteData.unwrapErr(
-      credentialsCheck,
-      ({ errorMessageId }) => errorMessageId,
-      'meta.blank',
-    );
+  const getErrorMessageId: () => localization.MessageId = () =>
+    taggedUnion.match(credentialsCheck, {
+      Err: ({ error: { errorMessageId } }) => errorMessageId,
+      default: () => localization.blank,
+    });
 
   return (
     <OnboardingBackground>

@@ -20,7 +20,7 @@ export const ok = result.ok;
 export type Ok<A> = result.Ok<A>;
 export const err = result.err;
 
-export type RemoteData<A, E> = result.Result<A, E> | Loading | NotAsked;
+export type RemoteData<A, E> = NotAsked | Loading | Err<E> | Ok<A>;
 
 export function fromResult<A, E>(a: result.Result<A, E>): RemoteData<A, E> {
   return a;
@@ -78,18 +78,6 @@ export function mapErr<A, E, F>(
   return bimap(remoteData, id, g);
 }
 
-export function unwrap<A, E, Output>(
-  remoteData: RemoteData<A, E>,
-  f: (v: A) => Output,
-  defaultValue: Output,
-): Output {
-  if (remoteData.type === 'Ok') {
-    return f(remoteData.value);
-  } else {
-    return defaultValue;
-  }
-}
-
 export function chain<A, E, Output>(
   remoteData: RemoteData<A, E>,
   f: (v: A) => Output,
@@ -117,36 +105,6 @@ export function chainErr<A, E, Output>(
       return remoteData;
     case 'Err':
       return f(remoteData.error);
-    default:
-      assertNever(remoteData);
-  }
-}
-
-export function unwrapErr<A, E, F>(
-  remoteData: RemoteData<A, E>,
-  g: (e: E) => F,
-  defaultValue: F,
-): F {
-  if (remoteData.type === 'Err') {
-    return g(remoteData.error);
-  } else {
-    return defaultValue;
-  }
-}
-
-export function unwrapBoth<A, E, Output>(
-  remoteData: RemoteData<A, E>,
-  f: (a: A) => Output,
-  g: (e: E) => Output,
-  defaultValue: Output,
-): Output {
-  switch (remoteData.type) {
-    case 'NotAsked':
-    case 'Loading':
-      return defaultValue;
-    case 'Err':
-    case 'Ok':
-      return result.fold(remoteData, f, g);
     default:
       assertNever(remoteData);
   }

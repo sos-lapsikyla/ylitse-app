@@ -1,69 +1,86 @@
 import * as reduxLoop from 'redux-loop';
 
+import assertNever from '../lib/assert-never';
+import * as taggedUnion from '../lib/tagged-union';
+import * as option from '../lib/option';
 import * as remoteData from '../lib/remote-data';
+import * as result from '../lib/result';
 import * as http from '../lib/http';
-import * as reduxHelpers from '../lib/redux-helpers';
+import * as tuple from '../lib/tuple';
+import * as f from '../lib/future';
 
-import * as accountApi from '../api/account';
 import * as authApi from '../api/auth';
 
 import * as actions from './actions';
 
-export type AccessToken = remoteData.RemoteData<authApi.AccessToken, http.Err>;
-export type State = { accessToken: AccessToken };
-export const initialState = remoteData.notAsked;
+type NextToken = Exclude<
+  remoteData.RemoteData<authApi.AccessToken, http.Err>,
+  remoteData.Ok<unknown>
+>;
+type TokenState = [authApi.AccessToken, NextToken];
+export type State = option.Option<TokenState>;
+export const initialState = option.none;
 
-const createUser = reduxHelpers.makeReducer(
-  accountApi.createUser,
-  actions.createUser,
-  'createUser',
-  'createUserCompleted',
-  'createUserReset',
-);
-
-const login = reduxHelpers.makeReducer(
-  authApi.login,
-  actions.login,
-  'login',
-  'loginCompleted',
-  'loginReset',
-);
-
-const refreshAccessToken: actions.Reducer<AccessToken> = (
+export const reducer: actions.Reducer<State> = (
   state = initialState,
   action,
 ) => {
-  switch (action.type) {
-    case 'refreshAccessToken':
-      return remoteData.chain(state, accessToken => {
-        if (accessToken.isRefreshing) {
-          return state;
-        }
-        return reduxLoop.loop(
-          remoteData.ok({ ...accessToken, isRefreshing: true }),
-          reduxLoop.Cmd.run(authApi.refreshAccessToken, {
-            args: [accessToken],
-            successActionCreator: actions.creators.refreshAccessTokenCompleted,
-          }),
-        );
-      });
-    case 'refreshAccessTokenCompleted':
-      return remoteData.map(
-        remoteData.append(state, action.payload),
-        ([_, token]) => ({
-          ...token,
-          isRefreshing: false,
-        }),
+  const matchAction = actions.match(state, action);
+  return taggedUnion.match(state, {
+    None: matchAction({
+      login: ({ payload }) => option.some([payload, remoteData.notAsked]),
+    }),
+    Some: ({ value: [currentToken, nextToken] }) => {
+      const [model, cmd] = reduxLoop.liftState(
+        tokenReducer(currentToken, nextToken, action),
       );
-    default:
-      return state;
-  }
+      const nextState =
+        model.type === 'Ok'
+          ? tuple.tuple(model.value, remoteData.notAsked)
+          : tuple.tuple(currentToken, model);
+      return reduxLoop.loop(option.some(nextState), cmd);
+    },
+  });
 };
 
-export const reducer = reduxLoop.reduceReducers<AccessToken, actions.Action>(
-  createUser,
-  login,
-  refreshAccessToken,
-);
-
-export const get = ({ accessToken }: State) => accessToken;
+function tokenReducer(
+  currentToken: authApi.AccessToken,
+  state: remoteData.RemoteData<authApi.AccessToken, http.Err>,
+  action: actions.Action,
+): actions.LS<remoteData.RemoteData<authApi.AccessToken, http.Err>> {
+  const matchAction = actions.match(state, action);
+  switch (state.type) {
+    case 'NotAsked':
+    case 'Err':
+      return matchAction({
+        refreshAccessToken: ({ payload: token }) =>
+          token.accessToken !== currentToken.accessToken
+            ? reduxLoop.loop(
+                state,
+                reduxLoop.Cmd.action(
+                  actions.creators.refreshAccessTokenCompleted(
+                    result.ok(currentToken),
+                  ),
+                ),
+              )
+            : reduxLoop.loop(
+                remoteData.loading,
+                reduxLoop.Cmd.run(
+                  f.lazy(authApi.refreshAccessToken, currentToken),
+                  {
+                    successActionCreator:
+                      actions.creators.refreshAccessTokenCompleted,
+                  },
+                ),
+              ),
+      });
+    case 'Loading':
+      return matchAction({
+        refreshAccessTokenCompleted: ({ payload }) => payload,
+      });
+    case 'Ok':
+      return state;
+    default:
+      return assertNever(state);
+  }
+}

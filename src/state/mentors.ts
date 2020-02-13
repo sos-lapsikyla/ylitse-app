@@ -6,17 +6,12 @@ import * as mentorsApi from '../api/mentors';
 
 import * as actions from './actions';
 
-export type Mentors = remoteData.RemoteData<
+export type State = remoteData.RemoteData<
   Map<string, mentorsApi.Mentor>,
   http.Err
 >;
-export type State = {
-  mentors: Mentors;
-};
 
 export const initialState = remoteData.notAsked;
-
-export const get = ({ mentors }: State) => mentors;
 
 export const reducer = reduxHelpers.makeReducer(
   mentorsApi.fetchMentors,

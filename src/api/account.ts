@@ -1,5 +1,6 @@
 import * as t from 'io-ts';
 
+import * as taggedUnion from '../lib/tagged-union';
 import * as http from '../lib/http';
 import * as result from '../lib/result';
 import * as f from '../lib/future';
@@ -106,15 +107,14 @@ export async function checkCredentials({
   if (userName.length > 30) return fail('onboarding.signUp.error.userNameLong');
   if (password.length < 5) return fail('onboarding.signUp.error.passwordShort');
   if (password.length > 30) return fail('onboarding.signUp.error.passwordLong');
-  return result.fold(
-    await isUserNameFree(userName),
-    isFree =>
+  return taggedUnion.match(await isUserNameFree(userName), {
+    Err: fail('onboarding.signUp.error.probablyNetwork'),
+    Ok: isFree =>
       isFree
         ? result.ok({
             userName,
             password,
           })
         : fail('onboarding.signUp.error.userNameTaken'),
-    () => fail('onboarding.signUp.error.probablyNetwork'),
-  );
+  });
 }

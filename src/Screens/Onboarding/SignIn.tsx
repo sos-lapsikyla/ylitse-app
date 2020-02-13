@@ -8,7 +8,7 @@ import * as actions from '../../state/actions';
 import * as authApi from '../../api/auth';
 
 import * as navigationProps from '../../lib/navigation-props';
-import * as remoteData from '../../lib/remote-data';
+import useRemoteData from '../../lib/use-remote-data';
 
 import OnboardingBackground from '../components/OnboardingBackground';
 import LoginCard from '../components/LoginCard';
@@ -25,14 +25,20 @@ type StateProps = {
   accessToken: state.AppState['accessToken'];
 };
 type DispatchProps = {
-  login: (credentials: authApi.Credentials) => void | undefined;
+  login: (token: authApi.AccessToken) => void | undefined;
 };
 type OwnProps = navigationProps.NavigationProps<SignInRoute, TabsRoute>;
 type Props = StateProps & DispatchProps & OwnProps;
 
 const SignIn = (props: Props) => {
+  const [loginRequest, login] = useRemoteData(authApi.login);
   React.useEffect(() => {
-    if (remoteData.isOk(props.accessToken)) {
+    if (loginRequest.type === 'Ok') {
+      props.login(loginRequest.value);
+    }
+  }, [loginRequest.type]);
+  React.useEffect(() => {
+    if (props.accessToken.type === 'Some') {
       navigateMain(props.navigation);
     }
   }, [props.accessToken]);
@@ -40,13 +46,13 @@ const SignIn = (props: Props) => {
     props.navigation.goBack();
   };
   const onLogin = (credentials: authApi.Credentials) => {
-    props.login(credentials);
+    login(credentials);
   };
   return (
     <OnboardingBackground>
       <LoginCard
         style={styles.card}
-        remoteAction={props.accessToken}
+        remoteAction={loginRequest}
         titleMessageId="onboarding.signIn.title"
         nextMessageId="onboarding.signIn.button"
         getErrorMessageId={() => 'onboarding.signIn.failure'}
@@ -70,8 +76,8 @@ export default ReactRedux.connect<
   ({ accessToken }) => ({ accessToken }),
 
   (dispatch: redux.Dispatch<actions.Action>) => ({
-    login: (credentials: authApi.Credentials) => {
-      dispatch(actions.creators.login([credentials]));
+    login: (token: authApi.AccessToken) => {
+      dispatch(actions.creators.login(token));
     },
   }),
 )(SignIn);
