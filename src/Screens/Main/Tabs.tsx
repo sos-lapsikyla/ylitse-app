@@ -22,9 +22,9 @@ type Screen = typeof BuddyList | typeof MentorList | typeof Settings;
 const routeConfig: {
   [name in RouteName]: Screen;
 } = {
-  'Main/Settings': Settings,
-  'Main/MentorList': MentorList,
   'Main/BuddyList': BuddyList,
+  'Main/MentorList': MentorList,
+  'Main/Settings': Settings,
 };
 
 const Main = reactNavigationTab.createBottomTabNavigator(routeConfig, {

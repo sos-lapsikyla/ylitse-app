@@ -12,6 +12,7 @@ import Tabs, { TabsRoute } from './Main/Tabs';
 import MentorCardExpanded, {
   MentorCardExpandedRoute,
 } from './Main/MentorCardExpanded';
+import Chat, { ChatRoute } from './Main/Chat';
 
 type RouteName = keyof (MentorListRoute &
   SignUpRoute &
@@ -20,7 +21,8 @@ type RouteName = keyof (MentorListRoute &
   PrivacyPolicyRoute &
   SignInRoute &
   TabsRoute &
-  MentorCardExpandedRoute);
+  MentorCardExpandedRoute &
+  ChatRoute);
 type Screen =
   | typeof MentorList
   | typeof SignUp
@@ -29,7 +31,8 @@ type Screen =
   | typeof PrivacyPolicy
   | typeof SignIn
   | typeof Tabs
-  | typeof MentorCardExpanded;
+  | typeof MentorCardExpanded
+  | typeof Chat;
 
 export type Route = keyof typeof routes;
 const routes: {
@@ -54,14 +57,17 @@ const routes: {
     screen: PrivacyPolicy,
   },
   'Main/Tabs': {
-    screen: Tabs,
+    screen: Chat,
   },
   'Main/MentorCardExpanded': {
     screen: MentorCardExpanded,
   },
+  'Main/Chat': {
+    screen: Chat,
+  },
 };
 
-const initialRouteName: RouteName = 'Onboarding/MentorList';
+const initialRouteName: RouteName = 'Onboarding/SignIn';
 const config = {
   initialRouteName,
   headerMode: 'none' as const,
