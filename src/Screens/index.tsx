@@ -57,7 +57,7 @@ const routes: {
     screen: PrivacyPolicy,
   },
   'Main/Tabs': {
-    screen: Chat,
+    screen: Tabs,
   },
   'Main/MentorCardExpanded': {
     screen: MentorCardExpanded,
@@ -67,7 +67,7 @@ const routes: {
   },
 };
 
-const initialRouteName: RouteName = 'Onboarding/SignIn';
+const initialRouteName: RouteName = 'Onboarding/MentorList';
 const config = {
   initialRouteName,
   headerMode: 'none' as const,

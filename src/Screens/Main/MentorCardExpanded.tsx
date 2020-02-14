@@ -13,13 +13,15 @@ import MentorSkills from '../components/MentorSkills';
 import Button from '../components/Button';
 import { gradients } from '../components/colors';
 
+import { ChatRoute } from './Chat';
+
 export type MentorCardExpandedRoute = {
   'Main/MentorCardExpanded': { mentor: mentorApi.Mentor };
 };
 
 type OwnProps = navigationProps.NavigationProps<
   MentorCardExpandedRoute,
-  MentorCardExpandedRoute
+  ChatRoute
 >;
 
 type Props = OwnProps;
@@ -28,6 +30,9 @@ const MentorCardExpanded = ({ navigation }: Props) => {
   const mentor = navigation.getParam('mentor');
   const goBack = () => {
     navigation.goBack();
+  };
+  const navigateToChat = () => {
+    navigation.navigate('Main/Chat', {});
   };
   return (
     <LinearGradient style={styles.container} colors={gradients.whitegray}>
@@ -47,7 +52,7 @@ const MentorCardExpanded = ({ navigation }: Props) => {
         <SafeAreaView style={styles.safeArea} forceInset={{ bottom: 'always' }}>
           <Button
             style={styles.button}
-            onPress={() => {}}
+            onPress={navigateToChat}
             messageId="main.mentorCardExpanded.button"
           />
         </SafeAreaView>
