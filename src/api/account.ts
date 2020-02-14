@@ -34,12 +34,12 @@ const createdUserAccount = t.strict({
   user: userType,
 });
 
-const accountUrl = `${config.baseUrl}accounts`;
 async function postAccount({
   userName,
   password,
   email,
 }: NewUser): http.Future<t.TypeOf<typeof createdUserAccount>> {
+  const url = `${config.baseUrl}/accounts`;
   const requestBody = {
     password,
     account: {
@@ -48,15 +48,15 @@ async function postAccount({
       email,
     },
   };
-  return http.post(accountUrl, requestBody, createdUserAccount);
+  return http.post(url, requestBody, createdUserAccount);
 }
 
-const USERS_URL = `${config.baseUrl}users`;
 async function putUser(
   token: authApi.AccessToken,
   user: User,
 ): http.Future<User> {
-  return http.put(`${USERS_URL}/${user.id}`, user, userType, {
+  const url = `${config.baseUrl}/users`;
+  return http.put(`${url}/${user.id}`, user, userType, {
     headers: authApi.authHeader(token),
   });
 }
@@ -83,10 +83,9 @@ export async function createUser(
   });
 }
 
-const SEARCH_URL = `${config.baseUrl}search?login_name=`;
 async function isUserNameFree(userName: string): http.Future<boolean> {
   return result.map(
-    await http.head(`${SEARCH_URL}${userName}`),
+    await http.head(`${config.baseUrl}/search?login_name=${userName}`),
     ({ status }) => status === 204,
   );
 }

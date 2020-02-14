@@ -23,14 +23,12 @@ const toMentor = ({ birth_year, display_name, ...props }: ApiMentor) => ({
   name: display_name,
 });
 
-const mentorsUrl = config.baseUrl + 'mentors';
 export async function fetchMentors(): http.Future<Map<string, Mentor>> {
-  return result.map(
-    await http.get(mentorsUrl, mentorListType),
-    ({ resources }) =>
-      resources.reduce((acc: Map<string, Mentor>, apiMentor: ApiMentor) => {
-        const mentor = toMentor(apiMentor);
-        return acc.set(mentor.id, mentor);
-      }, new Map()),
+  const url = `${config.baseUrl}/mentors`;
+  return result.map(await http.get(url, mentorListType), ({ resources }) =>
+    resources.reduce((acc: Map<string, Mentor>, apiMentor: ApiMentor) => {
+      const mentor = toMentor(apiMentor);
+      return acc.set(mentor.id, mentor);
+    }, new Map()),
   );
 }
