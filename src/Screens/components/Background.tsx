@@ -2,16 +2,13 @@ import React from 'react';
 import RN from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 
-import colors from './colors';
+import colors, { gradients } from './colors';
 
 interface Props extends RN.ViewProps {}
 
 const Background: React.FC<Props> = ({ children, ...ViewProps }) => (
   <RN.View style={styles.container} {...ViewProps}>
-    <LinearGradient
-      style={styles.blob}
-      colors={[colors.lightBlue, colors.darkBlue]}
-    />
+    <LinearGradient style={styles.blob} colors={gradients.blue} />
     <RN.View style={styles.filler} />
     <RN.View style={styles.child}>{children}</RN.View>
   </RN.View>

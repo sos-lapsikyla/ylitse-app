@@ -35,7 +35,7 @@ const BuddyButton = ({
     <Card style={[buddyButtonStyles.button, style]} {...viewProps}>
       <RN.TouchableOpacity style={buddyButtonStyles.content}>
         <RN.Text style={buddyButtonStyles.nameText}>{buddy.name}</RN.Text>
-        <LinearGradient style={buddyButtonStyles.blob} colors={gradients.pink}>
+        <LinearGradient style={buddyButtonStyles.blob} colors={gradients.green}>
           <RN.Image source={require('../images/balloon.svg')} />
         </LinearGradient>
       </RN.TouchableOpacity>
