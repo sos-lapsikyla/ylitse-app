@@ -30,7 +30,7 @@ const messages = [
   { key: '13', text: 'jooj juuuh joo', time: '12.15', align: 'right' },
   { key: '14', text: 'jooj juuuh joo', time: '12.15', align: 'left' },
   { key: '15', text: 'jooj juuuh joo', time: '13.15', align: 'left' },
-];
+] as const;
 
 type Message = {
   text: string;
