@@ -9,13 +9,13 @@ import * as authApi from './auth';
 
 type ApiBuddy = t.TypeOf<typeof buddyType>;
 const buddyType = t.strict({
-  account_id: t.string,
   display_name: t.string,
+  id: t.string,
 });
 
 export type Buddy = ReturnType<typeof toBuddy>;
-const toBuddy = ({ account_id, display_name }: ApiBuddy) => ({
-  userId: account_id,
+const toBuddy = ({ id, display_name }: ApiBuddy) => ({
+  userId: id,
   name: display_name,
 });
 

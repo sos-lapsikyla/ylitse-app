@@ -7,8 +7,6 @@ import * as navigationProps from '../../../lib/navigation-props';
 import * as http from '../../../lib/http';
 import * as remoteData from '../../../lib/remote-data';
 
-import * as buddyApi from '../../../api/buddies';
-
 import * as state from '../../../state';
 import * as selectors from '../../../state/selectors';
 import * as actions from '../../../state/actions';
@@ -29,16 +27,16 @@ export type BuddyListRoute = {
 };
 
 type StateProps = {
-  buddies: remoteData.RemoteData<buddyApi.Buddy[], http.Err>;
+  threads: remoteData.RemoteData<selectors.Thread[], http.Err>;
 };
 type DispatchProps = {
-  pollBuddies: () => void | undefined;
+  pollMessages: () => void | undefined;
 };
 
 type OwnProps = navigationProps.NavigationProps<BuddyListRoute, ChatRoute>;
 type Props = StateProps & DispatchProps & OwnProps;
 
-const BuddyList = ({ navigation, buddies, pollBuddies }: Props) => {
+const BuddyList = ({ navigation, threads, pollMessages }: Props) => {
   const onPress = () => {
     navigation.navigate('Main/Chat', {});
   };
@@ -49,18 +47,19 @@ const BuddyList = ({ navigation, buddies, pollBuddies }: Props) => {
       }
       gradient={gradients.pillBlue}
     >
-      <RemoteData data={buddies} fetchData={pollBuddies}>
+      <RemoteData data={threads} fetchData={pollMessages}>
         {value => (
           <RN.ScrollView
             style={styles.scrollView}
             contentContainerStyle={styles.scrollContent}
           >
-            {value.map(buddy => (
+            {value.map(thread => (
               <Button
-                key={buddy.userId}
+                key={thread.buddyId}
                 style={styles.button}
                 onPress={onPress}
-                buddy={buddy}
+                name={thread.name}
+                buddyId={thread.buddyId}
               />
             ))}
           </RN.ScrollView>
@@ -98,13 +97,13 @@ export default ReactRedux.connect<
 >(
   appState => {
     return {
-      buddies: selectors.getBuddies(appState),
+      threads: selectors.getThreads(appState),
     };
   },
   (dispatch: redux.Dispatch<actions.Action>) => ({
-    pollBuddies: () => {
+    pollMessages: () => {
       dispatch(
-        actions.creators.startPolling(actions.creators.fetchBuddies(), 3000),
+        actions.creators.startPolling(actions.creators.fetchMessages(), 3000),
       );
     },
   }),

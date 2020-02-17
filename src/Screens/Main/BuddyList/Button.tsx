@@ -1,23 +1,22 @@
 import React from 'react';
 import RN from 'react-native';
 
-import * as buddyApi from '../../../api/buddies';
-
 import LinearGradient from 'react-native-linear-gradient';
 import { gradients } from '../../components/colors';
 import Card from '../../components/Card';
 import fonts from '../../components/fonts';
 
 type Props = {
-  buddy: buddyApi.Buddy;
+  buddyId: string;
+  name: string;
   onPress: () => void | undefined;
 } & RN.ViewProps;
 
-const Button = ({ style, buddy, onPress, ...viewProps }: Props) => {
+const Button = ({ style, buddyId, name, onPress, ...viewProps }: Props) => {
   return (
     <Card style={[styles.button, style]} {...viewProps}>
       <RN.TouchableOpacity style={styles.content} onPress={onPress}>
-        <RN.Text style={styles.nameText}>{buddy.name}</RN.Text>
+        <RN.Text style={styles.nameText}>{name}</RN.Text>
         <LinearGradient style={styles.blob} colors={gradients.green}>
           <RN.Image source={require('../../images/balloon.svg')} />
         </LinearGradient>

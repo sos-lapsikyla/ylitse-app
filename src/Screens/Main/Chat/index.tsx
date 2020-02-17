@@ -1,8 +1,18 @@
 import React from 'react';
 import RN from 'react-native';
+import * as redux from 'redux';
+import * as ReactRedux from 'react-redux';
 import LinearGradient from 'react-native-linear-gradient';
 
+import * as http from '../../../lib/http';
+import * as remoteData from '../../../lib/remote-data';
+
+import * as selectors from '../../../state/selectors';
+import * as actions from '../../../state/actions';
+
 import * as navigationProps from '../../../lib/navigation-props';
+
+import * as messageApi from '../../../api/messages';
 
 import Title from './Title';
 import Input from './Input';
@@ -11,52 +21,40 @@ import Bubble from './Bubble';
 import { gradients } from '../../components/colors';
 
 export type ChatRoute = {
-  'Main/Chat': {};
+  'Main/Chat': { buddyId: string };
 };
 
-const messages = [
-  { key: '1', text: 'eka viesti', time: '12.15', align: 'left' },
-  { key: '2', text: 'jooj juuuh joo', time: '12.15', align: 'right' },
-  { key: '3', text: 'jooj juuuh joo', time: '12.15', align: 'left' },
-  { key: '4', text: 'jooj juuuh joo', time: '12.15', align: 'left' },
-  { key: '5', text: 'jooj juuuh joo', time: '12.15', align: 'right' },
-  { key: '6', text: 'eka viesti', time: '12.15', align: 'left' },
-  { key: '7', text: 'jooj juuuh joo', time: '12.15', align: 'right' },
-  { key: '8', text: 'jooj juuuh joo', time: '12.15', align: 'left' },
-  { key: '9', text: 'jooj juuuh joo', time: '12.15', align: 'left' },
-  { key: '10', text: 'jooj juuuh joo', time: '12.15', align: 'right' },
-  { key: '11', text: 'vika viesti', time: '12.15', align: 'left' },
-  { key: '12', text: 'eka viesti', time: '12.15', align: 'left' },
-  { key: '13', text: 'jooj juuuh joo', time: '12.15', align: 'right' },
-  { key: '14', text: 'jooj juuuh joo', time: '12.15', align: 'left' },
-  { key: '15', text: 'jooj juuuh joo', time: '13.15', align: 'left' },
-] as const;
-
-type Message = {
-  text: string;
-  time: string;
-  align: 'left' | 'right';
-};
-
-const renderItem = ({ item }: { item: Message }) => {
+const renderItem = ({ item }: { item: messageApi.Message }) => {
   return <Bubble {...item} />;
 };
 
-type NavProps = navigationProps.NavigationProps<ChatRoute, ChatRoute>;
+type StateProps = {
+  threads: remoteData.RemoteData<selectors.Thread[], http.Err>;
+};
+type DispatchProps = {
+  pollMessages: () => void | undefined;
+};
 
-type Props = NavProps;
+type OwnProps = navigationProps.NavigationProps<ChatRoute, ChatRoute>;
 
-const Chat = ({ navigation }: Props) => {
+type Props = NavProps & DispatchProps & StateProps;
+
+const Chat = ({ navigation, threads }: Props) => {
   const goBack = () => {
     navigation.goBack();
   };
+
+  const buddyId = navigation.getParam('buddyId');
+
+
+  const thread = threads[buddyId];
 
   const keyboardViewBehaviour =
     RN.Platform.OS === 'ios' ? 'padding' : undefined;
 
   return (
     <LinearGradient style={styles.screen} colors={gradients.whitegray}>
-      <Title style={styles.title} onPress={goBack} name={'Marjaleena'} />
+      <Title style={styles.title} onPress={goBack} name={buddyId} />
       <RN.KeyboardAvoidingView
         style={styles.container}
         behavior={keyboardViewBehaviour}
@@ -87,4 +85,22 @@ const styles = RN.StyleSheet.create({
   },
 });
 
-export default Chat;
+export default ReactRedux.connect<
+  StateProps,
+  DispatchProps,
+  OwnProps,
+  state.AppState
+>(
+  appState => {
+    return {
+      threads: selectors.getThreads(appState),
+    };
+  },
+  (dispatch: redux.Dispatch<actions.Action>) => ({
+    pollMessages: () => {
+      dispatch(
+        actions.creators.startPolling(actions.creators.fetchMessages(), 3000),
+      );
+    },
+  }),
+(Chat);

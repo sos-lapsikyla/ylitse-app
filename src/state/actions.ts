@@ -8,6 +8,7 @@ import * as result from '../lib/result';
 import * as mentorApi from '../api/mentors';
 import * as authApi from '../api/auth';
 import * as buddyApi from '../api/buddies';
+import * as messageApi from '../api/messages';
 
 export const mentors = reduxHelpers.makeActionCreators(
   mentorApi.fetchMentors,
@@ -26,10 +27,17 @@ const accessToken = {
 };
 
 const buddies = {
-  ...actionType.make('fetchBuddies'),
   ...actionType.make(
     'fetchBuddiesCompleted',
     (response: result.Result<buddyApi.Buddy[], http.Err>) => response,
+  ),
+};
+
+const messages = {
+  ...actionType.make('fetchMessages'),
+  ...actionType.make(
+    'fetchMessagesCompleted',
+    (response: result.Result<messageApi.Threads, http.Err>) => response,
   ),
 };
 
@@ -60,6 +68,7 @@ export const _creators = {
   ...mentors,
   ...accessToken,
   ...buddies,
+  ...messages,
 };
 
 export type Action = SchedulerAction | NonSchedulerAction;

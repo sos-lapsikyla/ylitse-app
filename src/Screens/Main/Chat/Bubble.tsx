@@ -4,21 +4,25 @@ import RN from 'react-native';
 import colors from '../../components/colors';
 import fonts from '../../components/fonts';
 
-type Props = {
-  text: string;
-  time: string;
-  align: 'left' | 'right';
-};
+import * as messageApi from '../../../api/messages';
 
-const Message = ({ text, time, align }: Props) => {
-  const bubbleStyle = align === 'left' ? styles.leftBubble : styles.rightBubble;
+type Props = Pick<messageApi.Message, 'content' | 'sentTime' | 'type'>;
+
+const Message = ({ content, sentTime, type }: Props) => {
+  const bubbleStyle =
+    type === 'Received' ? styles.leftBubble : styles.rightBubble;
+
+  const date = new Date(sentTime);
+  const hours = date.getHours();
+  const minutes = date.getMinutes();
+  const timeText = `${hours}${minutes}`;
   return (
     <RN.View style={[bubbleStyle, styles.bubble]}>
       <RN.View>
-        <RN.Text style={styles.text}>{text}</RN.Text>
+        <RN.Text style={styles.text}>{content}</RN.Text>
       </RN.View>
 
-      <RN.Text style={styles.timeText}>{time}</RN.Text>
+      <RN.Text style={styles.timeText}>{timeText}</RN.Text>
     </RN.View>
   );
 };

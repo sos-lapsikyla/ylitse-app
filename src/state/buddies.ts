@@ -1,7 +1,6 @@
 import * as reduxLoop from 'redux-loop';
 
-import * as authApi from '../api/auth';
-import * as buddyApi from '../api/buddies';
+import assertNever from '../lib/assert-never';
 import * as http from '../lib/http';
 import * as retryable from '../lib/remote-data-retryable';
 import * as remoteData from '../lib/remote-data';
@@ -10,7 +9,11 @@ import * as result from '../lib/result';
 import * as taggedUnion from '../lib/tagged-union';
 import * as tuple from '../lib/tuple';
 
+import * as authApi from '../api/auth';
+import * as buddyApi from '../api/buddies';
+
 import * as actions from './actions';
+
 export type State = retryable.Retryable<
   [buddyApi.Buddy[], Exclude<State, remoteData.Ok<unknown>>],
   http.Err
@@ -24,10 +27,27 @@ const identity = <A>(a: A) => a;
 export const reducer = (token: authApi.AccessToken) => (
   state: State = initialState,
   action: actions.Action,
-) => _reducer(token, state, action);
+) => _reducer({ accessToken: token, buddies: state }, state, action);
+
+type Env = {
+  accessToken: authApi.AccessToken;
+  buddies: State;
+};
+
+/*
+                Ok
+                Ok: ({ value: threads }) => {
+
+              if (env.buddies.type !== 'Ok') return state;
+              const [ currentBuddies ] = env.buddies.value;
+              if (currentBuddies.every(buddy => buddy.userId in threads)) {
+                return state;
+              }
+              return toFetching(env.accessToken, remoteData.loading);
+*/
 
 export function _reducer(
-  accessToken: authApi.AccessToken,
+  env: Env,
   state: State = initialState,
   action: actions.Action,
 ): LoopState {
@@ -36,7 +56,21 @@ export function _reducer(
     case 'NotAsked':
     case 'Err':
       return matchAction({
-        fetchBuddies: () => toFetching(accessToken, remoteData.loading),
+        fetchMessagesCompleted: ({ payload }) =>
+          taggedUnion.match(payload, {
+            Ok: ({ value: threads }) => {
+              if (
+                env.buddies.type !== 'Ok' ||
+                tuple
+                  .fst(env.buddies.value)
+                  .some(buddy => !(buddy.userId in threads))
+              ) {
+                return toFetching(env.accessToken, remoteData.loading);
+              }
+              return state;
+            },
+            Err: state,
+          }),
       });
     case 'Loading':
       return matchAction({
@@ -65,7 +99,7 @@ export function _reducer(
     case 'Ok':
       const [buddies, request] = state.value;
       const [nextBuddies, cmd] = reduxLoop.liftState(
-        _reducer(accessToken, request, action),
+        _reducer({ ...env, buddies: state }, request, action),
       );
       const nextState: State =
         nextBuddies.type === 'Ok'
@@ -73,7 +107,7 @@ export function _reducer(
           : remoteData.ok(tuple.tuple(buddies, nextBuddies));
       return reduxLoop.loop(nextState, cmd);
     default:
-      return state;
+      return assertNever(state);
   }
 }
 
