@@ -18,3 +18,7 @@ export function identityObject<K extends string>(
     {},
   ) as IdentityObject<K>;
 }
+
+export type NonTotal<A> = Partial<{
+  [k: string]: A;
+}>;

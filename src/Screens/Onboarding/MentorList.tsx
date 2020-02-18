@@ -1,13 +1,8 @@
 import React from 'react';
 import RN from 'react-native';
-import * as redux from 'redux';
-import * as ReactRedux from 'react-redux';
 import { SafeAreaView } from 'react-navigation';
 
 import * as navigationProps from '../../lib/navigation-props';
-import * as remoteData from '../../lib/remote-data';
-import * as state from '../../state';
-import * as actions from '../../state/actions';
 
 import MentorListComponent from '../components/MentorList';
 import Background from '../components/Background';
@@ -24,14 +19,7 @@ export type MentorListRoute = {
   'Onboarding/MentorList': {};
 };
 
-type StateProps = {
-  mentors: state.AppState['mentors'];
-};
-type DispatchProps = {
-  fetchMentors: () => void | undefined;
-};
-type OwnProps = navigationProps.NavigationProps<MentorListRoute, SignUpRoute>;
-type Props = StateProps & DispatchProps & OwnProps;
+type Props = navigationProps.NavigationProps<MentorListRoute, SignUpRoute>;
 
 const MentorList = (props: Props) => {
   const navigateNext = () => {
@@ -45,10 +33,7 @@ const MentorList = (props: Props) => {
       >
         <Message style={styles.title1} id="onboarding.mentorlist.upperTitle" />
         <Message style={styles.title2} id="onboarding.mentorlist.lowerTitle" />
-        <MentorListComponent
-          mentors={props.mentors}
-          fetchMentors={props.fetchMentors}
-        />
+        <MentorListComponent />
         <RN.View style={styles.bottom}>
           <Button
             style={styles.button}
@@ -56,7 +41,6 @@ const MentorList = (props: Props) => {
             messageStyle={styles.buttonMessage}
             messageId="onboarding.mentorlist.start"
             badge={require('../images/arrow.svg')}
-            disabled={!remoteData.isOk(props.mentors)}
           />
           <CreatedBySosBanner style={styles.banner} />
         </RN.View>
@@ -98,17 +82,4 @@ const styles = RN.StyleSheet.create({
   },
 });
 
-export default ReactRedux.connect<
-  StateProps,
-  DispatchProps,
-  OwnProps,
-  state.AppState
->(
-  ({ mentors }) => ({ mentors }),
-
-  (dispatch: redux.Dispatch<actions.Action>) => ({
-    fetchMentors: () => {
-      dispatch(actions.creators.fetchMentors([]));
-    },
-  }),
-)(MentorList);
+export default MentorList;

@@ -6,6 +6,8 @@ import * as retryable from '../lib/remote-data-retryable';
 import * as remoteData from '../lib/remote-data';
 import * as future from '../lib/future';
 import * as result from '../lib/result';
+import * as record from '../lib/record';
+import * as array from '../lib/array';
 import * as taggedUnion from '../lib/tagged-union';
 import * as tuple from '../lib/tuple';
 
@@ -15,7 +17,7 @@ import * as buddyApi from '../api/buddies';
 import * as actions from './actions';
 
 export type State = retryable.Retryable<
-  [buddyApi.Buddy[], Exclude<State, remoteData.Ok<unknown>>],
+  [record.NonTotal<buddyApi.Buddy>, Exclude<State, remoteData.Ok<unknown>>],
   http.Err
 >;
 export type LoopState = actions.LS<State>;
@@ -27,24 +29,12 @@ const identity = <A>(a: A) => a;
 export const reducer = (token: authApi.AccessToken) => (
   state: State = initialState,
   action: actions.Action,
-) => _reducer({ accessToken: token, buddies: state }, state, action);
+) => _reducer({ accessToken: token }, state, action);
 
 type Env = {
   accessToken: authApi.AccessToken;
-  buddies: State;
+  buddies?: record.NonTotal<buddyApi.Buddy>;
 };
-
-/*
-                Ok
-                Ok: ({ value: threads }) => {
-
-              if (env.buddies.type !== 'Ok') return state;
-              const [ currentBuddies ] = env.buddies.value;
-              if (currentBuddies.every(buddy => buddy.userId in threads)) {
-                return state;
-              }
-              return toFetching(env.accessToken, remoteData.loading);
-*/
 
 export function _reducer(
   env: Env,
@@ -59,15 +49,14 @@ export function _reducer(
         fetchMessagesCompleted: ({ payload }) =>
           taggedUnion.match(payload, {
             Ok: ({ value: threads }) => {
-              if (
-                env.buddies.type !== 'Ok' ||
-                tuple
-                  .fst(env.buddies.value)
-                  .some(buddy => !(buddy.userId in threads))
-              ) {
-                return toFetching(env.accessToken, remoteData.loading);
-              }
-              return state;
+              const isFetchRequired =
+                !env.buddies ||
+                array
+                  .fromNonTotalRecord(env.buddies)
+                  .some(buddy => !(buddy.buddyId in threads));
+              return isFetchRequired
+                ? toFetching(env.accessToken, remoteData.loading)
+                : state;
             },
             Err: state,
           }),
@@ -99,7 +88,7 @@ export function _reducer(
     case 'Ok':
       const [buddies, request] = state.value;
       const [nextBuddies, cmd] = reduxLoop.liftState(
-        _reducer({ ...env, buddies: state }, request, action),
+        _reducer({ ...env, buddies }, request, action),
       );
       const nextState: State =
         nextBuddies.type === 'Ok'
@@ -123,7 +112,9 @@ function toFetching(
   );
 }
 
-function toOk({ value: buddies }: result.Ok<buddyApi.Buddy[]>): LoopState {
+function toOk({
+  value: buddies,
+}: result.Ok<record.NonTotal<buddyApi.Buddy>>): LoopState {
   return remoteData.ok([buddies, remoteData.notAsked]);
 }
 

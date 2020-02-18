@@ -1,21 +1,26 @@
 import React from 'react';
 import RN from 'react-native';
 import { SafeAreaView } from 'react-navigation';
-// import * as redux from 'redux';
-// import * as ReactRedux from 'react-redux';
+import * as ReactRedux from 'react-redux';
 import LinearGradient from 'react-native-linear-gradient';
 
 import colors, { gradients } from '../../components/colors';
 import { cardBorderRadius } from '../../components/Card';
 import fonts from '../../components/fonts';
+import * as selectors from '../../../state/selectors';
 
-type TitleProps = {
-  style?: RN.StyleProp<RN.ViewStyle>;
-  onPress: () => void | undefined;
+type StateProps = {
   name: string;
 };
+type DispatchProps = {};
+type OwnProps = {
+  style?: RN.StyleProp<RN.ViewStyle>;
+  onPress: () => void | undefined;
+  buddyId: string;
+};
+type Props = OwnProps & DispatchProps & StateProps;
 
-const Title: React.FC<TitleProps> = ({ style, onPress, name }) => {
+const Title: React.FC<Props> = ({ style, onPress, name }) => {
   const gradientMap: { [i: number]: string[] } = {
     0: gradients.green,
     1: gradients.red,
@@ -79,4 +84,11 @@ const styles = RN.StyleSheet.create({
   },
 });
 
-export default Title;
+export default ReactRedux.connect<
+  StateProps,
+  DispatchProps,
+  OwnProps,
+  selectors.AppState
+>(({ mentors, buddies }, { buddyId }) => {
+  return { name: selectors.getBuddyName(buddyId, buddies, mentors) };
+})(Title);

@@ -3,8 +3,7 @@ import * as reduxLoop from 'redux-loop';
 import * as taggedUnion from '../lib/tagged-union';
 import * as reduxHelpers from '../lib/redux-helpers';
 import * as actionType from '../lib/action-type';
-import * as http from '../lib/http';
-import * as result from '../lib/result';
+import * as future from '../lib/future';
 import * as mentorApi from '../api/mentors';
 import * as authApi from '../api/auth';
 import * as buddyApi from '../api/buddies';
@@ -22,14 +21,17 @@ const accessToken = {
   ...actionType.make('refreshAccessToken'),
   ...actionType.make(
     'refreshAccessTokenCompleted',
-    (response: result.Result<authApi.AccessToken, http.Err>) => response,
+    (
+      response: future.ToResult<ReturnType<typeof authApi.refreshAccessToken>>,
+    ) => response,
   ),
 };
 
 const buddies = {
   ...actionType.make(
     'fetchBuddiesCompleted',
-    (response: result.Result<buddyApi.Buddy[], http.Err>) => response,
+    (response: future.ToResult<ReturnType<typeof buddyApi.fetchBuddies>>) =>
+      response,
   ),
 };
 
@@ -37,7 +39,8 @@ const messages = {
   ...actionType.make('fetchMessages'),
   ...actionType.make(
     'fetchMessagesCompleted',
-    (response: result.Result<messageApi.Threads, http.Err>) => response,
+    (response: future.ToResult<ReturnType<typeof messageApi.fetchMessages>>) =>
+      response,
   ),
 };
 

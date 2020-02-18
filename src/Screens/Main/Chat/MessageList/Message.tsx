@@ -1,10 +1,10 @@
 import React from 'react';
 import RN from 'react-native';
 
-import colors from '../../components/colors';
-import fonts from '../../components/fonts';
+import colors from '../../../components/colors';
+import fonts from '../../../components/fonts';
 
-import * as messageApi from '../../../api/messages';
+import * as messageApi from '../../../../api/messages';
 
 type Props = Pick<messageApi.Message, 'content' | 'sentTime' | 'type'>;
 

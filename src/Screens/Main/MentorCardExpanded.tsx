@@ -32,7 +32,7 @@ const MentorCardExpanded = ({ navigation }: Props) => {
     navigation.goBack();
   };
   const navigateToChat = () => {
-    navigation.navigate('Main/Chat', {});
+    navigation.navigate('Main/Chat', { buddyId: mentor.buddyId });
   };
   return (
     <LinearGradient style={styles.container} colors={gradients.whitegray}>

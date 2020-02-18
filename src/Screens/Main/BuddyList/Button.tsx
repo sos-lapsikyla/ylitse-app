@@ -9,13 +9,14 @@ import fonts from '../../components/fonts';
 type Props = {
   buddyId: string;
   name: string;
-  onPress: () => void | undefined;
+  onPress: (buddyId: string) => void | undefined;
 } & RN.ViewProps;
 
 const Button = ({ style, buddyId, name, onPress, ...viewProps }: Props) => {
+  const onPressBuddy = () => onPress(buddyId);
   return (
     <Card style={[styles.button, style]} {...viewProps}>
-      <RN.TouchableOpacity style={styles.content} onPress={onPress}>
+      <RN.TouchableOpacity style={styles.content} onPress={onPressBuddy}>
         <RN.Text style={styles.nameText}>{name}</RN.Text>
         <LinearGradient style={styles.blob} colors={gradients.green}>
           <RN.Image source={require('../../images/balloon.svg')} />

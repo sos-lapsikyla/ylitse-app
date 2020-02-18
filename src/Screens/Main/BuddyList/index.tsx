@@ -7,6 +7,8 @@ import * as navigationProps from '../../../lib/navigation-props';
 import * as http from '../../../lib/http';
 import * as remoteData from '../../../lib/remote-data';
 
+import * as buddyApi from '../../../api/buddies';
+
 import * as state from '../../../state';
 import * as selectors from '../../../state/selectors';
 import * as actions from '../../../state/actions';
@@ -27,7 +29,7 @@ export type BuddyListRoute = {
 };
 
 type StateProps = {
-  threads: remoteData.RemoteData<selectors.Thread[], http.Err>;
+  chatList: remoteData.RemoteData<buddyApi.Buddy[], http.Err>;
 };
 type DispatchProps = {
   pollMessages: () => void | undefined;
@@ -36,9 +38,9 @@ type DispatchProps = {
 type OwnProps = navigationProps.NavigationProps<BuddyListRoute, ChatRoute>;
 type Props = StateProps & DispatchProps & OwnProps;
 
-const BuddyList = ({ navigation, threads, pollMessages }: Props) => {
-  const onPress = () => {
-    navigation.navigate('Main/Chat', {});
+const BuddyList = ({ navigation, chatList, pollMessages }: Props) => {
+  const onPress = (buddyId: string) => {
+    navigation.navigate('Main/Chat', { buddyId });
   };
   return (
     <TitledContainer
@@ -47,7 +49,7 @@ const BuddyList = ({ navigation, threads, pollMessages }: Props) => {
       }
       gradient={gradients.pillBlue}
     >
-      <RemoteData data={threads} fetchData={pollMessages}>
+      <RemoteData data={chatList} fetchData={pollMessages}>
         {value => (
           <RN.ScrollView
             style={styles.scrollView}
@@ -97,7 +99,7 @@ export default ReactRedux.connect<
 >(
   appState => {
     return {
-      threads: selectors.getThreads(appState),
+      chatList: selectors.getChatList(appState.buddies),
     };
   },
   (dispatch: redux.Dispatch<actions.Action>) => ({
