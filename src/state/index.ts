@@ -9,9 +9,9 @@ import * as buddies from './buddies';
 import * as messages from './messages';
 import * as mentors from './mentors';
 import * as scheduler from './scheduler';
-import * as selectors from './selectors';
+import * as model from './model';
 
-export type AppState = selectors.AppState;
+export type AppState = model.AppState;
 
 export const initialState: AppState = {
   accessToken: accessToken.initialState,

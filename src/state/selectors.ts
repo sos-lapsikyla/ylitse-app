@@ -9,20 +9,7 @@ import * as array from '../lib/array';
 import * as messageApi from '../api/messages';
 import * as mentorApi from '../api/mentors';
 
-import * as accessTokenState from './accessToken';
-import * as buddiesState from './buddies';
-import * as scheduler from './scheduler';
-import * as mentorsState from './mentors';
-import * as messagesState from './messages';
-
-export type AppState = {
-  scheduler: scheduler.State;
-
-  accessToken: accessTokenState.State;
-  buddies: buddiesState.State;
-  mentors: mentorsState.State;
-  messages: messagesState.State;
-};
+import { AppState } from './model';
 
 export function getMentors(
   mentors: AppState['mentors'],
@@ -42,8 +29,8 @@ export const fromRetryable = <A, E>(
 
 export const getBuddyName = (
   buddyId: string,
-  buddyState: buddiesState.State,
-  mentorState: mentorsState.State,
+  buddyState: AppState['buddies'],
+  mentorState: AppState['mentors'],
 ) => {
   const both = remoteData.append(fromRetryable(buddyState), mentorState);
   return taggedUnion.match(both, {

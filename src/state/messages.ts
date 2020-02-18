@@ -13,20 +13,13 @@ import * as authApi from '../api/auth';
 import * as messageApi from '../api/messages';
 
 import * as actions from './actions';
-
-/*
- * Buddies
- * { [buddyId]: displayName }
- */
+import * as model from './model';
 
 export type Env = {
   accessToken: authApi.AccessToken;
 };
 
-export type State = retryable.Retryable<
-  [messageApi.Threads, Exclude<State, remoteData.Ok<unknown>>],
-  http.Err
->;
+export type State = model.AppState['messages'];
 export type LoopState = actions.LS<State>;
 export const initialState = remoteData.notAsked;
 

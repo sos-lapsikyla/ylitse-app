@@ -8,6 +8,7 @@ import * as messageApi from '../../../../api/messages';
 
 import Message from './Message';
 
+import * as state from '../../../../state';
 import * as actions from '../../../../state/actions';
 import * as selectors from '../../../../state/selectors';
 
@@ -46,7 +47,7 @@ export default ReactRedux.connect<
   StateProps,
   DispatchProps,
   OwnProps,
-  selectors.AppState
+  state.AppState
 >(
   ({ messages }, { buddyId }) => {
     return { messages: selectors.getMessages(messages, buddyId) };
