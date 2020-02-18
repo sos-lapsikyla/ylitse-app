@@ -19,6 +19,7 @@ export const initialState: AppState = {
   buddies: buddies.initialState,
   messages: messages.initialState,
   scheduler: scheduler.initialState,
+  sendMessage: {},
 };
 
 function reducer(state: AppState = initialState, action: actions.Action) {
@@ -56,6 +57,7 @@ function reducer(state: AppState = initialState, action: actions.Action) {
       mentors: mentorsModel,
       buddies: buddiesModel,
       messages: messagesModel,
+      sendMessage: {},
     },
     reduxLoop.Cmd.list([
       tokenCmd,

@@ -9,6 +9,10 @@ import * as authApi from '../api/auth';
 import * as buddyApi from '../api/buddies';
 import * as messageApi from '../api/messages';
 
+function id<A>(): (a: A) => A {
+  return a => a;
+}
+
 export const mentors = reduxHelpers.makeActionCreators(
   mentorApi.fetchMentors,
   'fetchMentors',
@@ -17,21 +21,18 @@ export const mentors = reduxHelpers.makeActionCreators(
 );
 
 const accessToken = {
-  ...actionType.make('login', (token: authApi.AccessToken) => token),
+  ...actionType.make('login', id<authApi.AccessToken>()),
   ...actionType.make('refreshAccessToken'),
   ...actionType.make(
     'refreshAccessTokenCompleted',
-    (
-      response: future.ToResult<ReturnType<typeof authApi.refreshAccessToken>>,
-    ) => response,
+    id<future.ToResult<ReturnType<typeof authApi.refreshAccessToken>>>(),
   ),
 };
 
 const buddies = {
   ...actionType.make(
     'fetchBuddiesCompleted',
-    (response: future.ToResult<ReturnType<typeof buddyApi.fetchBuddies>>) =>
-      response,
+    id<future.ToResult<ReturnType<typeof buddyApi.fetchBuddies>>>(),
   ),
 };
 
@@ -39,8 +40,18 @@ const messages = {
   ...actionType.make('fetchMessages'),
   ...actionType.make(
     'fetchMessagesCompleted',
-    (response: future.ToResult<ReturnType<typeof messageApi.fetchMessages>>) =>
-      response,
+    id<future.ToResult<ReturnType<typeof messageApi.fetchMessages>>>(),
+  ),
+};
+
+const sendMessage = {
+  ...actionType.make('sendMessage', id<messageApi.SendMessageParams>()),
+  ...actionType.make(
+    'sendMessageCompleted',
+    (
+      buddyId: string,
+      response: future.ToResult<ReturnType<typeof messageApi.sendMessage>>,
+    ) => ({ buddyId, response }),
   ),
 };
 
@@ -72,6 +83,7 @@ export const _creators = {
   ...accessToken,
   ...buddies,
   ...messages,
+  ...sendMessage,
 };
 
 export type Action = SchedulerAction | NonSchedulerAction;

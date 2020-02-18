@@ -40,4 +40,5 @@ export type AppState = {
   buddies: Pollable<record.NonTotal<buddyApi.Buddy>>;
   mentors: remoteData.RemoteData<record.NonTotal<mentorsApi.Mentor>, http.Err>;
   messages: Pollable<messageApi.Threads>;
+  sendMessage: record.NonTotal<retryable.Retryable<undefined, http.Err>>;
 };

@@ -65,6 +65,26 @@ export async function fetchMessages(
   return result.ok(threads);
 }
 
+export type SendMessageParams = {
+  buddyId: string;
+  content: string;
+};
+
+export async function sendMessage(
+  accessToken: authApi.AccessToken,
+  params: SendMessageParams,
+) {
+  const url = `${config.baseUrl}/users/${accessToken.userId}/messages`;
+  const message = {
+    sender_id: accessToken.userId,
+    recipient_id: params.buddyId,
+    content: params.content,
+    opened: false,
+  };
+  const response = await http.post(url, message, t.unknown);
+  return result.map(response, _ => undefined);
+}
+
 export type Threads = Partial<{
   [buddyId: string]: Thread;
 }>;
