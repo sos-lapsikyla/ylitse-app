@@ -1,19 +1,11 @@
 import * as reduxLoop from 'redux-loop';
 
-import * as taggedUnion from '../lib/tagged-union';
 import * as future from '../lib/future';
 
 import * as actions from './actions';
+import * as model from './model';
 
-export type State = Partial<
-  {
-    [K in actions.Action['type']]: {
-      action: taggedUnion.Pick<actions.Action, K>;
-      delay: number;
-      isLooping: boolean;
-    };
-  }
->;
+export type State = model.AppState['scheduler'];
 export const initialState: State = {};
 
 export function reducer(state: State = initialState, action: actions.Action) {

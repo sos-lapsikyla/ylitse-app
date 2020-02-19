@@ -15,11 +15,9 @@ import * as authApi from '../api/auth';
 import * as buddyApi from '../api/buddies';
 
 import * as actions from './actions';
+import * as model from './model';
 
-export type State = retryable.Retryable<
-  [record.NonTotal<buddyApi.Buddy>, Exclude<State, remoteData.Ok<unknown>>],
-  http.Err
->;
+export type State = model.AppState['buddies'];
 export type LoopState = actions.LS<State>;
 
 export const initialState = remoteData.notAsked;

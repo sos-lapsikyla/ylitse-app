@@ -4,10 +4,12 @@ import { SafeAreaView } from 'react-navigation';
 import * as ReactRedux from 'react-redux';
 import LinearGradient from 'react-native-linear-gradient';
 
+import * as state from '../../../state';
+import * as selectors from '../../../state/selectors';
+
 import colors, { gradients } from '../../components/colors';
 import { cardBorderRadius } from '../../components/Card';
 import fonts from '../../components/fonts';
-import * as selectors from '../../../state/selectors';
 
 type StateProps = {
   name: string;
@@ -88,7 +90,7 @@ export default ReactRedux.connect<
   StateProps,
   DispatchProps,
   OwnProps,
-  selectors.AppState
+  state.AppState
 >(({ mentors, buddies }, { buddyId }) => {
   return { name: selectors.getBuddyName(buddyId, buddies, mentors) };
 })(Title);

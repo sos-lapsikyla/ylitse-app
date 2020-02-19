@@ -11,13 +11,10 @@ import * as f from '../lib/future';
 import * as authApi from '../api/auth';
 
 import * as actions from './actions';
+import { AppState } from './model';
 
-type NextToken = Exclude<
-  remoteData.RemoteData<authApi.AccessToken, http.Err>,
-  remoteData.Ok<unknown>
->;
-type TokenState = [authApi.AccessToken, NextToken];
-export type State = option.Option<TokenState>;
+export type State = AppState['accessToken'];
+
 export const initialState = option.none;
 
 export const reducer: actions.Reducer<State> = (
