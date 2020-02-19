@@ -1,3 +1,4 @@
+/*
 import * as reduxLoop from 'redux-loop';
 
 import * as future from '../lib/future';
@@ -17,7 +18,7 @@ export type Env = {
 };
 
 export type State = model.AppState['sendMessage'];
-
+/*
 export const reducer = (env: Env) => (state: State, action: actions.Action) => {
   switch (action.type) {
     case 'sendMessage':
@@ -75,3 +76,4 @@ function _reducer(
       return state;
   }
 }
+*/

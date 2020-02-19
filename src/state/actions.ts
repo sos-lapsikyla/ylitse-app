@@ -9,6 +9,8 @@ import * as authApi from '../api/auth';
 import * as buddyApi from '../api/buddies';
 import * as messageApi from '../api/messages';
 
+import { Env } from './env';
+
 function id<A>(): (a: A) => A {
   return a => a;
 }
@@ -46,13 +48,12 @@ const messages = {
 
 const sendMessage = {
   ...actionType.make('sendMessage', id<messageApi.SendMessageParams>()),
-  ...actionType.make(
-    'sendMessageCompleted',
-    (
-      buddyId: string,
-      response: future.ToResult<ReturnType<typeof messageApi.sendMessage>>,
-    ) => ({ buddyId, response }),
-  ),
+  sendMessageCompleted: (buddyId: string) => (
+    response: future.ToResult<ReturnType<typeof messageApi.sendMessage>>,
+  ) => ({
+    type: 'sendMessageCompleted' as const,
+    payload: { buddyId, response },
+  }),
 };
 
 export type SchedulerAction = actionType.ActionsUnion<
@@ -71,6 +72,40 @@ const scheduler = {
   ...actionType.make(
     'pollComplete',
     (actionName: NonSchedulerAction['type']) => actionName,
+  ),
+};
+
+export type FinalReturn<F> = F extends (...args: any[]) => infer R
+  ? R extends (...args: any[]) => infer S
+    ? S
+    : R
+  : never;
+
+export type MiddleParameters<F> = F extends (...args: any[]) => infer R
+  ? R extends (...args: infer A) => any
+    ? A
+    : never
+  : never;
+
+type Creators = typeof _creators;
+
+export const requestWithToken = {
+  ...actionType.make(
+    'requestWithToken',
+    <
+      FuncName extends keyof Env,
+      ACName extends NonSchedulerAction['type']
+    >(ops: {
+      funcName: FuncName;
+      funcArgs: Parameters<ReturnType<Env[FuncName]>>;
+
+      actionCreatorName: [FinalReturn<Env[FuncName]>] extends MiddleParameters<
+        Creators[ACName]
+      >
+        ? ACName
+        : number;
+      actionCreatorArgs: Parameters<Creators[ACName]>;
+    }) => ops,
   ),
 };
 

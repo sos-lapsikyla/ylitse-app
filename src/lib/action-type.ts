@@ -1,6 +1,14 @@
 import * as record from './record';
 
-export type ActionCreator<Key> = (...args: any) => { type: Key; payload: any };
+export type FinalReturn<F> = F extends (...args: any[]) => infer R
+  ? R extends (...args: any[]) => infer S
+    ? S
+    : R
+  : never;
+
+export type ActionCreator<Key> =
+  | ((...args: any) => { type: Key; payload: any })
+  | ((...args: any[]) => (...otherArgs: any[]) => { type: Key; payload: any });
 
 export type ActionCreators<K extends string> = {
   [key in K]: ActionCreator<key>;
@@ -10,7 +18,7 @@ export type ActionCreators<K extends string> = {
 export type ActionsUnion<
   K extends string,
   A extends ActionCreators<K>
-> = ReturnType<A[keyof A]>;
+> = FinalReturn<A[keyof A]>;
 
 export type AnyAction = {
   type: string;
