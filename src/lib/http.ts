@@ -58,8 +58,8 @@ export async function head(
   return request(url, { ...options, method: 'HEAD' });
 }
 
-async function decode<A>(
-  typeModel: t.Type<A, A, unknown>,
+async function decode<A, B>(
+  typeModel: t.Type<A, B, unknown>,
   value: unknown,
 ): Future<A> {
   try {
@@ -70,18 +70,18 @@ async function decode<A>(
   }
 }
 
-export async function get<A>(
+export async function get<A, B>(
   url: string,
-  type: t.Type<A, A, unknown>,
+  type: t.Type<A, B, unknown>,
   options?: RequestInit,
 ): Future<A> {
   return f.chain(await request_json(url, options), json => decode(type, json));
 }
 
-export async function post<A extends {}, B>(
+export async function post<A extends {}, B, C>(
   url: string,
   input: A,
-  outputType: t.Type<B, B, unknown>,
+  outputType: t.Type<B, C, unknown>,
   options?: RequestInit,
 ): Future<B> {
   const requestOptions: RequestInit = {
@@ -94,10 +94,10 @@ export async function post<A extends {}, B>(
   );
 }
 
-export async function put<A extends {}, B>(
+export async function put<A extends {}, B, C>(
   url: string,
   input: A,
-  outputType: t.Type<B, B, unknown>,
+  outputType: t.Type<B, C, unknown>,
   options?: RequestInit,
 ): Future<B> {
   const requestOptions: RequestInit = {

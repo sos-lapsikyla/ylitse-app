@@ -2,12 +2,13 @@ import * as t from 'io-ts';
 
 import * as http from '../lib/http';
 import * as result from '../lib/result';
+import * as record from '../lib/record';
 
 import * as config from './config';
 
 type ApiMentor = t.TypeOf<typeof mentorType>;
 const mentorType = t.strict({
-  id: t.string,
+  user_id: t.string,
   birth_year: t.number,
   display_name: t.string,
   story: t.string,
@@ -17,20 +18,24 @@ const mentorType = t.strict({
 const mentorListType = t.strict({ resources: t.array(mentorType) });
 
 export type Mentor = ReturnType<typeof toMentor>;
-const toMentor = ({ birth_year, display_name, ...props }: ApiMentor) => ({
+const toMentor = ({
+  birth_year,
+  display_name,
+  user_id,
+  ...props
+}: ApiMentor) => ({
   ...props,
+  buddyId: user_id,
   age: new Date().getFullYear() - birth_year,
   name: display_name,
 });
 
-const mentorsUrl = config.baseUrl + 'mentors';
-export async function fetchMentors(): http.Future<Map<string, Mentor>> {
-  return result.map(
-    await http.get(mentorsUrl, mentorListType),
-    ({ resources }) =>
-      resources.reduce((acc: Map<string, Mentor>, apiMentor: ApiMentor) => {
-        const mentor = toMentor(apiMentor);
-        return acc.set(mentor.id, mentor);
-      }, new Map()),
+export async function fetchMentors(): http.Future<record.NonTotal<Mentor>> {
+  const url = `${config.baseUrl}/mentors`;
+  return result.map(await http.get(url, mentorListType), ({ resources }) =>
+    resources.reduce((acc, apiMentor) => {
+      const mentor = toMentor(apiMentor);
+      return { ...acc, [mentor.buddyId]: mentor };
+    }, {}),
   );
 }

@@ -1,4 +1,14 @@
 const fonts = {
+  tiny: {
+    fontFamily: 'Nunito-Regular',
+    fontSize: 12,
+    lineHeight: 16,
+  },
+  tinyBold: {
+    fontFamily: 'Nunito-Bold',
+    fontSize: 12,
+    lineHeight: 16,
+  },
   small: {
     fontFamily: 'Nunito-Regular',
     fontSize: 16,

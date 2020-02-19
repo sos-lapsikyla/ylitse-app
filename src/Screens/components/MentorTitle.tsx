@@ -30,8 +30,8 @@ const MentorTitle: React.FC<Props> = ({
   safeArea,
 }) => {
   const gradientMap: { [i: number]: string[] } = {
-    0: gradients.teal,
-    1: gradients.pink,
+    0: gradients.green,
+    1: gradients.red,
     2: gradients.orange,
   };
   const gradient: string[] = gradientMap[name.length % 3];

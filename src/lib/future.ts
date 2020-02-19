@@ -4,6 +4,7 @@ export type Future<A, E> = Promise<result.Result<A, E>>;
 export type Task<Args extends any[], Value, Err> = (
   ...args: Args
 ) => Future<Value, Err>;
+export type ToResult<Value> = Value extends Promise<infer U> ? U : never;
 
 type PromiseFunction<Input extends any[], Output> = (
   ...args: Input

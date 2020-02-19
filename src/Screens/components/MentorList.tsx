@@ -1,7 +1,11 @@
 import React from 'react';
 import RN from 'react-native';
 import * as snapCarousel from 'react-native-snap-carousel';
+import * as redux from 'redux';
+import * as ReactRedux from 'react-redux';
 
+import * as http from '../../lib/http';
+import * as remoteData from '../../lib/remote-data';
 import useLayout from '../../lib/use-layout';
 
 import MentorCard from '../components/MentorCard';
@@ -9,23 +13,32 @@ import RemoteData from '../components/RemoteData';
 
 import * as mentorApi from '../../api/mentors';
 import * as state from '../../state';
+import * as actions from '../../state/actions';
+import * as selectors from '../../state/selectors';
 
-type Props = {
+type StateProps = {
+  mentorsState: remoteData.RemoteData<mentorApi.Mentor[], http.Err>;
+};
+type DispatchProps = {
   fetchMentors: () => void | undefined;
-  mentors: state.AppState['mentors'];
+};
+
+type OwnProps = {
   onPress?: (mentor: mentorApi.Mentor) => void | undefined;
 };
 
-const MentorList = ({ fetchMentors, mentors, onPress }: Props) => {
+type Props = StateProps & DispatchProps & OwnProps;
+
+const MentorList = ({ fetchMentors, mentorsState, onPress }: Props) => {
   const [{ width, height }, onLayout] = useLayout();
   const measuredWidth = width || RN.Dimensions.get('window').width;
   return (
     <RN.View onLayout={onLayout} style={styles.mentorListContainer}>
-      <RemoteData data={mentors} fetchData={fetchMentors}>
-        {value => (
+      <RemoteData data={mentorsState} fetchData={fetchMentors}>
+        {mentors => (
           <RN.View style={styles.carouselContainer}>
             <snapCarousel.default
-              data={[...value.values()]}
+              data={mentors}
               renderItem={renderMentorCard(height, onPress)}
               sliderWidth={measuredWidth}
               itemWidth={measuredWidth * 0.9}
@@ -70,4 +83,16 @@ const styles = RN.StyleSheet.create({
   },
 });
 
-export default MentorList;
+export default ReactRedux.connect<
+  StateProps,
+  DispatchProps,
+  OwnProps,
+  state.AppState
+>(
+  ({ mentors }) => ({ mentorsState: selectors.getMentors(mentors) }),
+  (dispatch: redux.Dispatch<actions.Action>) => ({
+    fetchMentors: () => {
+      dispatch(actions.creators.fetchMentors([]));
+    },
+  }),
+)(MentorList);

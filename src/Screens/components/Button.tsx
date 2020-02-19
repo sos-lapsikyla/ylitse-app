@@ -48,7 +48,7 @@ const Button = ({
     >
       <LinearGradient
         style={[styles.gradient, contentContainerStyle]}
-        colors={gradient ? gradient : gradients.acidGreen}
+        colors={gradient ? gradient : gradients.blue}
       >
         <Message style={[styles.message, messageStyle]} id={messageId} />
         {!badge || loading ? null : (

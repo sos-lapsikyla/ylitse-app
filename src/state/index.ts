@@ -6,6 +6,7 @@ import * as taggedUnion from '../lib/tagged-union';
 import * as actions from './actions';
 import * as accessToken from './accessToken';
 import * as buddies from './buddies';
+import * as messages from './messages';
 import * as mentors from './mentors';
 import * as scheduler from './scheduler';
 import * as selectors from './selectors';
@@ -16,6 +17,7 @@ export const initialState: AppState = {
   accessToken: accessToken.initialState,
   mentors: mentors.initialState,
   buddies: buddies.initialState,
+  messages: messages.initialState,
   scheduler: scheduler.initialState,
 };
 
@@ -33,17 +35,35 @@ function reducer(state: AppState = initialState, action: actions.Action) {
       None: state.buddies,
     }),
   );
+  const [messagesModel, messagesCmd] = reduxLoop.liftState(
+    taggedUnion.match<accessToken.State, messages.LoopState>(
+      state.accessToken,
+      {
+        Some: ({ value: [token] }) =>
+          messages.reducer({ accessToken: token })(state.messages, action),
+        None: state.messages,
+      },
+    ),
+  );
   const [schedulerModel, schedulerCmd] = reduxLoop.liftState(
     scheduler.reducer(state.scheduler, action),
   );
   return reduxLoop.loop(
     {
+      scheduler: schedulerModel,
+
       accessToken: tokenModel,
       mentors: mentorsModel,
       buddies: buddiesModel,
-      scheduler: schedulerModel,
+      messages: messagesModel,
     },
-    reduxLoop.Cmd.list([tokenCmd, mentorsCmd, buddiesCmd, schedulerCmd]),
+    reduxLoop.Cmd.list([
+      tokenCmd,
+      mentorsCmd,
+      buddiesCmd,
+      messagesCmd,
+      schedulerCmd,
+    ]),
   );
 }
 

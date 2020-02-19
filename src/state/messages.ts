@@ -1,42 +1,39 @@
 import * as reduxLoop from 'redux-loop';
 
 import assertNever from '../lib/assert-never';
-import * as http from '../lib/http';
 import * as retryable from '../lib/remote-data-retryable';
-import * as remoteData from '../lib/remote-data';
-import * as future from '../lib/future';
+import * as http from '../lib/http';
 import * as result from '../lib/result';
-import * as record from '../lib/record';
-import * as array from '../lib/array';
+import * as future from '../lib/future';
+import * as remoteData from '../lib/remote-data';
 import * as taggedUnion from '../lib/tagged-union';
 import * as tuple from '../lib/tuple';
 
 import * as authApi from '../api/auth';
-import * as buddyApi from '../api/buddies';
+import * as messageApi from '../api/messages';
 
 import * as actions from './actions';
 
+/*
+ * Buddies
+ * { [buddyId]: displayName }
+ */
+
+export type Env = {
+  accessToken: authApi.AccessToken;
+};
+
 export type State = retryable.Retryable<
-  [record.NonTotal<buddyApi.Buddy>, Exclude<State, remoteData.Ok<unknown>>],
+  [messageApi.Threads, Exclude<State, remoteData.Ok<unknown>>],
   http.Err
 >;
 export type LoopState = actions.LS<State>;
-
 export const initialState = remoteData.notAsked;
 
-const identity = <A>(a: A) => a;
+export const reducer = (env: Env) => (state: State, action: actions.Action) =>
+  _reducer(env, state, action);
 
-export const reducer = (token: authApi.AccessToken) => (
-  state: State = initialState,
-  action: actions.Action,
-) => _reducer({ accessToken: token }, state, action);
-
-type Env = {
-  accessToken: authApi.AccessToken;
-  buddies?: record.NonTotal<buddyApi.Buddy>;
-};
-
-export function _reducer(
+function _reducer(
   env: Env,
   state: State = initialState,
   action: actions.Action,
@@ -46,24 +43,11 @@ export function _reducer(
     case 'NotAsked':
     case 'Err':
       return matchAction({
-        fetchMessagesCompleted: ({ payload }) =>
-          taggedUnion.match(payload, {
-            Ok: ({ value: threads }) => {
-              const isFetchRequired =
-                !env.buddies ||
-                array
-                  .fromNonTotalRecord(env.buddies)
-                  .some(buddy => !(buddy.buddyId in threads));
-              return isFetchRequired
-                ? toFetching(env.accessToken, remoteData.loading)
-                : state;
-            },
-            Err: state,
-          }),
+        fetchMessages: toFetching(env.accessToken, remoteData.loading),
       });
     case 'Loading':
       return matchAction({
-        fetchBuddiesCompleted: ({ payload }) =>
+        fetchMessagesCompleted: ({ payload }) =>
           taggedUnion.match(payload, {
             Ok: toOk,
             Err: tryAccessTokenRefresh,
@@ -79,21 +63,21 @@ export function _reducer(
       });
     case 'Retrying':
       return matchAction({
-        fetchBuddiesCompleted: ({ payload }) =>
+        fetchMessagesCompleted: ({ payload }) =>
           taggedUnion.match(payload, {
             Ok: toOk,
             Err: identity,
           }),
       });
     case 'Ok':
-      const [buddies, request] = state.value;
-      const [nextBuddies, cmd] = reduxLoop.liftState(
-        _reducer({ ...env, buddies }, request, action),
+      const [messages, request] = state.value;
+      const [nextMessages, cmd] = reduxLoop.liftState(
+        _reducer(env, request, action),
       );
       const nextState: State =
-        nextBuddies.type === 'Ok'
-          ? nextBuddies
-          : remoteData.ok(tuple.tuple(buddies, nextBuddies));
+        nextMessages.type === 'Ok'
+          ? nextMessages
+          : remoteData.ok(tuple.tuple(messages, nextMessages));
       return reduxLoop.loop(nextState, cmd);
     default:
       return assertNever(state);
@@ -106,16 +90,14 @@ function toFetching(
 ): LoopState {
   return reduxLoop.loop(
     nextState,
-    reduxLoop.Cmd.run(future.lazy(buddyApi.fetchBuddies, token), {
-      successActionCreator: actions.creators.fetchBuddiesCompleted,
+    reduxLoop.Cmd.run(future.lazy(messageApi.fetchMessages, token), {
+      successActionCreator: actions.creators.fetchMessagesCompleted,
     }),
   );
 }
 
-function toOk({
-  value: buddies,
-}: result.Ok<record.NonTotal<buddyApi.Buddy>>): LoopState {
-  return remoteData.ok([buddies, remoteData.notAsked]);
+function toOk({ value: messages }: result.Ok<messageApi.Threads>): LoopState {
+  return remoteData.ok([messages, remoteData.notAsked]);
 }
 
 function tryAccessTokenRefresh(err: result.Err<http.Err>): LoopState {
@@ -125,4 +107,8 @@ function tryAccessTokenRefresh(err: result.Err<http.Err>): LoopState {
         reduxLoop.Cmd.action(actions.creators.refreshAccessToken()),
       )
     : err;
+}
+
+function identity<A>(a: A) {
+  return a;
 }

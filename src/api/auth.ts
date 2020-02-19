@@ -47,16 +47,16 @@ export type Credentials = {
   password: string;
 };
 
-const loginUrl = config.baseUrl + 'login';
 export async function login({
   userName,
   password,
 }: Credentials): http.Future<AccessToken> {
+  const url = `${config.baseUrl}/login`;
   const input = {
     login_name: userName,
     password,
   };
-  const apiToken = await http.post(loginUrl, input, tokenType);
+  const apiToken = await http.post(url, input, tokenType);
   return r.map(apiToken, toAccessToken);
 }
 
@@ -64,7 +64,7 @@ export async function refreshAccessToken(
   accessToken: AccessToken,
 ): http.Future<AccessToken> {
   const apiToken = await http.post(
-    `${config.baseUrl}refresh`,
+    `${config.baseUrl}/refresh`,
     { refresh_token: accessToken.refreshToken },
     newAccessTokenType,
   );

@@ -72,7 +72,7 @@ const MentorSkills = (props: SkillListProps) => {
         ))}
         {isAllVisible ? null : (
           <RN.TouchableOpacity onPress={showAll}>
-            <Chip gradient={gradients.acidGreen} name={showMoreText} />
+            <Chip gradient={gradients.blue} name={showMoreText} />
           </RN.TouchableOpacity>
         )}
       </RN.View>

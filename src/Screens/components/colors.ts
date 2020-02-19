@@ -25,10 +25,13 @@ const colors = {
 };
 
 export const gradients = {
-  pillBlue: [colors.lightBlue, '#78B8F4'],
-  teal: [colors.darkTeal, colors.lightTeal],
-  orange: [colors.darkOrange, colors.lightOrange],
-  pink: [colors.darkPink, colors.lightPink],
+  blue: ['#5CC5ED', '#5CC5ED'],
+  pillBlue: ['#00B1E6', '#00B1E6'],
+
+  green: ['#98C679', '#98C679'],
+  orange: ['#F1923E', '#F1923E'],
+  red: ['#EB727C', '#EB727C'],
+
   acidGreen: [colors.acidGreen1, colors.acidGreen2],
   faintGray: [colors.faintGray, colors.faintGray],
   whitegray: [colors.faintGray, colors.white],
