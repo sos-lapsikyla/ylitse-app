@@ -28,10 +28,9 @@ const accessToken = {
 };
 
 const buddies = {
-  ...actionType.make(
-    'fetchBuddiesCompleted',
-    id<future.ToResult<ReturnType<typeof buddyApi.fetchBuddies>>>(),
-  ),
+  fetchBuddiesCompleted: () => (
+    payload: future.ToResult<ReturnType<typeof buddyApi.fetchBuddies>>,
+  ) => ({ type: 'fetchBuddiesCompleted', payload } as const),
 };
 
 const messages = {

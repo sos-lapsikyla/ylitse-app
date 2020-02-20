@@ -15,31 +15,73 @@ export type MiddleParameters<F> = F extends (...args: any[]) => infer R
     ? A
     : never
   : never;
+/*
+export type Foo<
+  FuncName extends keyof Env,
+  ACName extends regular.Action['type']
+> = [
+  [FinalReturn<Env[FuncName]>] extends MiddleParameters<
+    regular.Creators[ACName]
+  >
+    ? FuncName
+    : never,
+  ACName,
+];
+*/
+
+export type TypeFilter = {
+  [Fn in keyof Env]: {
+    [AC in regular.Action['type']]: [
+      FinalReturn<Env[Fn]>,
+    ] extends MiddleParameters<regular.Creators[AC]>
+      ? [Fn, AC]
+      : never;
+  };
+};
+
+export type GoodPairs = TypeFilter[keyof Env][regular.Action['type']];
+
+// type Faa = Foo<keyof Env, regular.Action['type']>;
 
 type TokenRequestPayload<
   FuncName extends keyof Env,
   ACName extends regular.Action['type']
 > = {
-  funcName: FuncName;
+  funcName: FuncName extends keyof Env ? FuncName : never;
   funcArgs: Parameters<ReturnType<Env[FuncName]>>;
 
   actionCreatorName: [FinalReturn<Env[FuncName]>] extends MiddleParameters<
     regular.Creators[ACName]
   >
     ? ACName
-    : number;
+    : never;
   actionCreatorArgs: Parameters<regular.Creators[ACName]>;
 };
 
-export type Action = actionType.ActionsUnion<
-  keyof typeof creators,
-  typeof creators
->;
-export const creators = {
-  requestWithToken: <
-    FuncName extends keyof Env,
-    ACName extends regular.Action['type']
-  >(
-    payload: TokenRequestPayload<FuncName, ACName>,
-  ) => ({ type: 'requestWithToken', payload } as const),
+export type Action = {
+  type: 'requestWithToken';
+  payload: TokenRequestPayload<keyof Env, regular.Action['type']>;
 };
+
+const requestWithToken = <
+  FuncName extends keyof Env,
+  ACName extends regular.Action['type']
+>(
+  payload: TokenRequestPayload<FuncName, ACName>,
+) => ({ type: 'requestWithToken', payload } as const);
+
+export const creators = {
+  requestWithToken,
+};
+
+const foo = requestWithToken<'fetchBuddies', 'fetchBuddiesCompleted'>({
+  funcName: 'fetchBuddies' as const,
+  funcArgs: [],
+  actionCreatorName: 'fetchBuddiesCompleted' as const,
+  actionCreatorArgs: [],
+});
+
+let a: Action;
+a = foo;
+
+const f = foo;

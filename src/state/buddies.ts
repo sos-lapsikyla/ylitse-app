@@ -99,7 +99,7 @@ export function _reducer(
 }
 
 function toFetching(
-  token: authApi.AccessToken,
+  _: authApi.AccessToken,
   nextState: taggedUnion.Pick<State, 'Loading' | 'Retrying'>,
 ): LoopState {
   return reduxLoop.loop(

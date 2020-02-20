@@ -4,13 +4,20 @@ import * as taggedUnion from '../../lib/tagged-union';
 
 import * as regular from './regular';
 import * as scheduler from './scheduler';
+import * as request from './request';
 
 export const mentors = regular.mentors;
 
-export type Action = regular.Action | scheduler.Action;
+export type Action = regular.Action | scheduler.Action | request.Action;
+
+// export type Action = actionType.ActionsUnion<
+//   keyof typeof creators,
+//   typeof creators
+// >;
 export const creators = {
   ...regular.creators,
   ...scheduler.creators,
+  ...request.creators,
 };
 
 export type LS<S> = S | reduxLoop.Loop<S, Action>;
