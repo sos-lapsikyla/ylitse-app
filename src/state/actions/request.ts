@@ -5,7 +5,7 @@ import { Env } from '../env';
 
 import * as regular from './regular';
 
-type UnpackPromise<T> = T extends PromiseLike<infer U> ? U : T;
+export type UnpackPromise<T> = T extends PromiseLike<infer U> ? U : T;
 
 export type FinalReturn<F> = F extends (...args: any[]) => infer R
   ? R extends (...args: any[]) => infer S
@@ -24,34 +24,38 @@ export type TypeFilter = {
     [AC in regular.Action['type']]: [
       UnpackPromise<FinalReturn<Env[Fn]>>,
     ] extends MiddleParameters<regular.Creators[AC]>
-      ? [
-          [Fn, Parameters<ReturnType<Env[Fn]>>],
-          [AC, Parameters<regular.Creators[AC]>],
-        ]
+      ? {
+          func: Fn;
+          funcArgs: Parameters<ReturnType<Env[Fn]>>;
+          actionCreator: AC;
+          actionCreatorArgs: Parameters<regular.Creators[AC]>;
+        }
       : never;
   };
 };
 
 export type Payload = TypeFilter[keyof Env][regular.Action['type']];
 
-export function thunk(fnd: Payload[0], token: authApi.AccessToken, env: Env) {
-  const argument = fnd[0][1];
-  const argumentAny: any = argument;
-  return async () => env[fnd[0]](token)(argumentAny);
+export function thunk(
+  { func, funcArgs }: Payload,
+  token: authApi.AccessToken,
+  env: Env,
+) {
+  const argumentAny: any = funcArgs;
+  return async () => env[func](token)(argumentAny);
 }
 
 export function createAction(
-  payload: Payload,
+  { actionCreator, actionCreatorArgs }: Payload,
   response: Responses,
 ): regular.Action {
-  const ac = regular.creators[payload[1][0]];
-  const argument = payload[1][1];
-  const argumentAny: any = argument;
+  const ac = regular.creators[actionCreator];
+  const argumentAny: any = actionCreatorArgs;
   const responseAny: any = response;
   return ac(argumentAny)(responseAny);
 }
 
-export type Responses = UnpackPromise<FinalReturn<Env[Payload[0][0]]>>;
+export type Responses = UnpackPromise<FinalReturn<Env[Payload['func']]>>;
 
 const requestWithToken = (payload: Payload) =>
   ({ type: 'requestWithToken', payload } as const);

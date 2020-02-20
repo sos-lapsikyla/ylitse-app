@@ -103,10 +103,12 @@ export function _reducer(
   }
 }
 
-const fetchBuddiesAction = actions.creators.requestWithToken([
-  ['fetchBuddies', []],
-  ['fetchBuddiesCompleted', []],
-] as const);
+const fetchBuddiesAction = actions.creators.requestWithToken({
+  func: 'fetchBuddies' as const,
+  funcArgs: [],
+  actionCreator: 'fetchBuddiesCompleted' as const,
+  actionCreatorArgs: [],
+});
 
 function toOk({
   value: buddies,
