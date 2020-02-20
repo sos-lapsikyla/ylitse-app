@@ -10,10 +10,6 @@ export const mentors = regular.mentors;
 
 export type Action = regular.Action | scheduler.Action | request.Action;
 
-// export type Action = actionType.ActionsUnion<
-//   keyof typeof creators,
-//   typeof creators
-// >;
 export const creators = {
   ...regular.creators,
   ...scheduler.creators,

@@ -4,7 +4,6 @@ import assertNever from '../lib/assert-never';
 import * as http from '../lib/http';
 import * as retryable from '../lib/remote-data-retryable';
 import * as remoteData from '../lib/remote-data';
-import * as future from '../lib/future';
 import * as result from '../lib/result';
 import * as record from '../lib/record';
 import * as array from '../lib/array';
@@ -53,7 +52,10 @@ export function _reducer(
                   .fromNonTotalRecord(env.buddies)
                   .some(buddy => !(buddy.buddyId in threads));
               return isFetchRequired
-                ? toFetching(env.accessToken, remoteData.loading)
+                ? reduxLoop.loop(
+                    retryable.retrying,
+                    reduxLoop.Cmd.action(fetchBuddiesAction),
+                  )
                 : state;
             },
             Err: state,
@@ -71,7 +73,10 @@ export function _reducer(
       return matchAction({
         refreshAccessTokenCompleted: ({ payload }) =>
           taggedUnion.match(payload, {
-            Ok: ({ value: token }) => toFetching(token, retryable.retrying),
+            Ok: reduxLoop.loop(
+              retryable.retrying,
+              reduxLoop.Cmd.action(fetchBuddiesAction),
+            ),
             Err: identity,
           }),
       });
@@ -98,17 +103,10 @@ export function _reducer(
   }
 }
 
-function toFetching(
-  _: authApi.AccessToken,
-  nextState: taggedUnion.Pick<State, 'Loading' | 'Retrying'>,
-): LoopState {
-  return reduxLoop.loop(
-    nextState,
-    reduxLoop.Cmd.run(future.lazy(buddyApi.fetchBuddies, token), {
-      successActionCreator: actions.creators.fetchBuddiesCompleted,
-    }),
-  );
-}
+const fetchBuddiesAction = actions.creators.requestWithToken([
+  ['fetchBuddies', []],
+  ['fetchBuddiesCompleted', []],
+] as const);
 
 function toOk({
   value: buddies,

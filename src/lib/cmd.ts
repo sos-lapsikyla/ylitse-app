@@ -1,17 +1,15 @@
 import * as redux from 'redux';
 import * as reduxLoop from 'redux-loop';
-import * as future from '../lib/future';
-import * as result from '../lib/result';
+
+type UnpackPromise<T> = T extends PromiseLike<infer U> ? U : T;
 
 export function effect<
   Names extends string,
   Action extends redux.Action<Names>,
-  Args extends any[],
-  A,
-  E
+  Fn extends () => any
 >(
-  task: future.Task<Args, A, E>,
-  actionCreator: (response: result.Result<A, E>) => Action,
+  thunk: Fn,
+  actionCreator: (response: UnpackPromise<ReturnType<Fn>>) => Action,
 ): reduxLoop.RunCmd<Action> {
-  return reduxLoop.Cmd.run(task, { successActionCreator: actionCreator });
+  return reduxLoop.Cmd.run(thunk, { successActionCreator: actionCreator });
 }
