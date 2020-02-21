@@ -4,6 +4,7 @@ import * as remoteData from '../lib/remote-data';
 import * as record from '../lib/record';
 import * as http from '../lib/http';
 import * as option from '../lib/option';
+import * as result from '../lib/result';
 
 import * as authApi from '../api/auth';
 import * as buddyApi from '../api/buddies';
@@ -11,11 +12,23 @@ import * as mentorsApi from '../api/mentors';
 import * as messageApi from '../api/messages';
 
 import * as actions from './actions';
+import * as requestAction from './actions/request';
 
 type Pollable<A> = retryable.Retryable<
   [A, Exclude<retryable.Retryable<unknown, http.Err>, remoteData.Ok<unknown>>],
   http.Err
 >;
+
+type Req =
+  | {
+      request: requestAction.Payload;
+      type: 'Loading' | 'Retrying';
+    }
+  | {
+      request: requestAction.Payload;
+      type: 'WaitingForAccessToken';
+      err: result.Err<any>;
+    };
 
 export type AppState = {
   scheduler: Partial<
@@ -27,7 +40,7 @@ export type AppState = {
       };
     }
   >;
-
+  request: record.NonTotal<Req>;
   accessToken: option.Option<
     [
       authApi.AccessToken,

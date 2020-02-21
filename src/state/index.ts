@@ -9,6 +9,7 @@ import * as buddies from './buddies';
 import * as messages from './messages';
 import * as mentors from './mentors';
 import * as scheduler from './scheduler';
+import * as request from './request';
 import * as model from './model';
 
 export type AppState = model.AppState;
@@ -19,6 +20,7 @@ export const initialState: AppState = {
   buddies: buddies.initialState,
   messages: messages.initialState,
   scheduler: scheduler.initialState,
+  request: request.initialState,
   sendMessage: {},
 };
 
@@ -49,6 +51,14 @@ function reducer(state: AppState = initialState, action: actions.Action) {
   const [schedulerModel, schedulerCmd] = reduxLoop.liftState(
     scheduler.reducer(state.scheduler, action),
   );
+
+  const [requestModel, requestCmd] = reduxLoop.liftState(
+    taggedUnion.match<accessToken.State, request.LoopState>(state.accessToken, {
+      Some: ({ value: [token] }) =>
+        request.reducer(state.request, action, token),
+      None: state.request,
+    }),
+  );
   return reduxLoop.loop(
     {
       scheduler: schedulerModel,
@@ -58,6 +68,7 @@ function reducer(state: AppState = initialState, action: actions.Action) {
       buddies: buddiesModel,
       messages: messagesModel,
       sendMessage: {},
+      request: requestModel,
     },
     reduxLoop.Cmd.list([
       tokenCmd,
@@ -65,6 +76,7 @@ function reducer(state: AppState = initialState, action: actions.Action) {
       buddiesCmd,
       messagesCmd,
       schedulerCmd,
+      requestCmd,
     ]),
   );
 }

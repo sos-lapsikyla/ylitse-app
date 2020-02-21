@@ -67,6 +67,6 @@ export type Action = actionType.ActionsUnion<
 export type Creators = typeof creators;
 export const creators = {
   requestWithToken,
-  requestCompleted: (index: number) => (response: Responses) =>
-    ({ type: 'requestCompleted', payload: { index, response } } as const),
+  requestCompleted: (key: string) => (response: Responses) =>
+    ({ type: 'requestCompleted', payload: { key, response } } as const),
 };

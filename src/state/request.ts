@@ -2,6 +2,9 @@ import * as reduxLoop from 'redux-loop';
 
 import * as cmd from '../lib/cmd';
 import * as result from '../lib/result';
+import * as record from '../lib/record';
+import * as taggedUnion from '../lib/tagged-union';
+
 import * as authApi from '../api/auth';
 import * as messageApi from '../api/messages';
 import * as buddyApi from '../api/buddies';
@@ -18,31 +21,38 @@ export const env: Env = {
     buddyApi.fetchBuddies(token),
 };
 
-type State = (
+type State = Partial<{
+  [k: string]: Req;
+}>;
+export const initialState = {};
+
+type Req =
   | {
       request: request.Payload;
-      phase: 'Loading' | 'Retrying';
+      type: 'Loading' | 'Retrying';
     }
   | {
       request: request.Payload;
-      phase: 'WaitingForAccessToken';
+      type: 'WaitingForAccessToken';
       err: result.Err<any>;
-    })[];
+    };
+export type LoopState = actions.LS<State>;
+
+const reqKey = (req: request.Payload) => Object.values(req).join('');
 
 export function reducer(
-  state: State,
+  state: State | undefined = initialState,
   action: actions.Action,
   token: authApi.AccessToken,
-) {
+): LoopState {
   switch (action.type) {
     case 'requestWithToken': {
-      const nextState = [
+      const key = reqKey(action.payload);
+      const nextState = {
         ...state,
-        { request: action.payload, phase: 'Loading' },
-      ];
-      const index = nextState.length - 1;
-
-      const nextActionCreator = actions.creators.requestCompleted(index);
+        [key]: { request: action.payload, type: 'Loading' as const },
+      };
+      const nextActionCreator = actions.creators.requestCompleted(key);
       const thunk = request.thunk(action.payload, token, env);
       const nextCmd = cmd.effect(thunk, nextActionCreator);
 
@@ -50,47 +60,57 @@ export function reducer(
     }
     case 'refreshAccessTokenCompleted': {
       if (action.payload.type === 'Ok') {
-        const nextState = state.map(req =>
-          req.phase === 'WaitingForAccessToken'
-            ? { ...req, phase: 'Retrying' as const }
+        const nextState = record.map(state, req =>
+          !!req && req.type === 'WaitingForAccessToken'
+            ? { ...req, type: 'Retrying' as const }
             : req,
         );
         const newToken = action.payload.value;
-        const nextCmds = state
-          .filter(req => req.phase === 'WaitingForAccessToken')
-          .map((req, index) => {
-            const nextActionCreator = actions.creators.requestCompleted(index);
+        const nextCmds = Object.values(state)
+          .filter(
+            (x): x is taggedUnion.Pick<Req, 'WaitingForAccessToken'> =>
+              !!x && x.type === 'WaitingForAccessToken',
+          )
+          .map(req => {
+            const nextActionCreator = actions.creators.requestCompleted(
+              reqKey(req.request),
+            );
             const thunk = request.thunk(req.request, newToken, env);
             return cmd.effect(thunk, nextActionCreator);
           });
         return reduxLoop.loop(nextState, reduxLoop.Cmd.list(nextCmds));
       }
-      const nextState = state.filter(
-        req => req.phase !== 'WaitingForAccessToken',
+      const nextState = record.filter(
+        state,
+        req => !!req && req.type !== 'WaitingForAccessToken',
       );
-      const nextCmds = state.reduce((acc: reduxLoop.ActionCmd<any>[], req) => {
-        if (req.phase !== 'WaitingForAccessToken') return acc;
-        const nextAction = request.createAction(req.request, req.err);
-        return [...acc, reduxLoop.Cmd.action(nextAction)];
-      }, []);
+      const nextCmds = Object.values(state).reduce(
+        (acc: reduxLoop.ActionCmd<any>[], req) => {
+          if (!req || req.type !== 'WaitingForAccessToken') return acc;
+          const nextAction = request.createAction(req.request, req.err);
+          return [...acc, reduxLoop.Cmd.action(nextAction)];
+        },
+        [],
+      );
       return reduxLoop.loop(nextState, reduxLoop.Cmd.list(nextCmds));
     }
     case 'requestCompleted': {
-      const { response, index: actionIndex } = action.payload;
-      const currentRequest = state[actionIndex];
+      const { response, key: actionKey } = action.payload;
+      const currentRequest = state[actionKey];
+      if (currentRequest === undefined) return state;
       if (response.type === 'Err') {
         const { error } = response;
         if (
           error.type === 'BadStatus' &&
           error.status === 401 &&
-          currentRequest.phase === 'Loading'
+          currentRequest.type === 'Loading'
         ) {
           return reduxLoop.loop(
-            state.map((req, index) =>
-              index === actionIndex
+            record.map(state, (req, key) =>
+              !!req && key === actionKey
                 ? {
                     request: req.request,
-                    phase: 'WaitingForAccessToken' as const,
+                    type: 'WaitingForAccessToken' as const,
                     err: response,
                   }
                 : req,
@@ -99,7 +119,7 @@ export function reducer(
           );
         }
       }
-      const nextState = state.filter((_, index) => index !== actionIndex);
+      const nextState = record.filter(state, (_, key) => key !== actionKey);
       const nextAction = request.createAction(currentRequest.request, response);
       return reduxLoop.loop(nextState, reduxLoop.Cmd.action(nextAction));
     }
