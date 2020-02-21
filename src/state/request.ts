@@ -40,7 +40,7 @@ type Req =
     };
 export type LoopState = actions.LS<State>;
 
-const reqKey = (req: request.Payload) => Object.values(req).join('');
+const reqKey = (req: request.Payload) => JSON.stringify(Object.values(req));
 
 export function reducer(
   state: State | undefined = initialState,

@@ -18,6 +18,22 @@ export const messages = {
   'components.remoteData.loadingFailed': 'Lataus epäonnistui',
   'components.remoteData.retry': 'Yritä uudelleen',
 
+  'date.day.today': 'tänään',
+  'date.day.yesterday': 'eilen',
+
+  'date.month.01': 'tammikuuta',
+  'date.month.02': 'helmikuuta',
+  'date.month.03': 'maaliskuuta',
+  'date.month.04': 'huhtikuuta',
+  'date.month.05': 'toukokuuta',
+  'date.month.06': 'kesäkuuta',
+  'date.month.07': 'heinäkuuta',
+  'date.month.08': 'elokuuta',
+  'date.month.09': 'syyskuuta',
+  'date.month.10': 'lokakuuta',
+  'date.month.11': 'marraskuuta',
+  'date.month.12': 'joulukuuta',
+
   'main.mentorCardExpanded.button': 'Juttele',
   'main.mentorList.title': 'Mentorit',
 

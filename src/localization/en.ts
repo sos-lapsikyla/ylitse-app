@@ -20,6 +20,22 @@ export const messages: { [key in MessageId]: string } = {
   'components.remoteData.loadingFailed': 'Loading failed',
   'components.remoteData.retry': 'Try again',
 
+  'date.day.today': 'today',
+  'date.day.yesterday': 'yesterday',
+
+  'date.month.01': 'january',
+  'date.month.02': 'february',
+  'date.month.03': 'march',
+  'date.month.04': 'april',
+  'date.month.05': 'may',
+  'date.month.06': 'june',
+  'date.month.07': 'july',
+  'date.month.08': 'august',
+  'date.month.09': 'september',
+  'date.month.10': 'october',
+  'date.month.11': 'november',
+  'date.month.12': 'decemer',
+
   'main.mentorCardExpanded.button': 'Chat',
   'main.mentorList.title': 'Mentors',
 

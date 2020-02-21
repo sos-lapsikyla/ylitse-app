@@ -15,10 +15,7 @@ export type State = model.AppState['messages'];
 export type LoopState = actions.LS<State>;
 export const initialState = remoteData.notAsked;
 
-export const reducer = (state: State, action: actions.Action) =>
-  _reducer(state, action);
-
-function _reducer(
+export function reducer(
   state: State = initialState,
   action: actions.Action,
 ): LoopState {
@@ -42,9 +39,7 @@ function _reducer(
       });
     case 'Ok':
       const [messages, request] = state.value;
-      const [nextMessages, cmd] = reduxLoop.liftState(
-        _reducer(request, action),
-      );
+      const [nextMessages, cmd] = reduxLoop.liftState(reducer(request, action));
       const nextState: State =
         nextMessages.type === 'Ok'
           ? nextMessages

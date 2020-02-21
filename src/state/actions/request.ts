@@ -41,18 +41,19 @@ export function thunk(
   token: authApi.AccessToken,
   env: Env,
 ) {
+  const fnAny: any = env[func](token);
   const argumentAny: any = funcArgs;
-  return async () => env[func](token)(argumentAny);
+  return async () => fnAny(...argumentAny);
 }
 
 export function createAction(
   { actionCreator, actionCreatorArgs }: Payload,
   response: Responses,
 ): regular.Action {
-  const ac = regular.creators[actionCreator];
+  const ac: any = regular.creators[actionCreator];
   const argumentAny: any = actionCreatorArgs;
   const responseAny: any = response;
-  return ac(argumentAny)(responseAny);
+  return ac(...argumentAny)(responseAny);
 }
 
 export type Responses = UnpackPromise<FinalReturn<Env[Payload['func']]>>;
