@@ -1,5 +1,4 @@
 import * as taggedUnion from '../lib/tagged-union';
-import * as retryable from '../lib/remote-data-retryable';
 import * as remoteData from '../lib/remote-data';
 import * as record from '../lib/record';
 import * as http from '../lib/http';
@@ -14,8 +13,11 @@ import * as messageApi from '../api/messages';
 import * as actions from './actions';
 import * as requestAction from './actions/request';
 
-type Pollable<A> = retryable.Retryable<
-  [A, Exclude<retryable.Retryable<unknown, http.Err>, remoteData.Ok<unknown>>],
+export type Pollable<A> = remoteData.RemoteData<
+  [
+    A,
+    Exclude<remoteData.RemoteData<unknown, http.Err>, remoteData.Ok<unknown>>,
+  ],
   http.Err
 >;
 
@@ -53,5 +55,5 @@ export type AppState = {
   buddies: Pollable<record.NonTotal<buddyApi.Buddy>>;
   mentors: remoteData.RemoteData<record.NonTotal<mentorsApi.Mentor>, http.Err>;
   messages: Pollable<messageApi.Threads>;
-  sendMessage: record.NonTotal<retryable.Retryable<undefined, http.Err>>;
+  sendMessage: record.NonTotal<remoteData.RemoteData<undefined, http.Err>>;
 };

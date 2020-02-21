@@ -19,6 +19,8 @@ export const env: Env = {
   ) => messageApi.sendMessage(token, params),
   fetchBuddies: (token: authApi.AccessToken) => async () =>
     buddyApi.fetchBuddies(token),
+  fetchMessages: (token: authApi.AccessToken) => async () =>
+    messageApi.fetchMessages(token),
 };
 
 type State = Partial<{

@@ -11,4 +11,7 @@ export type Env = {
   fetchBuddies: (
     token: authApi.AccessToken,
   ) => () => ReturnType<typeof buddyApi.fetchBuddies>;
+  fetchMessages: (
+    token: authApi.AccessToken,
+  ) => () => ReturnType<typeof messageApi.fetchMessages>;
 };

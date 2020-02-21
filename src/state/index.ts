@@ -7,6 +7,7 @@ import * as actions from './actions';
 import * as accessToken from './accessToken';
 import * as buddies from './buddies';
 import * as messages from './messages';
+import * as sendMessage from './sendMessage';
 import * as mentors from './mentors';
 import * as scheduler from './scheduler';
 import * as request from './request';
@@ -32,21 +33,13 @@ function reducer(state: AppState = initialState, action: actions.Action) {
     mentors.reducer(state.mentors, action),
   );
   const [buddiesModel, buddiesCmd] = reduxLoop.liftState(
-    taggedUnion.match<accessToken.State, buddies.LoopState>(state.accessToken, {
-      Some: ({ value: [token] }) =>
-        buddies.reducer(token)(state.buddies, action),
-      None: state.buddies,
-    }),
+    buddies.reducer(state.buddies, action),
   );
   const [messagesModel, messagesCmd] = reduxLoop.liftState(
-    taggedUnion.match<accessToken.State, messages.LoopState>(
-      state.accessToken,
-      {
-        Some: ({ value: [token] }) =>
-          messages.reducer({ accessToken: token })(state.messages, action),
-        None: state.messages,
-      },
-    ),
+    messages.reducer(state.messages, action),
+  );
+  const [sendMessageModel, sendMessageCmd] = reduxLoop.liftState(
+    sendMessage.reducer(state.sendMessage, action),
   );
   const [schedulerModel, schedulerCmd] = reduxLoop.liftState(
     scheduler.reducer(state.scheduler, action),
@@ -67,7 +60,7 @@ function reducer(state: AppState = initialState, action: actions.Action) {
       mentors: mentorsModel,
       buddies: buddiesModel,
       messages: messagesModel,
-      sendMessage: {},
+      sendMessage: sendMessageModel,
       request: requestModel,
     },
     reduxLoop.Cmd.list([
@@ -75,6 +68,7 @@ function reducer(state: AppState = initialState, action: actions.Action) {
       mentorsCmd,
       buddiesCmd,
       messagesCmd,
+      sendMessageCmd,
       schedulerCmd,
       requestCmd,
     ]),

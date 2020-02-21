@@ -1,8 +1,6 @@
 import * as reduxLoop from 'redux-loop';
 
 import assertNever from '../lib/assert-never';
-import * as http from '../lib/http';
-import * as retryable from '../lib/remote-data-retryable';
 import * as remoteData from '../lib/remote-data';
 import * as result from '../lib/result';
 import * as record from '../lib/record';
@@ -10,7 +8,6 @@ import * as array from '../lib/array';
 import * as taggedUnion from '../lib/tagged-union';
 import * as tuple from '../lib/tuple';
 
-import * as authApi from '../api/auth';
 import * as buddyApi from '../api/buddies';
 
 import * as actions from './actions';
@@ -21,17 +18,19 @@ export type LoopState = actions.LS<State>;
 
 export const initialState = remoteData.notAsked;
 
-const identity = <A>(a: A) => a;
-
-export const reducer = (token: authApi.AccessToken) => (
-  state: State = initialState,
-  action: actions.Action,
-) => _reducer({ accessToken: token }, state, action);
+export const reducer = (state: State = initialState, action: actions.Action) =>
+  _reducer({}, state, action);
 
 type Env = {
-  accessToken: authApi.AccessToken;
   buddies?: record.NonTotal<buddyApi.Buddy>;
 };
+
+const fetchBuddiesAction = actions.creators.requestWithToken({
+  func: 'fetchBuddies' as const,
+  funcArgs: [],
+  actionCreator: 'fetchBuddiesCompleted' as const,
+  actionCreatorArgs: [],
+});
 
 export function _reducer(
   env: Env,
@@ -53,7 +52,7 @@ export function _reducer(
                   .some(buddy => !(buddy.buddyId in threads));
               return isFetchRequired
                 ? reduxLoop.loop(
-                    retryable.retrying,
+                    remoteData.loading,
                     reduxLoop.Cmd.action(fetchBuddiesAction),
                   )
                 : state;
@@ -66,26 +65,7 @@ export function _reducer(
         fetchBuddiesCompleted: ({ payload }) =>
           taggedUnion.match(payload, {
             Ok: toOk,
-            Err: tryAccessTokenRefresh,
-          }),
-      });
-    case 'Deferred':
-      return matchAction({
-        refreshAccessTokenCompleted: ({ payload }) =>
-          taggedUnion.match(payload, {
-            Ok: reduxLoop.loop(
-              retryable.retrying,
-              reduxLoop.Cmd.action(fetchBuddiesAction),
-            ),
-            Err: identity,
-          }),
-      });
-    case 'Retrying':
-      return matchAction({
-        fetchBuddiesCompleted: ({ payload }) =>
-          taggedUnion.match(payload, {
-            Ok: toOk,
-            Err: identity,
+            Err: err => err,
           }),
       });
     case 'Ok':
@@ -103,24 +83,8 @@ export function _reducer(
   }
 }
 
-const fetchBuddiesAction = actions.creators.requestWithToken({
-  func: 'fetchBuddies' as const,
-  funcArgs: [],
-  actionCreator: 'fetchBuddiesCompleted' as const,
-  actionCreatorArgs: [],
-});
-
 function toOk({
   value: buddies,
 }: result.Ok<record.NonTotal<buddyApi.Buddy>>): LoopState {
   return remoteData.ok([buddies, remoteData.notAsked]);
-}
-
-function tryAccessTokenRefresh(err: result.Err<http.Err>): LoopState {
-  return err.error.type === 'BadStatus' && err.error.status === 401
-    ? reduxLoop.loop(
-        retryable.deferred,
-        reduxLoop.Cmd.action(actions.creators.refreshAccessToken()),
-      )
-    : err;
 }

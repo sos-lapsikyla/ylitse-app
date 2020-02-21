@@ -35,10 +35,9 @@ const buddies = {
 
 const messages = {
   ...actionType.make('fetchMessages'),
-  ...actionType.make(
-    'fetchMessagesCompleted',
-    id<future.ToResult<ReturnType<typeof messageApi.fetchMessages>>>(),
-  ),
+  fetchMessagesCompleted: () => (
+    payload: future.ToResult<ReturnType<typeof messageApi.fetchMessages>>,
+  ) => ({ type: 'fetchMessagesCompleted' as const, payload }),
 };
 
 const sendMessage = {
