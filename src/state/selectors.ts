@@ -1,10 +1,12 @@
 import * as option from 'fp-ts/lib/Option';
 import * as tuple from 'fp-ts/lib/Tuple';
+import * as RD from '@devexperts/remote-data-ts';
 import { pipe } from 'fp-ts/lib/pipeable';
 
+import * as err from '../lib/http-err';
 import * as remoteData from '../lib/remote-data';
-// import * as tuple from '../lib/tuple';
-import * as http from '../lib/http';
+import * as record from '../lib/record';
+import * as mentorsApi from '../api/mentors';
 import * as taggedUnion from '../lib/tagged-union';
 import * as array from '../lib/array';
 
@@ -16,9 +18,12 @@ import * as localization from '../localization';
 import { AppState, Pollable } from './model';
 
 export function getMentors(
-  mentors: AppState['mentors'],
-): remoteData.RemoteData<mentorApi.Mentor[], http.Err> {
-  return remoteData.map(mentors, array.fromNonTotalRecord);
+  mentors: RD.RemoteData<err.Err, record.NonTotal<mentorsApi.Mentor>>,
+): RD.RemoteData<err.Err, mentorApi.Mentor[]> {
+  return pipe(
+    mentors,
+    RD.map(array.fromNonTotalRecord),
+  );
 }
 
 export const getAccessToken = (state: AppState) =>
@@ -41,9 +46,9 @@ export const getBuddyName = (
     const buddy = buddies.value[buddyId];
     if (buddy) return buddy.name;
   }
-  const mentors = mentorState;
-  if (mentors.type === 'Ok') {
-    const buddy = mentors.value[buddyId];
+  const mentors = RD.toNullable(mentorState);
+  if (mentors) {
+    const buddy = mentors[buddyId];
     if (buddy) return buddy.name;
   }
   return '';

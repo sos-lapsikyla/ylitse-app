@@ -1,7 +1,7 @@
 import * as reduxLoop from 'redux-loop';
 
 import * as remoteData from '../lib/remote-data';
-import * as http from '../lib/http';
+import * as err from '../lib/http-err';
 
 import * as actions from './actions';
 import * as model from './model';
@@ -29,7 +29,7 @@ export const reducer = (state: State, action: actions.Action) => {
 };
 
 export const initialState = {};
-type RequestState = remoteData.RemoteData<undefined, http.Err>;
+type RequestState = remoteData.RemoteData<undefined, err.Err>;
 
 function _reducer(
   state: RequestState | undefined = remoteData.notAsked,

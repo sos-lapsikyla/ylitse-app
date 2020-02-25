@@ -87,4 +87,4 @@ const createStore = redux.createStore as ((
   enhancer: redux.StoreEnhancer,
 ) => redux.Store<AppState, actions.Action>);
 
-export const store = createStore(reducer, initialState, enhancer);
+export const store = createStore(reducer as any, initialState, enhancer);

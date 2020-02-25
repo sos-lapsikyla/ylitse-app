@@ -1,9 +1,10 @@
+import * as RD from '@devexperts/remote-data-ts';
 import * as option from 'fp-ts/lib/Option';
 
 import * as taggedUnion from '../lib/tagged-union';
 import * as remoteData from '../lib/remote-data';
 import * as record from '../lib/record';
-import * as http from '../lib/http';
+import * as err from '../lib/http-err';
 import * as result from '../lib/result';
 
 import * as authApi from '../api/auth';
@@ -15,11 +16,8 @@ import * as actions from './actions';
 import * as requestAction from './actions/request';
 
 export type Pollable<A> = remoteData.RemoteData<
-  [
-    A,
-    Exclude<remoteData.RemoteData<unknown, http.Err>, remoteData.Ok<unknown>>,
-  ],
-  http.Err
+  [A, Exclude<remoteData.RemoteData<unknown, err.Err>, remoteData.Ok<unknown>>],
+  err.Err
 >;
 
 type Req =
@@ -48,13 +46,13 @@ export type AppState = {
     [
       authApi.AccessToken,
       Exclude<
-        remoteData.RemoteData<authApi.AccessToken, http.Err>,
+        remoteData.RemoteData<authApi.AccessToken, err.Err>,
         remoteData.Ok<unknown>
       >,
     ]
   >;
   buddies: Pollable<record.NonTotal<buddyApi.Buddy>>;
-  mentors: remoteData.RemoteData<record.NonTotal<mentorsApi.Mentor>, http.Err>;
+  mentors: RD.RemoteData<err.Err, record.NonTotal<mentorsApi.Mentor>>;
   messages: Pollable<messageApi.Threads>;
-  sendMessage: record.NonTotal<remoteData.RemoteData<undefined, http.Err>>;
+  sendMessage: record.NonTotal<remoteData.RemoteData<undefined, err.Err>>;
 };

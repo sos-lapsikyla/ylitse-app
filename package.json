@@ -13,6 +13,7 @@
     "lint": "npx tsc && npm run eslint && npm run prettier"
   },
   "dependencies": {
+    "@devexperts/remote-data-ts": "^2.0.3",
     "@react-native-community/masked-view": "^0.1.5",
     "@types/react-native-snap-carousel": "^3.7.4",
     "@types/react-redux": "^7.1.5",
@@ -23,7 +24,7 @@
     "react-native": "0.61.5",
     "react-native-gesture-handler": "^1.5.3",
     "react-native-linear-gradient": "^2.5.6",
-    "react-native-reanimated": "iyegoroff/react-native-reanimated#typings-fix",
+    "react-native-reanimated": "software-mansion/react-native-reanimated#master",
     "react-native-safe-area-context": "^0.6.2",
     "react-native-screens": "^2.0.0-alpha.22",
     "react-native-snap-carousel": "^3.8.4",

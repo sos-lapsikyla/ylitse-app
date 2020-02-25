@@ -1,6 +1,8 @@
+import * as E from 'fp-ts/lib/Either';
+import * as err from '../../lib/http-err';
+
 import * as actionType from '../../lib/action-type';
 import * as future from '../../lib/future';
-import * as reduxHelpers from '../../lib/redux-helpers';
 
 import * as mentorApi from '../../api/mentors';
 import * as authApi from '../../api/auth';
@@ -11,12 +13,13 @@ function id<A>(): (a: A) => A {
   return a => a;
 }
 
-export const mentors = reduxHelpers.makeActionCreators(
-  mentorApi.fetchMentors,
-  'fetchMentors',
-  'fetchMentorsCompleted',
-  'fetchMentorsReset',
-);
+export const mentors = {
+  ...actionType.make('fetchMentors'),
+  ...actionType.make(
+    'fetchMentorsCompleted',
+    id<E.Either<err.Err, mentorApi.Mentors>>(),
+  ),
+};
 
 const accessToken = {
   ...actionType.make('login', id<authApi.AccessToken>()),

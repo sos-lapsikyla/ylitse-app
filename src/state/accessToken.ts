@@ -4,7 +4,7 @@ import { pipe } from 'fp-ts/lib/pipeable';
 
 import assertNever from '../lib/assert-never';
 import * as remoteData from '../lib/remote-data';
-import * as http from '../lib/http';
+import * as err from '../lib/http-err';
 import * as f from '../lib/future';
 
 import * as authApi from '../api/auth';
@@ -44,9 +44,9 @@ export const reducer: actions.Reducer<State> = (
 
 function tokenReducer(
   currentToken: authApi.AccessToken,
-  state: remoteData.RemoteData<authApi.AccessToken, http.Err>,
+  state: remoteData.RemoteData<authApi.AccessToken, err.Err>,
   action: actions.Action,
-): actions.LS<remoteData.RemoteData<authApi.AccessToken, http.Err>> {
+): actions.LS<remoteData.RemoteData<authApi.AccessToken, err.Err>> {
   const matchAction = actions.match(state, action);
   switch (state.type) {
     case 'NotAsked':
