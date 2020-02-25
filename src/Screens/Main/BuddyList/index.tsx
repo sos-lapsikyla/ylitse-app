@@ -105,7 +105,7 @@ export default ReactRedux.connect<
   (dispatch: redux.Dispatch<actions.Action>) => ({
     pollMessages: () => {
       dispatch(
-        actions.creators.startPolling(actions.creators.fetchMessages(), 3000),
+        actions.creators.startPolling(actions.creators.fetchMessages(), 1000),
       );
     },
   }),

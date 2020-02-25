@@ -3,6 +3,7 @@ import RN from 'react-native';
 
 import colors from '../../../components/colors';
 import fonts from '../../../components/fonts';
+import shadow from '../../../components/shadow';
 
 import * as messageApi from '../../../../api/messages';
 
@@ -12,10 +13,11 @@ const Message = ({ content, sentTime, type }: Props) => {
   const bubbleStyle =
     type === 'Received' ? styles.leftBubble : styles.rightBubble;
 
+  const addZero = (n: number) => (n < 10 ? `0${n}` : `${n}`);
   const date = new Date(sentTime);
-  const hours = date.getHours();
-  const minutes = date.getMinutes();
-  const timeText = `${hours}${minutes}`;
+  const hours = addZero(date.getHours());
+  const minutes = addZero(date.getMinutes());
+  const timeText = `${hours}:${minutes}`;
   return (
     <RN.View style={[bubbleStyle, styles.bubble]}>
       <RN.View>
@@ -45,10 +47,11 @@ const styles = RN.StyleSheet.create({
     alignSelf: 'flex-end',
   },
   bubble: {
-    marginVertical: 4,
+    marginVertical: 8,
     paddingVertical: 8,
     paddingHorizontal: 16,
     flexDirection: 'row',
+    ...shadow(5),
   },
   text: {
     ...fonts.regular,

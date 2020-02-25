@@ -81,7 +81,9 @@ export async function sendMessage(
     content: params.content,
     opened: false,
   };
-  const response = await http.post(url, message, t.unknown);
+  const response = await http.post(url, message, t.unknown, {
+    headers: authApi.authHeader(accessToken),
+  });
   return result.map(response, _ => undefined);
 }
 

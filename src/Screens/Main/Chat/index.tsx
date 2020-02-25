@@ -14,15 +14,7 @@ export type ChatRoute = {
   'Main/Chat': { buddyId: string };
 };
 
-type StateProps = {};
-type DispatchProps = {
-  pollMessages: () => void | undefined;
-};
-
-type OwnProps = navigationProps.NavigationProps<ChatRoute, ChatRoute>;
-
-type Props = OwnProps & DispatchProps & StateProps;
-
+type Props = navigationProps.NavigationProps<ChatRoute, ChatRoute>;
 const Chat = ({ navigation }: Props) => {
   const goBack = () => {
     navigation.goBack();
@@ -38,7 +30,7 @@ const Chat = ({ navigation }: Props) => {
         behavior={keyboardViewBehaviour}
       >
         <MessageList buddyId={buddyId} />
-        <Input />
+        <Input style={styles.input} buddyId={buddyId} />
       </RN.KeyboardAvoidingView>
     </LinearGradient>
   );
@@ -52,6 +44,9 @@ const styles = RN.StyleSheet.create({
     flex: 1,
   },
   title: {},
+  input: {
+    marginTop: 8,
+  },
 });
 
 export default Chat;
