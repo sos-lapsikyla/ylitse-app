@@ -5,7 +5,6 @@ import { pipe } from 'fp-ts/lib/pipeable';
 import assertNever from '../lib/assert-never';
 import * as remoteData from '../lib/remote-data';
 import * as http from '../lib/http';
-import * as tuple from '../lib/tuple';
 import * as f from '../lib/future';
 
 import * as authApi from '../api/auth';
@@ -33,11 +32,11 @@ export const reducer: actions.Reducer<State> = (
         const [model, cmd] = reduxLoop.liftState(
           tokenReducer(currentToken, nextToken, action),
         );
-        const nextState =
+        const nextState: AppState['accessToken'] =
           model.type === 'Ok'
-            ? tuple.tuple(model.value, remoteData.notAsked)
-            : tuple.tuple(currentToken, model);
-        return reduxLoop.loop(option.some(nextState), cmd);
+            ? option.some([model.value, remoteData.notAsked])
+            : option.some([currentToken, model]);
+        return reduxLoop.loop(nextState, cmd);
       },
     ),
   );

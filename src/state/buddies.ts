@@ -6,7 +6,6 @@ import * as result from '../lib/result';
 import * as record from '../lib/record';
 import * as array from '../lib/array';
 import * as taggedUnion from '../lib/tagged-union';
-import * as tuple from '../lib/tuple';
 
 import * as buddyApi from '../api/buddies';
 
@@ -76,7 +75,7 @@ export function _reducer(
       const nextState: State =
         nextBuddies.type === 'Ok'
           ? nextBuddies
-          : remoteData.ok(tuple.tuple(buddies, nextBuddies));
+          : remoteData.ok([buddies, nextBuddies]);
       return reduxLoop.loop(nextState, cmd);
     default:
       return assertNever(state);

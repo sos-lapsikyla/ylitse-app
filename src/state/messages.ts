@@ -4,7 +4,6 @@ import assertNever from '../lib/assert-never';
 import * as result from '../lib/result';
 import * as remoteData from '../lib/remote-data';
 import * as taggedUnion from '../lib/tagged-union';
-import * as tuple from '../lib/tuple';
 
 import * as messageApi from '../api/messages';
 
@@ -43,7 +42,7 @@ export function reducer(
       const nextState: State =
         nextMessages.type === 'Ok'
           ? nextMessages
-          : remoteData.ok(tuple.tuple(messages, nextMessages));
+          : remoteData.ok([messages, nextMessages]);
       return reduxLoop.loop(nextState, cmd);
     default:
       return assertNever(state);
