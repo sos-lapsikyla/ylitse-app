@@ -1,6 +1,9 @@
+import * as option from 'fp-ts/lib/Option';
+import * as tuple from 'fp-ts/lib/Tuple';
+import { pipe } from 'fp-ts/lib/pipeable';
+
 import * as remoteData from '../lib/remote-data';
-import * as option from '../lib/option';
-import * as tuple from '../lib/tuple';
+// import * as tuple from '../lib/tuple';
 import * as http from '../lib/http';
 import * as taggedUnion from '../lib/tagged-union';
 import * as array from '../lib/array';
@@ -18,8 +21,12 @@ export function getMentors(
   return remoteData.map(mentors, array.fromNonTotalRecord);
 }
 
-export const getAccessToken = ({ accessToken }: AppState) =>
-  option.map(accessToken, tuple.fst);
+export const getAccessToken = (state: AppState) =>
+  pipe(
+    state,
+    ({ accessToken }: AppState) => accessToken,
+    option.map(tuple.fst),
+  );
 
 export const fromPollable = <A>(data: Pollable<A>) =>
   remoteData.map(data, tuple.fst);

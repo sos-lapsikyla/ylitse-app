@@ -2,6 +2,7 @@ import React from 'react';
 import RN from 'react-native';
 import * as redux from 'redux';
 import * as ReactRedux from 'react-redux';
+import * as option from 'fp-ts/lib/Option';
 
 import * as state from '../../state';
 import * as actions from '../../state/actions';
@@ -38,7 +39,7 @@ const SignIn = (props: Props) => {
     }
   }, [loginRequest.type]);
   React.useEffect(() => {
-    if (props.accessToken.type === 'Some') {
+    if (option.isSome(props.accessToken)) {
       navigateMain(props.navigation);
     }
   }, [props.accessToken]);

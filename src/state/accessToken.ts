@@ -1,8 +1,8 @@
 import * as reduxLoop from 'redux-loop';
+import * as option from 'fp-ts/lib/Option';
+import { pipe } from 'fp-ts/lib/pipeable';
 
 import assertNever from '../lib/assert-never';
-import * as taggedUnion from '../lib/tagged-union';
-import * as option from '../lib/option';
 import * as remoteData from '../lib/remote-data';
 import * as http from '../lib/http';
 import * as tuple from '../lib/tuple';
@@ -22,21 +22,25 @@ export const reducer: actions.Reducer<State> = (
   action,
 ) => {
   const matchAction = actions.match(state, action);
-  return taggedUnion.match(state, {
-    None: matchAction({
-      login: ({ payload }) => option.some([payload, remoteData.notAsked]),
-    }),
-    Some: ({ value: [currentToken, nextToken] }) => {
-      const [model, cmd] = reduxLoop.liftState(
-        tokenReducer(currentToken, nextToken, action),
-      );
-      const nextState =
-        model.type === 'Ok'
-          ? tuple.tuple(model.value, remoteData.notAsked)
-          : tuple.tuple(currentToken, model);
-      return reduxLoop.loop(option.some(nextState), cmd);
-    },
-  });
+  return pipe(
+    state,
+    option.fold(
+      () =>
+        matchAction({
+          login: ({ payload }) => option.some([payload, remoteData.notAsked]),
+        }),
+      ([currentToken, nextToken]) => {
+        const [model, cmd] = reduxLoop.liftState(
+          tokenReducer(currentToken, nextToken, action),
+        );
+        const nextState =
+          model.type === 'Ok'
+            ? tuple.tuple(model.value, remoteData.notAsked)
+            : tuple.tuple(currentToken, model);
+        return reduxLoop.loop(option.some(nextState), cmd);
+      },
+    ),
+  );
 };
 
 function tokenReducer(

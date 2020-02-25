@@ -2,6 +2,7 @@ import React from 'react';
 import RN from 'react-native';
 import * as redux from 'redux';
 import * as ReactRedux from 'react-redux';
+import * as option from 'fp-ts/lib/Option';
 
 import * as navigationProps from '../../lib/navigation-props';
 import useRemoteData from '../../lib/use-remote-data';
@@ -47,7 +48,7 @@ const PrivacyPolicy = ({ navigation, accessToken, login }: Props) => {
     }
   }, [createUserRequest.type]);
   React.useEffect(() => {
-    if (accessToken.type === 'Some') {
+    if (option.isSome(accessToken)) {
       navigateMain(navigation);
     }
   }, [accessToken]);

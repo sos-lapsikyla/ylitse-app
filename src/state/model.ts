@@ -1,8 +1,9 @@
+import * as option from 'fp-ts/lib/Option';
+
 import * as taggedUnion from '../lib/tagged-union';
 import * as remoteData from '../lib/remote-data';
 import * as record from '../lib/record';
 import * as http from '../lib/http';
-import * as option from '../lib/option';
 import * as result from '../lib/result';
 
 import * as authApi from '../api/auth';

@@ -1,7 +1,7 @@
 import * as reduxLoop from 'redux-loop';
 import * as redux from 'redux';
-
-import * as taggedUnion from '../lib/tagged-union';
+import * as option from 'fp-ts/lib/Option';
+import { pipe } from 'fp-ts/lib/pipeable';
 
 import * as actions from './actions';
 import * as accessToken from './accessToken';
@@ -45,12 +45,13 @@ function reducer(state: AppState = initialState, action: actions.Action) {
     scheduler.reducer(state.scheduler, action),
   );
 
-  const [requestModel, requestCmd] = reduxLoop.liftState(
-    taggedUnion.match<accessToken.State, request.LoopState>(state.accessToken, {
-      Some: ({ value: [token] }) =>
-        request.reducer(state.request, action, token),
-      None: state.request,
-    }),
+  const [requestModel, requestCmd] = pipe(
+    state.accessToken,
+    option.fold(
+      () => state.request,
+      ([token]) => request.reducer(state.request, action, token),
+    ),
+    reduxLoop.liftState,
   );
   return reduxLoop.loop(
     {
