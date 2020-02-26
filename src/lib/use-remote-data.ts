@@ -1,6 +1,6 @@
 import React from 'react';
-import * as future from './future';
-import * as remoteData from './remote-data';
+import * as TE from 'fp-ts/lib/TaskEither';
+import * as RD from '@devexperts/remote-data-ts';
 
 type RequestState<Args> =
   | {
@@ -11,27 +11,27 @@ type RequestState<Args> =
       type: 'idle';
     };
 
-function useRemoteData<Args extends any[], Value, Err>(
-  apiCall: future.Task<Args, Value, Err>,
+function useRemoteData<Args extends any[], Err, Value>(
+  apiCall: (...argrs: Args) => TE.TaskEither<Err, Value>,
 ): [
-  remoteData.RemoteData<Value, Err>,
+  RD.RemoteData<Err, Value>,
   (...args: Args) => void | undefined,
   () => void | undefined,
 ] {
   const [request, setRequest] = React.useState<RequestState<Args>>({
     type: 'idle',
   });
-  const [state, setState] = React.useState<remoteData.RemoteData<Value, Err>>(
-    remoteData.notAsked,
+  const [state, setState] = React.useState<RD.RemoteData<Err, Value>>(
+    RD.initial,
   );
 
   React.useEffect(() => {
-    if (request.type === 'waiting' && !remoteData.isLoading(state)) {
-      setState(remoteData.loading);
+    if (request.type === 'waiting' && !RD.isPending(state)) {
+      setState(RD.pending);
       (async () => {
-        const newState = await apiCall(...request.args);
+        const newState = await apiCall(...request.args)();
         if (request.type === 'waiting') {
-          setState(newState);
+          setState(RD.fromEither(newState));
           setRequest({ type: 'idle' });
         }
       })();
@@ -43,7 +43,7 @@ function useRemoteData<Args extends any[], Value, Err>(
       if (request.type === 'idle') setRequest({ type: 'waiting', args });
     },
     () => {
-      setState(remoteData.notAsked);
+      setState(RD.initial);
       setRequest({ type: 'idle' });
     },
   ];

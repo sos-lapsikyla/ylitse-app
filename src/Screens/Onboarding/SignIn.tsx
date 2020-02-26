@@ -9,7 +9,6 @@ import * as actions from '../../state/actions';
 import * as authApi from '../../api/auth';
 
 import * as navigationProps from '../../lib/navigation-props';
-import useRemoteData from '../../lib/use-remote-data';
 
 import OnboardingBackground from '../components/OnboardingBackground';
 import LoginCard from '../components/LoginCard';
@@ -24,20 +23,15 @@ export type SignInRoute = {
 
 type StateProps = {
   accessToken: state.AppState['accessToken'];
+  loginState: state.AppState['login'];
 };
 type DispatchProps = {
-  login: (token: authApi.AccessToken) => void | undefined;
+  login: (creds: authApi.Credentials) => void | undefined;
 };
 type OwnProps = navigationProps.NavigationProps<SignInRoute, TabsRoute>;
 type Props = StateProps & DispatchProps & OwnProps;
 
 const SignIn = (props: Props) => {
-  const [loginRequest, login] = useRemoteData(authApi.login);
-  React.useEffect(() => {
-    if (loginRequest.type === 'Ok') {
-      props.login(loginRequest.value);
-    }
-  }, [loginRequest.type]);
   React.useEffect(() => {
     if (option.isSome(props.accessToken)) {
       navigateMain(props.navigation);
@@ -47,13 +41,13 @@ const SignIn = (props: Props) => {
     props.navigation.goBack();
   };
   const onLogin = (credentials: authApi.Credentials) => {
-    login(credentials);
+    props.login(credentials);
   };
   return (
     <OnboardingBackground>
       <LoginCard
         style={styles.card}
-        remoteAction={loginRequest}
+        remoteAction={props.loginState}
         titleMessageId="onboarding.signIn.title"
         nextMessageId="onboarding.signIn.button"
         getErrorMessageId={() => 'onboarding.signIn.failure'}
@@ -74,11 +68,10 @@ export default ReactRedux.connect<
   OwnProps,
   state.AppState
 >(
-  ({ accessToken }) => ({ accessToken }),
-
+  ({ accessToken, login }) => ({ accessToken, loginState: login }),
   (dispatch: redux.Dispatch<actions.Action>) => ({
-    login: (token: authApi.AccessToken) => {
-      dispatch(actions.creators.login(token));
+    login: (creds: authApi.Credentials) => {
+      dispatch(actions.creators.login(creds));
     },
   }),
 )(SignIn);

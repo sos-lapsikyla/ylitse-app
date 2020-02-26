@@ -43,16 +43,12 @@ export type AppState = {
   >;
   request: record.NonTotal<Req>;
   accessToken: option.Option<
-    [
-      authApi.AccessToken,
-      Exclude<
-        remoteData.RemoteData<authApi.AccessToken, err.Err>,
-        remoteData.Ok<unknown>
-      >,
-    ]
+    [authApi.AccessToken, RD.RemoteData<err.Err, authApi.AccessToken>]
   >;
   buddies: Pollable<record.NonTotal<buddyApi.Buddy>>;
   mentors: RD.RemoteData<err.Err, record.NonTotal<mentorsApi.Mentor>>;
   messages: Pollable<messageApi.Threads>;
   sendMessage: record.NonTotal<remoteData.RemoteData<undefined, err.Err>>;
+  login: RD.RemoteData<err.Err, authApi.AccessToken>;
+  createUser: RD.RemoteData<err.Err, authApi.AccessToken>;
 };

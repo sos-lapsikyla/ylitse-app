@@ -4,6 +4,7 @@ import * as err from '../../lib/http-err';
 import * as actionType from '../../lib/action-type';
 import * as future from '../../lib/future';
 
+import * as accountApi from '../../api/account';
 import * as mentorApi from '../../api/mentors';
 import * as authApi from '../../api/auth';
 import * as buddyApi from '../../api/buddies';
@@ -21,12 +22,26 @@ export const mentors = {
   ),
 };
 
+const login = {
+  ...actionType.make('login', id<authApi.Credentials>()),
+  ...actionType.make(
+    'loginCompleted',
+    id<E.Either<err.Err, authApi.AccessToken>>(),
+  ),
+
+  ...actionType.make('accessTokenAcquired', id<authApi.AccessToken>()),
+  ...actionType.make('createUser', id<accountApi.NewUser>()),
+  ...actionType.make(
+    'createUserCompleted',
+    id<E.Either<err.Err, authApi.AccessToken>>(),
+  ),
+};
+
 const accessToken = {
-  ...actionType.make('login', id<authApi.AccessToken>()),
   ...actionType.make('refreshAccessToken'),
   ...actionType.make(
     'refreshAccessTokenCompleted',
-    id<future.ToResult<ReturnType<typeof authApi.refreshAccessToken>>>(),
+    id<E.Either<err.Err, authApi.AccessToken>>(),
   ),
 };
 
@@ -60,6 +75,7 @@ export type Action = actionType.ActionsUnion<
 export type Creators = typeof creators;
 export const creators = {
   ...mentors,
+  ...login,
   ...accessToken,
   ...buddies,
   ...messages,

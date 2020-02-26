@@ -5,6 +5,8 @@ import { pipe } from 'fp-ts/lib/pipeable';
 
 import * as actions from './actions';
 import * as accessToken from './accessToken';
+import * as login from './login';
+import * as createUser from './createUser';
 import * as buddies from './buddies';
 import * as messages from './messages';
 import * as sendMessage from './sendMessage';
@@ -17,6 +19,8 @@ export type AppState = model.AppState;
 
 export const initialState: AppState = {
   accessToken: accessToken.initialState,
+  login: login.initialState,
+  createUser: createUser.initialState,
   mentors: mentors.initialState,
   buddies: buddies.initialState,
   messages: messages.initialState,
@@ -26,6 +30,13 @@ export const initialState: AppState = {
 };
 
 function reducer(state: AppState = initialState, action: actions.Action) {
+  const [loginModel, loginCmd] = reduxLoop.liftState(
+    login.reducer(state.login, action),
+  );
+
+  const [createUserModel, createUserCmd] = reduxLoop.liftState(
+    createUser.reducer(state.login, action),
+  );
   const [tokenModel, tokenCmd] = reduxLoop.liftState(
     accessToken.reducer(state.accessToken, action),
   );
@@ -58,6 +69,8 @@ function reducer(state: AppState = initialState, action: actions.Action) {
       scheduler: schedulerModel,
 
       accessToken: tokenModel,
+      login: loginModel,
+      createUser: createUserModel,
       mentors: mentorsModel,
       buddies: buddiesModel,
       messages: messagesModel,
@@ -67,6 +80,8 @@ function reducer(state: AppState = initialState, action: actions.Action) {
     reduxLoop.Cmd.list([
       tokenCmd,
       mentorsCmd,
+      loginCmd,
+      createUserCmd,
       buddiesCmd,
       messagesCmd,
       sendMessageCmd,

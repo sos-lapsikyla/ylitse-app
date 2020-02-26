@@ -1,7 +1,8 @@
+import * as TE from 'fp-ts/lib/TaskEither';
 import * as t from 'io-ts';
 
-import * as http from '../lib/http';
-import * as r from '../lib/result';
+import * as err from '../lib/http-err';
+import * as http2 from '../lib/http2';
 
 import * as config from './config';
 
@@ -47,32 +48,33 @@ export type Credentials = {
   password: string;
 };
 
-export async function login({
+export function login({
   userName,
   password,
-}: Credentials): http.Future<AccessToken> {
-  const url = `${config.baseUrl}/login`;
-  const input = {
-    login_name: userName,
-    password,
-  };
-  const apiToken = await http.post(url, input, tokenType);
-  return r.map(apiToken, toAccessToken);
+}: Credentials): TE.TaskEither<err.Err, AccessToken> {
+  return http2.validateResponse(
+    http2.post(`${config.baseUrl}/login`, {
+      login_name: userName,
+      password,
+    }),
+    tokenType,
+    toAccessToken,
+  );
 }
 
-export async function refreshAccessToken(
-  accessToken: AccessToken,
-): http.Future<AccessToken> {
-  const apiToken = await http.post(
-    `${config.baseUrl}/refresh`,
-    { refresh_token: accessToken.refreshToken },
+export function refreshAccessToken(
+  currentToken: AccessToken,
+): TE.TaskEither<err.Err, AccessToken> {
+  return http2.validateResponse(
+    http2.post(`${config.baseUrl}/refresh`, {
+      refresh_token: currentToken.refreshToken,
+    }),
     newAccessTokenType,
+    ({ access_token }) => ({
+      ...currentToken,
+      accessToken: access_token,
+    }),
   );
-  return r.map(apiToken, token => ({
-    ...accessToken,
-    fetchTime: Date.now(),
-    accessToken: token.access_token,
-  }));
 }
 
 export function authHeader({

@@ -1,7 +1,6 @@
 import React from 'react';
 import RN from 'react-native';
-
-import * as remoteData from '../../lib/remote-data';
+import * as RD from '@devexperts/remote-data-ts';
 
 import * as authApi from '../../api/auth';
 
@@ -20,7 +19,7 @@ interface Props extends RN.ViewProps {
   onPressNext: (credentials: authApi.Credentials) => void | undefined;
   titleMessageId: localization.MessageId;
   nextMessageId: localization.MessageId;
-  remoteAction: remoteData.RemoteData<unknown, unknown>;
+  remoteAction: RD.RemoteData<unknown, unknown>;
   getErrorMessageId: (u: unknown) => localization.MessageId;
   onChange?: (credentials: authApi.Credentials) => void | undefined;
 }
@@ -79,7 +78,7 @@ const LoginCard = ({
           messageId={nextMessageId}
           onPress={() => onPressNext(credentials)}
           badge={require('../images/arrow.svg')}
-          loading={remoteData.isLoading(remoteAction)}
+          loading={RD.isPending(remoteAction)}
           disabled={isEmptyFields}
         />
         <Button

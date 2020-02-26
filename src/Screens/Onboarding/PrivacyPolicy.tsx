@@ -2,14 +2,13 @@ import React from 'react';
 import RN from 'react-native';
 import * as redux from 'redux';
 import * as ReactRedux from 'react-redux';
-import * as option from 'fp-ts/lib/Option';
+import * as O from 'fp-ts/lib/Option';
+import * as RD from '@devexperts/remote-data-ts';
 
 import * as navigationProps from '../../lib/navigation-props';
-import useRemoteData from '../../lib/use-remote-data';
 
 import * as config from '../../api/config';
 import * as accountApi from '../../api/account';
-import * as authApi from '../../api/auth';
 import * as state from '../../state';
 import * as actions from '../../state/actions';
 
@@ -31,28 +30,27 @@ export type PrivacyPolicyRoute = {
 
 type StateProps = {
   accessToken: state.AppState['accessToken'];
+  createUserState: state.AppState['createUser'];
 };
 
 type DispatchProps = {
-  login: (user: authApi.AccessToken) => void | undefined;
+  createUser: (user: accountApi.NewUser) => void | undefined;
 };
 type OwnProps = navigationProps.NavigationProps<PrivacyPolicyRoute, TabsRoute>;
 
 type Props = StateProps & DispatchProps & OwnProps;
 
-const PrivacyPolicy = ({ navigation, accessToken, login }: Props) => {
-  const [createUserRequest, createUser] = useRemoteData(accountApi.createUser);
+const PrivacyPolicy = ({
+  navigation,
+  accessToken,
+  createUser,
+  createUserState,
+}: Props) => {
   React.useEffect(() => {
-    if (createUserRequest.type === 'Ok') {
-      login(createUserRequest.value);
-    }
-  }, [createUserRequest.type]);
-  React.useEffect(() => {
-    if (option.isSome(accessToken)) {
+    if (O.isSome(accessToken)) {
       navigateMain(navigation);
     }
   }, [accessToken]);
-
   const [isAgreed, setAgreed] = React.useState(false);
   const goBack = () => {
     navigation.goBack();
@@ -85,7 +83,7 @@ const PrivacyPolicy = ({ navigation, accessToken, login }: Props) => {
         <ErrorMessage
           style={styles.errorText}
           getMessageId={() => 'meta.error'}
-          data={createUserRequest}
+          data={createUserState}
         />
         <Button
           onPress={() => setAgreed(true)}
@@ -100,7 +98,7 @@ const PrivacyPolicy = ({ navigation, accessToken, login }: Props) => {
           messageId="onboarding.privacyPolicy.nextButton"
           badge={require('../images/arrow.svg')}
           disabled={!isAgreed}
-          loading={createUserRequest.type === 'Loading'}
+          loading={RD.isPending(createUserState)}
         />
         <Button
           gradient={[colors.faintGray, colors.faintGray]}
@@ -145,12 +143,13 @@ const styles = RN.StyleSheet.create({
 });
 
 export default ReactRedux.connect<StateProps, {}, OwnProps, state.AppState>(
-  ({ accessToken }) => ({
+  ({ accessToken, createUser }) => ({
     accessToken,
+    createUserState: createUser,
   }),
   (dispatch: redux.Dispatch<actions.Action>) => ({
-    login: (token: authApi.AccessToken) => {
-      dispatch(actions.creators.login(token));
+    createUser: (user: accountApi.NewUser) => {
+      dispatch(actions.creators.createUser(user));
     },
   }),
 )(PrivacyPolicy);

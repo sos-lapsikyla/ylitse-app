@@ -1,11 +1,9 @@
 import * as reduxLoop from 'redux-loop';
-import * as option from 'fp-ts/lib/Option';
+import * as RD from '@devexperts/remote-data-ts';
+import * as O from 'fp-ts/lib/Option';
 import { pipe } from 'fp-ts/lib/pipeable';
 
-import assertNever from '../lib/assert-never';
-import * as remoteData from '../lib/remote-data';
 import * as err from '../lib/http-err';
-import * as f from '../lib/future';
 
 import * as authApi from '../api/auth';
 
@@ -14,7 +12,7 @@ import { AppState } from './model';
 
 export type State = AppState['accessToken'];
 
-export const initialState = option.none;
+export const initialState = O.none;
 
 export const reducer: actions.Reducer<State> = (
   state = initialState,
@@ -23,19 +21,19 @@ export const reducer: actions.Reducer<State> = (
   const matchAction = actions.match(state, action);
   return pipe(
     state,
-    option.fold(
+    O.fold(
       () =>
         matchAction({
-          login: ({ payload }) => option.some([payload, remoteData.notAsked]),
+          accessTokenAcquired: ({ payload }) => O.some([payload, RD.initial]),
         }),
-      ([currentToken, nextToken]) => {
+      ([currentToken, tokenRequest]) => {
         const [model, cmd] = reduxLoop.liftState(
-          tokenReducer(currentToken, nextToken, action),
+          tokenReducer(currentToken, tokenRequest, action),
         );
-        const nextState: AppState['accessToken'] =
-          model.type === 'Ok'
-            ? option.some([model.value, remoteData.notAsked])
-            : option.some([currentToken, model]);
+        const nextToken = RD.toNullable(model);
+        const nextState: AppState['accessToken'] = nextToken
+          ? O.some([nextToken, RD.initial])
+          : O.some([currentToken, model]);
         return reduxLoop.loop(nextState, cmd);
       },
     ),
@@ -44,28 +42,23 @@ export const reducer: actions.Reducer<State> = (
 
 function tokenReducer(
   currentToken: authApi.AccessToken,
-  state: remoteData.RemoteData<authApi.AccessToken, err.Err>,
+  state: RD.RemoteData<err.Err, authApi.AccessToken>,
   action: actions.Action,
-): actions.LS<remoteData.RemoteData<authApi.AccessToken, err.Err>> {
+): actions.LS<RD.RemoteData<err.Err, authApi.AccessToken>> {
   const matchAction = actions.match(state, action);
-  switch (state.type) {
-    case 'NotAsked':
-    case 'Err':
-      return matchAction({
-        refreshAccessToken: reduxLoop.loop(
-          remoteData.loading,
-          reduxLoop.Cmd.run(f.lazy(authApi.refreshAccessToken, currentToken), {
-            successActionCreator: actions.creators.refreshAccessTokenCompleted,
-          }),
-        ),
-      });
-    case 'Loading':
-      return matchAction({
-        refreshAccessTokenCompleted: ({ payload }) => payload,
-      });
-    case 'Ok':
-      return state;
-    default:
-      return assertNever(state);
-  }
+  const init = matchAction({
+    refreshAccessToken: reduxLoop.loop(
+      RD.pending,
+      reduxLoop.Cmd.run(authApi.refreshAccessToken(currentToken), {
+        successActionCreator: actions.creators.refreshAccessTokenCompleted,
+      }),
+    ),
+  });
+  const complete = matchAction({
+    refreshAccessTokenCompleted: ({ payload }) => RD.fromEither(payload),
+  });
+  return pipe(
+    state,
+    RD.fold(() => init, () => complete, () => init, () => state),
+  );
 }

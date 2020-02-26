@@ -1,8 +1,8 @@
 import React from 'react';
 import RN from 'react-native';
+import * as RD from '@devexperts/remote-data-ts';
+import { pipe } from 'fp-ts/lib/pipeable';
 
-import * as taggedUnion from '../../lib/tagged-union';
-import * as remoteData from '../../lib/remote-data';
 import * as localization from '../../localization';
 
 import { AnimatedMessage } from './Message';
@@ -10,38 +10,42 @@ import fonts from '../components/fonts';
 import colors from '../components/colors';
 
 interface Props<E> {
-  data: remoteData.RemoteData<unknown, E>;
+  data: RD.RemoteData<E, unknown>;
   getMessageId: (e: E) => localization.MessageId;
   style?: RN.StyleProp<RN.TextStyle>;
 }
 
 function ErrorMessage<E>({ style, data, getMessageId }: Props<E>) {
   const opacity = React.useRef(new RN.Animated.Value(0)).current;
-  React.useEffect(() => {
-    const commonAnimationOptions = {
+  const defaultConfig = {
+    animation: {
       useNativeDriver: true,
       easing: RN.Easing.linear,
-    };
-    const animation = taggedUnion.match(data, {
-      Err: () => ({
-        ...commonAnimationOptions,
-        toValue: 1,
-        duration: 500,
+      toValue: 0,
+      duration: 300,
+    },
+    messageId: localization.blank,
+  };
+  const { animation, messageId } = pipe(
+    data,
+    RD.fold(
+      () => defaultConfig,
+      () => defaultConfig,
+      e => ({
+        animation: {
+          useNativeDriver: true,
+          easing: RN.Easing.linear,
+          toValue: 1,
+          duration: 500,
+        },
+        messageId: getMessageId(e),
       }),
-      default: () => ({
-        ...commonAnimationOptions,
-        toValue: 0,
-        duration: 300,
-      }),
-    });
+      () => defaultConfig,
+    ),
+  );
+  React.useEffect(() => {
     RN.Animated.timing(opacity, animation).start();
-  }, [data.type]);
-
-  const messageId = taggedUnion.match(data, {
-    Err: ({ error }) => getMessageId(error),
-    default: () => localization.blank,
-  });
-
+  }, [RD.isFailure(data)]);
   return (
     <AnimatedMessage
       style={[styles.message, { opacity }, style]}
