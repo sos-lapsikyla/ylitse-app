@@ -1,7 +1,8 @@
 import * as t from 'io-ts';
+import * as TE from 'fp-ts/lib/TaskEither';
 
-import * as http from '../lib/http';
-import * as result from '../lib/result';
+import * as http2 from '../lib/http2';
+import * as err from '../lib/http-err';
 import * as record from '../lib/record';
 
 import * as config from './config';
@@ -20,14 +21,14 @@ const toBuddy = ({ id, display_name }: ApiBuddy) => ({
   name: display_name,
 });
 
-export async function fetchBuddies(
+export function fetchBuddies(
   accessToken: authApi.AccessToken,
-): http.Future<record.NonTotal<Buddy>> {
-  const url = `${config.baseUrl}/users/${accessToken.userId}/contacts`;
-  return result.map(
-    await http.get(url, t.strict({ resources: t.array(buddyType) }), {
+): TE.TaskEither<err.Err, record.NonTotal<Buddy>> {
+  return http2.validateResponse(
+    http2.get(`${config.baseUrl}/users/${accessToken.userId}/contacts`, {
       headers: authApi.authHeader(accessToken),
     }),
+    t.strict({ resources: t.array(buddyType) }),
     ({ resources }) =>
       resources.reduce((acc, apiBuddy) => {
         const buddy = toBuddy(apiBuddy);

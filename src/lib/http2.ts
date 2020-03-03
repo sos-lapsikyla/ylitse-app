@@ -38,7 +38,7 @@ export const put = (url: string, body: any, options?: RequestInit) =>
 const getJson = (response: Response) =>
   TE.tryCatch(() => response.json(), err.unknownError);
 
-const decode = <A>(model: t.Type<A, A, unknown>) => (u: unknown) =>
+const decode = <A, B>(model: t.Type<A, B, unknown>) => (u: unknown) =>
   pipe(
     u,
     model.decode,
@@ -46,10 +46,10 @@ const decode = <A>(model: t.Type<A, A, unknown>) => (u: unknown) =>
     TE.fromEither,
   );
 
-export const validateResponse = <A, B>(
+export const validateResponse = <A, B, C>(
   task: TE.TaskEither<err.Err, Response>,
-  model: t.Type<A, A, unknown>,
-  fromModel: (a: A) => B,
+  model: t.Type<A, B, unknown>,
+  fromModel: (a: A) => C,
 ) =>
   pipe(
     task,

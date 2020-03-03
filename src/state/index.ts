@@ -1,7 +1,6 @@
-import * as reduxLoop from 'redux-loop';
+import * as automaton from 'redux-automaton';
+import * as reduxObservable from 'redux-observable';
 import * as redux from 'redux';
-import * as option from 'fp-ts/lib/Option';
-import { pipe } from 'fp-ts/lib/pipeable';
 
 import * as actions from './actions';
 import * as accessToken from './accessToken';
@@ -14,6 +13,9 @@ import * as mentors from './mentors';
 import * as scheduler from './scheduler';
 import * as request from './request';
 import * as model from './model';
+
+import rootEpic from './epics';
+import { deps, Deps } from './deps';
 
 export type AppState = model.AppState;
 
@@ -29,77 +31,30 @@ export const initialState: AppState = {
   sendMessage: {},
 };
 
-function reducer(state: AppState = initialState, action: actions.Action) {
-  const [loginModel, loginCmd] = reduxLoop.liftState(
-    login.reducer(state.login, action),
-  );
+const reducer = automaton.combineReducers({
+  accessToken: accessToken.reducer,
+  login: login.reducer,
+  createUser: createUser.reducer,
+  mentors: mentors.reducer,
+  buddies: buddies.reducer,
+  messages: messages.reducer,
+  sendMessage: sendMessage.reducer,
+});
 
-  const [createUserModel, createUserCmd] = reduxLoop.liftState(
-    createUser.reducer(state.login, action),
-  );
-  const [tokenModel, tokenCmd] = reduxLoop.liftState(
-    accessToken.reducer(state.accessToken, action),
-  );
-  const [mentorsModel, mentorsCmd] = reduxLoop.liftState(
-    mentors.reducer(state.mentors, action),
-  );
-  const [buddiesModel, buddiesCmd] = reduxLoop.liftState(
-    buddies.reducer(state.buddies, action),
-  );
-  const [messagesModel, messagesCmd] = reduxLoop.liftState(
-    messages.reducer(state.messages, action),
-  );
-  const [sendMessageModel, sendMessageCmd] = reduxLoop.liftState(
-    sendMessage.reducer(state.sendMessage, action),
-  );
-  const [schedulerModel, schedulerCmd] = reduxLoop.liftState(
-    scheduler.reducer(state.scheduler, action),
-  );
-
-  const [requestModel, requestCmd] = pipe(
-    state.accessToken,
-    option.fold(
-      () => state.request,
-      ([token]) => request.reducer(state.request, action, token),
-    ),
-    reduxLoop.liftState,
-  );
-  return reduxLoop.loop(
-    {
-      scheduler: schedulerModel,
-
-      accessToken: tokenModel,
-      login: loginModel,
-      createUser: createUserModel,
-      mentors: mentorsModel,
-      buddies: buddiesModel,
-      messages: messagesModel,
-      sendMessage: sendMessageModel,
-      request: requestModel,
-    },
-    reduxLoop.Cmd.list([
-      tokenCmd,
-      mentorsCmd,
-      loginCmd,
-      createUserCmd,
-      buddiesCmd,
-      messagesCmd,
-      sendMessageCmd,
-      schedulerCmd,
-      requestCmd,
-    ]),
-  );
-}
-
+const epicMiddleware = reduxObservable.createEpicMiddleware<
+  actions.Action,
+  actions.Action,
+  AppState,
+  Deps
+>({
+  dependencies: deps,
+});
 const compose = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || redux.compose;
-const enhancer = compose(
-  reduxLoop.install({ DONT_LOG_ERRORS_ON_HANDLED_FAILURES: true }),
+const enhancer = compose(redux.applyMiddleware(epicMiddleware));
+
+export const store = automaton.createStore(
+  reducer as any,
+  initialState,
+  enhancer,
 );
-
-const createStore = redux.createStore as ((
-  reducer: actions.Reducer<AppState>,
-  initialState: AppState,
-  enhancer: redux.StoreEnhancer,
-) => redux.Store<AppState, actions.Action>);
-
-export const store = createStore(reducer as any, initialState, enhancer);
+epicMiddleware.run(rootEpic);

@@ -1,8 +1,8 @@
 import * as E from 'fp-ts/lib/Either';
+import * as TE from 'fp-ts/lib/TaskEither';
 import * as err from '../../lib/http-err';
 
 import * as actionType from '../../lib/action-type';
-import * as future from '../../lib/future';
 
 import * as accountApi from '../../api/account';
 import * as mentorApi from '../../api/mentors';
@@ -13,6 +13,12 @@ import * as messageApi from '../../api/messages';
 function id<A>(): (a: A) => A {
   return a => a;
 }
+
+type UnpackTE<TE extends (...args: any[]) => any> = ReturnType<
+  TE
+> extends TE.TaskEither<infer E, infer A>
+  ? E.Either<E, A>
+  : never;
 
 export const mentors = {
   ...actionType.make('fetchMentors'),
@@ -46,22 +52,24 @@ const accessToken = {
 };
 
 const buddies = {
-  fetchBuddiesCompleted: () => (
-    payload: future.ToResult<ReturnType<typeof buddyApi.fetchBuddies>>,
-  ) => ({ type: 'fetchBuddiesCompleted', payload } as const),
+  ...actionType.make(
+    'fetchBuddiesCompleted',
+    id<UnpackTE<typeof buddyApi.fetchBuddies>>(),
+  ),
 };
 
 const messages = {
   ...actionType.make('fetchMessages'),
-  fetchMessagesCompleted: () => (
-    payload: future.ToResult<ReturnType<typeof messageApi.fetchMessages>>,
-  ) => ({ type: 'fetchMessagesCompleted' as const, payload }),
+  ...actionType.make(
+    'fetchMessagesCompleted',
+    id<UnpackTE<typeof messageApi.fetchMessages>>(),
+  ),
 };
 
 const sendMessage = {
   ...actionType.make('sendMessage', id<messageApi.SendMessageParams>()),
   sendMessageCompleted: (buddyId: string) => (
-    response: future.ToResult<ReturnType<typeof messageApi.sendMessage>>,
+    response: UnpackTE<typeof messageApi.sendMessage>,
   ) => ({
     type: 'sendMessageCompleted' as const,
     payload: { buddyId, response },

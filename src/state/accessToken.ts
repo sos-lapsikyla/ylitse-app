@@ -2,6 +2,7 @@ import * as reduxLoop from 'redux-loop';
 import * as RD from '@devexperts/remote-data-ts';
 import * as O from 'fp-ts/lib/Option';
 import { pipe } from 'fp-ts/lib/pipeable';
+import { constant } from 'fp-ts/lib/function';
 
 import * as err from '../lib/http-err';
 
@@ -22,20 +23,12 @@ export const reducer: actions.Reducer<State> = (
   return pipe(
     state,
     O.fold(
-      () =>
+      constant(
         matchAction({
-          accessTokenAcquired: ({ payload }) => O.some([payload, RD.initial]),
+          accessTokenAcquired: ({ payload }) => O.some(payload),
         }),
-      ([currentToken, tokenRequest]) => {
-        const [model, cmd] = reduxLoop.liftState(
-          tokenReducer(currentToken, tokenRequest, action),
-        );
-        const nextToken = RD.toNullable(model);
-        const nextState: AppState['accessToken'] = nextToken
-          ? O.some([nextToken, RD.initial])
-          : O.some([currentToken, model]);
-        return reduxLoop.loop(nextState, cmd);
-      },
+      ),
+      prevToken => O.some(prevToken),
     ),
   );
 };

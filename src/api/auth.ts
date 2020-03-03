@@ -30,6 +30,14 @@ export type AccessToken = {
   fetchTime: number;
 };
 
+export const invalidToken: AccessToken = {
+  accountId: '0',
+  userId: '0',
+  accessToken: '0',
+  refreshToken: '0',
+  fetchTime: 0,
+};
+
 function toAccessToken({
   scopes: { account_id, user_id },
   tokens,

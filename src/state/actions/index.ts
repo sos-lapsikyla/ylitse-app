@@ -1,22 +1,21 @@
-import * as reduxLoop from 'redux-loop';
+import * as automaton from 'redux-automaton';
 
 import * as taggedUnion from '../../lib/tagged-union';
 
 import * as regular from './regular';
-import * as scheduler from './scheduler';
-import * as request from './request';
+import * as epic from './epic';
 
 export const mentors = regular.mentors;
 
-export type Action = regular.Action | scheduler.Action | request.Action;
+export type Action = regular.Action | epic.FetchCmd;
 
 export const creators = {
   ...regular.creators,
-  ...scheduler.creators,
-  ...request.creators,
 };
 
-export type LS<S> = S | reduxLoop.Loop<S, Action>;
+export type Pick<K extends Action['type']> = taggedUnion.Pick<Action, K>;
+
+export type LS<S> = S | automaton.Loop<S, Action>;
 export type Reducer<S> = (state: S | undefined, action: Action) => LS<S>;
 
 export function match<S>(state: S, action: Action) {

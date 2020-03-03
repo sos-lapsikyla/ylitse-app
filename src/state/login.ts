@@ -1,4 +1,4 @@
-import * as reduxLoop from 'redux-loop';
+import * as automaton from 'redux-automaton';
 import * as E from 'fp-ts/lib/Either';
 import * as RD from '@devexperts/remote-data-ts';
 import { pipe } from 'fp-ts/lib/pipeable';
@@ -13,29 +13,32 @@ export type State = model.AppState['login'];
 
 export const initialState = RD.initial;
 
-export const reducer = (state: State, action: actions.Action) => {
+export const reducer: automaton.Reducer<State, actions.Action> = (
+  state = initialState,
+  action,
+) => {
   switch (action.type) {
     case 'login':
-      return reduxLoop.loop(
-        RD.pending,
-        reduxLoop.Cmd.run(authApi.login(action.payload), {
-          successActionCreator: actions.creators.loginCompleted,
-        }),
-      );
+      return automaton.loop(RD.pending, {
+        type: 'FetchCmd',
+        f: 'login',
+        args: () => [action.payload],
+        onComplete: actions.creators.loginCompleted,
+      });
     case 'loginCompleted':
       return pipe(
         action.payload,
         E.fold<
           err.Err,
           authApi.AccessToken,
-          reduxLoop.Loop<State, actions.Action> | State
+          automaton.Loop<State, actions.Action> | State
         >(
           e => RD.failure(e),
           token =>
-            reduxLoop.loop(
-              RD.success(token),
-              reduxLoop.Cmd.action(actions.creators.accessTokenAcquired(token)),
-            ),
+            automaton.loop(RD.success(token), {
+              type: 'accessTokenAcquired',
+              payload: token,
+            }),
         ),
       );
     default:

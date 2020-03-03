@@ -1,7 +1,8 @@
-import * as option from 'fp-ts/lib/Option';
-import * as tuple from 'fp-ts/lib/Tuple';
+import * as O from 'fp-ts/lib/Option';
+import * as T from 'fp-ts/lib/Tuple';
 import * as RD from '@devexperts/remote-data-ts';
 import { pipe } from 'fp-ts/lib/pipeable';
+import { flow, tuple, constant } from 'fp-ts/lib/function';
 
 import * as err from '../lib/http-err';
 import * as remoteData from '../lib/remote-data';
@@ -12,6 +13,7 @@ import * as array from '../lib/array';
 
 import * as messageApi from '../api/messages';
 import * as mentorApi from '../api/mentors';
+import * as authApi from '../api/auth';
 
 import * as localization from '../localization';
 
@@ -30,11 +32,17 @@ export const getAccessToken = (state: AppState) =>
   pipe(
     state,
     ({ accessToken }: AppState) => accessToken,
-    option.map(tuple.fst),
+    O.map(T.fst),
   );
 
+export const getAC = flow(
+  getAccessToken,
+  O.getOrElse(constant(authApi.invalidToken)),
+  token => tuple(token),
+);
+
 export const fromPollable = <A>(data: Pollable<A>) =>
-  remoteData.map(data, tuple.fst);
+  remoteData.map(data, T.fst);
 
 export const getBuddyName = (
   buddyId: string,
