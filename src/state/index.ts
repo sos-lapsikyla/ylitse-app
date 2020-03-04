@@ -10,8 +10,6 @@ import * as buddies from './buddies';
 import * as messages from './messages';
 import * as sendMessage from './sendMessage';
 import * as mentors from './mentors';
-import * as scheduler from './scheduler';
-import * as request from './request';
 import * as model from './model';
 
 import rootEpic from './epics';
@@ -26,8 +24,6 @@ export const initialState: AppState = {
   mentors: mentors.initialState,
   buddies: buddies.initialState,
   messages: messages.initialState,
-  scheduler: scheduler.initialState,
-  request: request.initialState,
   sendMessage: {},
 };
 
