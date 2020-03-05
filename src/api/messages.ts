@@ -1,5 +1,5 @@
 import * as t from 'io-ts';
-import * as TE from 'fp-ts/lib/TaskEither';
+import * as RE from 'fp-ts-rxjs/lib/ObservableEither';
 import { pipe } from 'fp-ts/lib/pipeable';
 
 import * as http2 from '../lib/http2';
@@ -46,7 +46,7 @@ const toMessage: (
 
 export function fetchMessages(
   accessToken: authApi.AccessToken,
-): TE.TaskEither<err.Err, Threads> {
+): RE.ObservableEither<err.Err, Record<string, Record<string, Message>>> {
   return http2.validateResponse(
     http2.get(`${config.baseUrl}/users/${accessToken.userId}/messages`, {
       headers: authApi.authHeader(accessToken),
@@ -54,7 +54,7 @@ export function fetchMessages(
     messageListType,
     ({ resources }) =>
       resources.map(toMessage(accessToken.userId)).reduce(
-        (acc: Threads, message: Message) => ({
+        (acc: Record<string, Record<string, Message>>, message: Message) => ({
           ...acc,
           [message.buddyId]: {
             ...acc[message.buddyId],
@@ -71,10 +71,9 @@ export type SendMessageParams = {
   content: string;
 };
 
-export function sendMessage(
+export const sendMessage = (params: SendMessageParams) => (
   accessToken: authApi.AccessToken,
-  params: SendMessageParams,
-): TE.TaskEither<err.Err, undefined> {
+): RE.ObservableEither<err.Err, undefined> => {
   const url = `${config.baseUrl}/users/${accessToken.userId}/messages`;
   const message = {
     sender_id: accessToken.userId,
@@ -86,11 +85,11 @@ export function sendMessage(
     http2.post(url, message, {
       headers: authApi.authHeader(accessToken),
     }),
-    TE.map(_ => undefined),
+    RE.map(_ => undefined),
   );
-}
+};
 
-export type Threads = Partial<{
-  [buddyId: string]: Thread;
-}>;
-export type Thread = Partial<{ [messageId: string]: Message }>;
+type buddyId = string;
+type messageId = string;
+export type Thread = Record<messageId, Message>;
+export type Threads = Record<buddyId, Thread>;

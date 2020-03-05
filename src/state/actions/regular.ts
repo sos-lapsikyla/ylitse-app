@@ -1,5 +1,5 @@
 import * as E from 'fp-ts/lib/Either';
-import * as TE from 'fp-ts/lib/TaskEither';
+import * as RE from 'fp-ts-rxjs/lib/ObservableEither';
 import * as err from '../../lib/http-err';
 
 import * as actionType from '../../lib/action-type';
@@ -14,9 +14,9 @@ function id<A>(): (a: A) => A {
   return a => a;
 }
 
-type UnpackTE<TE extends (...args: any[]) => any> = ReturnType<
-  TE
-> extends TE.TaskEither<infer E, infer A>
+type UnpackRE<RE extends (...args: any[]) => any> = ReturnType<
+  RE
+> extends RE.ObservableEither<infer E, infer A>
   ? E.Either<E, A>
   : never;
 
@@ -54,7 +54,7 @@ const accessToken = {
 const buddies = {
   ...actionType.make(
     'fetchBuddiesCompleted',
-    id<UnpackTE<typeof buddyApi.fetchBuddies>>(),
+    id<UnpackRE<typeof buddyApi.fetchBuddies>>(),
   ),
 };
 
@@ -62,14 +62,14 @@ const messages = {
   ...actionType.make('fetchMessages'),
   ...actionType.make(
     'fetchMessagesCompleted',
-    id<UnpackTE<typeof messageApi.fetchMessages>>(),
+    id<UnpackRE<typeof messageApi.fetchMessages>>(),
   ),
 };
 
 const sendMessage = {
   ...actionType.make('sendMessage', id<messageApi.SendMessageParams>()),
   sendMessageCompleted: (buddyId: string) => (
-    response: UnpackTE<typeof messageApi.sendMessage>,
+    response: E.Either<err.Err, undefined>,
   ) => ({
     type: 'sendMessageCompleted' as const,
     payload: { buddyId, response },

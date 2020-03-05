@@ -13,7 +13,6 @@ import * as mentors from './mentors';
 import * as model from './model';
 
 import rootEpic from './epics';
-import { deps, Deps } from './deps';
 
 export type AppState = model.AppState;
 
@@ -40,11 +39,8 @@ const reducer = automaton.combineReducers({
 const epicMiddleware = reduxObservable.createEpicMiddleware<
   actions.Action,
   actions.Action,
-  AppState,
-  Deps
->({
-  dependencies: deps,
-});
+  AppState
+>();
 const compose = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || redux.compose;
 const enhancer = compose(redux.applyMiddleware(epicMiddleware));
 

@@ -1,9 +1,8 @@
 import * as t from 'io-ts';
-import * as TE from 'fp-ts/lib/TaskEither';
+import * as RE from 'fp-ts-rxjs/lib/ObservableEither';
 
 import * as http2 from '../lib/http2';
 import * as err from '../lib/http-err';
-import * as record from '../lib/record';
 
 import * as config from './config';
 
@@ -31,16 +30,16 @@ const toMentor = ({
   name: display_name,
 });
 
-export type Mentors = record.NonTotal<Mentor>;
+export type Mentors = Record<string, Mentor>;
 const fromMentorList = ({ resources }: t.TypeOf<typeof mentorListType>) =>
   resources.reduce((acc: Mentors, apiMentor) => {
     const mentor = toMentor(apiMentor);
     return { ...acc, [mentor.buddyId]: mentor };
   }, {});
 
-export const fetchMentors: () => TE.TaskEither<
+export const fetchMentors: () => RE.ObservableEither<
   err.Err,
-  record.NonTotal<Mentor>
+  Record<string, Mentor>
 > = () =>
   http2.validateResponse(
     http2.get(`${config.baseUrl}/mentors`),

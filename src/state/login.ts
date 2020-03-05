@@ -1,5 +1,6 @@
 import * as automaton from 'redux-automaton';
 import * as E from 'fp-ts/lib/Either';
+import * as R from 'fp-ts-rxjs/lib/Observable';
 import * as RD from '@devexperts/remote-data-ts';
 import { pipe } from 'fp-ts/lib/pipeable';
 
@@ -19,12 +20,15 @@ export const reducer: automaton.Reducer<State, actions.Action> = (
 ) => {
   switch (action.type) {
     case 'login':
-      return automaton.loop(RD.pending, {
-        type: 'FetchCmd',
-        f: 'login',
-        args: () => [action.payload],
-        onComplete: actions.creators.loginCompleted,
-      });
+      return automaton.loop(
+        RD.pending,
+        actions.creators.fetchCmd(() =>
+          R.observable.map(
+            authApi.login(action.payload),
+            actions.creators.loginCompleted,
+          ),
+        ),
+      );
     case 'loginCompleted':
       return pipe(
         action.payload,

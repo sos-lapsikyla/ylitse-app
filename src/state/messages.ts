@@ -1,41 +1,45 @@
 import * as automaton from 'redux-automaton';
+import * as R from 'fp-ts-rxjs/lib/Observable';
 import * as RD from '@devexperts/remote-data-ts';
-import { constant } from 'fp-ts/lib/function';
-import { pipe } from 'fp-ts/lib/pipeable';
+import { flow } from 'fp-ts/lib/function';
+import { atRecord } from 'monocle-ts/lib/At/Record';
+import * as M from 'monocle-ts';
 
-import * as selectors from './selectors';
+import * as messageApi from '../api/messages';
+
 import * as actions from './actions';
 import * as model from './model';
+
+import { withToken } from './accessToken';
 
 export type State = model.AppState['messages'];
 export type LoopState = actions.LS<State>;
 
 export const initialState = RD.initial;
 
+export const message_ = (buddyId: string, messageId: string) =>
+  M.Index.fromAt(atRecord<messageApi.Thread>())
+    .index(buddyId)
+    .compose(M.Index.fromAt(atRecord<messageApi.Message>()).index(messageId));
+
 export const reducer: automaton.Reducer<State, actions.Action> = (
   state = initialState,
   action,
 ) => {
-  const matchAction = actions.match(state, action);
-  const toLoading = constant(
-    matchAction({
-      fetchMessages: automaton.loop(RD.pending, {
-        type: 'FetchCmd' as const,
-        f: 'fetchMessages' as const,
-        args: selectors.getAC,
-        onComplete: actions.creators.fetchMessagesCompleted,
-      }),
-    }),
-  );
-
-  // TODO: Fold successfull and start polling.
-  const toCompleted = constant(
-    matchAction({
-      fetchMessagesCompleted: ({ payload }) => RD.fromEither(payload),
-    }),
-  );
-  return pipe(
-    state,
-    RD.fold(toLoading, toCompleted, toLoading, constant(state)),
-  );
+  switch (action.type) {
+    case 'fetchMessages':
+      return automaton.loop(
+        RD.pending,
+        withToken(
+          flow(
+            messageApi.fetchMessages,
+            R.map(actions.creators.fetchMessagesCompleted),
+          ),
+        ),
+      );
+    case 'fetchMessagesCompleted':
+      return RD.fromEither(action.payload);
+    default:
+      return state;
+  }
 };

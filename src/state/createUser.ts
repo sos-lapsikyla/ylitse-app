@@ -1,7 +1,9 @@
-import * as reduxLoop from 'redux-loop';
+import * as automaton from 'redux-automaton';
+import * as R from 'fp-ts-rxjs/lib/Observable';
 import * as RD from '@devexperts/remote-data-ts';
 import * as E from 'fp-ts/lib/Either';
 import { pipe } from 'fp-ts/lib/pipeable';
+import { constant } from 'fp-ts/lib/function';
 
 import * as accountApi from '../api/account';
 import * as authApi from '../api/auth';
@@ -17,11 +19,17 @@ export const initialState = RD.initial;
 export const reducer = (state: State, action: actions.Action) => {
   switch (action.type) {
     case 'createUser':
-      return reduxLoop.loop(
+      return automaton.loop(
         RD.pending,
-        reduxLoop.Cmd.run(accountApi.createUser(action.payload), {
-          successActionCreator: actions.creators.fetchMentorsCompleted,
-        }),
+        actions.creators.fetchCmd(
+          constant(
+            pipe(
+              action.payload,
+              accountApi.createUser,
+              R.map(actions.creators.createUserCompleted),
+            ),
+          ),
+        ),
       );
     case 'createUserCompleted':
       return pipe(
@@ -29,13 +37,13 @@ export const reducer = (state: State, action: actions.Action) => {
         E.fold<
           err.Err,
           authApi.AccessToken,
-          reduxLoop.Loop<State, actions.Action> | State
+          automaton.Loop<State, actions.Action> | State
         >(
           e => RD.failure(e),
           token =>
-            reduxLoop.loop(
+            automaton.loop(
               RD.success(token),
-              reduxLoop.Cmd.action(actions.creators.accessTokenAcquired(token)),
+              actions.creators.accessTokenAcquired(token),
             ),
         ),
       );

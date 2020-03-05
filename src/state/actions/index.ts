@@ -7,10 +7,12 @@ import * as epic from './epic';
 
 export const mentors = regular.mentors;
 
+export type RegularAction = regular.Action;
 export type Action = regular.Action | epic.FetchCmd;
 
 export const creators = {
   ...regular.creators,
+  fetchCmd: epic.fetchCmd,
 };
 
 export type Pick<K extends Action['type']> = taggedUnion.Pick<Action, K>;

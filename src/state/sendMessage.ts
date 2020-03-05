@@ -1,68 +1,57 @@
-import * as reduxLoop from 'redux-loop';
+import * as automaton from 'redux-automaton';
+import * as RD from '@devexperts/remote-data-ts';
+import * as R from 'fp-ts-rxjs/lib/Observable';
+import * as record from 'fp-ts/lib/Record';
+import * as E from 'fp-ts/lib/Either';
+import * as O from 'fp-ts/lib/Option';
+import { pipe } from 'fp-ts/lib/pipeable';
+import { constant, flow } from 'fp-ts/lib/function';
 
-import * as remoteData from '../lib/remote-data';
+import * as messageApi from '../api/messages';
 import * as err from '../lib/http-err';
 
 import * as actions from './actions';
 import * as model from './model';
+import { withToken } from './accessToken';
+
+type Request = RD.RemoteData<err.Err, undefined>;
 
 export type State = model.AppState['sendMessage'];
 export const reducer = (state: State, action: actions.Action) => {
   switch (action.type) {
     case 'sendMessage':
-    case 'sendMessageCompleted':
       const buddyId = action.payload.buddyId;
-      const requestState = state[buddyId];
-      const [nextRequestState, nextCmd] = reduxLoop.liftState(
-        _reducer(requestState, action),
+      const isLoading = pipe(
+        record.lookup(buddyId, state),
+        O.fold(constant(false), RD.isPending),
       );
-      return reduxLoop.loop(
-        {
-          ...state,
-          [buddyId]: nextRequestState,
-        },
-        nextCmd,
+      const nextState = record.insertAt<string, Request>(
+        action.payload.buddyId,
+        RD.pending,
+      )(state);
+      return isLoading
+        ? state
+        : automaton.loop(
+            nextState,
+            withToken(
+              flow(
+                messageApi.sendMessage(action.payload),
+                R.map(actions.creators.sendMessageCompleted(buddyId)),
+              ),
+            ),
+          );
+    case 'sendMessageCompleted':
+      return pipe(
+        state,
+        record.insertAt<string, Request>(
+          action.payload.buddyId,
+          pipe(
+            action.payload.response,
+            E.fold(RD.failure, constant(RD.initial)),
+          ),
+        ),
       );
     default:
       return state;
   }
 };
-
-export const initialState = {};
-type RequestState = remoteData.RemoteData<undefined, err.Err>;
-
-function _reducer(
-  state: RequestState | undefined = remoteData.notAsked,
-  action: actions.Action,
-): actions.LS<RequestState> {
-  const matchAction = actions.match(state, action);
-  switch (state.type) {
-    case 'NotAsked':
-    case 'Err':
-      return matchAction({
-        sendMessage: ({ payload: params }) => {
-          return reduxLoop.loop(
-            remoteData.loading,
-            reduxLoop.Cmd.action(
-              actions.creators.requestWithToken({
-                func: 'sendMessage' as const,
-                funcArgs: [params],
-                actionCreator: 'sendMessageCompleted' as const,
-                actionCreatorArgs: [params.buddyId],
-              }),
-            ),
-          );
-        },
-      });
-    case 'Loading':
-      return matchAction({
-        sendMessageCompleted: ({ payload: { response } }) => {
-          return response;
-        },
-      });
-    case 'Ok':
-      return state;
-    default:
-      return state;
-  }
-}

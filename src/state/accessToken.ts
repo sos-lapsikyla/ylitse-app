@@ -1,57 +1,39 @@
-import * as reduxLoop from 'redux-loop';
-import * as RD from '@devexperts/remote-data-ts';
+import * as automaton from 'redux-automaton';
 import * as O from 'fp-ts/lib/Option';
-import { pipe } from 'fp-ts/lib/pipeable';
-import { constant } from 'fp-ts/lib/function';
-
-import * as err from '../lib/http-err';
+import { flow } from 'fp-ts/lib/function';
+import { Observable } from 'rxjs';
 
 import * as authApi from '../api/auth';
 
 import * as actions from './actions';
 import { AppState } from './model';
+import * as selectors from './selectors';
 
 export type State = AppState['accessToken'];
 
 export const initialState = O.none;
 
-export const reducer: actions.Reducer<State> = (
+export const withToken: (
+  f: (token: authApi.AccessToken) => Observable<actions.RegularAction>,
+) => actions.Action = f =>
+  actions.creators.fetchCmd(
+    flow(
+      selectors.getAC,
+      f,
+    ),
+  );
+
+export const reducer: automaton.Reducer<State, actions.Action> = (
   state = initialState,
   action,
 ) => {
-  const matchAction = actions.match(state, action);
-  return pipe(
-    state,
-    O.fold(
-      constant(
-        matchAction({
-          accessTokenAcquired: ({ payload }) => O.some(payload),
-        }),
-      ),
-      prevToken => O.some(prevToken),
-    ),
-  );
+  if (!O.isSome(state)) {
+    return action.type !== 'accessTokenAcquired'
+      ? state
+      : O.some({
+          currentToken: action.payload,
+          nextToken: { type: 'NotAsked' },
+        });
+  }
+  return state;
 };
-
-function tokenReducer(
-  currentToken: authApi.AccessToken,
-  state: RD.RemoteData<err.Err, authApi.AccessToken>,
-  action: actions.Action,
-): actions.LS<RD.RemoteData<err.Err, authApi.AccessToken>> {
-  const matchAction = actions.match(state, action);
-  const init = matchAction({
-    refreshAccessToken: reduxLoop.loop(
-      RD.pending,
-      reduxLoop.Cmd.run(authApi.refreshAccessToken(currentToken), {
-        successActionCreator: actions.creators.refreshAccessTokenCompleted,
-      }),
-    ),
-  });
-  const complete = matchAction({
-    refreshAccessTokenCompleted: ({ payload }) => RD.fromEither(payload),
-  });
-  return pipe(
-    state,
-    RD.fold(() => init, () => complete, () => init, () => state),
-  );
-}

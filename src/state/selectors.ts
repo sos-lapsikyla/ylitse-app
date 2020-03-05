@@ -1,12 +1,16 @@
 import * as O from 'fp-ts/lib/Option';
+import { getOptionM } from 'fp-ts/lib/OptionT';
+import { getFoldableComposition } from 'fp-ts/lib/Foldable';
+import * as record from 'fp-ts/lib/Record';
+import * as A from 'fp-ts/lib/Array';
 import * as T from 'fp-ts/lib/Tuple';
+import * as F from 'fp-ts/lib/Functor';
 import * as RD from '@devexperts/remote-data-ts';
 import { pipe } from 'fp-ts/lib/pipeable';
-import { flow, tuple, constant } from 'fp-ts/lib/function';
+import { flow, constant, identity } from 'fp-ts/lib/function';
 
 import * as err from '../lib/http-err';
 import * as remoteData from '../lib/remote-data';
-import * as record from '../lib/record';
 import * as mentorsApi from '../api/mentors';
 import * as taggedUnion from '../lib/tagged-union';
 import * as array from '../lib/array';
@@ -17,49 +21,42 @@ import * as authApi from '../api/auth';
 
 import * as localization from '../localization';
 
-import { AppState, Pollable } from './model';
+import { AppState } from './model';
 
 export function getMentors(
-  mentors: RD.RemoteData<err.Err, record.NonTotal<mentorsApi.Mentor>>,
+  mentors: RD.RemoteData<err.Err, Record<string, mentorsApi.Mentor>>,
 ): RD.RemoteData<err.Err, mentorApi.Mentor[]> {
-  return pipe(
-    mentors,
-    RD.map(array.fromNonTotalRecord),
-  );
+  const entries = RD.remoteData.map(mentors, record.toArray);
+  const RDA = F.getFunctorComposition(RD.remoteData, A.array);
+  return RDA.map(entries, T.snd);
 }
 
 export const getAccessToken = (state: AppState) =>
   pipe(
     state,
     ({ accessToken }: AppState) => accessToken,
-    O.map(T.fst),
+    O.map(({ currentToken }) => currentToken),
   );
 
 export const getAC = flow(
   getAccessToken,
   O.getOrElse(constant(authApi.invalidToken)),
-  token => tuple(token),
 );
-
-export const fromPollable = <A>(data: Pollable<A>) =>
-  remoteData.map(data, T.fst);
 
 export const getBuddyName = (
   buddyId: string,
   buddyState: AppState['buddies'],
   mentorState: AppState['mentors'],
 ) => {
-  const buddies = fromPollable(buddyState);
-  if (buddies.type === 'Ok') {
-    const buddy = buddies.value[buddyId];
-    if (buddy) return buddy.name;
-  }
-  const mentors = RD.toNullable(mentorState);
-  if (mentors) {
-    const buddy = mentors[buddyId];
-    if (buddy) return buddy.name;
-  }
-  return '';
+  const RDO = getOptionM(RD.remoteData);
+  const look = (rd: RD.RemoteData<unknown, Record<string, { name: string }>>) =>
+    RD.remoteData.map(rd, r => record.lookup(buddyId, r));
+  const buddy = RDO.alt(look(buddyState), () => look(mentorState));
+  return getFoldableComposition(RD.remoteData, O.option).reduce(
+    buddy,
+    '',
+    (_, { name }) => name,
+  );
 };
 
 export function getChatList(buddies: AppState['buddies']) {

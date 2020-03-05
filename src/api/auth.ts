@@ -1,4 +1,4 @@
-import * as TE from 'fp-ts/lib/TaskEither';
+import * as RE from 'fp-ts-rxjs/lib/ObservableEither';
 import * as t from 'io-ts';
 
 import * as err from '../lib/http-err';
@@ -59,7 +59,7 @@ export type Credentials = {
 export function login({
   userName,
   password,
-}: Credentials): TE.TaskEither<err.Err, AccessToken> {
+}: Credentials): RE.ObservableEither<err.Err, AccessToken> {
   return http2.validateResponse(
     http2.post(`${config.baseUrl}/login`, {
       login_name: userName,
@@ -72,7 +72,7 @@ export function login({
 
 export function refreshAccessToken(
   currentToken: AccessToken,
-): TE.TaskEither<err.Err, AccessToken> {
+): RE.ObservableEither<err.Err, AccessToken> {
   return http2.validateResponse(
     http2.post(`${config.baseUrl}/refresh`, {
       refresh_token: currentToken.refreshToken,

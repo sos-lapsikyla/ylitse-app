@@ -1,5 +1,6 @@
 import * as t from 'io-ts';
 import { pipe } from 'fp-ts/lib/pipeable';
+import * as RE from 'fp-ts-rxjs/lib/ObservableEither';
 import * as TE from 'fp-ts/lib/TaskEither';
 import * as http2 from '../lib/http2';
 import * as err from '../lib/http-err';
@@ -38,7 +39,7 @@ function postAccount({
   userName,
   password,
   email,
-}: NewUser): TE.TaskEither<err.Err, CreatedUserAccount> {
+}: NewUser): RE.ObservableEither<err.Err, CreatedUserAccount> {
   return http2.validateResponse(
     http2.post(`${config.baseUrl}/accounts`, {
       password,
@@ -56,7 +57,7 @@ function postAccount({
 function putUser(
   token: authApi.AccessToken,
   user: User,
-): TE.TaskEither<err.Err, User> {
+): RE.ObservableEither<err.Err, User> {
   return http2.validateResponse(
     http2.put(`${config.baseUrl}/users`, user, {
       headers: authApi.authHeader(token),
@@ -73,24 +74,24 @@ export type NewUser = authApi.Credentials & {
 
 export function createUser(
   user: NewUser,
-): TE.TaskEither<err.Err, authApi.AccessToken> {
+): RE.ObservableEither<err.Err, authApi.AccessToken> {
   const { userName, password } = user;
   return pipe(
     user,
     postAccount,
-    TE.chain(createdUser =>
+    RE.chain(createdUser =>
       pipe(
         authApi.login({ userName, password }),
-        TE.map(
+        RE.map(
           token =>
             [createdUser, token] as [CreatedUserAccount, authApi.AccessToken],
         ),
       ),
     ),
-    TE.chain(([createdUser, token]) =>
+    RE.chain(([createdUser, token]) =>
       pipe(
         putUser(token, { ...createdUser.user, display_name: user.displayName }),
-        TE.map(_ => token),
+        RE.map(_ => token),
       ),
     ),
   );
@@ -99,7 +100,8 @@ export function createUser(
 function isUserNameFree(userName: string): TE.TaskEither<err.Err, boolean> {
   return pipe(
     http2.head(`${config.baseUrl}/search?login_name=${userName}`),
-    TE.map(({ status }) => status === 204),
+    RE.map(({ status }) => status === 204),
+    RE.toTaskEither,
   );
 }
 
