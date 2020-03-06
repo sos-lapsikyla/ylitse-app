@@ -17,7 +17,7 @@ import colors, { gradients } from '../../components/colors';
 import fonts from '../../components/fonts';
 import { textShadow } from '../../components/shadow';
 import Message from '../../components/Message';
-import RemoteData2 from '../../components/RemoteData2';
+import RemoteData from '../../components/RemoteData';
 import TitledContainer from '../../components/TitledContainer';
 
 import Button from './Button';
@@ -49,7 +49,7 @@ const BuddyList = ({ navigation, chatList, pollMessages }: Props) => {
       }
       gradient={gradients.pillBlue}
     >
-      <RemoteData2 data={chatList} fetchData={pollMessages}>
+      <RemoteData data={chatList} fetchData={pollMessages}>
         {value => (
           <RN.ScrollView
             style={styles.scrollView}
@@ -66,7 +66,7 @@ const BuddyList = ({ navigation, chatList, pollMessages }: Props) => {
             ))}
           </RN.ScrollView>
         )}
-      </RemoteData2>
+      </RemoteData>
     </TitledContainer>
   );
 };

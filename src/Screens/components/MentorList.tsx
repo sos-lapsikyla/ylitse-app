@@ -9,7 +9,7 @@ import * as err from '../../lib/http-err';
 import useLayout from '../../lib/use-layout';
 
 import MentorCard from '../components/MentorCard';
-import RemoteData2 from '../components/RemoteData2';
+import RemoteData from '../components/RemoteData';
 
 import * as mentorApi from '../../api/mentors';
 import * as state from '../../state';
@@ -34,7 +34,7 @@ const MentorList = ({ fetchMentors, mentorsState, onPress }: Props) => {
   const measuredWidth = width || RN.Dimensions.get('window').width;
   return (
     <RN.View onLayout={onLayout} style={styles.mentorListContainer}>
-      <RemoteData2 data={mentorsState} fetchData={fetchMentors}>
+      <RemoteData data={mentorsState} fetchData={fetchMentors}>
         {mentors => (
           <RN.View style={styles.carouselContainer}>
             <snapCarousel.default
@@ -47,7 +47,7 @@ const MentorList = ({ fetchMentors, mentorsState, onPress }: Props) => {
             />
           </RN.View>
         )}
-      </RemoteData2>
+      </RemoteData>
     </RN.View>
   );
 };

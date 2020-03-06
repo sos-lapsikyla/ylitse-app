@@ -1,7 +1,7 @@
 import * as t from 'io-ts';
 import * as RE from 'fp-ts-rxjs/lib/ObservableEither';
 
-import * as http2 from '../lib/http2';
+import * as http from '../lib/http';
 import * as err from '../lib/http-err';
 
 import * as config from './config';
@@ -41,8 +41,8 @@ export const fetchMentors: () => RE.ObservableEither<
   err.Err,
   Record<string, Mentor>
 > = () =>
-  http2.validateResponse(
-    http2.get(`${config.baseUrl}/mentors`),
+  http.validateResponse(
+    http.get(`${config.baseUrl}/mentors`),
     mentorListType,
     fromMentorList,
   );

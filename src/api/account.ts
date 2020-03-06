@@ -2,7 +2,7 @@ import * as t from 'io-ts';
 import { pipe } from 'fp-ts/lib/pipeable';
 import * as RE from 'fp-ts-rxjs/lib/ObservableEither';
 import * as TE from 'fp-ts/lib/TaskEither';
-import * as http2 from '../lib/http2';
+import * as http from '../lib/http';
 import * as err from '../lib/http-err';
 
 import * as localization from '../localization';
@@ -40,8 +40,8 @@ function postAccount({
   password,
   email,
 }: NewUser): RE.ObservableEither<err.Err, CreatedUserAccount> {
-  return http2.validateResponse(
-    http2.post(`${config.baseUrl}/accounts`, {
+  return http.validateResponse(
+    http.post(`${config.baseUrl}/accounts`, {
       password,
       account: {
         role: 'mentee',
@@ -58,8 +58,8 @@ function putUser(
   token: authApi.AccessToken,
   user: User,
 ): RE.ObservableEither<err.Err, User> {
-  return http2.validateResponse(
-    http2.put(`${config.baseUrl}/users`, user, {
+  return http.validateResponse(
+    http.put(`${config.baseUrl}/users`, user, {
       headers: authApi.authHeader(token),
     }),
     userType,
@@ -99,7 +99,7 @@ export function createUser(
 
 function isUserNameFree(userName: string): TE.TaskEither<err.Err, boolean> {
   return pipe(
-    http2.head(`${config.baseUrl}/search?login_name=${userName}`),
+    http.head(`${config.baseUrl}/search?login_name=${userName}`),
     RE.map(({ status }) => status === 204),
     RE.toTaskEither,
   );

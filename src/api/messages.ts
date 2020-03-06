@@ -2,7 +2,7 @@ import * as t from 'io-ts';
 import * as RE from 'fp-ts-rxjs/lib/ObservableEither';
 import { pipe } from 'fp-ts/lib/pipeable';
 
-import * as http2 from '../lib/http2';
+import * as http from '../lib/http';
 import * as err from '../lib/http-err';
 import * as validators from '../lib/validators';
 
@@ -47,8 +47,8 @@ const toMessage: (
 export function fetchMessages(
   accessToken: authApi.AccessToken,
 ): RE.ObservableEither<err.Err, Record<string, Record<string, Message>>> {
-  return http2.validateResponse(
-    http2.get(`${config.baseUrl}/users/${accessToken.userId}/messages`, {
+  return http.validateResponse(
+    http.get(`${config.baseUrl}/users/${accessToken.userId}/messages`, {
       headers: authApi.authHeader(accessToken),
     }),
     messageListType,
@@ -82,7 +82,7 @@ export const sendMessage = (params: SendMessageParams) => (
     opened: false,
   };
   return pipe(
-    http2.post(url, message, {
+    http.post(url, message, {
       headers: authApi.authHeader(accessToken),
     }),
     RE.map(_ => undefined),
