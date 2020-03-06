@@ -38,11 +38,12 @@ export const reducer: automaton.Reducer<State, actions.Action> = (
           automaton.Loop<State, actions.Action> | State
         >(
           e => RD.failure(e),
-          token =>
-            automaton.loop(RD.success(token), {
+          token => {
+            return automaton.loop(RD.success(token), {
               type: 'accessTokenAcquired',
               payload: token,
-            }),
+            });
+          },
         ),
       );
     default:

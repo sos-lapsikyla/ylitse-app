@@ -2,10 +2,10 @@ import React from 'react';
 import RN from 'react-native';
 import * as redux from 'redux';
 import * as ReactRedux from 'react-redux';
+import * as RD from '@devexperts/remote-data-ts';
 
 import * as navigationProps from '../../../lib/navigation-props';
 import * as err from '../../../lib/http-err';
-import * as remoteData from '../../../lib/remote-data';
 
 import * as buddyApi from '../../../api/buddies';
 
@@ -17,7 +17,7 @@ import colors, { gradients } from '../../components/colors';
 import fonts from '../../components/fonts';
 import { textShadow } from '../../components/shadow';
 import Message from '../../components/Message';
-import RemoteData from '../../components/RemoteData';
+import RemoteData2 from '../../components/RemoteData2';
 import TitledContainer from '../../components/TitledContainer';
 
 import Button from './Button';
@@ -29,7 +29,7 @@ export type BuddyListRoute = {
 };
 
 type StateProps = {
-  chatList: remoteData.RemoteData<buddyApi.Buddy[], err.Err>;
+  chatList: RD.RemoteData<err.Err, buddyApi.Buddy[]>;
 };
 type DispatchProps = {
   pollMessages: () => void | undefined;
@@ -49,7 +49,7 @@ const BuddyList = ({ navigation, chatList, pollMessages }: Props) => {
       }
       gradient={gradients.pillBlue}
     >
-      <RemoteData data={chatList} fetchData={pollMessages}>
+      <RemoteData2 data={chatList} fetchData={pollMessages}>
         {value => (
           <RN.ScrollView
             style={styles.scrollView}
@@ -66,7 +66,7 @@ const BuddyList = ({ navigation, chatList, pollMessages }: Props) => {
             ))}
           </RN.ScrollView>
         )}
-      </RemoteData>
+      </RemoteData2>
     </TitledContainer>
   );
 };
@@ -104,9 +104,7 @@ export default ReactRedux.connect<
   },
   (dispatch: redux.Dispatch<actions.Action>) => ({
     pollMessages: () => {
-      dispatch(
-        actions.creators.startPolling(actions.creators.fetchMessages(), 1000),
-      );
+      dispatch(actions.creators.fetchMessages());
     },
   }),
 )(BuddyList);

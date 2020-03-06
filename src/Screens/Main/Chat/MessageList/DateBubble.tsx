@@ -3,13 +3,10 @@ import RN from 'react-native';
 
 import shadow from '../../../components/shadow';
 
-import * as taggedUnion from '../../../../lib/tagged-union';
-import * as selectors from '../../../../state/selectors';
-
 import colors from '../../../components/colors';
 import fonts from '../../../components/fonts';
 
-type Props = taggedUnion.Pick<selectors.Message, 'Date'>;
+type Props = { type: 'Date'; value: string; id: string };
 
 const DateBubble = ({ value }: Props) => {
   return (

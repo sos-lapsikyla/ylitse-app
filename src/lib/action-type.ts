@@ -1,4 +1,4 @@
-import * as record from './record';
+import * as record from 'fp-ts/lib/Record';
 
 export type FinalReturn<F> = F extends (...args: any[]) => infer R
   ? R extends (...args: any[]) => infer S

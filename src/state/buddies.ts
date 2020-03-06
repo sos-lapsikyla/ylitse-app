@@ -1,9 +1,10 @@
 import * as automaton from 'redux-automaton';
 import * as R from 'fp-ts-rxjs/lib/Observable';
 import * as RD from '@devexperts/remote-data-ts';
-import { constant } from 'fp-ts/lib/function';
-import { pipe } from 'fp-ts/lib/pipeable';
+import * as array from 'fp-ts/lib/Array';
+import { monoidAll } from 'fp-ts/lib/Monoid';
 import { flow } from 'fp-ts/lib/function';
+import { pipe } from 'fp-ts/lib/pipeable';
 
 import * as buddyApi from '../api/buddies';
 
@@ -20,10 +21,21 @@ export const reducer: automaton.Reducer<State, actions.Action> = (
   state: State = initialState,
   action: actions.Action,
 ) => {
-  const matchAction = actions.match(state, action);
-  const toLoading = constant(
-    matchAction({
-      fetchMessagesCompleted: automaton.loop(
+  switch (action.type) {
+    case 'fetchMessagesCompleted':
+      const hasAll = pipe(
+        state,
+        RD.map(buddies =>
+          pipe(
+            (id: string) => id in buddies,
+            array.foldMap(monoidAll),
+          ),
+        ),
+        RD.ap(RD.remoteData.map(RD.fromEither(action.payload), Object.keys)),
+        RD.getOrElse(() => false),
+      );
+      if (hasAll) return state;
+      return automaton.loop(
         RD.pending,
         withToken(
           flow(
@@ -31,41 +43,10 @@ export const reducer: automaton.Reducer<State, actions.Action> = (
             R.map(actions.creators.fetchBuddiesCompleted),
           ),
         ),
-      ),
-    }),
-  );
-  const toCompleted = constant(
-    matchAction({
-      fetchBuddiesCompleted: ({ payload }) => RD.fromEither(payload),
-    }),
-  );
-  return pipe(
-    state,
-    RD.fold(toLoading, toCompleted, toLoading, constant(state)),
-  );
+      );
+    case 'fetchBuddiesCompleted':
+      return RD.fromEither(action.payload);
+    default:
+      return state;
+  }
 };
-/*
- * TODO onCompleted
-
-      return matchAction({
-        fetchMessagesCompleted: ({ payload }) =>
-          taggedUnion.match(payload, {
-            Ok: ({ value: threads }) => {
-              const isFetchRequired =
-                !env.buddies ||
-                array
-                  .fromNonTotalRecord(env.buddies)
-                  .some(buddy => !(buddy.buddyId in threads));
-              return isFetchRequired
-                ? reduxLoop.loop(
-                    remoteData.loading,
-                    reduxLoop.Cmd.action(fetchBuddiesAction),
-                  )
-                : state;
-            },
-            Err: state,
-          }),
-      });
-
-
-*/

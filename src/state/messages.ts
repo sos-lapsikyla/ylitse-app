@@ -4,6 +4,8 @@ import * as RD from '@devexperts/remote-data-ts';
 import { flow } from 'fp-ts/lib/function';
 import { atRecord } from 'monocle-ts/lib/At/Record';
 import * as M from 'monocle-ts';
+import * as rx from 'rxjs/operators';
+import * as rxjs from 'rxjs';
 
 import * as messageApi from '../api/messages';
 
@@ -28,15 +30,18 @@ export const reducer: automaton.Reducer<State, actions.Action> = (
 ) => {
   switch (action.type) {
     case 'fetchMessages':
-      return automaton.loop(
-        RD.pending,
-        withToken(
-          flow(
-            messageApi.fetchMessages,
-            R.map(actions.creators.fetchMessagesCompleted),
-          ),
-        ),
-      );
+      return !RD.isInitial(state)
+        ? state
+        : automaton.loop(
+            RD.pending,
+            withToken(
+              flow(
+                s => rxjs.timer(0, 1000).pipe(rx.map(_ => s)),
+                rx.switchMap(s => messageApi.fetchMessages(s)),
+                R.map(actions.creators.fetchMessagesCompleted),
+              ),
+            ),
+          );
     case 'fetchMessagesCompleted':
       return RD.fromEither(action.payload);
     default:

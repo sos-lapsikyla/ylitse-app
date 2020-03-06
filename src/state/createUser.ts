@@ -24,8 +24,7 @@ export const reducer = (state: State, action: actions.Action) => {
         actions.creators.fetchCmd(
           constant(
             pipe(
-              action.payload,
-              accountApi.createUser,
+              accountApi.createUser(action.payload),
               R.map(actions.creators.createUserCompleted),
             ),
           ),
