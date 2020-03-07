@@ -20,6 +20,7 @@ export const initialState: AppState = {
   accessToken: accessToken.initialState,
   login: login.initialState,
   createUser: createUser.initialState,
+
   mentors: mentors.initialState,
   buddies: buddies.initialState,
   messages: messages.initialState,
@@ -30,6 +31,7 @@ const reducer = automaton.combineReducers({
   accessToken: accessToken.reducer,
   login: login.reducer,
   createUser: createUser.reducer,
+
   mentors: mentors.reducer,
   buddies: buddies.reducer,
   messages: messages.reducer,
