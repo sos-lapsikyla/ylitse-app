@@ -7,9 +7,7 @@ export type FetchCmd = {
   f: (state: State) => Observable<regular.Action>;
 };
 
-export function fetchCmd(
-  f: (state: State) => Observable<regular.Action>,
-): FetchCmd {
+export function cmd(f: (state: State) => Observable<regular.Action>): FetchCmd {
   return {
     type: 'fetchCmd',
     f,

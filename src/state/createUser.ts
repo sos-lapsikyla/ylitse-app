@@ -9,6 +9,7 @@ import * as accountApi from '../api/account';
 import * as authApi from '../api/auth';
 import * as err from '../lib/http-err';
 
+import { cmd } from './actions/epic';
 import * as actions from './actions';
 import * as model from './model';
 
@@ -18,19 +19,19 @@ export const initialState = RD.initial;
 
 export const reducer = (state: State, action: actions.Action) => {
   switch (action.type) {
-    case 'createUser':
+    case 'createUser/start':
       return automaton.loop(
         RD.pending,
-        actions.creators.fetchCmd(
+        cmd(
           constant(
             pipe(
               accountApi.createUser(action.payload),
-              R.map(actions.creators.createUserCompleted),
+              R.map(actions.make('createUser/end')),
             ),
           ),
         ),
       );
-    case 'createUserCompleted':
+    case 'createUser/end':
       return pipe(
         action.payload,
         E.fold<
@@ -42,7 +43,10 @@ export const reducer = (state: State, action: actions.Action) => {
           token =>
             automaton.loop(
               RD.success(token),
-              actions.creators.accessTokenAcquired(token),
+              pipe(
+                token,
+                actions.make('token/Acquired'),
+              ),
             ),
         ),
       );

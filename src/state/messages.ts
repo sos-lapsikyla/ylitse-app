@@ -29,7 +29,7 @@ export const reducer: automaton.Reducer<State, actions.Action> = (
   action,
 ) => {
   switch (action.type) {
-    case 'fetchMessages':
+    case 'messages/start':
       return !RD.isInitial(state)
         ? state
         : automaton.loop(
@@ -38,11 +38,11 @@ export const reducer: automaton.Reducer<State, actions.Action> = (
               flow(
                 s => rxjs.timer(0, 1000).pipe(rx.map(_ => s)),
                 rx.switchMap(s => messageApi.fetchMessages(s)),
-                R.map(actions.creators.fetchMessagesCompleted),
+                R.map(actions.make('messages/end')),
               ),
             ),
           );
-    case 'fetchMessagesCompleted':
+    case 'messages/end':
       return RD.fromEither(action.payload);
     default:
       return state;

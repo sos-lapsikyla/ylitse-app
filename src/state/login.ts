@@ -7,6 +7,7 @@ import { pipe } from 'fp-ts/lib/pipeable';
 import * as authApi from '../api/auth';
 import * as err from '../lib/http-err';
 
+import { cmd } from './actions/epic';
 import * as actions from './actions';
 import * as model from './model';
 
@@ -19,17 +20,17 @@ export const reducer: automaton.Reducer<State, actions.Action> = (
   action,
 ) => {
   switch (action.type) {
-    case 'login':
+    case 'login/start':
       return automaton.loop(
         RD.pending,
-        actions.creators.fetchCmd(() =>
+        cmd(() =>
           R.observable.map(
             authApi.login(action.payload),
-            actions.creators.loginCompleted,
+            actions.make('login/end'),
           ),
         ),
       );
-    case 'loginCompleted':
+    case 'login/end':
       return pipe(
         action.payload,
         E.fold<
@@ -38,12 +39,14 @@ export const reducer: automaton.Reducer<State, actions.Action> = (
           automaton.Loop<State, actions.Action> | State
         >(
           e => RD.failure(e),
-          token => {
-            return automaton.loop(RD.success(token), {
-              type: 'accessTokenAcquired',
-              payload: token,
-            });
-          },
+          token =>
+            automaton.loop(
+              RD.success(token),
+              pipe(
+                token,
+                actions.make('token/Acquired'),
+              ),
+            ),
         ),
       );
     default:

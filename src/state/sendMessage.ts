@@ -19,7 +19,7 @@ type Request = RD.RemoteData<err.Err, undefined>;
 export type State = model.AppState['sendMessage'];
 export const reducer = (state: State, action: actions.Action) => {
   switch (action.type) {
-    case 'sendMessage':
+    case 'sendMessage/start':
       const buddyId = action.payload.buddyId;
       const isLoading = pipe(
         record.lookup(buddyId, state),
@@ -36,11 +36,12 @@ export const reducer = (state: State, action: actions.Action) => {
             withToken(
               flow(
                 messageApi.sendMessage(action.payload),
-                R.map(actions.creators.sendMessageCompleted(buddyId)),
+                R.map(response => ({ response, buddyId })),
+                R.map(actions.make('sendMessage/end')),
               ),
             ),
           );
-    case 'sendMessageCompleted':
+    case 'sendMessage/end':
       return pipe(
         state,
         record.insertAt<string, Request>(

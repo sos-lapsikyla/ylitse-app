@@ -6,6 +6,7 @@ import { flow } from 'fp-ts/lib/function';
 
 import * as mentorsApi from '../api/mentors';
 
+import { cmd } from './actions/epic';
 import * as actions from './actions';
 import * as model from './model';
 
@@ -15,7 +16,7 @@ export const initialState = RD.initial;
 
 const fetchMentors = flow(
   mentorsApi.fetchMentors,
-  R.map(actions.creators.fetchMentorsCompleted),
+  R.map(actions.make('mentors/end')),
 );
 
 export const reducer: automaton.Reducer<State, actions.Action> = (
@@ -23,12 +24,9 @@ export const reducer: automaton.Reducer<State, actions.Action> = (
   action,
 ) => {
   switch (action.type) {
-    case 'fetchMentors':
-      return automaton.loop(
-        RD.pending,
-        actions.creators.fetchCmd(fetchMentors),
-      );
-    case 'fetchMentorsCompleted':
+    case 'mentors/start':
+      return automaton.loop(RD.pending, cmd(fetchMentors));
+    case 'mentors/end':
       return pipe(
         action.payload,
         RD.fromEither,

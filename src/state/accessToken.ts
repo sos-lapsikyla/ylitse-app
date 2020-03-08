@@ -5,6 +5,7 @@ import { Observable } from 'rxjs';
 
 import * as authApi from '../api/auth';
 
+import { cmd } from './actions/epic';
 import * as actions from './actions';
 import { AppState } from './model';
 import * as selectors from './selectors';
@@ -16,7 +17,7 @@ export const initialState = O.none;
 export const withToken: (
   f: (token: authApi.AccessToken) => Observable<actions.RegularAction>,
 ) => actions.Action = f =>
-  actions.creators.fetchCmd(
+  cmd(
     flow(
       selectors.getAC,
       f,
@@ -28,7 +29,7 @@ export const reducer: automaton.Reducer<State, actions.Action> = (
   action,
 ) => {
   if (!O.isSome(state)) {
-    return action.type !== 'accessTokenAcquired'
+    return action.type !== 'token/Acquired'
       ? state
       : O.some({
           currentToken: action.payload,

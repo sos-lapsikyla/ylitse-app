@@ -8,31 +8,33 @@ import * as buddyApi from '../../api/buddies';
 import * as messageApi from '../../api/messages';
 
 type RegularActions = {
-  'mentors/start': never;
-  'mentors/completed': Result<typeof mentorApi.fetchMentors>;
+  'mentors/start': undefined;
+  'mentors/end': Result<typeof mentorApi.fetchMentors>;
 
   'login/start': authApi.Credentials;
-  'login/completed': Result<typeof authApi.login>;
+  'login/end': Result<typeof authApi.login>;
 
   'createUser/start': accountApi.NewUser;
-  'createUser/completed': Result<typeof accountApi.createUser>;
+  'createUser/end': Result<typeof accountApi.createUser>;
 
   'token/Acquired': authApi.AccessToken;
-  'token/refresh/start': never;
-  'token/refresh/completed': Result<typeof authApi.refreshAccessToken>;
+  'token/refresh/start': undefined;
+  'token/refresh/end': Result<typeof authApi.refreshAccessToken>;
 
-  'messages/start': never;
-  'messages/completed': Result<typeof messageApi.fetchMessages>;
+  'messages/start': undefined;
+  'messages/end': Result<typeof messageApi.fetchMessages>;
 
-  'buddies/completed': Result<typeof buddyApi.fetchBuddies>;
+  'buddies/end': Result<typeof buddyApi.fetchBuddies>;
 
   'sendMessage/start': messageApi.SendMessageParams;
-  'sendMessage/completed': {
+  'sendMessage/end': {
     buddyId: string;
-    response: Result<typeof messageApi.sendMessage>;
+    response: Result<ReturnType<typeof messageApi.sendMessage>>;
   };
 };
 
+// TODO: handle curried case, Exists under the name "FinalReturn" in
+// git history somewhere, use git log -S
 type Result<F extends (...args: any[]) => any> = ReturnType<
   F
 > extends RE.ObservableEither<infer E, infer A>
@@ -40,10 +42,22 @@ type Result<F extends (...args: any[]) => any> = ReturnType<
   : never;
 
 // https://github.com/microsoft/TypeScript/issues/23182
-type Payload<T> = [T] extends [never] ? {} : { payload: T };
+//type Payload<T> = [T] extends [never] ? {} : { payload: T };
 export type ActionType = keyof RegularActions;
-export type Actions = {
+export type Action = {
   [Type in ActionType]: {
     type: Type;
-  } & Payload<RegularActions[Type]>;
+    payload: RegularActions[Type];
+  };
 }[ActionType];
+
+export function make<T extends ActionType, P extends RegularActions[T]>(
+  type: T,
+): (
+  payload: P,
+) => {
+  type: T;
+  payload: P;
+} {
+  return (payload: P) => ({ type, payload });
+}
