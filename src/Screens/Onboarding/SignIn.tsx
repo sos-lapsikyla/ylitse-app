@@ -70,8 +70,8 @@ export default ReactRedux.connect<
 >(
   ({ accessToken, login }) => ({ accessToken, loginState: login }),
   (dispatch: redux.Dispatch<actions.Action>) => ({
-    login: (creds: authApi.Credentials) => {
-      dispatch(actions.creators.login(creds));
+    login: (payload: authApi.Credentials) => {
+      dispatch({ type: 'login/start', payload });
     },
   }),
 )(SignIn);

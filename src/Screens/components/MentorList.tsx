@@ -92,7 +92,7 @@ export default ReactRedux.connect<
   ({ mentors }) => ({ mentorsState: selectors.getMentors(mentors) }),
   (dispatch: redux.Dispatch<actions.Action>) => ({
     fetchMentors: () => {
-      dispatch(actions.creators.fetchMentors());
+      dispatch({ type: 'mentors/start', payload: undefined });
     },
   }),
 )(MentorList);

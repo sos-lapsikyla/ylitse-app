@@ -1,37 +1,36 @@
 import * as automaton from 'redux-automaton';
+import * as E from 'fp-ts/lib/Either';
 import * as R from 'fp-ts-rxjs/lib/Observable';
 import * as RD from '@devexperts/remote-data-ts';
-import * as E from 'fp-ts/lib/Either';
 import { pipe } from 'fp-ts/lib/pipeable';
-import { constant } from 'fp-ts/lib/function';
 
-import * as accountApi from '../api/account';
-import * as authApi from '../api/auth';
-import * as err from '../lib/http-err';
+import * as authApi from '../../api/auth';
+import * as err from '../../lib/http-err';
 
-import { cmd } from './actions/epic';
-import * as actions from './actions';
-import * as model from './model';
+import { cmd } from '../actions/epic';
+import * as actions from '../actions';
+import * as model from '../model';
 
 export type State = model.AppState['login'];
 
 export const initialState = RD.initial;
 
-export const reducer = (state: State, action: actions.Action) => {
+export const reducer: automaton.Reducer<State, actions.Action> = (
+  state = initialState,
+  action,
+) => {
   switch (action.type) {
-    case 'createUser/start':
+    case 'login/start':
       return automaton.loop(
         RD.pending,
-        cmd(
-          constant(
-            pipe(
-              accountApi.createUser(action.payload),
-              R.map(actions.make('createUser/end')),
-            ),
+        cmd(() =>
+          R.observable.map(
+            authApi.login(action.payload),
+            actions.make('login/end'),
           ),
         ),
       );
-    case 'createUser/end':
+    case 'login/end':
       return pipe(
         action.payload,
         E.fold<

@@ -148,8 +148,8 @@ export default ReactRedux.connect<StateProps, {}, OwnProps, state.AppState>(
     createUserState: createUser,
   }),
   (dispatch: redux.Dispatch<actions.Action>) => ({
-    createUser: (user: accountApi.NewUser) => {
-      dispatch(actions.creators.createUser(user));
+    createUser: (payload: accountApi.NewUser) => {
+      dispatch({ type: 'createUser/start', payload });
     },
   }),
 )(PrivacyPolicy);

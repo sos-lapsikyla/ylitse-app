@@ -7,10 +7,10 @@ import * as M from 'monocle-ts';
 import * as rx from 'rxjs/operators';
 import * as rxjs from 'rxjs';
 
-import * as messageApi from '../api/messages';
+import * as messageApi from '../../api/messages';
 
-import * as actions from './actions';
-import * as model from './model';
+import * as actions from '../actions';
+import * as model from '../model';
 
 import { withToken } from './accessToken';
 

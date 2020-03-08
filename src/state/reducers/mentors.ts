@@ -4,11 +4,11 @@ import * as R from 'fp-ts-rxjs/lib/Observable';
 import { pipe } from 'fp-ts/lib/pipeable';
 import { flow } from 'fp-ts/lib/function';
 
-import * as mentorsApi from '../api/mentors';
+import * as mentorsApi from '../../api/mentors';
 
-import { cmd } from './actions/epic';
-import * as actions from './actions';
-import * as model from './model';
+import { cmd } from '../actions/epic';
+import * as actions from '../actions';
+import * as model from '../model';
 
 export type State = model.AppState['mentors'];
 

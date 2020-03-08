@@ -7,11 +7,11 @@ import * as O from 'fp-ts/lib/Option';
 import { pipe } from 'fp-ts/lib/pipeable';
 import { constant, flow } from 'fp-ts/lib/function';
 
-import * as messageApi from '../api/messages';
-import * as err from '../lib/http-err';
+import * as messageApi from '../../api/messages';
+import * as err from '../../lib/http-err';
 
-import * as actions from './actions';
-import * as model from './model';
+import * as actions from '../actions';
+import * as model from '../model';
 import { withToken } from './accessToken';
 
 type Request = RD.RemoteData<err.Err, undefined>;

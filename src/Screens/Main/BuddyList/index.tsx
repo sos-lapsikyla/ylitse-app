@@ -104,7 +104,7 @@ export default ReactRedux.connect<
   },
   (dispatch: redux.Dispatch<actions.Action>) => ({
     pollMessages: () => {
-      dispatch(actions.creators.fetchMessages());
+      dispatch({ type: 'messages/start', payload: undefined });
     },
   }),
 )(BuddyList);

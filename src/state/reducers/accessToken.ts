@@ -3,12 +3,12 @@ import * as O from 'fp-ts/lib/Option';
 import { flow } from 'fp-ts/lib/function';
 import { Observable } from 'rxjs';
 
-import * as authApi from '../api/auth';
+import * as authApi from '../../api/auth';
 
-import { cmd } from './actions/epic';
-import * as actions from './actions';
-import { AppState } from './model';
-import * as selectors from './selectors';
+import { cmd } from '.././actions/epic';
+import * as actions from '../actions';
+import { AppState } from '../model';
+import * as selectors from '../selectors';
 
 export type State = AppState['accessToken'];
 

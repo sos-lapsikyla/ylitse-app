@@ -6,10 +6,10 @@ import { monoidAll } from 'fp-ts/lib/Monoid';
 import { flow } from 'fp-ts/lib/function';
 import { pipe } from 'fp-ts/lib/pipeable';
 
-import * as buddyApi from '../api/buddies';
+import * as buddyApi from '../../api/buddies';
 
-import * as actions from './actions';
-import * as model from './model';
+import * as actions from '../actions';
+import * as model from '../model';
 
 export type State = model.AppState['buddies'];
 
