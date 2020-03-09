@@ -109,7 +109,7 @@ export function getMessages(
         type: 'Message' as const,
         value: m,
         id: m.messageId,
-        isSeen: m.seen,
+        isSeen: m.isSeen,
       };
       const date = getDate(next.value.sentTime);
       const nextDate = { type: 'Date' as const, value: date, id: date };
@@ -142,10 +142,30 @@ export function getChatList(
         hasNewMessages: pipe(
           messageList(messageState, buddyId),
           array.filter(message => message.type === 'Received'),
-          array.foldMap(monoidAny)(({ seen }) => !seen),
+          array.foldMap(monoidAny)(({ isSeen }) => !isSeen),
         ),
       })),
     ),
     RD.map(Object.values),
   );
 }
+
+export const isAnyMessageUnseen = ({ messages: messageState }: AppState) =>
+  getFoldableComposition(RD.remoteData, record.record).foldMap(monoidAny)(
+    messageState,
+    record.some(({ isSeen }) => !isSeen),
+  );
+
+export const getMessage = (
+  { messages: messageState }: AppState,
+  index: {
+    buddyId: string;
+    messageId: string;
+  },
+) => {
+  return pipe(
+    RD.toOption(messageState),
+    O.chain(threads => record.lookup(index.buddyId, threads)),
+    O.chain(threadMessages => record.lookup(index.messageId, threadMessages)),
+  );
+};

@@ -22,7 +22,7 @@ export const reducer: automaton.Reducer<State, actions.Action> = (
   action: actions.Action,
 ) => {
   switch (action.type) {
-    case 'messages/end':
+    case 'messages/get/completed':
       const hasAll = pipe(
         state,
         RD.map(buddies =>
@@ -40,11 +40,11 @@ export const reducer: automaton.Reducer<State, actions.Action> = (
         withToken(
           flow(
             buddyApi.fetchBuddies,
-            R.map(actions.make('buddies/end')),
+            R.map(actions.make('buddies/completed')),
           ),
         ),
       );
-    case 'buddies/end':
+    case 'buddies/completed':
       return RD.fromEither(action.payload);
     default:
       return state;

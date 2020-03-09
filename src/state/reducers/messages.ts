@@ -2,8 +2,6 @@ import * as automaton from 'redux-automaton';
 import * as R from 'fp-ts-rxjs/lib/Observable';
 import * as RD from '@devexperts/remote-data-ts';
 import { flow } from 'fp-ts/lib/function';
-import { atRecord } from 'monocle-ts/lib/At/Record';
-import * as M from 'monocle-ts';
 import * as rx from 'rxjs/operators';
 import * as rxjs from 'rxjs';
 
@@ -19,17 +17,12 @@ export type LoopState = actions.LS<State>;
 
 export const initialState = RD.initial;
 
-export const message_ = (buddyId: string, messageId: string) =>
-  M.Index.fromAt(atRecord<messageApi.Thread>())
-    .index(buddyId)
-    .compose(M.Index.fromAt(atRecord<messageApi.Message>()).index(messageId));
-
 export const reducer: automaton.Reducer<State, actions.Action> = (
   state = initialState,
   action,
 ) => {
   switch (action.type) {
-    case 'messages/start':
+    case 'token/Acquired':
       return !RD.isInitial(state)
         ? state
         : automaton.loop(
@@ -38,11 +31,11 @@ export const reducer: automaton.Reducer<State, actions.Action> = (
               flow(
                 s => rxjs.timer(0, 1000).pipe(rx.map(_ => s)),
                 rx.switchMap(s => messageApi.fetchMessages(s)),
-                R.map(actions.make('messages/end')),
+                R.map(actions.make('messages/get/completed')),
               ),
             ),
           );
-    case 'messages/end':
+    case 'messages/get/completed':
       return RD.fromEither(action.payload);
     default:
       return state;

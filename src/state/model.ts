@@ -19,8 +19,9 @@ export type AppState = {
   }>;
   buddies: RD.RemoteData<err.Err, Record<string, buddyApi.Buddy>>;
   mentors: RD.RemoteData<err.Err, Record<string, mentorsApi.Mentor>>;
-  messages: RD.RemoteData<err.Err, messageApi.Threads>;
-  sendMessage: Record<string, RD.RemoteData<err.Err, undefined>>;
   login: RD.RemoteData<err.Err, authApi.AccessToken>;
   createUser: RD.RemoteData<err.Err, authApi.AccessToken>;
+  messages: RD.RemoteData<err.Err, messageApi.Threads>;
+  sendMessage: Record<string, RD.RemoteData<err.Err, undefined>>;
+  markMessageSeen: Record<string, 'Requested'>;
 };

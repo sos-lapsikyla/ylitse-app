@@ -8,6 +8,8 @@ import * as buddyApi from '../../api/buddies';
 import * as messageApi from '../../api/messages';
 
 type RegularActions = {
+  nothing: any;
+
   'mentors/start': undefined;
   'mentors/end': Result<typeof mentorApi.fetchMentors>;
 
@@ -21,10 +23,10 @@ type RegularActions = {
   'token/refresh/start': undefined;
   'token/refresh/end': Result<typeof authApi.refreshAccessToken>;
 
-  'messages/start': undefined;
-  'messages/end': Result<typeof messageApi.fetchMessages>;
+  'messages/get/completed': Result<typeof messageApi.fetchMessages>;
+  'messages/markSeen': { buddyId: string; messageId: string };
 
-  'buddies/end': Result<typeof buddyApi.fetchBuddies>;
+  'buddies/completed': Result<typeof buddyApi.fetchBuddies>;
 
   'sendMessage/start': messageApi.SendMessageParams;
   'sendMessage/end': {

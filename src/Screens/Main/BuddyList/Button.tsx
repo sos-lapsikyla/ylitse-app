@@ -2,7 +2,7 @@ import React from 'react';
 import RN from 'react-native';
 
 import LinearGradient from 'react-native-linear-gradient';
-import colors, { gradients } from '../../components/colors';
+import { gradients } from '../../components/colors';
 import Card from '../../components/Card';
 import fonts from '../../components/fonts';
 
@@ -68,7 +68,7 @@ const styles = RN.StyleSheet.create({
     position: 'absolute',
     top: 16,
     right: 16,
-    backgroundColor: 'red',
+    backgroundColor: 'yellow',
   },
 });
 

@@ -1,23 +1,17 @@
 import React from 'react';
 import RN from 'react-native';
-
-import * as redux from 'redux';
 import * as ReactRedux from 'react-redux';
 
 import * as state from '../../../../state';
-import * as actions from '../../../../state/actions';
 import * as selectors from '../../../../state/selectors';
 
 import Message from './Message';
 import DateBubble from './DateBubble';
 
 type StateProps = { messages: selectors.Message[] };
-type DispatchProps = {
-  pollMessages: () => void | undefined;
-};
 type OwnProps = { buddyId: string };
 
-type Props = StateProps & DispatchProps & OwnProps;
+type Props = StateProps & OwnProps;
 
 const MessageList = ({ messages }: Props) => {
   return (
@@ -46,18 +40,8 @@ const styles = RN.StyleSheet.create({
   },
 });
 
-export default ReactRedux.connect<
-  StateProps,
-  DispatchProps,
-  OwnProps,
-  state.AppState
->(
+export default ReactRedux.connect<StateProps, {}, OwnProps, state.AppState>(
   ({ messages }, { buddyId }) => {
     return { messages: selectors.getMessages(messages, buddyId) };
   },
-  (dispatch: redux.Dispatch<actions.Action>) => ({
-    pollMessages: () => {
-      dispatch({ type: 'messages/start', payload: undefined });
-    },
-  }),
 )(MessageList);
