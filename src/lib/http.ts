@@ -4,37 +4,15 @@ import * as tPromise from 'io-ts-promise';
 import * as r from './result';
 import * as f from './future';
 
-type UnkownError = {
-  readonly type: 'UnkownError';
-};
-type BadStatus = {
-  readonly type: 'BadStatus';
-  readonly status: number;
-};
-type BadModel = {
-  readonly type: 'BadModel';
-  readonly errors: Error[];
-};
+import * as err from './http-err';
 
-export type Err = UnkownError | BadStatus | BadModel;
-export type Future<A> = f.Future<A, Err>;
-
-function unknownError(): Err {
-  return { type: 'UnkownError' } as const;
-}
-function badStatus(status: number): Err {
-  return { type: 'BadStatus', status } as const;
-}
-function badModel(errors: Error[]): Err {
-  return { type: 'BadModel', errors } as const;
-}
-
+export type Future<A> = f.Future<A, err.Err>;
 async function request(url: string, options?: RequestInit): Future<Response> {
   const response = await f.fromPromise(fetch, [url, options], (_: unknown) =>
-    unknownError(),
+    err.unknownError(),
   );
   return r.chain(response, resp =>
-    resp.ok ? r.ok(resp) : r.err(badStatus(resp.status)),
+    resp.ok ? r.ok(resp) : r.err(err.badStatus(resp.status)),
   );
 }
 
@@ -46,7 +24,7 @@ async function request_json(
     try {
       return r.ok(await response.json());
     } catch (e) {
-      return r.err(unknownError());
+      return r.err(err.unknownError());
     }
   });
 }
@@ -66,7 +44,7 @@ async function decode<A, B>(
     const decoded = await tPromise.decode(typeModel, value);
     return r.ok(decoded);
   } catch (errors) {
-    return r.err(badModel(errors));
+    return r.err(err.badModel(errors));
   }
 }
 

@@ -1,4 +1,6 @@
 import * as reduxLoop from 'redux-loop';
+import { pipe } from 'fp-ts/lib/pipeable';
+import * as E from 'fp-ts/lib/Either';
 
 import * as cmd from '../lib/cmd';
 import * as result from '../lib/result';
@@ -61,40 +63,46 @@ export function reducer(
       return reduxLoop.loop(nextState, nextCmd);
     }
     case 'refreshAccessTokenCompleted': {
-      if (action.payload.type === 'Ok') {
-        const nextState = record.map(state, req =>
-          !!req && req.type === 'WaitingForAccessToken'
-            ? { ...req, type: 'Retrying' as const }
-            : req,
-        );
-        const newToken = action.payload.value;
-        const nextCmds = Object.values(state)
-          .filter(
-            (x): x is taggedUnion.Pick<Req, 'WaitingForAccessToken'> =>
-              !!x && x.type === 'WaitingForAccessToken',
-          )
-          .map(req => {
-            const nextActionCreator = actions.creators.requestCompleted(
-              reqKey(req.request),
+      return pipe(
+        action.payload,
+        E.fold(
+          () => {
+            const nextState = record.filter(
+              state,
+              req => !!req && req.type !== 'WaitingForAccessToken',
             );
-            const thunk = request.thunk(req.request, newToken, env);
-            return cmd.effect(thunk, nextActionCreator);
-          });
-        return reduxLoop.loop(nextState, reduxLoop.Cmd.list(nextCmds));
-      }
-      const nextState = record.filter(
-        state,
-        req => !!req && req.type !== 'WaitingForAccessToken',
+            const nextCmds = Object.values(state).reduce(
+              (acc: reduxLoop.ActionCmd<any>[], req) => {
+                if (!req || req.type !== 'WaitingForAccessToken') return acc;
+                const nextAction = request.createAction(req.request, req.err);
+                return [...acc, reduxLoop.Cmd.action(nextAction)];
+              },
+              [],
+            );
+            return reduxLoop.loop(nextState, reduxLoop.Cmd.list(nextCmds));
+          },
+          newToken => {
+            const nextState = record.map(state, req =>
+              !!req && req.type === 'WaitingForAccessToken'
+                ? { ...req, type: 'Retrying' as const }
+                : req,
+            );
+            const nextCmds = Object.values(state)
+              .filter(
+                (x): x is taggedUnion.Pick<Req, 'WaitingForAccessToken'> =>
+                  !!x && x.type === 'WaitingForAccessToken',
+              )
+              .map(req => {
+                const nextActionCreator = actions.creators.requestCompleted(
+                  reqKey(req.request),
+                );
+                const thunk = request.thunk(req.request, newToken, env);
+                return cmd.effect(thunk, nextActionCreator);
+              });
+            return reduxLoop.loop(nextState, reduxLoop.Cmd.list(nextCmds));
+          },
+        ),
       );
-      const nextCmds = Object.values(state).reduce(
-        (acc: reduxLoop.ActionCmd<any>[], req) => {
-          if (!req || req.type !== 'WaitingForAccessToken') return acc;
-          const nextAction = request.createAction(req.request, req.err);
-          return [...acc, reduxLoop.Cmd.action(nextAction)];
-        },
-        [],
-      );
-      return reduxLoop.loop(nextState, reduxLoop.Cmd.list(nextCmds));
     }
     case 'requestCompleted': {
       const { response, key: actionKey } = action.payload;

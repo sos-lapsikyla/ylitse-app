@@ -1,11 +1,12 @@
 import React from 'react';
 import RN from 'react-native';
+import * as RD from '@devexperts/remote-data-ts';
+import { pipe } from 'fp-ts/lib/pipeable';
 
 import * as accountApi from '../../api/account';
 import * as authApi from '../../api/auth';
 
 import * as localization from '../../localization';
-import * as taggedUnion from '../../lib/tagged-union';
 import * as navigationProps from '../../lib/navigation-props';
 import useRemoteData from '../../lib/use-remote-data';
 
@@ -38,13 +39,13 @@ const SignUp = ({ navigation }: Props) => {
   ] = useRemoteData(accountApi.checkCredentials);
 
   React.useEffect(() => {
-    if (credentialsCheck.type === 'Ok') {
+    if (RD.isSuccess(credentialsCheck)) {
       resetCredentialsCheck();
       navigation.navigate('Onboarding/DisplayName', {
         credentials: credentialsCheck.value,
       });
     }
-  }, [credentialsCheck.type]);
+  }, [RD.isSuccess(credentialsCheck)]);
 
   const goBack = () => {
     navigation.goBack();
@@ -57,11 +58,15 @@ const SignUp = ({ navigation }: Props) => {
   };
 
   const getErrorMessageId: () => localization.MessageId = () =>
-    taggedUnion.match(credentialsCheck, {
-      Err: ({ error: { errorMessageId } }) => errorMessageId,
-      default: () => localization.blank,
-    });
-
+    pipe(
+      credentialsCheck,
+      RD.fold(
+        () => localization.blank,
+        () => localization.blank,
+        ({ errorMessageId }) => errorMessageId,
+        () => localization.blank,
+      ),
+    );
   return (
     <OnboardingBackground>
       <LoginCard

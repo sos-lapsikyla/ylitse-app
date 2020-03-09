@@ -4,7 +4,7 @@ import * as redux from 'redux';
 import * as ReactRedux from 'react-redux';
 
 import * as navigationProps from '../../../lib/navigation-props';
-import * as http from '../../../lib/http';
+import * as err from '../../../lib/http-err';
 import * as remoteData from '../../../lib/remote-data';
 
 import * as buddyApi from '../../../api/buddies';
@@ -29,7 +29,7 @@ export type BuddyListRoute = {
 };
 
 type StateProps = {
-  chatList: remoteData.RemoteData<buddyApi.Buddy[], http.Err>;
+  chatList: remoteData.RemoteData<buddyApi.Buddy[], err.Err>;
 };
 type DispatchProps = {
   pollMessages: () => void | undefined;

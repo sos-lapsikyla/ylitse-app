@@ -19,4 +19,3 @@ export const creators = {
     (actionName: regular.Action['type']) => actionName,
   ),
 };
-

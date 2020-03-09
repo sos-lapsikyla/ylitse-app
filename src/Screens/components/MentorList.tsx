@@ -3,13 +3,13 @@ import RN from 'react-native';
 import * as snapCarousel from 'react-native-snap-carousel';
 import * as redux from 'redux';
 import * as ReactRedux from 'react-redux';
+import * as RD from '@devexperts/remote-data-ts';
 
-import * as http from '../../lib/http';
-import * as remoteData from '../../lib/remote-data';
+import * as err from '../../lib/http-err';
 import useLayout from '../../lib/use-layout';
 
 import MentorCard from '../components/MentorCard';
-import RemoteData from '../components/RemoteData';
+import RemoteData2 from '../components/RemoteData2';
 
 import * as mentorApi from '../../api/mentors';
 import * as state from '../../state';
@@ -17,7 +17,7 @@ import * as actions from '../../state/actions';
 import * as selectors from '../../state/selectors';
 
 type StateProps = {
-  mentorsState: remoteData.RemoteData<mentorApi.Mentor[], http.Err>;
+  mentorsState: RD.RemoteData<err.Err, mentorApi.Mentor[]>;
 };
 type DispatchProps = {
   fetchMentors: () => void | undefined;
@@ -34,7 +34,7 @@ const MentorList = ({ fetchMentors, mentorsState, onPress }: Props) => {
   const measuredWidth = width || RN.Dimensions.get('window').width;
   return (
     <RN.View onLayout={onLayout} style={styles.mentorListContainer}>
-      <RemoteData data={mentorsState} fetchData={fetchMentors}>
+      <RemoteData2 data={mentorsState} fetchData={fetchMentors}>
         {mentors => (
           <RN.View style={styles.carouselContainer}>
             <snapCarousel.default
@@ -47,7 +47,7 @@ const MentorList = ({ fetchMentors, mentorsState, onPress }: Props) => {
             />
           </RN.View>
         )}
-      </RemoteData>
+      </RemoteData2>
     </RN.View>
   );
 };
@@ -92,7 +92,7 @@ export default ReactRedux.connect<
   ({ mentors }) => ({ mentorsState: selectors.getMentors(mentors) }),
   (dispatch: redux.Dispatch<actions.Action>) => ({
     fetchMentors: () => {
-      dispatch(actions.creators.fetchMentors([]));
+      dispatch(actions.creators.fetchMentors());
     },
   }),
 )(MentorList);

@@ -1,9 +1,8 @@
 import * as t from 'io-ts';
-
-import * as taggedUnion from '../lib/tagged-union';
-import * as http from '../lib/http';
-import * as result from '../lib/result';
-import * as f from '../lib/future';
+import { pipe } from 'fp-ts/lib/pipeable';
+import * as TE from 'fp-ts/lib/TaskEither';
+import * as http2 from '../lib/http2';
+import * as err from '../lib/http-err';
 
 import * as localization from '../localization';
 
@@ -33,32 +32,38 @@ const createdUserAccount = t.strict({
   account: accountType,
   user: userType,
 });
+type CreatedUserAccount = t.TypeOf<typeof createdUserAccount>;
 
-async function postAccount({
+function postAccount({
   userName,
   password,
   email,
-}: NewUser): http.Future<t.TypeOf<typeof createdUserAccount>> {
-  const url = `${config.baseUrl}/accounts`;
-  const requestBody = {
-    password,
-    account: {
-      role: 'mentee',
-      login_name: userName,
-      email,
-    },
-  };
-  return http.post(url, requestBody, createdUserAccount);
+}: NewUser): TE.TaskEither<err.Err, CreatedUserAccount> {
+  return http2.validateResponse(
+    http2.post(`${config.baseUrl}/accounts`, {
+      password,
+      account: {
+        role: 'mentee',
+        login_name: userName,
+        email,
+      },
+    }),
+    createdUserAccount,
+    a => a,
+  );
 }
 
-async function putUser(
+function putUser(
   token: authApi.AccessToken,
   user: User,
-): http.Future<User> {
-  const url = `${config.baseUrl}/users`;
-  return http.put(`${url}/${user.id}`, user, userType, {
-    headers: authApi.authHeader(token),
-  });
+): TE.TaskEither<err.Err, User> {
+  return http2.validateResponse(
+    http2.put(`${config.baseUrl}/users`, user, {
+      headers: authApi.authHeader(token),
+    }),
+    userType,
+    x => x,
+  );
 }
 
 export type NewUser = authApi.Credentials & {
@@ -66,39 +71,47 @@ export type NewUser = authApi.Credentials & {
   email: string;
 };
 
-export async function createUser(
+export function createUser(
   user: NewUser,
-): http.Future<authApi.AccessToken> {
+): TE.TaskEither<err.Err, authApi.AccessToken> {
   const { userName, password } = user;
-  const results = await f.seq(
-    f.lazy(postAccount, user),
-    f.lazy(authApi.login, { userName, password }),
+  return pipe(
+    user,
+    postAccount,
+    TE.chain(createdUser =>
+      pipe(
+        authApi.login({ userName, password }),
+        TE.map(
+          token =>
+            [createdUser, token] as [CreatedUserAccount, authApi.AccessToken],
+        ),
+      ),
+    ),
+    TE.chain(([createdUser, token]) =>
+      pipe(
+        putUser(token, { ...createdUser.user, display_name: user.displayName }),
+        TE.map(_ => token),
+      ),
+    ),
   );
-  return f.chain(results, async ([createdUser, token]) => {
-    await putUser(token, {
-      ...createdUser.user,
-      display_name: user.displayName,
-    });
-    return result.ok(token);
-  });
 }
 
-async function isUserNameFree(userName: string): http.Future<boolean> {
-  return result.map(
-    await http.head(`${config.baseUrl}/search?login_name=${userName}`),
-    ({ status }) => status === 204,
+function isUserNameFree(userName: string): TE.TaskEither<err.Err, boolean> {
+  return pipe(
+    http2.head(`${config.baseUrl}/search?login_name=${userName}`),
+    TE.map(({ status }) => status === 204),
   );
 }
 
-export async function checkCredentials({
+export function checkCredentials({
   userName,
   password,
-}: authApi.Credentials): f.Future<
-  { userName: string; password: string },
-  { errorMessageId: localization.MessageId }
+}: authApi.Credentials): TE.TaskEither<
+  { errorMessageId: localization.MessageId },
+  { userName: string; password: string }
 > {
   const fail = (errorMessageId: localization.MessageId) =>
-    result.err({
+    TE.left({
       userName,
       errorMessageId,
     });
@@ -106,14 +119,14 @@ export async function checkCredentials({
   if (userName.length > 30) return fail('onboarding.signUp.error.userNameLong');
   if (password.length < 5) return fail('onboarding.signUp.error.passwordShort');
   if (password.length > 30) return fail('onboarding.signUp.error.passwordLong');
-  return taggedUnion.match(await isUserNameFree(userName), {
-    Err: fail('onboarding.signUp.error.probablyNetwork'),
-    Ok: isFree =>
-      isFree
-        ? result.ok({
-            userName,
-            password,
-          })
-        : fail('onboarding.signUp.error.userNameTaken'),
-  });
+  return pipe(
+    isUserNameFree(userName),
+    TE.fold(
+      () => fail('onboarding.signUp.error.probablyNetwork'),
+      isFree =>
+        isFree
+          ? TE.right({ userName, password })
+          : fail('onboarding.signUp.error.userNameTaken'),
+    ),
+  );
 }

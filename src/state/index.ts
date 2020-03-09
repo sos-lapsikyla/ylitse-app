@@ -1,10 +1,12 @@
 import * as reduxLoop from 'redux-loop';
 import * as redux from 'redux';
-
-import * as taggedUnion from '../lib/tagged-union';
+import * as option from 'fp-ts/lib/Option';
+import { pipe } from 'fp-ts/lib/pipeable';
 
 import * as actions from './actions';
 import * as accessToken from './accessToken';
+import * as login from './login';
+import * as createUser from './createUser';
 import * as buddies from './buddies';
 import * as messages from './messages';
 import * as sendMessage from './sendMessage';
@@ -17,6 +19,8 @@ export type AppState = model.AppState;
 
 export const initialState: AppState = {
   accessToken: accessToken.initialState,
+  login: login.initialState,
+  createUser: createUser.initialState,
   mentors: mentors.initialState,
   buddies: buddies.initialState,
   messages: messages.initialState,
@@ -26,6 +30,13 @@ export const initialState: AppState = {
 };
 
 function reducer(state: AppState = initialState, action: actions.Action) {
+  const [loginModel, loginCmd] = reduxLoop.liftState(
+    login.reducer(state.login, action),
+  );
+
+  const [createUserModel, createUserCmd] = reduxLoop.liftState(
+    createUser.reducer(state.login, action),
+  );
   const [tokenModel, tokenCmd] = reduxLoop.liftState(
     accessToken.reducer(state.accessToken, action),
   );
@@ -45,18 +56,21 @@ function reducer(state: AppState = initialState, action: actions.Action) {
     scheduler.reducer(state.scheduler, action),
   );
 
-  const [requestModel, requestCmd] = reduxLoop.liftState(
-    taggedUnion.match<accessToken.State, request.LoopState>(state.accessToken, {
-      Some: ({ value: [token] }) =>
-        request.reducer(state.request, action, token),
-      None: state.request,
-    }),
+  const [requestModel, requestCmd] = pipe(
+    state.accessToken,
+    option.fold(
+      () => state.request,
+      ([token]) => request.reducer(state.request, action, token),
+    ),
+    reduxLoop.liftState,
   );
   return reduxLoop.loop(
     {
       scheduler: schedulerModel,
 
       accessToken: tokenModel,
+      login: loginModel,
+      createUser: createUserModel,
       mentors: mentorsModel,
       buddies: buddiesModel,
       messages: messagesModel,
@@ -66,6 +80,8 @@ function reducer(state: AppState = initialState, action: actions.Action) {
     reduxLoop.Cmd.list([
       tokenCmd,
       mentorsCmd,
+      loginCmd,
+      createUserCmd,
       buddiesCmd,
       messagesCmd,
       sendMessageCmd,
@@ -86,4 +102,4 @@ const createStore = redux.createStore as ((
   enhancer: redux.StoreEnhancer,
 ) => redux.Store<AppState, actions.Action>);
 
-export const store = createStore(reducer, initialState, enhancer);
+export const store = createStore(reducer as any, initialState, enhancer);

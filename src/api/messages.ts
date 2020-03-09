@@ -1,6 +1,7 @@
 import * as t from 'io-ts';
 
 import * as http from '../lib/http';
+import * as err from '../lib/http-err';
 import * as result from '../lib/result';
 import * as future from '../lib/future';
 import * as validators from '../lib/validators';
@@ -45,7 +46,7 @@ const toMessage: (
 
 export async function fetchMessages(
   accessToken: authApi.AccessToken,
-): future.Future<Threads, http.Err> {
+): future.Future<Threads, err.Err> {
   const url = `${config.baseUrl}/users/${accessToken.userId}/messages`;
   const response = await http.get(url, messageListType, {
     headers: authApi.authHeader(accessToken),

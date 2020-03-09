@@ -1,7 +1,8 @@
 import * as t from 'io-ts';
+import * as TE from 'fp-ts/lib/TaskEither';
 
-import * as http from '../lib/http';
-import * as result from '../lib/result';
+import * as http2 from '../lib/http2';
+import * as err from '../lib/http-err';
 import * as record from '../lib/record';
 
 import * as config from './config';
@@ -30,12 +31,19 @@ const toMentor = ({
   name: display_name,
 });
 
-export async function fetchMentors(): http.Future<record.NonTotal<Mentor>> {
-  const url = `${config.baseUrl}/mentors`;
-  return result.map(await http.get(url, mentorListType), ({ resources }) =>
-    resources.reduce((acc, apiMentor) => {
-      const mentor = toMentor(apiMentor);
-      return { ...acc, [mentor.buddyId]: mentor };
-    }, {}),
+export type Mentors = record.NonTotal<Mentor>;
+const fromMentorList = ({ resources }: t.TypeOf<typeof mentorListType>) =>
+  resources.reduce((acc: Mentors, apiMentor) => {
+    const mentor = toMentor(apiMentor);
+    return { ...acc, [mentor.buddyId]: mentor };
+  }, {});
+
+export const fetchMentors: () => TE.TaskEither<
+  err.Err,
+  record.NonTotal<Mentor>
+> = () =>
+  http2.validateResponse(
+    http2.get(`${config.baseUrl}/mentors`),
+    mentorListType,
+    fromMentorList,
   );
-}
