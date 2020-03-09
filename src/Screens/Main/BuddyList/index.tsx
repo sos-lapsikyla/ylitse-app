@@ -7,8 +7,6 @@ import * as RD from '@devexperts/remote-data-ts';
 import * as navigationProps from '../../../lib/navigation-props';
 import * as err from '../../../lib/http-err';
 
-import * as buddyApi from '../../../api/buddies';
-
 import * as state from '../../../state';
 import * as selectors from '../../../state/selectors';
 import * as actions from '../../../state/actions';
@@ -29,7 +27,7 @@ export type BuddyListRoute = {
 };
 
 type StateProps = {
-  chatList: RD.RemoteData<err.Err, buddyApi.Buddy[]>;
+  chatList: RD.RemoteData<err.Err, selectors.Buddy[]>;
 };
 type DispatchProps = {
   pollMessages: () => void | undefined;
@@ -55,13 +53,14 @@ const BuddyList = ({ navigation, chatList, pollMessages }: Props) => {
             style={styles.scrollView}
             contentContainerStyle={styles.scrollContent}
           >
-            {value.map(thread => (
+            {value.map(buddy => (
               <Button
-                key={thread.buddyId}
+                key={buddy.buddyId}
                 style={styles.button}
                 onPress={onPress}
-                name={thread.name}
-                buddyId={thread.buddyId}
+                name={buddy.name}
+                buddyId={buddy.buddyId}
+                hasNewMessages={buddy.hasNewMessages}
               />
             ))}
           </RN.ScrollView>
@@ -99,7 +98,7 @@ export default ReactRedux.connect<
 >(
   appState => {
     return {
-      chatList: selectors.getChatList(appState.buddies),
+      chatList: selectors.getChatList(appState.buddies, appState.messages),
     };
   },
   (dispatch: redux.Dispatch<actions.Action>) => ({
