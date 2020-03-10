@@ -10,13 +10,22 @@ import * as messages from './messages';
 import * as sendMessage from './sendMessage';
 import * as mentors from './mentors';
 import * as markSeen from './markSeen';
+import * as userAccount from './userAccount';
+import * as changePassword from './changePassword';
+
+import * as actions from '../actions';
 
 export type AppState = model.AppState;
 
-export const rootReducer = automaton.combineReducers({
+export const rootReducer: automaton.Reducer<
+  AppState,
+  actions.Action
+> = automaton.combineReducers({
   accessToken: accessToken.reducer,
   login: login.reducer,
   createUser: createUser.reducer,
+  userAccount: userAccount.reducer,
+  changePassword: changePassword.reducer,
 
   mentors: mentors.reducer,
   buddies: buddies.reducer,
@@ -29,6 +38,8 @@ export const initialState: AppState = {
   accessToken: accessToken.initialState,
   login: login.initialState,
   createUser: createUser.initialState,
+  userAccount: userAccount.initialState,
+  changePassword: changePassword.initialState,
 
   mentors: mentors.initialState,
   buddies: buddies.initialState,

@@ -25,7 +25,7 @@ import { TabsRoute } from '../Main/Tabs';
 import navigateMain from './navigateMain';
 
 export type PrivacyPolicyRoute = {
-  'Onboarding/PrivacyPolicy': { user: accountApi.NewUser };
+  'Onboarding/PrivacyPolicy': { user: accountApi.User };
 };
 
 type StateProps = {
@@ -34,7 +34,7 @@ type StateProps = {
 };
 
 type DispatchProps = {
-  createUser: (user: accountApi.NewUser) => void | undefined;
+  createUser: (user: accountApi.User) => void | undefined;
 };
 type OwnProps = navigationProps.NavigationProps<PrivacyPolicyRoute, TabsRoute>;
 
@@ -148,7 +148,7 @@ export default ReactRedux.connect<StateProps, {}, OwnProps, state.AppState>(
     createUserState: createUser,
   }),
   (dispatch: redux.Dispatch<actions.Action>) => ({
-    createUser: (payload: accountApi.NewUser) => {
+    createUser: (payload: accountApi.User) => {
       dispatch({ type: 'createUser/start', payload });
     },
   }),

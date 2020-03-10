@@ -40,7 +40,11 @@ const NamedInputField = ({
           >
             <RN.Image
               style={styles.icon}
-              source={require('../images/eye.svg')}
+              source={
+                isSecureText
+                  ? require('../images/eye-off-outline.svg')
+                  : require('../images/eye-outline.svg')
+              }
             />
           </RN.TouchableOpacity>
         ) : null}

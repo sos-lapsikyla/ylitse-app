@@ -38,8 +38,15 @@ export const messages = {
   'main.mentorList.title': 'Mentorit',
 
   'main.settings.account.changePasswordButton': 'Vaihda salasana',
+  'main.settings.account.currentPassword': 'Nykyinen salasana',
+  'main.settings.account.newPassword': 'Uusi salasana',
+  'main.settings.account.newPasswordRepeat': 'Toista uusi salasana',
   'main.settings.account.nickName': 'Nikki (Julkinen)',
+
   'main.settings.account.password': 'Salasana',
+  'main.settings.account.password.failure': 'Salasanan vaihto epäonnistui',
+  'main.settings.account.password.success': 'Salasanan vaihto onnistui',
+
   'main.settings.account.title': 'Asetukset',
   'main.settings.account.userName': 'Käyttäjänimi (Yksityinen)',
   'main.settings.other.button.deleteAccount': 'Poista tili',
@@ -55,7 +62,9 @@ export const messages = {
 
   'meta.back': 'Takaisin',
   'meta.blank': ' ',
+  'meta.cancel': 'Peru',
   'meta.error': 'Virhe',
+  'meta.save': 'Tallenna',
 
   'onboarding.displayName.bodyText':
     '*Jos haluat pysyä nimettömänä, valitse itsellesi nimimerkki, josta et ole tunnistettavissa.',

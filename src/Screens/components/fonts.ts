@@ -49,6 +49,16 @@ const fonts = {
     fontSize: 32,
     lineHeight: 44,
   },
+  titleLarge: {
+    fontFamily: 'Nunito-Regular',
+    fontSize: 40,
+    lineHeight: 48,
+  },
+  titleLargeBold: {
+    fontFamily: 'Nunito-Bold',
+    fontSize: 40,
+    lineHeight: 48,
+  },
   specialTitle: {
     fontFamily: 'Baloo-Regular',
     fontSize: 48,

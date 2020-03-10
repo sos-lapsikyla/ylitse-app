@@ -16,9 +16,16 @@ type RegularActions = {
   'login/start': authApi.Credentials;
   'login/end': Result<typeof authApi.login>;
 
-  'createUser/start': accountApi.NewUser;
+  'createUser/start': accountApi.User;
   'createUser/end': Result<typeof accountApi.createUser>;
 
+  'userAccount/get/start': undefined;
+  'userAccount/get/completed': Result<typeof accountApi.getMyUser>;
+
+  'changePassword/start': authApi.NewPassword;
+  'changePassword/completed': Result<ReturnType<typeof authApi.changePassword>>;
+
+  'changePassword/reset': undefined;
   'token/Acquired': authApi.AccessToken;
   'token/refresh/start': undefined;
   'token/refresh/end': Result<typeof authApi.refreshAccessToken>;

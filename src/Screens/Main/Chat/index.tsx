@@ -39,6 +39,7 @@ const Chat = ({ navigation }: Props) => {
 const styles = RN.StyleSheet.create({
   screen: {
     flex: 1,
+    paddingBottom: 8,
   },
   container: {
     flex: 1,

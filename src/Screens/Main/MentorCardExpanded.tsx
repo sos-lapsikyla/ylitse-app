@@ -73,6 +73,7 @@ const styles = RN.StyleSheet.create({
     paddingHorizontal: 24,
     justifyContent: 'space-evenly',
     flexGrow: 1,
+    paddingBottom: 40,
   },
   story: {
     marginTop: 24,

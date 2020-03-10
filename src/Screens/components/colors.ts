@@ -22,6 +22,21 @@ const colors = {
   acidGreen1: '#5BD858',
   acidGreen2: '#46E769',
   danger: '#E93C66',
+
+  green20: '#e8f2df',
+  green40: '#d0e4bf',
+  green60: '#b5d59d',
+  green80: '#98c679',
+  green100: '#76b856',
+
+  blue100: '#009ee0',
+  blue80: '#00b1e6',
+  blue60: '#5cc5ed',
+  blue40: '#a2daf3',
+  blue20: '#d4edfa',
+
+  red60: '#f19a9b',
+  red80: '#eb727c',
 };
 
 export const gradients = {
