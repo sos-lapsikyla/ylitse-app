@@ -1,9 +1,9 @@
 import * as t from 'io-ts';
+import * as RE from 'fp-ts-rxjs/lib/ObservableEither';
+import { pipe } from 'fp-ts/lib/pipeable';
 
 import * as http from '../lib/http';
 import * as err from '../lib/http-err';
-import * as result from '../lib/result';
-import * as future from '../lib/future';
 import * as validators from '../lib/validators';
 
 import * as authApi from './auth';
@@ -44,26 +44,26 @@ const toMessage: (
   };
 };
 
-export async function fetchMessages(
+export function fetchMessages(
   accessToken: authApi.AccessToken,
-): future.Future<Threads, err.Err> {
-  const url = `${config.baseUrl}/users/${accessToken.userId}/messages`;
-  const response = await http.get(url, messageListType, {
-    headers: authApi.authHeader(accessToken),
-  });
-  if (response.type === 'Err') return response;
-  const messages = response.value.resources.map(toMessage(accessToken.userId));
-  const threads = messages.reduce(
-    (acc: Threads, message: Message) => ({
-      ...acc,
-      [message.buddyId]: {
-        ...acc[message.buddyId],
-        [message.messageId]: message,
-      },
+): RE.ObservableEither<err.Err, Record<string, Record<string, Message>>> {
+  return http.validateResponse(
+    http.get(`${config.baseUrl}/users/${accessToken.userId}/messages`, {
+      headers: authApi.authHeader(accessToken),
     }),
-    {},
+    messageListType,
+    ({ resources }) =>
+      resources.map(toMessage(accessToken.userId)).reduce(
+        (acc: Record<string, Record<string, Message>>, message: Message) => ({
+          ...acc,
+          [message.buddyId]: {
+            ...acc[message.buddyId],
+            [message.messageId]: message,
+          },
+        }),
+        {},
+      ),
   );
-  return result.ok(threads);
 }
 
 export type SendMessageParams = {
@@ -71,10 +71,9 @@ export type SendMessageParams = {
   content: string;
 };
 
-export async function sendMessage(
+export const sendMessage = (params: SendMessageParams) => (
   accessToken: authApi.AccessToken,
-  params: SendMessageParams,
-) {
+): RE.ObservableEither<err.Err, undefined> => {
   const url = `${config.baseUrl}/users/${accessToken.userId}/messages`;
   const message = {
     sender_id: accessToken.userId,
@@ -82,13 +81,15 @@ export async function sendMessage(
     content: params.content,
     opened: false,
   };
-  const response = await http.post(url, message, t.unknown, {
-    headers: authApi.authHeader(accessToken),
-  });
-  return result.map(response, _ => undefined);
-}
+  return pipe(
+    http.post(url, message, {
+      headers: authApi.authHeader(accessToken),
+    }),
+    RE.map(_ => undefined),
+  );
+};
 
-export type Threads = Partial<{
-  [buddyId: string]: Thread;
-}>;
-export type Thread = Partial<{ [messageId: string]: Message }>;
+type buddyId = string;
+type messageId = string;
+export type Thread = Record<messageId, Message>;
+export type Threads = Record<buddyId, Thread>;

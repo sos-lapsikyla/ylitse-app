@@ -1,89 +1,65 @@
 import * as t from 'io-ts';
-import * as tPromise from 'io-ts-promise';
-
-import * as r from './result';
-import * as f from './future';
+import * as E from 'fp-ts/lib/Either';
+import * as TE from 'fp-ts/lib/TaskEither';
+import * as RE from 'fp-ts-rxjs/lib/ObservableEither';
+import { pipe } from 'fp-ts/lib/pipeable';
 
 import * as err from './http-err';
 
-export type Future<A> = f.Future<A, err.Err>;
-async function request(url: string, options?: RequestInit): Future<Response> {
-  const response = await f.fromPromise(fetch, [url, options], (_: unknown) =>
-    err.unknownError(),
+const request = (url: string, options: RequestInit) =>
+  pipe(
+    TE.tryCatch(() => fetch(url, options), err.unknownError),
+    TE.chain(response =>
+      response.ok
+        ? TE.right(response)
+        : TE.left(err.badStatus(response.status)),
+    ),
+    RE.fromTaskEither,
   );
-  return r.chain(response, resp =>
-    resp.ok ? r.ok(resp) : r.err(err.badStatus(resp.status)),
-  );
-}
 
-async function request_json(
-  url: string,
-  options?: RequestInit,
-): Future<unknown> {
-  return f.chain(await request(url, options), async response => {
-    try {
-      return r.ok(await response.json());
-    } catch (e) {
-      return r.err(err.unknownError());
-    }
+export const get = (url: string, options?: RequestInit) =>
+  request(url, { ...(options || {}), method: 'GET' });
+export const head = (url: string, options?: RequestInit) =>
+  request(url, {
+    method: 'HEAD',
+    ...(options || {}),
   });
-}
-
-export async function head(
-  url: string,
-  options?: RequestInit,
-): Future<Response> {
-  return request(url, { ...options, method: 'HEAD' });
-}
-
-async function decode<A, B>(
-  typeModel: t.Type<A, B, unknown>,
-  value: unknown,
-): Future<A> {
-  try {
-    const decoded = await tPromise.decode(typeModel, value);
-    return r.ok(decoded);
-  } catch (errors) {
-    return r.err(err.badModel(errors));
-  }
-}
-
-export async function get<A, B>(
-  url: string,
-  type: t.Type<A, B, unknown>,
-  options?: RequestInit,
-): Future<A> {
-  return f.chain(await request_json(url, options), json => decode(type, json));
-}
-
-export async function post<A extends {}, B, C>(
-  url: string,
-  input: A,
-  outputType: t.Type<B, C, unknown>,
-  options?: RequestInit,
-): Future<B> {
-  const requestOptions: RequestInit = {
-    ...options,
+export const post = (url: string, body: any, options?: RequestInit) =>
+  request(url, {
+    body: JSON.stringify(body),
     method: 'POST',
-    body: JSON.stringify(input),
-  };
-  return f.chain(await request_json(url, requestOptions), json =>
-    decode(outputType, json),
-  );
-}
-
-export async function put<A extends {}, B, C>(
-  url: string,
-  input: A,
-  outputType: t.Type<B, C, unknown>,
-  options?: RequestInit,
-): Future<B> {
-  const requestOptions: RequestInit = {
-    ...options,
+    ...(options || {}),
+  });
+export const put = (url: string, body: any, options?: RequestInit) =>
+  request(url, {
+    body: JSON.stringify(body),
     method: 'PUT',
-    body: JSON.stringify(input),
-  };
-  return f.chain(await request_json(url, requestOptions), json =>
-    decode(outputType, json),
+    ...(options || {}),
+  });
+
+const getJson = (response: Response) =>
+  pipe(
+    TE.tryCatch(() => response.json(), err.unknownError),
+    RE.fromTaskEither,
   );
-}
+
+const decode = <A, B>(model: t.Type<A, B, unknown>) => (u: unknown) =>
+  pipe(
+    u,
+    model.decode,
+    E.mapLeft((errors: t.Errors) => err.badModel(errors)),
+    TE.fromEither,
+    RE.fromTaskEither,
+  );
+
+export const validateResponse = <A, B, C>(
+  task: RE.ObservableEither<err.Err, Response>,
+  model: t.Type<A, B, unknown>,
+  fromModel: (a: A) => C,
+) =>
+  pipe(
+    task,
+    RE.chain(getJson),
+    RE.chain(decode(model)),
+    RE.map(fromModel),
+  );

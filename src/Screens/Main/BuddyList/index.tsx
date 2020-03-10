@@ -2,10 +2,10 @@ import React from 'react';
 import RN from 'react-native';
 import * as redux from 'redux';
 import * as ReactRedux from 'react-redux';
+import * as RD from '@devexperts/remote-data-ts';
 
 import * as navigationProps from '../../../lib/navigation-props';
 import * as err from '../../../lib/http-err';
-import * as remoteData from '../../../lib/remote-data';
 
 import * as buddyApi from '../../../api/buddies';
 
@@ -29,7 +29,7 @@ export type BuddyListRoute = {
 };
 
 type StateProps = {
-  chatList: remoteData.RemoteData<buddyApi.Buddy[], err.Err>;
+  chatList: RD.RemoteData<err.Err, buddyApi.Buddy[]>;
 };
 type DispatchProps = {
   pollMessages: () => void | undefined;
@@ -104,9 +104,7 @@ export default ReactRedux.connect<
   },
   (dispatch: redux.Dispatch<actions.Action>) => ({
     pollMessages: () => {
-      dispatch(
-        actions.creators.startPolling(actions.creators.fetchMessages(), 1000),
-      );
+      dispatch({ type: 'messages/start', payload: undefined });
     },
   }),
 )(BuddyList);

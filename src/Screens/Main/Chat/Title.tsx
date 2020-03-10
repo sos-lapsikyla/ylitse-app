@@ -10,7 +10,6 @@ import * as selectors from '../../../state/selectors';
 import colors, { gradients } from '../../components/colors';
 import { cardBorderRadius } from '../../components/Card';
 import fonts from '../../components/fonts';
-import shadow from '../../components/shadow';
 
 type StateProps = {
   name: string;

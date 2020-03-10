@@ -1,8 +1,8 @@
 import * as t from 'io-ts';
+import * as RE from 'fp-ts-rxjs/lib/ObservableEither';
 
 import * as http from '../lib/http';
-import * as result from '../lib/result';
-import * as record from '../lib/record';
+import * as err from '../lib/http-err';
 
 import * as config from './config';
 
@@ -20,14 +20,14 @@ const toBuddy = ({ id, display_name }: ApiBuddy) => ({
   name: display_name,
 });
 
-export async function fetchBuddies(
+export function fetchBuddies(
   accessToken: authApi.AccessToken,
-): http.Future<record.NonTotal<Buddy>> {
-  const url = `${config.baseUrl}/users/${accessToken.userId}/contacts`;
-  return result.map(
-    await http.get(url, t.strict({ resources: t.array(buddyType) }), {
+): RE.ObservableEither<err.Err, Record<string, Buddy>> {
+  return http.validateResponse(
+    http.get(`${config.baseUrl}/users/${accessToken.userId}/contacts`, {
       headers: authApi.authHeader(accessToken),
     }),
+    t.strict({ resources: t.array(buddyType) }),
     ({ resources }) =>
       resources.reduce((acc, apiBuddy) => {
         const buddy = toBuddy(apiBuddy);

@@ -1,8 +1,7 @@
 import React from 'react';
 import RN from 'react-native';
-
-import * as remoteData from '../../lib/remote-data';
-import assertNever from '../../lib/assert-never';
+import * as RD from '@devexperts/remote-data-ts';
+import { pipe } from 'fp-ts/lib/pipeable';
 
 import Card from './Card';
 import Spinner from './Spinner';
@@ -12,27 +11,27 @@ import fonts from './fonts';
 import colors, { gradients } from './colors';
 import { textShadow } from './shadow';
 
-interface Props<A, E> {
-  data: remoteData.RemoteData<A, E>;
+interface Props<E, A> {
+  data: RD.RemoteData<E, A>;
   fetchData: () => void | undefined;
   children: (value: A) => React.ReactElement;
 }
 
-function RemoteData<A, E>({
+function RemoteData<E, A>({
   data,
   children,
   fetchData,
-}: Props<A, E>): React.ReactElement {
+}: Props<E, A>): React.ReactElement {
   React.useEffect(() => {
-    if (data.type === 'NotAsked') {
+    if (RD.isInitial(data)) {
       fetchData();
     }
   });
-  switch (data.type) {
-    case 'NotAsked':
-      return <></>;
-    case 'Loading':
-      return (
+  return pipe(
+    data,
+    RD.fold(
+      () => <></>,
+      () => (
         <RN.View style={styles.container}>
           <Spinner />
           <Message
@@ -40,9 +39,8 @@ function RemoteData<A, E>({
             id="components.remoteData.loading"
           />
         </RN.View>
-      );
-    case 'Err':
-      return (
+      ),
+      () => (
         <RN.View style={styles.container}>
           <Card style={styles.errorCard}>
             <RN.Image
@@ -61,12 +59,10 @@ function RemoteData<A, E>({
             />
           </Card>
         </RN.View>
-      );
-    case 'Ok':
-      return <>{children(data.value)}</>;
-    default:
-      assertNever(data);
-  }
+      ),
+      value => <>{children(value)}</>,
+    ),
+  );
 }
 
 const styles = RN.StyleSheet.create({

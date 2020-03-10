@@ -1,61 +1,62 @@
-import * as option from 'fp-ts/lib/Option';
-import * as tuple from 'fp-ts/lib/Tuple';
+import * as O from 'fp-ts/lib/Option';
+import { getOptionM } from 'fp-ts/lib/OptionT';
+import { getFoldableComposition } from 'fp-ts/lib/Foldable';
+import * as record from 'fp-ts/lib/Record';
 import * as RD from '@devexperts/remote-data-ts';
 import { pipe } from 'fp-ts/lib/pipeable';
+import { flow, constant } from 'fp-ts/lib/function';
 
 import * as err from '../lib/http-err';
-import * as remoteData from '../lib/remote-data';
-import * as record from '../lib/record';
 import * as mentorsApi from '../api/mentors';
-import * as taggedUnion from '../lib/tagged-union';
-import * as array from '../lib/array';
 
 import * as messageApi from '../api/messages';
 import * as mentorApi from '../api/mentors';
+import * as buddyApi from '../api/buddies';
+import * as authApi from '../api/auth';
 
 import * as localization from '../localization';
 
-import { AppState, Pollable } from './model';
+import { AppState } from './model';
 
 export function getMentors(
-  mentors: RD.RemoteData<err.Err, record.NonTotal<mentorsApi.Mentor>>,
+  mentors: RD.RemoteData<err.Err, Record<string, mentorsApi.Mentor>>,
 ): RD.RemoteData<err.Err, mentorApi.Mentor[]> {
-  return pipe(
-    mentors,
-    RD.map(array.fromNonTotalRecord),
-  );
+  return RD.remoteData.map(mentors, Object.values);
 }
 
 export const getAccessToken = (state: AppState) =>
   pipe(
     state,
     ({ accessToken }: AppState) => accessToken,
-    option.map(tuple.fst),
+    O.map(({ currentToken }) => currentToken),
   );
 
-export const fromPollable = <A>(data: Pollable<A>) =>
-  remoteData.map(data, tuple.fst);
+export const getAC = flow(
+  getAccessToken,
+  O.getOrElse(constant(authApi.invalidToken)),
+);
 
 export const getBuddyName = (
   buddyId: string,
   buddyState: AppState['buddies'],
   mentorState: AppState['mentors'],
 ) => {
-  const buddies = fromPollable(buddyState);
-  if (buddies.type === 'Ok') {
-    const buddy = buddies.value[buddyId];
-    if (buddy) return buddy.name;
-  }
-  const mentors = RD.toNullable(mentorState);
-  if (mentors) {
-    const buddy = mentors[buddyId];
-    if (buddy) return buddy.name;
-  }
-  return '';
+  const look = (fa: RD.RemoteData<unknown, Record<string, { name: string }>>) =>
+    RD.remoteData.map(fa, a => record.lookup(buddyId, a));
+  const buddy = getOptionM(RD.remoteData).alt(look(buddyState), () =>
+    look(mentorState),
+  );
+  return getFoldableComposition(RD.remoteData, O.option).reduce(
+    buddy,
+    '',
+    (_, { name }) => name,
+  );
 };
 
-export function getChatList(buddies: AppState['buddies']) {
-  return remoteData.map(fromPollable(buddies), array.fromNonTotalRecord);
+export function getChatList(
+  buddies: AppState['buddies'],
+): RD.RemoteData<err.Err, buddyApi.Buddy[]> {
+  return RD.remoteData.map(buddies, Object.values);
 }
 
 const getDate = (n: number) => {
@@ -92,19 +93,15 @@ export function getMessages(
   messageState: AppState['messages'],
   buddyId: string,
 ): Message[] {
-  const messageList = taggedUnion.match<
-    AppState['messages'],
-    messageApi.Message[]
-  >(messageState, {
-    Ok: ({ value: [messages] }) => {
-      const messagesById = messages[buddyId];
-      if (messagesById === undefined) return [];
-      return array
-        .fromNonTotalRecord(messagesById)
-        .sort(({ sentTime: A }, { sentTime: B }) => A - B);
-    },
-    default: [],
-  });
+  const messagesById = RD.remoteData.map(messageState, r =>
+    record.lookup(buddyId, r),
+  );
+  const messageList: messageApi.Message[] = getFoldableComposition(
+    RD.remoteData,
+    O.option,
+  ).reduce(messagesById, [], r =>
+    Object.values(r).sort(({ sentTime: A }, { sentTime: B }) => A - B),
+  );
   return messageList
     .reduce((acc: Message[], m) => {
       const last = acc[acc.length - 1];

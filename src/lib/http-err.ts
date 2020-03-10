@@ -22,3 +22,7 @@ export function badStatus(status: number): Err {
 export function badModel(errors: t.Errors): Err {
   return { type: 'BadModel', errors } as const;
 }
+
+export function is401(err: Err): boolean {
+  return err.type === 'BadStatus' && err.status === 401;
+}
