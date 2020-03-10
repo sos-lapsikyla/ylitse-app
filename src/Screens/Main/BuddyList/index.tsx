@@ -1,17 +1,13 @@
 import React from 'react';
 import RN from 'react-native';
-import * as redux from 'redux';
 import * as ReactRedux from 'react-redux';
 import * as RD from '@devexperts/remote-data-ts';
 
 import * as navigationProps from '../../../lib/navigation-props';
 import * as err from '../../../lib/http-err';
 
-import * as buddyApi from '../../../api/buddies';
-
 import * as state from '../../../state';
 import * as selectors from '../../../state/selectors';
-import * as actions from '../../../state/actions';
 
 import colors, { gradients } from '../../components/colors';
 import fonts from '../../components/fonts';
@@ -29,16 +25,12 @@ export type BuddyListRoute = {
 };
 
 type StateProps = {
-  chatList: RD.RemoteData<err.Err, buddyApi.Buddy[]>;
+  chatList: RD.RemoteData<err.Err, selectors.Buddy[]>;
 };
-type DispatchProps = {
-  pollMessages: () => void | undefined;
-};
-
 type OwnProps = navigationProps.NavigationProps<BuddyListRoute, ChatRoute>;
-type Props = StateProps & DispatchProps & OwnProps;
+type Props = StateProps & OwnProps;
 
-const BuddyList = ({ navigation, chatList, pollMessages }: Props) => {
+const BuddyList = ({ navigation, chatList }: Props) => {
   const onPress = (buddyId: string) => {
     navigation.navigate('Main/Chat', { buddyId });
   };
@@ -49,19 +41,20 @@ const BuddyList = ({ navigation, chatList, pollMessages }: Props) => {
       }
       gradient={gradients.pillBlue}
     >
-      <RemoteData data={chatList} fetchData={pollMessages}>
+      <RemoteData data={chatList} fetchData={() => {}}>
         {value => (
           <RN.ScrollView
             style={styles.scrollView}
             contentContainerStyle={styles.scrollContent}
           >
-            {value.map(thread => (
+            {value.map(buddy => (
               <Button
-                key={thread.buddyId}
+                key={buddy.buddyId}
                 style={styles.button}
                 onPress={onPress}
-                name={thread.name}
-                buddyId={thread.buddyId}
+                name={buddy.name}
+                buddyId={buddy.buddyId}
+                hasNewMessages={buddy.hasNewMessages}
               />
             ))}
           </RN.ScrollView>
@@ -91,20 +84,10 @@ const styles = RN.StyleSheet.create({
   button: { marginVertical: 16 },
 });
 
-export default ReactRedux.connect<
-  StateProps,
-  DispatchProps,
-  OwnProps,
-  state.AppState
->(
+export default ReactRedux.connect<StateProps, {}, OwnProps, state.AppState>(
   appState => {
     return {
-      chatList: selectors.getChatList(appState.buddies),
+      chatList: selectors.getChatList(appState.buddies, appState.messages),
     };
   },
-  (dispatch: redux.Dispatch<actions.Action>) => ({
-    pollMessages: () => {
-      dispatch({ type: 'messages/start', payload: undefined });
-    },
-  }),
 )(BuddyList);

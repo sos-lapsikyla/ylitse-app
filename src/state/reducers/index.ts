@@ -9,6 +9,7 @@ import * as buddies from './buddies';
 import * as messages from './messages';
 import * as sendMessage from './sendMessage';
 import * as mentors from './mentors';
+import * as markSeen from './markSeen';
 
 export type AppState = model.AppState;
 
@@ -21,6 +22,7 @@ export const rootReducer = automaton.combineReducers({
   buddies: buddies.reducer,
   messages: messages.reducer,
   sendMessage: sendMessage.reducer,
+  markMessageSeen: markSeen.reducer,
 });
 
 export const initialState: AppState = {
@@ -32,4 +34,5 @@ export const initialState: AppState = {
   buddies: buddies.initialState,
   messages: messages.initialState,
   sendMessage: {},
+  markMessageSeen: {},
 };

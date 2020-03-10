@@ -1,7 +1,10 @@
 import React from 'react';
 import RN from 'react-native';
+import * as reactRedux from 'react-redux';
 import { SafeAreaView } from 'react-navigation';
 import * as reactNavigationTab from 'react-navigation-tabs';
+
+import * as selectors from '../../state/selectors';
 
 import colors from '../components/colors';
 import fonts from '../components/fonts';
@@ -74,6 +77,7 @@ const TabBar = ({
                 style={styles.tab}
                 onPress={() => onTabPress(navRoute)}
               >
+                {index === 2 ? <UnseenDot /> : null}
                 <RN.Image style={iconStyle} source={icons[index]} />
                 <RN.Text style={labelStyle}>{routeName}</RN.Text>
               </RN.TouchableOpacity>
@@ -84,6 +88,23 @@ const TabBar = ({
     </RN.View>
   );
 };
+
+const UnseenDot = () => {
+  const isUnseen = reactRedux.useSelector(selectors.isAnyMessageUnseen);
+  return isUnseen ? <RN.View style={unseenDotStyles.dot} /> : null;
+};
+
+const unseenDotStyles = RN.StyleSheet.create({
+  dot: {
+    zIndex: 2,
+    borderRadius: 8,
+    width: 16,
+    height: 16,
+    backgroundColor: 'yellow',
+    position: 'absolute',
+    transform: [{ translateX: 16 }, { translateY: -32 }],
+  },
+});
 
 const styles = RN.StyleSheet.create({
   tabBar: {

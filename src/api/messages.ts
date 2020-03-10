@@ -19,15 +19,40 @@ const messageType = t.interface({
   id: t.string,
 });
 
+export const markSeen = (message: Message) => (token: authApi.AccessToken) => {
+  const url = `${config.baseUrl}/users/${token.userId}/messages/${message.messageId}`;
+  const seenMessage = messageType.encode(toApiMessage(token.userId, message));
+  return http.validateResponse(
+    http.put(url, seenMessage, {
+      headers: authApi.authHeader(token),
+    }),
+    t.unknown,
+    _ => true,
+  );
+};
+
 const messageListType = t.strict({ resources: t.array(messageType) });
 
+const toApiMessage: (userId: string, a: Message) => ApiMessage = (
+  userId,
+  { buddyId, messageId, type, content, isSeen, sentTime },
+) => ({
+  content,
+  recipient_id: type === 'Sent' ? buddyId : userId,
+  sender_id: type === 'Sent' ? userId : buddyId,
+  id: messageId,
+  created: sentTime,
+  opened: !isSeen,
+});
+
 export type Message = {
+  buddyId: string;
+  messageId: string;
+
   type: 'Sent' | 'Received';
   content: string;
   sentTime: number;
-  buddyId: string;
-  seen: boolean;
-  messageId: string;
+  isSeen: boolean;
 };
 
 const toMessage: (
@@ -37,7 +62,7 @@ const toMessage: (
   return {
     type: isSent ? 'Sent' : 'Received',
     buddyId: isSent ? apiMessage.recipient_id : apiMessage.sender_id,
-    seen: !apiMessage.opened,
+    isSeen: !apiMessage.opened,
     content: apiMessage.content,
     sentTime: apiMessage.created,
     messageId: apiMessage.id,

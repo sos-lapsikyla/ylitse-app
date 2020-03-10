@@ -2,6 +2,8 @@ import * as O from 'fp-ts/lib/Option';
 import { getOptionM } from 'fp-ts/lib/OptionT';
 import { getFoldableComposition } from 'fp-ts/lib/Foldable';
 import * as record from 'fp-ts/lib/Record';
+import * as array from 'fp-ts/lib/Array';
+import { monoidAny } from 'fp-ts/lib/Monoid';
 import * as RD from '@devexperts/remote-data-ts';
 import { pipe } from 'fp-ts/lib/pipeable';
 import { flow, constant } from 'fp-ts/lib/function';
@@ -53,12 +55,6 @@ export const getBuddyName = (
   );
 };
 
-export function getChatList(
-  buddies: AppState['buddies'],
-): RD.RemoteData<err.Err, buddyApi.Buddy[]> {
-  return RD.remoteData.map(buddies, Object.values);
-}
-
 const getDate = (n: number) => {
   const date = new Date(n);
   const year = date.getFullYear();
@@ -86,26 +82,35 @@ const getDate = (n: number) => {
 };
 
 export type Message =
-  | { type: 'Message'; value: messageApi.Message; id: string }
+  | { type: 'Message'; value: messageApi.Message; id: string; isSeen: boolean }
   | { type: 'Date'; value: string; id: string };
+
+const messageList = (messageState: AppState['messages'], buddyId: string) => {
+  const messagesById = RD.remoteData.map(messageState, r =>
+    record.lookup(buddyId, r),
+  );
+  return getFoldableComposition(RD.remoteData, O.option).reduce<
+    err.Err,
+    Record<string, messageApi.Message>,
+    messageApi.Message[]
+  >(messagesById, [], (_, messages) =>
+    Object.values(messages).sort(({ sentTime: A }, { sentTime: B }) => A - B),
+  );
+};
 
 export function getMessages(
   messageState: AppState['messages'],
   buddyId: string,
 ): Message[] {
-  const messagesById = RD.remoteData.map(messageState, r =>
-    record.lookup(buddyId, r),
-  );
-  const messageList: messageApi.Message[] = getFoldableComposition(
-    RD.remoteData,
-    O.option,
-  ).reduce(messagesById, [], r =>
-    Object.values(r).sort(({ sentTime: A }, { sentTime: B }) => A - B),
-  );
-  return messageList
+  return messageList(messageState, buddyId)
     .reduce((acc: Message[], m) => {
       const last = acc[acc.length - 1];
-      const next = { type: 'Message' as const, value: m, id: m.messageId };
+      const next = {
+        type: 'Message' as const,
+        value: m,
+        id: m.messageId,
+        isSeen: m.isSeen,
+      };
       const date = getDate(next.value.sentTime);
       const nextDate = { type: 'Date' as const, value: date, id: date };
       if (
@@ -122,3 +127,45 @@ export function getMessages(
     }, [])
     .reverse();
 }
+
+export type Buddy = buddyApi.Buddy & { hasNewMessages: boolean };
+
+export function getChatList(
+  buddies: AppState['buddies'],
+  messageState: AppState['messages'],
+): RD.RemoteData<err.Err, Buddy[]> {
+  return pipe(
+    buddies,
+    RD.map(
+      record.mapWithIndex((buddyId, buddy) => ({
+        ...buddy,
+        hasNewMessages: pipe(
+          messageList(messageState, buddyId),
+          array.filter(message => message.type === 'Received'),
+          array.foldMap(monoidAny)(({ isSeen }) => !isSeen),
+        ),
+      })),
+    ),
+    RD.map(Object.values),
+  );
+}
+
+export const isAnyMessageUnseen = ({ messages: messageState }: AppState) =>
+  getFoldableComposition(RD.remoteData, record.record).foldMap(monoidAny)(
+    messageState,
+    record.some(({ isSeen }) => !isSeen),
+  );
+
+export const getMessage = (
+  { messages: messageState }: AppState,
+  index: {
+    buddyId: string;
+    messageId: string;
+  },
+) => {
+  return pipe(
+    RD.toOption(messageState),
+    O.chain(threads => record.lookup(index.buddyId, threads)),
+    O.chain(threadMessages => record.lookup(index.messageId, threadMessages)),
+  );
+};
