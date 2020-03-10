@@ -38,6 +38,9 @@ export const messages = {
   'main.mentorList.title': 'Mentorit',
 
   'main.settings.account.changePasswordButton': 'Vaihda salasana',
+  'main.settings.account.currentPassword': 'Nykyinen salasana',
+  'main.settings.account.newPassword': 'Uusi salasana',
+  'main.settings.account.newPasswordRepeat': 'Toista uusi salasana',
   'main.settings.account.nickName': 'Nikki (Julkinen)',
   'main.settings.account.password': 'Salasana',
   'main.settings.account.title': 'Asetukset',

@@ -1,17 +1,19 @@
 import React from 'react';
 import RN from 'react-native';
 
-import * as navigationProps from '../../lib/navigation-props';
-import * as config from '../../api/config';
+import * as navigationProps from '../../../lib/navigation-props';
+import * as config from '../../../api/config';
 
-import Button from '../components/Button';
-import Card from '../components/Card';
-import Link from '../components/Link';
-import Message from '../components/Message';
-import { textShadow } from '../components/shadow';
-import TitledContainer from '../components/TitledContainer';
-import colors, { gradients } from '../components/colors';
-import fonts from '../components/fonts';
+import Button from '../../components/Button';
+import Card from '../../components/Card';
+import Link from '../../components/Link';
+import Message from '../../components/Message';
+import { textShadow } from '../../components/shadow';
+import TitledContainer from '../../components/TitledContainer';
+import colors, { gradients } from '../../components/colors';
+import fonts from '../../components/fonts';
+
+import UserAccount from './UserAccount';
 
 export type SettingsRoute = {
   'Main/Settings': {};
@@ -33,33 +35,7 @@ const Settings = (_: Props) => {
         contentContainerStyle={styles.scrollContent}
         showsVerticalScrollIndicator={false}
       >
-        <Card style={styles.card}>
-          <Message
-            style={styles.accountSettingsText}
-            id="main.settings.title"
-          />
-          <Message
-            style={styles.fieldName}
-            id="main.settings.account.userName"
-          />
-          <RN.Text style={styles.fieldValueText}>Janteri</RN.Text>
-          <Message
-            style={styles.fieldName}
-            id="main.settings.account.nickName"
-          />
-          <RN.Text style={styles.fieldValueText}>Maikkeli</RN.Text>
-          <Message
-            style={styles.fieldName}
-            id="main.settings.account.password"
-          />
-          <Button
-            style={styles.changePasswordButton}
-            messageStyle={styles.buttonText}
-            onPress={() => {}}
-            messageId="main.settings.account.changePasswordButton"
-            gradient={gradients.pillBlue}
-          />
-        </Card>
+        <UserAccount />
         <Card style={styles.card}>
           <Message
             style={styles.accountSettingsText}

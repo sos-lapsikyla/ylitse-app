@@ -40,6 +40,9 @@ export const messages: { [key in MessageId]: string } = {
   'main.mentorList.title': 'Mentors',
 
   'main.settings.account.changePasswordButton': 'Change password',
+  'main.settings.account.currentPassword': 'Current password',
+  'main.settings.account.newPassword': 'New password',
+  'main.settings.account.newPasswordRepeat': 'Repeat new password',
   'main.settings.account.nickName': 'Nickname (public)',
   'main.settings.account.password': 'Password',
   'main.settings.account.title': 'Account settings',

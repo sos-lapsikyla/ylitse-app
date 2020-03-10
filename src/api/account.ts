@@ -2,6 +2,8 @@ import * as t from 'io-ts';
 import { pipe } from 'fp-ts/lib/pipeable';
 import * as RE from 'fp-ts-rxjs/lib/ObservableEither';
 import * as TE from 'fp-ts/lib/TaskEither';
+import { identity } from 'fp-ts/lib/function';
+
 import * as http from '../lib/http';
 import * as err from '../lib/http-err';
 
@@ -10,7 +12,7 @@ import * as localization from '../localization';
 import * as config from './config';
 import * as authApi from './auth';
 
-type User = t.TypeOf<typeof userType>;
+type ApiUser = t.TypeOf<typeof userType>;
 const userType = t.strict({
   display_name: t.string,
   role: t.union([t.literal('mentee'), t.literal('mentor'), t.literal('admin')]),
@@ -29,17 +31,33 @@ const accountType = t.intersection([
   }),
 ]);
 
-const createdUserAccount = t.strict({
+const userAccountType = t.strict({
   account: accountType,
   user: userType,
 });
-type CreatedUserAccount = t.TypeOf<typeof createdUserAccount>;
+type ApiUserAccount = t.TypeOf<typeof userAccountType>;
+
+export type UserAccount = {
+  role: ApiUser['role'];
+  userName: string;
+  displayName: string;
+  email?: string;
+};
+export const toUserAccount: (a: ApiUserAccount) => UserAccount = ({
+  user: { display_name, role },
+  account: { login_name, email },
+}) => ({
+  role,
+  userName: login_name,
+  displayName: display_name,
+  email,
+});
 
 function postAccount({
   userName,
   password,
   email,
-}: NewUser): RE.ObservableEither<err.Err, CreatedUserAccount> {
+}: User): RE.ObservableEither<err.Err, ApiUserAccount> {
   return http.validateResponse(
     http.post(`${config.baseUrl}/accounts`, {
       password,
@@ -49,15 +67,15 @@ function postAccount({
         email,
       },
     }),
-    createdUserAccount,
-    a => a,
+    userAccountType,
+    identity,
   );
 }
 
 function putUser(
   token: authApi.AccessToken,
-  user: User,
-): RE.ObservableEither<err.Err, User> {
+  user: ApiUser,
+): RE.ObservableEither<err.Err, ApiUser> {
   return http.validateResponse(
     http.put(`${config.baseUrl}/users`, user, {
       headers: authApi.authHeader(token),
@@ -67,13 +85,13 @@ function putUser(
   );
 }
 
-export type NewUser = authApi.Credentials & {
+export type User = authApi.Credentials & {
   displayName: string;
   email: string;
 };
 
 export function createUser(
-  user: NewUser,
+  user: User,
 ): RE.ObservableEither<err.Err, authApi.AccessToken> {
   const { userName, password } = user;
   return pipe(
@@ -84,7 +102,7 @@ export function createUser(
         authApi.login({ userName, password }),
         RE.map(
           token =>
-            [createdUser, token] as [CreatedUserAccount, authApi.AccessToken],
+            [createdUser, token] as [ApiUserAccount, authApi.AccessToken],
         ),
       ),
     ),
@@ -132,3 +150,12 @@ export function checkCredentials({
     ),
   );
 }
+
+export const getMyUser = (token: authApi.AccessToken) =>
+  http.validateResponse(
+    http.get(`${config.baseUrl}/myuser`, {
+      headers: authApi.authHeader(token),
+    }),
+    userAccountType,
+    toUserAccount,
+  );
