@@ -39,14 +39,23 @@ export const messages: { [key in MessageId]: string } = {
   'main.mentorCardExpanded.button': 'Chat',
   'main.mentorList.title': 'Mentors',
 
-  'main.settings.account.changePasswordButton': 'Change password',
-  'main.settings.account.currentPassword': 'Current password',
-  'main.settings.account.newPassword': 'New password',
-  'main.settings.account.newPasswordRepeat': 'Repeat new password',
+  'main.settings.account.email.change': 'Change email',
+  'main.settings.account.email.fail': 'Changing email failed!',
+  'main.settings.account.email.fieldTitle': 'Email',
+  'main.settings.account.email.missing': 'no email',
+  'main.settings.account.email.success': 'Changing email succeeded!',
+  'main.settings.account.email.title': 'Email',
+
   'main.settings.account.nickName': 'Nickname (public)',
-  'main.settings.account.password': 'Password',
+
+  'main.settings.account.password.button': 'Change password',
+  'main.settings.account.password.current': 'Current password',
   'main.settings.account.password.failure': 'Password change failed',
+  'main.settings.account.password.new': 'New Password',
+  'main.settings.account.password.repeat': 'Repeat new password',
   'main.settings.account.password.success': 'Password change succeeded',
+  'main.settings.account.password.title': 'Password',
+
   'main.settings.account.title': 'Account settings',
   'main.settings.account.userName': 'username (private)',
   'main.settings.other.button.deleteAccount': 'Delete account',

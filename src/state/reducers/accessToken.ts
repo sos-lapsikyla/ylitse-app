@@ -38,3 +38,8 @@ export const reducer: automaton.Reducer<State, actions.Action> = (
   }
   return state;
 };
+
+export const getToken = flow(
+  ({ accessToken }: AppState) => accessToken,
+  O.map(({ currentToken }) => currentToken),
+);

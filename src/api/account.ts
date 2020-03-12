@@ -22,6 +22,11 @@ const userType = t.strict({
 
 const accountType = t.intersection([
   t.strict({
+    role: t.union([
+      t.literal('mentee'),
+      t.literal('mentor'),
+      t.literal('admin'),
+    ]),
     login_name: t.string,
     id: t.string,
   }),
@@ -30,6 +35,7 @@ const accountType = t.intersection([
     email: t.string,
   }),
 ]);
+type ApiAccount = t.TypeOf<typeof accountType>;
 
 const userAccountType = t.strict({
   account: accountType,
@@ -72,6 +78,37 @@ function postAccount({
   );
 }
 
+export type Account = {
+  role: 'mentee' | 'admin' | 'mentor';
+  userName: string;
+  email?: string;
+};
+export const putAccount: (
+  token: authApi.AccessToken,
+  account: Account,
+) => RE.ObservableEither<err.Err, Account> = (token, account) => {
+  return http.validateResponse(
+    http.put(
+      `${config.baseUrl}/accounts/${token.accountId}`,
+      {
+        id: token.accountId,
+        role: account.role,
+        login_name: account.userName,
+        email: account.email,
+      },
+      {
+        headers: authApi.authHeader(token),
+      },
+    ),
+    accountType,
+    (apiAccount: ApiAccount) => ({
+      role: apiAccount.role,
+      userName: apiAccount.login_name,
+      email: apiAccount.email,
+    }),
+  );
+};
+
 function putUser(
   token: authApi.AccessToken,
   user: ApiUser,
@@ -81,7 +118,7 @@ function putUser(
       headers: authApi.authHeader(token),
     }),
     userType,
-    x => x,
+    identity,
   );
 }
 

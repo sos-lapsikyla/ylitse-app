@@ -2,10 +2,12 @@ import React from 'react';
 import RN from 'react-native';
 import * as redux from 'redux';
 import { useDispatch, useSelector } from 'react-redux';
+import * as O from 'fp-ts/lib/Option';
 import * as RD from '@devexperts/remote-data-ts';
 import { pipe } from 'fp-ts/lib/pipeable';
 
-import * as state from '../../../../state/reducers/changePassword';
+import * as changeEmailState from '../../../../state/reducers/changeEmail';
+import * as accountState from '../../../../state/reducers/userAccount';
 import * as actions from '../../../../state/actions';
 
 import NamedInputField from '../../../components/NamedInputField';
@@ -23,35 +25,31 @@ type Props = {
 };
 
 export default ({ onClose }: Props) => {
-  const [currentPassword, setCurrentPassword] = React.useState('');
-  const [newPassword, setNewPassword] = React.useState('');
-  const [repeatedNewPassword, setRepeatedNewPassword] = React.useState('');
+  const storedEmail = pipe(
+    RD.toOption(useSelector(accountState.getAccount)),
+    O.map(({ email }) => email),
+    O.toUndefined,
+  );
 
-  const isOkay =
-    currentPassword.length > 0 &&
-    newPassword.length > 0 &&
-    repeatedNewPassword.length > 0 &&
-    newPassword === repeatedNewPassword;
+  const [email, setEmail] = React.useState(storedEmail || '');
 
   const dispatch = useDispatch<redux.Dispatch<actions.Action>>();
   const onButtonPress = () => {
-    dispatch(state.changePassword({ currentPassword, newPassword }));
+    dispatch(changeEmailState.changeEmail({ email }));
   };
 
-  const requestState = useSelector(state.select);
+  const requestState = useSelector(changeEmailState.select);
 
   React.useEffect(() => {
     if (RD.isSuccess(requestState)) {
-      setCurrentPassword('');
-      setNewPassword('');
-      setRepeatedNewPassword('');
-      const timeout = setTimeout(onClose, state.coolDownDuration);
+      setEmail(requestState.value.email || '');
+      const timeout = setTimeout(onClose, changeEmailState.coolDownDuration);
       return () => clearTimeout(timeout);
     }
   }, [requestState]);
   return (
     <RN.View style={styles.container}>
-      <Message style={styles.title} id="main.settings.account.password.title" />
+      <Message style={styles.title} id="main.settings.account.email.title" />
       {pipe(
         requestState,
         RD.fold(
@@ -59,24 +57,9 @@ export default ({ onClose }: Props) => {
             <>
               <NamedInputField
                 style={styles.field}
-                name="main.settings.account.password.current"
-                isPasswordInput={true}
-                value={currentPassword}
-                onChangeText={setCurrentPassword}
-              />
-              <NamedInputField
-                style={styles.field}
-                name="main.settings.account.password.new"
-                isPasswordInput={true}
-                value={newPassword}
-                onChangeText={setNewPassword}
-              />
-              <NamedInputField
-                style={styles.field}
-                name="main.settings.account.password.repeat"
-                isPasswordInput={true}
-                value={repeatedNewPassword}
-                onChangeText={setRepeatedNewPassword}
+                name="main.settings.account.email.title"
+                value={email}
+                onChangeText={setEmail}
               />
               <RN.View style={styles.buttonContainer}>
                 <Button
@@ -92,7 +75,6 @@ export default ({ onClose }: Props) => {
                   onPress={onButtonPress}
                   messageId="meta.save"
                   gradient={gradients.pillBlue}
-                  disabled={!isOkay}
                 />
               </RN.View>
             </>
@@ -102,16 +84,16 @@ export default ({ onClose }: Props) => {
             <AlertBox
               imageStyle={styles.failBox}
               imageSource={require('../../../images/alert-circle.svg')}
-              duration={state.coolDownDuration}
-              messageId="main.settings.account.password.failure"
+              duration={changeEmailState.coolDownDuration}
+              messageId="main.settings.account.email.fail"
             />
           ),
           () => (
             <AlertBox
               imageStyle={styles.successBox}
               imageSource={require('../../../images/checkmark-circle-outline.svg')}
-              duration={state.coolDownDuration}
-              messageId="main.settings.account.password.success"
+              duration={changeEmailState.coolDownDuration}
+              messageId="main.settings.account.email.success"
             />
           ),
         ),

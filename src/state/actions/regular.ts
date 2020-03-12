@@ -1,6 +1,8 @@
 import * as E from 'fp-ts/lib/Either';
 import * as RE from 'fp-ts-rxjs/lib/ObservableEither';
 
+import * as err from '../../lib/http-err';
+
 import * as accountApi from '../../api/account';
 import * as mentorApi from '../../api/mentors';
 import * as authApi from '../../api/auth';
@@ -24,8 +26,12 @@ type RegularActions = {
 
   'changePassword/start': authApi.NewPassword;
   'changePassword/completed': Result<ReturnType<typeof authApi.changePassword>>;
-
   'changePassword/reset': undefined;
+
+  'changeEmail/start': { email?: string };
+  'changeEmail/completed': E.Either<err.Err, { email?: string }>;
+  'changeEmail/reset': undefined;
+
   'token/Acquired': authApi.AccessToken;
   'token/refresh/start': undefined;
   'token/refresh/end': Result<typeof authApi.refreshAccessToken>;
