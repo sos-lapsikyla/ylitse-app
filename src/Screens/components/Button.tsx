@@ -60,10 +60,10 @@ const Button = ({
   );
 };
 
-const borderRadius = 16;
+const borderRadius = 18;
 const styles = RN.StyleSheet.create({
   container: {
-    minHeight: 48,
+    minHeight: 40,
     alignSelf: 'stretch',
     borderRadius,
   },
@@ -78,8 +78,8 @@ const styles = RN.StyleSheet.create({
     height: 48,
   },
   gradient: {
-    minHeight: 48,
-    paddingVertical: 8,
+    minHeight: 40,
+    paddingVertical: 4,
     paddingHorizontal: 16,
     borderRadius,
     flexDirection: 'row',

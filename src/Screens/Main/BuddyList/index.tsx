@@ -68,7 +68,7 @@ const styles = RN.StyleSheet.create({
   screenTitleText: {
     marginTop: 16,
     marginBottom: 16,
-    ...fonts.specialTitle,
+    ...fonts.titleLarge,
     ...textShadow,
     textAlign: 'center',
     color: colors.white,

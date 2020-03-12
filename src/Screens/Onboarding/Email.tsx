@@ -16,7 +16,7 @@ import { PrivacyPolicyRoute } from './PrivacyPolicy';
 
 export type EmailRoute = {
   'Onboarding/Email': {
-    user: Omit<accountApi.NewUser, 'email'>;
+    user: Omit<accountApi.User, 'email'>;
   };
 };
 

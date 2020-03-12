@@ -51,7 +51,7 @@ const styles = RN.StyleSheet.create({
   title: {
     marginTop: 24,
     marginBottom: 8,
-    ...fonts.specialTitle,
+    ...fonts.titleLarge,
     ...textShadow,
     color: colors.white,
   },

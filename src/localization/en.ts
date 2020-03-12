@@ -40,8 +40,13 @@ export const messages: { [key in MessageId]: string } = {
   'main.mentorList.title': 'Mentors',
 
   'main.settings.account.changePasswordButton': 'Change password',
+  'main.settings.account.currentPassword': 'Current password',
+  'main.settings.account.newPassword': 'New password',
+  'main.settings.account.newPasswordRepeat': 'Repeat new password',
   'main.settings.account.nickName': 'Nickname (public)',
   'main.settings.account.password': 'Password',
+  'main.settings.account.password.failure': 'Password change failed',
+  'main.settings.account.password.success': 'Password change succeeded',
   'main.settings.account.title': 'Account settings',
   'main.settings.account.userName': 'username (private)',
   'main.settings.other.button.deleteAccount': 'Delete account',
@@ -57,7 +62,9 @@ export const messages: { [key in MessageId]: string } = {
 
   'meta.back': 'Back',
   'meta.blank': ' ',
+  'meta.cancel': 'Cancel',
   'meta.error': 'Virhe, yritä uudelleen',
+  'meta.save': 'Save',
 
   'onboarding.displayName.bodyText':
     "*if you want to stay anonymous to our mentors, please enter a loginName that can't identify you.",
