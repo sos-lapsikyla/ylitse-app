@@ -1,6 +1,7 @@
 import * as automaton from 'redux-automaton';
 import * as RD from '@devexperts/remote-data-ts';
 import * as R from 'fp-ts-rxjs/lib/Observable';
+import * as E from 'fp-ts/lib/Either';
 import { flow } from 'fp-ts/lib/function';
 import { pipe } from 'fp-ts/lib/pipeable';
 
@@ -39,12 +40,12 @@ export const reducer: automaton.Reducer<
       return RD.fromEither(action.payload);
     case 'changeEmail/completed':
       return pipe(
-        state,
-        RD.map(account => ({ email }: { email?: string }) => ({
-          ...account,
-          email,
-        })),
-        RD.ap(RD.fromEither(action.payload)),
+        action.payload,
+        E.fold(
+          () => state,
+          ({ email }) =>
+            RD.remoteData.map(state, account => ({ ...account, email })),
+        ),
       );
     default:
       return state;
