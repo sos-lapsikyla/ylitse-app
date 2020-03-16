@@ -11,6 +11,7 @@ type Props = {
   duration: number;
   imageSource: RN.ImageSourcePropType;
   style?: RN.StyleProp<RN.ViewStyle>;
+  imageStyle?: RN.StyleProp<RN.ImageStyle>;
   messageId: localization.MessageId;
 };
 
@@ -40,7 +41,10 @@ export default (props: Props) => {
   React.useEffect(fade, []);
   return (
     <RN.Animated.View style={[styles.container, props.style, { opacity }]}>
-      <RN.Image style={styles.image} source={props.imageSource} />
+      <RN.Image
+        style={[styles.image, props.imageStyle]}
+        source={props.imageSource}
+      />
       <Message id={props.messageId} style={styles.text} />
     </RN.Animated.View>
   );
@@ -60,9 +64,9 @@ const styles = RN.StyleSheet.create({
     textAlign: 'center',
   },
   image: {
-    width: 80,
-    height: 80,
+    width: 160,
+    height: 160,
     tintColor: colors.deepBlue,
-    marginBottom: 24,
+    marginBottom: 40,
   },
 });

@@ -12,6 +12,7 @@ import * as mentors from './mentors';
 import * as markSeen from './markSeen';
 import * as userAccount from './userAccount';
 import * as changePassword from './changePassword';
+import * as changeEmail from './changeEmail';
 
 import * as actions from '../actions';
 
@@ -26,6 +27,7 @@ export const rootReducer: automaton.Reducer<
   createUser: createUser.reducer,
   userAccount: userAccount.reducer,
   changePassword: changePassword.reducer,
+  changeEmail: changeEmail.reducer,
 
   mentors: mentors.reducer,
   buddies: buddies.reducer,
@@ -40,6 +42,7 @@ export const initialState: AppState = {
   createUser: createUser.initialState,
   userAccount: userAccount.initialState,
   changePassword: changePassword.initialState,
+  changeEmail: changeEmail.initialState,
 
   mentors: mentors.initialState,
   buddies: buddies.initialState,

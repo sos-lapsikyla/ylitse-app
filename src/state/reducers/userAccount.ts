@@ -2,6 +2,7 @@ import * as automaton from 'redux-automaton';
 import * as RD from '@devexperts/remote-data-ts';
 import * as R from 'fp-ts-rxjs/lib/Observable';
 import { flow } from 'fp-ts/lib/function';
+import { pipe } from 'fp-ts/lib/pipeable';
 
 import * as accountApi from '../../api/account';
 import * as err from '../../lib/http-err';
@@ -36,9 +37,18 @@ export const reducer: automaton.Reducer<
       );
     case 'userAccount/get/completed':
       return RD.fromEither(action.payload);
+    case 'changeEmail/completed':
+      return pipe(
+        state,
+        RD.map(account => ({ email }: { email?: string }) => ({
+          ...account,
+          email,
+        })),
+        RD.ap(RD.fromEither(action.payload)),
+      );
     default:
       return state;
   }
 };
 
-export const select = ({ userAccount }: AppState) => userAccount;
+export const getAccount = ({ userAccount }: AppState) => userAccount;

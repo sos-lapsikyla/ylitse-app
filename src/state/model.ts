@@ -21,6 +21,7 @@ export type AppState = {
   login: RD.RemoteData<err.Err, authApi.AccessToken>;
   createUser: RD.RemoteData<err.Err, authApi.AccessToken>;
   changePassword: RD.RemoteData<err.Err, undefined>;
+  changeEmail: RD.RemoteData<err.Err, { email?: string }>;
   userAccount: RD.RemoteData<err.Err, accountApi.UserAccount>;
 
   mentors: RD.RemoteData<err.Err, Record<string, mentorsApi.Mentor>>;
