@@ -4,6 +4,7 @@ import * as RE from 'fp-ts-rxjs/lib/ObservableEither';
 import * as err from '../../lib/http-err';
 
 import * as accountApi from '../../api/account';
+import * as notificationsApi from '../../api/notifications';
 import * as mentorApi from '../../api/mentors';
 import * as authApi from '../../api/auth';
 import * as buddyApi from '../../api/buddies';
@@ -46,16 +47,25 @@ type RegularActions = {
     buddyId: string;
     response: Result<ReturnType<typeof messageApi.sendMessage>>;
   };
+
+  'notifications/requestPermissions/init': undefined;
+  'notifications/requestPermissions/completed': RE2E<
+    typeof notificationsApi.requestPermissions
+  >;
+  'notifications/sendDeviceToken/init': undefined;
+  'notifications/sendDeviceToken/completed': Result<
+    typeof notificationsApi.sendDeviceToken
+  >;
 };
 
-// TODO: handle curried case, Exists under the name "FinalReturn" in
-// git history somewhere, use git log -S
-type Result<F extends (...args: any[]) => any> = ReturnType<
-  F
-> extends RE.ObservableEither<infer E, infer A>
+// TODO name plz.
+type RE2E<T> = T extends RE.ObservableEither<infer E, infer A>
   ? E.Either<E, A>
   : never;
 
+// TODO: handle curried case, Exists under the name "FinalReturn" in
+// git history somewhere, use git log -S
+type Result<F extends (...args: any[]) => any> = RE2E<ReturnType<F>>;
 // https://github.com/microsoft/TypeScript/issues/23182
 //type Payload<T> = [T] extends [never] ? {} : { payload: T };
 export type ActionType = keyof RegularActions;
