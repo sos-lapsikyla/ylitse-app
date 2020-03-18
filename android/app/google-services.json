@@ -25,15 +25,20 @@
         }
       ],
       "services": {
-        "analytics_service": {
-          "status": 1
-        },
         "appinvite_service": {
-          "status": 1,
-          "other_platform_oauth_client": []
-        },
-        "ads_service": {
-          "status": 2
+          "other_platform_oauth_client": [
+            {
+              "client_id": "145956800084-tig6k0vt9ptqqaldmts8rgp72caqpj0o.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "145956800084-5k08hadclt2n9ofknr8p2m0bc9jnan2i.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "fi.Ylitse.MentorApp"
+              }
+            }
+          ]
         }
       }
     }

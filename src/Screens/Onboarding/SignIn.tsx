@@ -43,9 +43,9 @@ const SignIn = (props: Props) => {
   const onLogin = (credentials: authApi.Credentials) => {
     props.login(credentials);
   };
-  React.useEffect(() => {
-    props.login({ userName: 'test', password: 'test' });
-  }, []);
+  // React.useEffect(() => {
+  //   props.login({ userName: 'test', password: 'test' });
+  // }, []);
   return (
     <OnboardingBackground>
       <LoginCard
