@@ -1,8 +1,9 @@
 import * as t from 'io-ts';
 
-export type Err = UnkownError | BadStatus | BadModel;
+export type Err = UnkownError | BadStatus | BadModel | UnkownReason;
 export type UnkownError = {
   readonly type: 'UnkownError';
+  reason?: string;
 };
 export type BadStatus = {
   readonly type: 'BadStatus';
@@ -12,6 +13,14 @@ export type BadModel = {
   readonly type: 'BadModel';
   readonly errors: t.Errors;
 };
+export type UnkownReason = {
+  readonly type: 'ReasonError';
+  readonly reason: unknown;
+};
+
+export function reasonError(reason: unknown): Err {
+  return { type: 'ReasonError', reason } as const;
+}
 
 export function unknownError(): Err {
   return { type: 'UnkownError' } as const;
