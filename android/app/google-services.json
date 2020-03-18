@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "145956800084",
+    "firebase_url": "https://ylitse-notifications.firebaseio.com",
+    "project_id": "ylitse-notifications",
+    "storage_bucket": "ylitse-notifications.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:145956800084:android:b7fb6ae051b367ca",
+        "android_client_info": {
+          "package_name": "com.ylitse"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "145956800084-tig6k0vt9ptqqaldmts8rgp72caqpj0o.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAEQnluaTUpMftL40wzO1-4ksygin4xP-c"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
