@@ -29,8 +29,8 @@ export const reducer: automaton.Reducer<State, actions.Action> = (
             RD.pending,
             withToken(
               flow(
-                s => rxjs.timer(0, 1000).pipe(rx.map(_ => s)),
-                rx.switchMap(s => messageApi.fetchMessages(s)),
+                token => rxjs.timer(0, 1000).pipe(rx.map(_ => token)),
+                rx.switchMap(messageApi.fetchMessages),
                 R.map(actions.make('messages/get/completed')),
               ),
             ),

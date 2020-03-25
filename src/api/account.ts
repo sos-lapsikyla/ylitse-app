@@ -2,7 +2,7 @@ import * as t from 'io-ts';
 import { pipe } from 'fp-ts/lib/pipeable';
 import * as RE from 'fp-ts-rxjs/lib/ObservableEither';
 import * as TE from 'fp-ts/lib/TaskEither';
-import { identity } from 'fp-ts/lib/function';
+import { identity, tuple } from 'fp-ts/lib/function';
 
 import * as http from '../lib/http';
 import * as err from '../lib/http-err';
@@ -137,10 +137,7 @@ export function createUser(
     RE.chain(createdUser =>
       pipe(
         authApi.login({ userName, password }),
-        RE.map(
-          token =>
-            [createdUser, token] as [ApiUserAccount, authApi.AccessToken],
-        ),
+        RE.map(token => tuple(createdUser, token)),
       ),
     ),
     RE.chain(([createdUser, token]) =>
