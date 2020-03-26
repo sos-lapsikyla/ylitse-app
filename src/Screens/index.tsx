@@ -2,6 +2,7 @@ import React from 'react';
 import { createAppContainer } from 'react-navigation';
 import * as reactNavigationStack from 'react-navigation-stack';
 
+import Splash, { SplashRoute } from './Splash';
 import MentorList, { MentorListRoute } from './Onboarding/MentorList';
 import SignUp, { SignUpRoute } from './Onboarding/SignUp';
 import DisplayName, { DisplayNameRoute } from './Onboarding/DisplayName';
@@ -14,7 +15,8 @@ import MentorCardExpanded, {
 } from './Main/MentorCardExpanded';
 import Chat, { ChatRoute } from './Main/Chat';
 
-type RouteName = keyof (MentorListRoute &
+type RouteName = keyof (SplashRoute &
+  MentorListRoute &
   SignUpRoute &
   DisplayNameRoute &
   EmailRoute &
@@ -24,6 +26,7 @@ type RouteName = keyof (MentorListRoute &
   MentorCardExpandedRoute &
   ChatRoute);
 type Screen =
+  | typeof Splash
   | typeof MentorList
   | typeof SignUp
   | typeof DisplayName
@@ -38,6 +41,9 @@ export type Route = keyof typeof routes;
 const routes: {
   [name in RouteName]: { screen: Screen };
 } = {
+  Splash: {
+    screen: Splash,
+  },
   'Onboarding/MentorList': {
     screen: MentorList,
   },
@@ -67,7 +73,7 @@ const routes: {
   },
 };
 
-const initialRouteName: RouteName = 'Onboarding/SignIn';
+const initialRouteName: RouteName = 'Splash';
 const config = {
   initialRouteName,
   headerMode: 'none' as const,
