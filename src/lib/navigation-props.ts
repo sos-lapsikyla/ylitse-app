@@ -20,6 +20,14 @@ interface NavigationScreenProp<
     routeName: N,
     params: NextRoute[N],
   ): boolean;
+  replace<N extends keyof NextRoute>(options: {
+    routeName: N;
+    params: NextRoute[N];
+  }): boolean;
+  replace<N extends keyof NextRoute>(
+    routeName: N,
+    params: NextRoute[N],
+  ): boolean;
   getParam<N extends keyof MyRoute, K extends keyof MyRoute[N]>(
     k: K,
   ): MyRoute[N][K];
