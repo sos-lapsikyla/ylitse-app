@@ -27,7 +27,6 @@ export type AccessToken = {
   userId: string;
   accessToken: string;
   refreshToken: string;
-  fetchTime: number;
 };
 
 export const invalidToken: AccessToken = {
@@ -35,7 +34,6 @@ export const invalidToken: AccessToken = {
   userId: '0',
   accessToken: '0',
   refreshToken: '0',
-  fetchTime: 0,
 };
 
 function toAccessToken({
@@ -47,7 +45,6 @@ function toAccessToken({
     userId: user_id,
     accessToken: tokens.access_token,
     refreshToken: tokens.refresh_token,
-    fetchTime: Date.now(),
   };
 }
 
