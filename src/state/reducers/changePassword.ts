@@ -6,7 +6,6 @@ import { flow } from 'fp-ts/lib/function';
 import { pipe } from 'fp-ts/lib/pipeable';
 
 import * as authApi from '../../api/auth';
-import * as err from '../../lib/http-err';
 
 import * as actions from '../actions';
 
@@ -19,7 +18,7 @@ export const initialState = remoteData.initial;
 export const coolDownDuration = 5000;
 
 export const reducer: automaton.Reducer<
-  remoteData.RemoteData<err.Err, true>,
+  remoteData.RemoteData<string, true>,
   actions.Action
 > = (state = initialState, action) => {
   switch (action.type) {

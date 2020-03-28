@@ -8,7 +8,6 @@ import * as RD from '@devexperts/remote-data-ts';
 import { pipe } from 'fp-ts/lib/pipeable';
 import { flow, constant } from 'fp-ts/lib/function';
 
-import * as err from '../lib/http-err';
 import * as mentorsApi from '../api/mentors';
 
 import * as messageApi from '../api/messages';
@@ -21,8 +20,8 @@ import * as localization from '../localization';
 import { AppState } from './model';
 
 export function getMentors(
-  mentors: RD.RemoteData<err.Err, Record<string, mentorsApi.Mentor>>,
-): RD.RemoteData<err.Err, mentorApi.Mentor[]> {
+  mentors: RD.RemoteData<string, Record<string, mentorsApi.Mentor>>,
+): RD.RemoteData<string, mentorApi.Mentor[]> {
   return RD.remoteData.map(mentors, Object.values);
 }
 
@@ -90,7 +89,7 @@ const messageList = (messageState: AppState['messages'], buddyId: string) => {
     record.lookup(buddyId, r),
   );
   return getFoldableComposition(RD.remoteData, O.option).reduce<
-    err.Err,
+    string,
     Record<string, messageApi.Message>,
     messageApi.Message[]
   >(messagesById, [], (_, messages) =>
@@ -133,7 +132,7 @@ export type Buddy = buddyApi.Buddy & { hasNewMessages: boolean };
 export function getChatList(
   buddies: AppState['buddies'],
   messageState: AppState['messages'],
-): RD.RemoteData<err.Err, Buddy[]> {
+): RD.RemoteData<string, Buddy[]> {
   return pipe(
     buddies,
     RD.map(

@@ -8,13 +8,12 @@ import { pipe } from 'fp-ts/lib/pipeable';
 import { constant, flow } from 'fp-ts/lib/function';
 
 import * as messageApi from '../../api/messages';
-import * as err from '../../lib/http-err';
 
 import * as actions from '../actions';
 import * as model from '../model';
 import { withToken } from './accessToken';
 
-type Request = RD.RemoteData<err.Err, undefined>;
+type Request = RD.RemoteData<string, undefined>;
 
 export type State = model.AppState['sendMessage'];
 export const reducer = (state: State, action: actions.Action) => {

@@ -1,7 +1,6 @@
 import * as RE from 'fp-ts-rxjs/lib/ObservableEither';
 import * as t from 'io-ts';
 
-import * as err from '../lib/http-err';
 import * as http from '../lib/http';
 
 import * as config from './config';
@@ -56,7 +55,7 @@ export type Credentials = {
 export function login({
   userName,
   password,
-}: Credentials): RE.ObservableEither<err.Err, AccessToken> {
+}: Credentials): RE.ObservableEither<string, AccessToken> {
   return http.validateResponse(
     http.post(`${config.baseUrl}/login`, {
       login_name: userName,
@@ -69,7 +68,7 @@ export function login({
 
 export function refreshAccessToken(
   currentToken: AccessToken,
-): RE.ObservableEither<err.Err, AccessToken> {
+): RE.ObservableEither<string, AccessToken> {
   return http.validateResponse(
     http.post(`${config.baseUrl}/refresh`, {
       refresh_token: currentToken.refreshToken,

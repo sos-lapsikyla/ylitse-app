@@ -1,8 +1,6 @@
 import * as RD from '@devexperts/remote-data-ts';
 import * as O from 'fp-ts/lib/Option';
 
-import * as err from '../lib/http-err';
-
 import * as authApi from '../api/auth';
 import * as accountApi from '../api/account';
 import * as buddyApi from '../api/buddies';
@@ -18,20 +16,20 @@ export type AppState = {
       | { type: 'NotAsked' }
       | { type: 'Loading'; deferred: actions.Action[] };
   }>;
-  login: RD.RemoteData<err.Err, authApi.AccessToken>;
-  createUser: RD.RemoteData<err.Err, authApi.AccessToken>;
-  changePassword: RD.RemoteData<err.Err, undefined>;
-  changeEmail: RD.RemoteData<err.Err, { email?: string }>;
-  userAccount: RD.RemoteData<err.Err, accountApi.UserAccount>;
+  login: RD.RemoteData<string, authApi.AccessToken>;
+  createUser: RD.RemoteData<string, authApi.AccessToken>;
+  changePassword: RD.RemoteData<string, undefined>;
+  changeEmail: RD.RemoteData<string, { email?: string }>;
+  userAccount: RD.RemoteData<string, accountApi.UserAccount>;
 
-  mentors: RD.RemoteData<err.Err, Record<string, mentorsApi.Mentor>>;
-  buddies: RD.RemoteData<err.Err, Record<string, buddyApi.Buddy>>;
-  messages: RD.RemoteData<err.Err, messageApi.Threads>;
-  sendMessage: Record<string, RD.RemoteData<err.Err, undefined>>;
+  mentors: RD.RemoteData<string, Record<string, mentorsApi.Mentor>>;
+  buddies: RD.RemoteData<string, Record<string, buddyApi.Buddy>>;
+  messages: RD.RemoteData<string, messageApi.Threads>;
+  sendMessage: Record<string, RD.RemoteData<string, undefined>>;
   markMessageSeen: Record<string, 'Requested'>;
 
   notifications: {
-    requestPermissions: RD.RemoteData<err.Err, boolean>;
-    sendDeviceToken: RD.RemoteData<err.Err, undefined>;
+    requestPermissions: RD.RemoteData<string, boolean>;
+    sendDeviceToken: RD.RemoteData<string, undefined>;
   };
 };

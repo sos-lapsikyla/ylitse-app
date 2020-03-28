@@ -2,7 +2,6 @@ import * as t from 'io-ts';
 import * as RE from 'fp-ts-rxjs/lib/ObservableEither';
 
 import * as http from '../lib/http';
-import * as err from '../lib/http-err';
 
 import * as config from './config';
 
@@ -22,7 +21,7 @@ const toBuddy = ({ id, display_name }: ApiBuddy) => ({
 
 export function fetchBuddies(
   accessToken: authApi.AccessToken,
-): RE.ObservableEither<err.Err, Record<string, Buddy>> {
+): RE.ObservableEither<string, Record<string, Buddy>> {
   return http.validateResponse(
     http.get(`${config.baseUrl}/users/${accessToken.userId}/contacts`, {
       headers: authApi.authHeader(accessToken),

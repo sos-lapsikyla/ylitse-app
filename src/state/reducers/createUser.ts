@@ -7,7 +7,6 @@ import { constant } from 'fp-ts/lib/function';
 
 import * as accountApi from '../../api/account';
 import * as authApi from '../../api/auth';
-import * as err from '../../lib/http-err';
 
 import { cmd } from '.././actions/epic';
 import * as actions from '../actions';
@@ -35,7 +34,7 @@ export const reducer = (state: State, action: actions.Action) => {
       return pipe(
         action.payload,
         E.fold<
-          err.Err,
+          string,
           authApi.AccessToken,
           automaton.Loop<State, actions.Action> | State
         >(
