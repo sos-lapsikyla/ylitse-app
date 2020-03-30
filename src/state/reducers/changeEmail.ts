@@ -10,7 +10,6 @@ import { pipe } from 'fp-ts/lib/pipeable';
 
 import * as authApi from '../../api/auth';
 import * as accountApi from '../../api/account';
-import * as err from '../../lib/http-err';
 
 import * as actions from '../actions';
 
@@ -42,7 +41,7 @@ const _changeEmail = (newEmailAddress?: string) => (appState: AppState) => {
     account,
     O.map(account_ => (token: authApi.AccessToken) => tuple(token, account_)),
     O.ap(getToken(appState)),
-    E.fromOption(err.unknownError),
+    E.fromOption(() => 'Failure on _changeEmail.'),
   );
 
   return pipe(

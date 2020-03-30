@@ -6,7 +6,6 @@ import { flow } from 'fp-ts/lib/function';
 import { pipe } from 'fp-ts/lib/pipeable';
 
 import * as accountApi from '../../api/account';
-import * as err from '../../lib/http-err';
 
 import * as actions from '../actions';
 
@@ -19,7 +18,7 @@ export const fetchUserAccount = actions.make('userAccount/get/start')(
 );
 
 export const reducer: automaton.Reducer<
-  RD.RemoteData<err.Err, accountApi.UserAccount>,
+  RD.RemoteData<string, accountApi.UserAccount>,
   actions.Action
 > = (state = initialState, action) => {
   switch (action.type) {

@@ -8,16 +8,15 @@ import * as RE from 'fp-ts-rxjs/lib/ObservableEither';
 import * as firebase from 'react-native-firebase';
 
 import * as http from '../lib/http';
-import * as err from '../lib/http-err';
 
 import * as config from './config';
 import * as authApi from './auth';
 
 export const fromPromise: <A>(
   a: Lazy<Promise<A>>,
-) => RE.ObservableEither<err.Err, A> = a =>
+) => RE.ObservableEither<string, A> = a =>
   pipe(
-    TE.tryCatch(a, (reason: unknown) => err.reasonError(reason)),
+    TE.tryCatch(a, () => 'Unknown failure on notifications.'),
     RE.fromTaskEither,
   );
 

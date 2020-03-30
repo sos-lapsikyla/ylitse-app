@@ -5,7 +5,6 @@ import * as TE from 'fp-ts/lib/TaskEither';
 import { identity, tuple } from 'fp-ts/lib/function';
 
 import * as http from '../lib/http';
-import * as err from '../lib/http-err';
 
 import * as localization from '../localization';
 
@@ -63,7 +62,7 @@ function postAccount({
   userName,
   password,
   email,
-}: User): RE.ObservableEither<err.Err, ApiUserAccount> {
+}: User): RE.ObservableEither<string, ApiUserAccount> {
   return http.validateResponse(
     http.post(`${config.baseUrl}/accounts`, {
       password,
@@ -86,7 +85,7 @@ export type Account = {
 export const putAccount: (
   token: authApi.AccessToken,
   account: Account,
-) => RE.ObservableEither<err.Err, Account> = (token, account) => {
+) => RE.ObservableEither<string, Account> = (token, account) => {
   return http.validateResponse(
     http.put(
       `${config.baseUrl}/accounts/${token.accountId}`,
@@ -112,7 +111,7 @@ export const putAccount: (
 function putUser(
   token: authApi.AccessToken,
   user: ApiUser,
-): RE.ObservableEither<err.Err, ApiUser> {
+): RE.ObservableEither<string, ApiUser> {
   return http.validateResponse(
     http.put(`${config.baseUrl}/users`, user, {
       headers: authApi.authHeader(token),
@@ -129,7 +128,7 @@ export type User = authApi.Credentials & {
 
 export function createUser(
   user: User,
-): RE.ObservableEither<err.Err, authApi.AccessToken> {
+): RE.ObservableEither<string, authApi.AccessToken> {
   const { userName, password } = user;
   return pipe(
     user,
@@ -149,7 +148,7 @@ export function createUser(
   );
 }
 
-function isUserNameFree(userName: string): TE.TaskEither<err.Err, boolean> {
+function isUserNameFree(userName: string): TE.TaskEither<string, boolean> {
   return pipe(
     http.head(`${config.baseUrl}/search?login_name=${userName}`),
     RE.map(({ status }) => status === 204),

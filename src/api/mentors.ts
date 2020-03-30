@@ -2,7 +2,6 @@ import * as t from 'io-ts';
 import * as RE from 'fp-ts-rxjs/lib/ObservableEither';
 
 import * as http from '../lib/http';
-import * as err from '../lib/http-err';
 
 import * as config from './config';
 
@@ -38,7 +37,7 @@ const fromMentorList = ({ resources }: t.TypeOf<typeof mentorListType>) =>
   }, {});
 
 export const fetchMentors: () => RE.ObservableEither<
-  err.Err,
+  string,
   Record<string, Mentor>
 > = () =>
   http.validateResponse(

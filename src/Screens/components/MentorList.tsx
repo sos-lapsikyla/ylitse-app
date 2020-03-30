@@ -5,7 +5,6 @@ import * as redux from 'redux';
 import * as ReactRedux from 'react-redux';
 import * as RD from '@devexperts/remote-data-ts';
 
-import * as err from '../../lib/http-err';
 import useLayout from '../../lib/use-layout';
 
 import MentorCard from '../components/MentorCard';
@@ -17,7 +16,7 @@ import * as actions from '../../state/actions';
 import * as selectors from '../../state/selectors';
 
 type StateProps = {
-  mentorsState: RD.RemoteData<err.Err, mentorApi.Mentor[]>;
+  mentorsState: RD.RemoteData<string, mentorApi.Mentor[]>;
 };
 type DispatchProps = {
   fetchMentors: () => void | undefined;

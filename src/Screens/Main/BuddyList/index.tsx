@@ -4,7 +4,6 @@ import * as ReactRedux from 'react-redux';
 import * as RD from '@devexperts/remote-data-ts';
 
 import * as navigationProps from '../../../lib/navigation-props';
-import * as err from '../../../lib/http-err';
 
 import * as state from '../../../state';
 import * as selectors from '../../../state/selectors';
@@ -25,7 +24,7 @@ export type BuddyListRoute = {
 };
 
 type StateProps = {
-  chatList: RD.RemoteData<err.Err, selectors.Buddy[]>;
+  chatList: RD.RemoteData<string, selectors.Buddy[]>;
 };
 type OwnProps = navigationProps.NavigationProps<BuddyListRoute, ChatRoute>;
 type Props = StateProps & OwnProps;

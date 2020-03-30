@@ -5,7 +5,6 @@ import * as RD from '@devexperts/remote-data-ts';
 import { pipe } from 'fp-ts/lib/pipeable';
 
 import * as authApi from '../../api/auth';
-import * as err from '../../lib/http-err';
 
 import { cmd } from '../actions/epic';
 import * as actions from '../actions';
@@ -34,7 +33,7 @@ export const reducer: automaton.Reducer<State, actions.Action> = (
       return pipe(
         action.payload,
         E.fold<
-          err.Err,
+          string,
           authApi.AccessToken,
           automaton.Loop<State, actions.Action> | State
         >(
