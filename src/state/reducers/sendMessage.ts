@@ -5,7 +5,7 @@ import * as record from 'fp-ts/lib/Record';
 import * as E from 'fp-ts/lib/Either';
 import * as O from 'fp-ts/lib/Option';
 import { pipe } from 'fp-ts/lib/pipeable';
-import { constant, flow } from 'fp-ts/lib/function';
+import { constant } from 'fp-ts/lib/function';
 
 import * as messageApi from '../../api/messages';
 
@@ -24,22 +24,24 @@ export const reducer = (state: State, action: actions.Action) => {
         record.lookup(buddyId, state),
         O.fold(constant(false), RD.isPending),
       );
+
+      if (isLoading) {
+        return state;
+      }
+
       const nextState = record.insertAt<string, Request>(
         action.payload.buddyId,
         RD.pending,
       )(state);
-      return isLoading
-        ? state
-        : automaton.loop(
-            nextState,
-            withToken(
-              flow(
-                messageApi.sendMessage(action.payload),
-                R.map(response => ({ response, buddyId })),
-                R.map(actions.make('sendMessage/end')),
-              ),
-            ),
-          );
+      const nextAction = withToken(
+        token =>
+          R.observable.map(
+            messageApi.sendMessage(action.payload)(token),
+            response => ({ response, buddyId }),
+          ),
+        actions.make('sendMessage/end'),
+      );
+      return automaton.loop(nextState, nextAction);
     case 'sendMessage/end':
       return pipe(
         state,

@@ -11,6 +11,11 @@ import * as messageApi from '../../api/messages';
 type RegularActions = {
   nothing: any;
 
+  'storage/readToken/start': undefined;
+  'storage/readToken/end': E.Either<string, authApi.AccessToken>;
+  'storage/writeToken/start': authApi.AccessToken;
+  'storage/writeToken/end': undefined;
+
   'mentors/start': undefined;
   'mentors/end': Result<typeof mentorApi.fetchMentors>;
 
@@ -34,6 +39,17 @@ type RegularActions = {
   'token/Acquired': authApi.AccessToken;
   'token/refresh/start': undefined;
   'token/refresh/end': Result<typeof authApi.refreshAccessToken>;
+
+  'token/doRequest/init': {
+    task: (token: authApi.AccessToken) => any;
+    action: (result: any) => Action;
+  };
+  'token/doRequest/completed': {
+    index: string;
+    result: any;
+  };
+
+  'token/refresh/required': (token: authApi.AccessToken) => Action;
 
   'messages/get/completed': Result<typeof messageApi.fetchMessages>;
   'messages/markSeen': { buddyId: string; messageId: string };

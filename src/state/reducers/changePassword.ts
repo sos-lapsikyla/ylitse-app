@@ -2,7 +2,6 @@ import * as automaton from 'redux-automaton';
 import * as remoteData from '@devexperts/remote-data-ts';
 import * as R from 'fp-ts-rxjs/lib/Observable';
 import * as rx from 'rxjs/operators';
-import { flow } from 'fp-ts/lib/function';
 import { pipe } from 'fp-ts/lib/pipeable';
 
 import * as authApi from '../../api/auth';
@@ -29,10 +28,8 @@ export const reducer: automaton.Reducer<
       return automaton.loop(
         remoteData.pending,
         withToken(
-          flow(
-            authApi.changePassword(action.payload),
-            R.map(actions.make('changePassword/completed')),
-          ),
+          authApi.changePassword(action.payload),
+          actions.make('changePassword/completed'),
         ),
       );
     case 'changePassword/completed':

@@ -47,7 +47,7 @@ const PrivacyPolicy = ({
   createUserState,
 }: Props) => {
   React.useEffect(() => {
-    if (O.isSome(accessToken)) {
+    if (O.isSome(accessToken.currentToken)) {
       navigateMain(navigation);
     }
   }, [accessToken]);

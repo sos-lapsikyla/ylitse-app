@@ -1,9 +1,5 @@
 import * as automaton from 'redux-automaton';
-import * as R from 'fp-ts-rxjs/lib/Observable';
 import * as RD from '@devexperts/remote-data-ts';
-import { flow } from 'fp-ts/lib/function';
-import * as rx from 'rxjs/operators';
-import * as rxjs from 'rxjs';
 
 import * as messageApi from '../../api/messages';
 
@@ -28,11 +24,8 @@ export const reducer: automaton.Reducer<State, actions.Action> = (
         : automaton.loop(
             RD.pending,
             withToken(
-              flow(
-                token => rxjs.timer(0, 1000).pipe(rx.map(_ => token)),
-                rx.switchMap(messageApi.fetchMessages),
-                R.map(actions.make('messages/get/completed')),
-              ),
+              messageApi.fetchMessages,
+              actions.make('messages/get/completed'),
             ),
           );
     case 'messages/get/completed':

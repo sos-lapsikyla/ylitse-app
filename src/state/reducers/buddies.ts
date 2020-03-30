@@ -1,11 +1,9 @@
 import * as automaton from 'redux-automaton';
-import * as R from 'fp-ts-rxjs/lib/Observable';
 import * as RD from '@devexperts/remote-data-ts';
 import * as record from 'fp-ts/lib/Record';
 import * as set from 'fp-ts/lib/Set';
 import * as E from 'fp-ts/lib/Either';
 import * as Eq from 'fp-ts/lib/Eq';
-import { flow } from 'fp-ts/lib/function';
 import { pipe } from 'fp-ts/lib/pipeable';
 
 import * as buddyApi from '../../api/buddies';
@@ -47,10 +45,8 @@ export const reducer: automaton.Reducer<State, actions.Action> = (
               : automaton.loop(
                   RD.pending,
                   withToken(
-                    flow(
-                      buddyApi.fetchBuddies,
-                      R.map(actions.make('buddies/completed')),
-                    ),
+                    buddyApi.fetchBuddies,
+                    actions.make('buddies/completed'),
                   ),
                 );
           },
