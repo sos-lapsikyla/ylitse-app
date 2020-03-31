@@ -33,7 +33,7 @@ type Props = StateProps & DispatchProps & OwnProps;
 
 const SignIn = (props: Props) => {
   React.useEffect(() => {
-    if (option.isSome(props.accessToken)) {
+    if (option.isSome(props.accessToken.currentToken)) {
       navigateMain(props.navigation);
     }
   }, [props.accessToken]);

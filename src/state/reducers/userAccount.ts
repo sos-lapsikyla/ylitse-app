@@ -1,8 +1,6 @@
 import * as automaton from 'redux-automaton';
 import * as RD from '@devexperts/remote-data-ts';
-import * as R from 'fp-ts-rxjs/lib/Observable';
 import * as E from 'fp-ts/lib/Either';
-import { flow } from 'fp-ts/lib/function';
 import { pipe } from 'fp-ts/lib/pipeable';
 
 import * as accountApi from '../../api/account';
@@ -29,10 +27,8 @@ export const reducer: automaton.Reducer<
       return automaton.loop(
         RD.pending,
         withToken(
-          flow(
-            accountApi.getMyUser,
-            R.map(actions.make('userAccount/get/completed')),
-          ),
+          accountApi.getMyUser,
+          actions.make('userAccount/get/completed'),
         ),
       );
     case 'userAccount/get/completed':

@@ -3,7 +3,6 @@ import * as RD from '@devexperts/remote-data-ts';
 import * as R from 'fp-ts-rxjs/lib/Observable';
 import * as E from 'fp-ts/lib/Either';
 import { pipe } from 'fp-ts/lib/pipeable';
-import { flow } from 'fp-ts/lib/function';
 import { fold } from 'fp-ts/lib/boolean';
 
 import * as notificationsApi from '../../api/notifications';
@@ -21,10 +20,8 @@ const sendDeviceTokenInit = actions.make('notifications/sendDeviceToken/init')(
 );
 
 const sendDeviceToken = withToken(
-  flow(
-    notificationsApi.sendDeviceToken,
-    R.map(actions.make('notifications/sendDeviceToken/completed')),
-  ),
+  notificationsApi.sendDeviceToken,
+  actions.make('notifications/sendDeviceToken/completed'),
 );
 
 type RequestPermissionsLoop =

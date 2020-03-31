@@ -25,12 +25,8 @@ export function getMentors(
   return RD.remoteData.map(mentors, Object.values);
 }
 
-export const getAccessToken = (state: AppState) =>
-  pipe(
-    state,
-    ({ accessToken }: AppState) => accessToken,
-    O.map(({ currentToken }) => currentToken),
-  );
+export const getAccessToken = ({ accessToken }: AppState) =>
+  accessToken.currentToken;
 
 export const getAC = flow(
   getAccessToken,

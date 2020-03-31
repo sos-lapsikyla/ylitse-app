@@ -2,6 +2,7 @@ import * as automaton from 'redux-automaton';
 
 import * as model from '../model';
 
+import * as storage from './storage';
 import * as accessToken from './accessToken';
 import * as login from './login';
 import * as createUser from './createUser';
@@ -23,6 +24,7 @@ export const rootReducer: automaton.Reducer<
   AppState,
   actions.Action
 > = automaton.combineReducers({
+  storage: storage.reducer,
   accessToken: accessToken.reducer,
   login: login.reducer,
   createUser: createUser.reducer,
@@ -39,6 +41,7 @@ export const rootReducer: automaton.Reducer<
 });
 
 export const initialState: AppState = {
+  storage: storage.initialState,
   accessToken: accessToken.initialState,
   login: login.initialState,
   createUser: createUser.initialState,

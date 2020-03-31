@@ -4,7 +4,8 @@ import * as TE from 'fp-ts/lib/TaskEither';
 import * as RE from 'fp-ts-rxjs/lib/ObservableEither';
 import { pipe } from 'fp-ts/lib/pipeable';
 
-export const unauthorizedRequest = 'Request Unauthorized';
+const unauthorizedRequest = 'Request Unauthorized';
+export const isUnauthorized = (u: unknown) => u === unauthorizedRequest;
 
 const request = (url: string, options: RequestInit) =>
   pipe(

@@ -7,15 +7,20 @@ import * as buddyApi from '../api/buddies';
 import * as mentorsApi from '../api/mentors';
 import * as messageApi from '../api/messages';
 
-import * as actions from './actions';
-
 export type AppState = {
-  accessToken: O.Option<{
-    currentToken: authApi.AccessToken;
-    nextToken:
-      | { type: 'NotAsked' }
-      | { type: 'Loading'; deferred: actions.Action[] };
-  }>;
+  storage: {
+    readToken: RD.RemoteData<string, authApi.AccessToken>;
+    writeToken: RD.RemoteData<string, void>;
+  };
+
+  accessToken: {
+    currentToken: O.Option<authApi.AccessToken>;
+    nextToken: RD.RemoteData<string, authApi.AccessToken>;
+    index: number;
+    tasks: Record<string, { task: any; action: any }>;
+    deferredTasks: { task: any; action: any }[];
+  };
+
   login: RD.RemoteData<string, authApi.AccessToken>;
   createUser: RD.RemoteData<string, authApi.AccessToken>;
   changePassword: RD.RemoteData<string, undefined>;

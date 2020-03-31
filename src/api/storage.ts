@@ -1,5 +1,6 @@
 import * as t from 'io-ts';
 import * as TE from 'fp-ts/lib/TaskEither';
+import * as RE from 'fp-ts-rxjs/lib/ObservableEither';
 import * as E from 'fp-ts/lib/Either';
 import * as O from 'fp-ts/lib/Option';
 import { pipe } from 'fp-ts/lib/pipeable';
@@ -32,6 +33,16 @@ const toAccessToken: (a: StorableToken) => auth.AccessToken = ({
   refreshToken,
 });
 
+const toStorabeToken: (a: auth.AccessToken) => StorableToken = ({
+  accountId,
+  userId,
+  accessToken,
+  refreshToken,
+}) => ({
+  scopes: { accountId, userId },
+  tokens: { refreshToken, accessToken },
+});
+
 const parseToken = (str: string) =>
   pipe(
     E.tryCatch(() => JSON.parse(str), () => 'Failed to parse JSON.'),
@@ -60,4 +71,18 @@ export const readToken = pipe(
     ),
   ),
   TE.chain(parseToken),
+  RE.fromTaskEither,
 );
+
+export const writeToken = (token: auth.AccessToken) =>
+  pipe(
+    token,
+    toStorabeToken,
+    JSON.stringify,
+    str =>
+      TE.tryCatch(
+        () => AsyncStorage.setItem(key, str),
+        () => 'Failed to write token to disk.',
+      ),
+    RE.fromTaskEither,
+  );
