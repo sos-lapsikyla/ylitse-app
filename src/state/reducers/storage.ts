@@ -11,6 +11,8 @@ import { cmd } from '../actions/epic';
 
 export type State = AppState['storage'];
 
+export const readToken = actions.make('storage/readToken/start')(undefined);
+
 export const initialState: State = {
   readToken: RD.initial,
   writeToken: RD.initial,
@@ -50,3 +52,5 @@ export const reducer: automaton.Reducer<State, actions.Action> = (
       return state;
   }
 };
+
+export const getReadToken = ({ storage: { readToken } }: AppState) => readToken;

@@ -8,6 +8,7 @@ import { pipe } from 'fp-ts/lib/pipeable';
 import { Observable } from 'rxjs';
 
 import * as authApi from '../../api/auth';
+import * as storageApi from '../../api/storage';
 
 import * as http from '../../lib/http';
 
@@ -40,10 +41,17 @@ export const reducer: automaton.Reducer<State, actions.Action> = (
 ) => {
   switch (action.type) {
     case 'token/Acquired': {
-      return {
-        ...state,
-        currentToken: O.some(action.payload),
-      };
+      return automaton.loop(
+        {
+          ...state,
+          currentToken: O.some(action.payload),
+        },
+        cmd(() =>
+          R.observable.map(storageApi.writeToken(action.payload), () =>
+            actions.make('storage/writeToken/end')(undefined),
+          ),
+        ),
+      );
     }
     case 'token/doRequest/init': {
       const index = state.index + 1;
@@ -109,7 +117,8 @@ export const reducer: automaton.Reducer<State, actions.Action> = (
       return automaton.loop(nextState, nextAction);
     }
     case 'token/refresh/start': {
-      if (RD.isPending(state.nextToken)) {
+      const token = O.toNullable(state.currentToken);
+      if (RD.isPending(state.nextToken) || !token) {
         return state;
       }
       return automaton.loop(
@@ -117,9 +126,11 @@ export const reducer: automaton.Reducer<State, actions.Action> = (
           ...state,
           nextToken: RD.pending,
         },
-        withToken(
-          authApi.refreshAccessToken,
-          actions.make('token/refresh/end'),
+        cmd(() =>
+          R.observable.map(
+            authApi.refreshAccessToken(token),
+            actions.make('token/refresh/end'),
+          ),
         ),
       );
     }
@@ -136,9 +147,10 @@ export const reducer: automaton.Reducer<State, actions.Action> = (
             );
             return automaton.loop(
               {
-                currentToken: token,
-                deferredTasks: [],
                 ...state,
+                currentToken: O.some(token),
+                nextToken: RD.initial,
+                deferredTasks: [],
               },
               ...nextActions,
             );

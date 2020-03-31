@@ -33,6 +33,16 @@ const toAccessToken: (a: StorableToken) => auth.AccessToken = ({
   refreshToken,
 });
 
+const toStorabeToken: (a: auth.AccessToken) => StorableToken = ({
+  accountId,
+  userId,
+  accessToken,
+  refreshToken,
+}) => ({
+  scopes: { accountId, userId },
+  tokens: { refreshToken, accessToken },
+});
+
 const parseToken = (str: string) =>
   pipe(
     E.tryCatch(() => JSON.parse(str), () => 'Failed to parse JSON.'),
@@ -63,3 +73,16 @@ export const readToken = pipe(
   TE.chain(parseToken),
   RE.fromTaskEither,
 );
+
+export const writeToken = (token: auth.AccessToken) =>
+  pipe(
+    token,
+    toStorabeToken,
+    JSON.stringify,
+    str =>
+      TE.tryCatch(
+        () => AsyncStorage.setItem(key, str),
+        () => 'Failed to write token to disk.',
+      ),
+    RE.fromTaskEither,
+  );
