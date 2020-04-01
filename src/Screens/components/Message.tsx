@@ -7,10 +7,8 @@ interface Props extends RN.TextProps {
   id: localization.MessageId;
 }
 
-const translator = localization.translator('fi');
-
 const Message = ({ id, ...textProps }: Props) => (
-  <RN.Text {...textProps}>{translator(id)}</RN.Text>
+  <RN.Text {...textProps}>{localization.trans(id)}</RN.Text>
 );
 
 export const AnimatedMessage = ({
@@ -18,6 +16,8 @@ export const AnimatedMessage = ({
   ...textProps
 }: Omit<Props, 'style'> & {
   style?: any;
-}) => <RN.Animated.Text {...textProps}>{translator(id)}</RN.Animated.Text>;
+}) => (
+  <RN.Animated.Text {...textProps}>{localization.trans(id)}</RN.Animated.Text>
+);
 
 export default Message;

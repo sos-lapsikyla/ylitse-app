@@ -1,6 +1,7 @@
 import * as t from 'io-ts';
 import * as RE from 'fp-ts-rxjs/lib/ObservableEither';
 
+import isFinnishPhone from '../lib/isFinnishPhone';
 import * as http from '../lib/http';
 
 import * as config from './config';
@@ -13,6 +14,7 @@ const mentorType = t.strict({
   story: t.string,
   region: t.string,
   skills: t.array(t.string),
+  languages: t.array(t.string),
 });
 const mentorListType = t.strict({ resources: t.array(mentorType) });
 
@@ -45,3 +47,19 @@ export const fetchMentors: () => RE.ObservableEither<
     mentorListType,
     fromMentorList,
   );
+
+export function compare(a: Mentor, b: Mentor) {
+  if (isFinnishPhone) {
+    return 0;
+  }
+
+  const lang = 'Italian';
+  const hasLang = ({ languages }: Mentor) => languages.includes(lang);
+  if (hasLang(a) && !hasLang(b)) {
+    return -1;
+  }
+  if (!hasLang(a) && hasLang(b)) {
+    return 1;
+  }
+  return 0;
+}

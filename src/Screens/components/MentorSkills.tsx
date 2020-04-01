@@ -59,9 +59,7 @@ const MentorSkills = (props: SkillListProps) => {
 
   const skills = isAllVisible ? props.skills : props.skills.slice(0, 3);
 
-  const showMoreText = localization.translator('fi')(
-    'components.mentorCard.showMore',
-  );
+  const showMoreText = localization.trans('components.mentorCard.showMore');
 
   return (
     <RN.View style={[styles.container, props.style]}>

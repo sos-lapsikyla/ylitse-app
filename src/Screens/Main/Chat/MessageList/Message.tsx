@@ -70,6 +70,7 @@ const styles = RN.StyleSheet.create({
     paddingVertical: 8,
     paddingHorizontal: 16,
     flexDirection: 'row',
+    flexWrap: 'wrap',
     ...shadow(5),
   },
   text: {

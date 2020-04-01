@@ -35,7 +35,7 @@ function renderItem({ item }: { item: selectors.Message }) {
 
 const styles = RN.StyleSheet.create({
   scrollContent: {
-    paddingHorizontal: 16,
+    paddingHorizontal: 24,
     flexGrow: 1,
   },
 });

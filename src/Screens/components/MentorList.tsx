@@ -37,7 +37,7 @@ const MentorList = ({ fetchMentors, mentorsState, onPress }: Props) => {
         {mentors => (
           <RN.View style={styles.carouselContainer}>
             <snapCarousel.default
-              data={mentors}
+              data={[...mentors].sort(mentorApi.compare)}
               renderItem={renderMentorCard(height, onPress)}
               sliderWidth={measuredWidth}
               itemWidth={measuredWidth * 0.9}

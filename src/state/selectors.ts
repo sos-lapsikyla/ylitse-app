@@ -56,21 +56,19 @@ const getDate = (n: number) => {
   const month = date.getMonth();
   const day = date.getDate();
 
-  const localize = localization.translator('fi');
-
   const months: { [n: number]: string } = {
-    0: localize('date.month.01'),
-    1: localize('date.month.02'),
-    2: localize('date.month.03'),
-    3: localize('date.month.04'),
-    4: localize('date.month.05'),
-    5: localize('date.month.06'),
-    6: localize('date.month.07'),
-    7: localize('date.month.08'),
-    8: localize('date.month.09'),
-    9: localize('date.month.10'),
-    10: localize('date.month.11'),
-    11: localize('date.month.12'),
+    0: localization.trans('date.month.01'),
+    1: localization.trans('date.month.02'),
+    2: localization.trans('date.month.03'),
+    3: localization.trans('date.month.04'),
+    4: localization.trans('date.month.05'),
+    5: localization.trans('date.month.06'),
+    6: localization.trans('date.month.07'),
+    7: localization.trans('date.month.08'),
+    8: localization.trans('date.month.09'),
+    9: localization.trans('date.month.10'),
+    10: localization.trans('date.month.11'),
+    11: localization.trans('date.month.12'),
   };
 
   return `${day}. ${months[month]} ${year} `;
