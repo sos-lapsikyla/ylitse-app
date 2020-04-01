@@ -121,4 +121,8 @@ export const messages: { [key in MessageId]: string } = {
   'onboarding.signUp.password': 'Password',
   'onboarding.signUp.signUp': 'Sign up',
   'onboarding.signUp.title': 'Sign up',
+
+  'tabs.chats': 'Chats',
+  'tabs.mentors': 'Mentors',
+  'tabs.settings': 'Settings',
 };

@@ -4,6 +4,7 @@ import * as reactRedux from 'react-redux';
 import { SafeAreaView } from 'react-navigation';
 import * as reactNavigationTab from 'react-navigation-tabs';
 
+import * as localization from '../../localization';
 import * as selectors from '../../state/selectors';
 
 import colors from '../components/colors';
@@ -34,7 +35,11 @@ const Main = reactNavigationTab.createBottomTabNavigator(routeConfig, {
   tabBarComponent: props => (
     <TabBar
       {...props}
-      labels={['settings', 'mentors', 'chats']}
+      labels={[
+        localization.trans('tabs.settings'),
+        localization.trans('tabs.mentors'),
+        localization.trans('tabs.chats'),
+      ]}
       icons={[
         require('../images/cog.svg'),
         require('../images/users.svg'),

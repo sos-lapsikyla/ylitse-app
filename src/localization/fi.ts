@@ -119,6 +119,10 @@ export const messages = {
   'onboarding.signUp.password': 'Salasana',
   'onboarding.signUp.signUp': 'Luo tunnus',
   'onboarding.signUp.title': 'Luo tunnus',
+
+  'tabs.chats': 'Keskustelut',
+  'tabs.mentors': 'Mentorit',
+  'tabs.settings': 'Asetukset',
 };
 
 export type MessageId = keyof typeof messages;
