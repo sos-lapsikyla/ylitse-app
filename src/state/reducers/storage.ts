@@ -1,13 +1,13 @@
 import * as RD from '@devexperts/remote-data-ts';
-import * as R from 'fp-ts-rxjs/lib/Observable';
 import * as automaton from 'redux-automaton';
+import * as T from 'fp-ts/lib/Task';
 import * as O from 'fp-ts/lib/Option';
 
 import * as storageApi from '../../api/storage';
 
 import * as actions from '../actions';
 import { AppState } from '../model';
-import { cmd } from '../actions/epic';
+import { cmd } from '../middleware';
 
 export type State = AppState['storage'];
 
@@ -26,8 +26,8 @@ export const reducer: automaton.Reducer<State, actions.Action> = (
     case 'storage/readToken/start': {
       return automaton.loop(
         { ...state, readToken: RD.pending },
-        cmd(() =>
-          R.observable.map(
+        cmd(
+          T.task.map(
             storageApi.readToken,
             actions.make('storage/readToken/end'),
           ),

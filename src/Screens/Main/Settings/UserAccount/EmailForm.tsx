@@ -25,8 +25,9 @@ type Props = {
 };
 
 export default ({ onClose }: Props) => {
+  const account = RD.toOption(useSelector(accountState.getAccount));
   const storedEmail = pipe(
-    RD.toOption(useSelector(accountState.getAccount)),
+    account,
     O.map(({ email }) => email),
     O.toUndefined,
   );
@@ -35,7 +36,9 @@ export default ({ onClose }: Props) => {
 
   const dispatch = useDispatch<redux.Dispatch<actions.Action>>();
   const onButtonPress = () => {
-    dispatch(changeEmailState.changeEmail({ email }));
+    dispatch(
+      changeEmailState.changeEmail({ email, account: O.toUndefined(account) }),
+    );
   };
 
   const requestState = useSelector(changeEmailState.select);

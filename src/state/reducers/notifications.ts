@@ -1,13 +1,13 @@
 import * as automaton from 'redux-automaton';
 import * as RD from '@devexperts/remote-data-ts';
-import * as R from 'fp-ts-rxjs/lib/Observable';
+import * as T from 'fp-ts/lib/Task';
 import * as E from 'fp-ts/lib/Either';
 import { pipe } from 'fp-ts/lib/pipeable';
 import { fold } from 'fp-ts/lib/boolean';
 
 import * as notificationsApi from '../../api/notifications';
 
-import { cmd } from '.././actions/epic';
+import { cmd } from '../middleware';
 import { withToken } from './accessToken';
 import * as actions from '../actions';
 import { AppState } from '../model';
@@ -46,10 +46,10 @@ export function requestPermissionReducer(
     case 'token/Acquired':
       return automaton.loop(
         RD.pending,
-        cmd(() =>
+        cmd(
           pipe(
             notificationsApi.requestPermissions,
-            R.map(actions.make('notifications/requestPermissions/completed')),
+            T.map(actions.make('notifications/requestPermissions/completed')),
           ),
         ),
       );

@@ -1,6 +1,5 @@
 import * as t from 'io-ts';
 import * as TE from 'fp-ts/lib/TaskEither';
-import * as RE from 'fp-ts-rxjs/lib/ObservableEither';
 import * as E from 'fp-ts/lib/Either';
 import * as O from 'fp-ts/lib/Option';
 import { pipe } from 'fp-ts/lib/pipeable';
@@ -71,7 +70,6 @@ export const readToken = pipe(
     ),
   ),
   TE.chain(parseToken),
-  RE.fromTaskEither,
 );
 
 export const writeToken = (token: auth.AccessToken) =>
@@ -84,5 +82,4 @@ export const writeToken = (token: auth.AccessToken) =>
         () => AsyncStorage.setItem(key, str),
         () => 'Failed to write token to disk.',
       ),
-    RE.fromTaskEither,
   );

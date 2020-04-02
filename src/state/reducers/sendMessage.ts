@@ -1,6 +1,6 @@
 import * as automaton from 'redux-automaton';
 import * as RD from '@devexperts/remote-data-ts';
-import * as R from 'fp-ts-rxjs/lib/Observable';
+import * as T from 'fp-ts/lib/Task';
 import * as record from 'fp-ts/lib/Record';
 import * as E from 'fp-ts/lib/Either';
 import * as O from 'fp-ts/lib/Option';
@@ -35,7 +35,7 @@ export const reducer = (state: State, action: actions.Action) => {
       )(state);
       const nextAction = withToken(
         token =>
-          R.observable.map(
+          T.task.map(
             messageApi.sendMessage(action.payload)(token),
             response => ({ response, buddyId }),
           ),
