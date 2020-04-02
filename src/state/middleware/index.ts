@@ -22,7 +22,6 @@ export const taskRunner = ({ dispatch }: redux.MiddlewareAPI) => (
 ) => (action: redux.Action | Cmd) => {
   if (isCmd(action)) {
     const { task } = action;
-    console.warn(action);
     return task().then(resultAction => dispatch(resultAction));
   }
   return next(action);
