@@ -79,7 +79,7 @@ export type Message =
   | { type: 'Date'; value: string; id: string };
 
 const messageList = (messageState: AppState['messages'], buddyId: string) => {
-  const messagesById = RD.remoteData.map(messageState, r =>
+  const messagesById = RD.remoteData.map(messageState.messages, r =>
     record.lookup(buddyId, r),
   );
   return getFoldableComposition(RD.remoteData, O.option).reduce<
@@ -145,7 +145,7 @@ export function getChatList(
 
 export const isAnyMessageUnseen = ({ messages: messageState }: AppState) =>
   getFoldableComposition(RD.remoteData, record.record).foldMap(monoidAny)(
-    messageState,
+    messageState.messages,
     record.some(({ isSeen }) => !isSeen),
   );
 
@@ -157,7 +157,7 @@ export const getMessage = (
   },
 ) => {
   return pipe(
-    RD.toOption(messageState),
+    RD.toOption(messageState.messages),
     O.chain(threads => record.lookup(index.buddyId, threads)),
     O.chain(threadMessages => record.lookup(index.messageId, threadMessages)),
   );
