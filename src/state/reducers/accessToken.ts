@@ -1,11 +1,10 @@
 import * as RD from '@devexperts/remote-data-ts';
-import * as R from 'fp-ts-rxjs/lib/Observable';
+import * as T from 'fp-ts/lib/Task';
 import * as record from 'fp-ts/lib/Record';
 import * as automaton from 'redux-automaton';
 import * as O from 'fp-ts/lib/Option';
 import * as E from 'fp-ts/lib/Either';
 import { pipe } from 'fp-ts/lib/pipeable';
-import { Observable } from 'rxjs';
 
 import * as authApi from '../../api/auth';
 import * as storageApi from '../../api/storage';
@@ -14,7 +13,7 @@ import * as http from '../../lib/http';
 
 import * as actions from '../actions';
 import { AppState } from '../model';
-import { cmd } from '../actions/epic';
+import { cmd } from '../middleware';
 
 export type State = AppState['accessToken'];
 
@@ -29,7 +28,7 @@ export const initialState: State = {
 export const getToken = ({ accessToken }: AppState) => accessToken.currentToken;
 
 export function withToken<A>(
-  task: (token: authApi.AccessToken) => Observable<A>,
+  task: (token: authApi.AccessToken) => T.Task<A>,
   action: (result: A) => actions.RegularAction,
 ) {
   return actions.make('token/doRequest/init')({ task, action });
@@ -46,8 +45,8 @@ export const reducer: automaton.Reducer<State, actions.Action> = (
           ...state,
           currentToken: O.some(action.payload),
         },
-        cmd(() =>
-          R.observable.map(storageApi.writeToken(action.payload), () =>
+        cmd(
+          T.task.map(storageApi.writeToken(action.payload), () =>
             actions.make('storage/writeToken/end')(undefined),
           ),
         ),
@@ -69,8 +68,8 @@ export const reducer: automaton.Reducer<State, actions.Action> = (
         tasks: { ...state.tasks, [index]: action.payload },
       };
       const task = action.payload.task(token);
-      const nextCmd = cmd(() =>
-        R.observable.map(task, result =>
+      const nextCmd = cmd(
+        T.task.map(task, result =>
           actions.make('token/doRequest/completed')({
             index: `${index}`,
             result,
@@ -126,8 +125,8 @@ export const reducer: automaton.Reducer<State, actions.Action> = (
           ...state,
           nextToken: RD.pending,
         },
-        cmd(() =>
-          R.observable.map(
+        cmd(
+          T.task.map(
             authApi.refreshAccessToken(token),
             actions.make('token/refresh/end'),
           ),
@@ -141,9 +140,7 @@ export const reducer: automaton.Reducer<State, actions.Action> = (
           err => ({ ...state, nextToken: RD.failure(err) }),
           token => {
             const nextActions = state.deferredTasks.map(t =>
-              cmd(() =>
-                R.observable.map(t.task(token), result => t.action(result)),
-              ),
+              cmd(T.task.map(t.task(token), result => t.action(result))),
             );
             return automaton.loop(
               {

@@ -1,6 +1,6 @@
 import * as automaton from 'redux-automaton';
 import * as RD from '@devexperts/remote-data-ts';
-import * as R from 'fp-ts-rxjs/lib/Observable';
+import * as T from 'fp-ts/lib/Task';
 import { pipe } from 'fp-ts/lib/pipeable';
 
 import * as mentorsApi from '../../api/mentors';
@@ -15,8 +15,7 @@ export const initialState = RD.initial;
 
 const fetchMentors = pipe(
   mentorsApi.fetchMentors(),
-  R.map(actions.make('mentors/end')),
-  R.toTask,
+  T.map(actions.make('mentors/end')),
 );
 
 export const reducer: automaton.Reducer<State, actions.Action> = (

@@ -1,5 +1,5 @@
 import * as t from 'io-ts';
-import * as RE from 'fp-ts-rxjs/lib/ObservableEither';
+import * as TE from 'fp-ts/lib/TaskEither';
 
 import * as http from '../lib/http';
 
@@ -21,7 +21,7 @@ const toBuddy = ({ id, display_name }: ApiBuddy) => ({
 
 export function fetchBuddies(
   accessToken: authApi.AccessToken,
-): RE.ObservableEither<string, Record<string, Buddy>> {
+): TE.TaskEither<string, Record<string, Buddy>> {
   return http.validateResponse(
     http.get(`${config.baseUrl}/users/${accessToken.userId}/contacts`, {
       headers: authApi.authHeader(accessToken),

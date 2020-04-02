@@ -1,12 +1,12 @@
 import * as automaton from 'redux-automaton';
 import * as E from 'fp-ts/lib/Either';
-import * as R from 'fp-ts-rxjs/lib/Observable';
+import * as T from 'fp-ts/lib/Task';
 import * as RD from '@devexperts/remote-data-ts';
 import { pipe } from 'fp-ts/lib/pipeable';
 
 import * as authApi from '../../api/auth';
 
-import { cmd } from '../actions/epic';
+import { cmd } from '../middleware';
 import * as actions from '../actions';
 import * as model from '../model';
 
@@ -22,11 +22,8 @@ export const reducer: automaton.Reducer<State, actions.Action> = (
     case 'login/start':
       return automaton.loop(
         RD.pending,
-        cmd(() =>
-          R.observable.map(
-            authApi.login(action.payload),
-            actions.make('login/end'),
-          ),
+        cmd(
+          T.task.map(authApi.login(action.payload), actions.make('login/end')),
         ),
       );
     case 'login/end':

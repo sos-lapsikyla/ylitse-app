@@ -1,7 +1,6 @@
 import * as automaton from 'redux-automaton';
 import * as remoteData from '@devexperts/remote-data-ts';
-import * as R from 'fp-ts-rxjs/lib/Observable';
-import * as rx from 'rxjs/operators';
+import * as T from 'fp-ts/lib/Task';
 import { pipe } from 'fp-ts/lib/pipeable';
 
 import * as authApi from '../../api/auth';
@@ -10,7 +9,7 @@ import * as actions from '../actions';
 
 import { AppState } from '../model';
 import { withToken } from './accessToken';
-import { cmd } from '../actions/epic';
+import { cmd } from '../middleware';
 
 export const changePassword = actions.make('changePassword/start');
 export const initialState = remoteData.initial;
@@ -35,11 +34,11 @@ export const reducer: automaton.Reducer<
     case 'changePassword/completed':
       return automaton.loop(
         remoteData.fromEither(action.payload),
-        cmd(() =>
+        cmd(
           pipe(
-            R.of(undefined),
-            R.map(actions.make('changePassword/reset')),
-            rx.delay(coolDownDuration),
+            T.of(undefined),
+            T.map(actions.make('changePassword/reset')),
+            T.delay(coolDownDuration),
           ),
         ),
       );

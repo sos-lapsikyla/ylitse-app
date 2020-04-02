@@ -1,5 +1,5 @@
 import * as t from 'io-ts';
-import * as RE from 'fp-ts-rxjs/lib/ObservableEither';
+import * as TE from 'fp-ts/lib/TaskEither';
 
 import isFinnishPhone from '../lib/isFinnishPhone';
 import * as http from '../lib/http';
@@ -38,7 +38,7 @@ const fromMentorList = ({ resources }: t.TypeOf<typeof mentorListType>) =>
     return { ...acc, [mentor.buddyId]: mentor };
   }, {});
 
-export const fetchMentors: () => RE.ObservableEither<
+export const fetchMentors: () => TE.TaskEither<
   string,
   Record<string, Mentor>
 > = () =>

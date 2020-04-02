@@ -1,6 +1,5 @@
 import * as t from 'io-ts';
 import { pipe } from 'fp-ts/lib/pipeable';
-import * as RE from 'fp-ts-rxjs/lib/ObservableEither';
 import * as TE from 'fp-ts/lib/TaskEither';
 import { identity, tuple } from 'fp-ts/lib/function';
 
@@ -66,7 +65,7 @@ function postAccount({
   userName,
   password,
   email,
-}: User): RE.ObservableEither<string, ApiUserAccount> {
+}: User): TE.TaskEither<string, ApiUserAccount> {
   return http.validateResponse(
     http.post(`${config.baseUrl}/accounts`, {
       password,
@@ -89,7 +88,7 @@ export type Account = {
 export const putAccount: (
   token: authApi.AccessToken,
   account: Account,
-) => RE.ObservableEither<string, Account> = (token, account) => {
+) => TE.TaskEither<string, Account> = (token, account) => {
   return http.validateResponse(
     http.put(
       `${config.baseUrl}/accounts/${token.accountId}`,
@@ -115,7 +114,7 @@ export const putAccount: (
 function putUser(
   token: authApi.AccessToken,
   user: ApiUser,
-): RE.ObservableEither<string, ApiUser> {
+): TE.TaskEither<string, ApiUser> {
   return http.validateResponse(
     http.put(`${config.baseUrl}/users`, user, {
       headers: authApi.authHeader(token),
@@ -132,21 +131,21 @@ export type User = authApi.Credentials & {
 
 export function createUser(
   user: User,
-): RE.ObservableEither<string, authApi.AccessToken> {
+): TE.TaskEither<string, authApi.AccessToken> {
   const { userName, password } = user;
   return pipe(
     user,
     postAccount,
-    RE.chain(createdUser =>
+    TE.chain(createdUser =>
       pipe(
         authApi.login({ userName, password }),
-        RE.map(token => tuple(createdUser, token)),
+        TE.map(token => tuple(createdUser, token)),
       ),
     ),
-    RE.chain(([createdUser, token]) =>
+    TE.chain(([createdUser, token]) =>
       pipe(
         putUser(token, { ...createdUser.user, display_name: user.displayName }),
-        RE.map(_ => token),
+        TE.map(_ => token),
       ),
     ),
   );
@@ -155,8 +154,7 @@ export function createUser(
 function isUserNameFree(userName: string): TE.TaskEither<string, boolean> {
   return pipe(
     http.head(`${config.baseUrl}/search?login_name=${userName}`),
-    RE.map(({ status }) => status === 204),
-    RE.toTaskEither,
+    TE.map(({ status }) => status === 204),
   );
 }
 

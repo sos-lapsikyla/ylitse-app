@@ -1,5 +1,5 @@
 import * as E from 'fp-ts/lib/Either';
-import * as RE from 'fp-ts-rxjs/lib/ObservableEither';
+import * as TE from 'fp-ts/lib/TaskEither';
 
 import * as accountApi from '../../api/account';
 import * as notificationsApi from '../../api/notifications';
@@ -63,7 +63,7 @@ type RegularActions = {
   };
 
   'notifications/requestPermissions/init': undefined;
-  'notifications/requestPermissions/completed': RE2E<
+  'notifications/requestPermissions/completed': TE2E<
     typeof notificationsApi.requestPermissions
   >;
   'notifications/sendDeviceToken/init': undefined;
@@ -73,13 +73,13 @@ type RegularActions = {
 };
 
 // TODO name plz.
-type RE2E<T> = T extends RE.ObservableEither<infer E, infer A>
+type TE2E<T> = T extends TE.TaskEither<infer E, infer A>
   ? E.Either<E, A>
   : never;
 
 // TODO: handle curried case, Exists under the name "FinalReturn" in
 // git history somewhere, use git log -S
-type Result<F extends (...args: any[]) => any> = RE2E<ReturnType<F>>;
+type Result<F extends (...args: any[]) => any> = TE2E<ReturnType<F>>;
 // https://github.com/microsoft/TypeScript/issues/23182
 //type Payload<T> = [T] extends [never] ? {} : { payload: T };
 export type ActionType = keyof RegularActions;

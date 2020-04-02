@@ -1,5 +1,5 @@
 import * as t from 'io-ts';
-import * as RE from 'fp-ts-rxjs/lib/ObservableEither';
+import * as TE from 'fp-ts/lib/TaskEither';
 import { pipe } from 'fp-ts/lib/pipeable';
 
 import * as http from '../lib/http';
@@ -70,7 +70,7 @@ const toMessage: (
 
 export function fetchMessages(
   accessToken: authApi.AccessToken,
-): RE.ObservableEither<string, Record<string, Record<string, Message>>> {
+): TE.TaskEither<string, Record<string, Record<string, Message>>> {
   return http.validateResponse(
     http.get(`${config.baseUrl}/users/${accessToken.userId}/messages`, {
       headers: authApi.authHeader(accessToken),
@@ -97,7 +97,7 @@ export type SendMessageParams = {
 
 export const sendMessage = (params: SendMessageParams) => (
   accessToken: authApi.AccessToken,
-): RE.ObservableEither<string, undefined> => {
+): TE.TaskEither<string, undefined> => {
   const url = `${config.baseUrl}/users/${accessToken.userId}/messages`;
   const message = {
     sender_id: accessToken.userId,
@@ -109,7 +109,7 @@ export const sendMessage = (params: SendMessageParams) => (
     http.post(url, message, {
       headers: authApi.authHeader(accessToken),
     }),
-    RE.map(_ => undefined),
+    TE.map(_ => undefined),
   );
 };
 

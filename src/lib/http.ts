@@ -1,7 +1,6 @@
 import * as t from 'io-ts';
 import * as E from 'fp-ts/lib/Either';
 import * as TE from 'fp-ts/lib/TaskEither';
-import * as RE from 'fp-ts-rxjs/lib/ObservableEither';
 import { pipe } from 'fp-ts/lib/pipeable';
 
 const unauthorizedRequest = 'Request Unauthorized';
@@ -15,7 +14,6 @@ const request = (url: string, options: RequestInit) =>
         ? TE.right(response)
         : TE.left(response.status === 401 ? unauthorizedRequest : 'Bad status'),
     ),
-    RE.fromTaskEither,
   );
 
 export const get = (url: string, options?: RequestInit) =>
@@ -39,10 +37,7 @@ export const put = (url: string, body: any, options?: RequestInit) =>
   });
 
 const getJson = (response: Response) =>
-  pipe(
-    TE.tryCatch(() => response.json(), () => 'Failed to get json.'),
-    RE.fromTaskEither,
-  );
+  pipe(TE.tryCatch(() => response.json(), () => 'Failed to get json.'));
 
 const decode = <A, B>(model: t.Type<A, B, unknown>) => (u: unknown) =>
   pipe(
@@ -50,17 +45,16 @@ const decode = <A, B>(model: t.Type<A, B, unknown>) => (u: unknown) =>
     model.decode,
     E.mapLeft(() => 'Failed to decode JSON.'),
     TE.fromEither,
-    RE.fromTaskEither,
   );
 
 export const validateResponse = <A, B, C>(
-  task: RE.ObservableEither<string, Response>,
+  task: TE.TaskEither<string, Response>,
   model: t.Type<A, B, unknown>,
   fromModel: (a: A) => C,
 ) =>
   pipe(
     task,
-    RE.chain(getJson),
-    RE.chain(decode(model)),
-    RE.map(fromModel),
+    TE.chain(getJson),
+    TE.chain(decode(model)),
+    TE.map(fromModel),
   );
