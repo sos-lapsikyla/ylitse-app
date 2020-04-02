@@ -29,10 +29,12 @@ export type AppState = {
 
   mentors: RD.RemoteData<string, Record<string, mentorsApi.Mentor>>;
   buddies: RD.RemoteData<string, Record<string, buddyApi.Buddy>>;
-  messages: RD.RemoteData<string, messageApi.Threads>;
+  messages: {
+    polling: boolean;
+    messages: RD.RemoteData<string, messageApi.Threads>;
+  };
   sendMessage: Record<string, RD.RemoteData<string, undefined>>;
   markMessageSeen: Record<string, 'Requested'>;
-
   notifications: {
     requestPermissions: RD.RemoteData<string, boolean>;
     sendDeviceToken: RD.RemoteData<string, undefined>;
