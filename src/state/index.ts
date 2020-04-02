@@ -5,6 +5,7 @@ import * as redux from 'redux';
 import * as model from './model';
 import * as actions from './actions';
 import * as reducers from './reducers';
+import * as middleware from './middleware';
 
 import rootEpic from './epics';
 
@@ -16,7 +17,9 @@ const epicMiddleware = reduxObservable.createEpicMiddleware<
   AppState
 >();
 const compose = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || redux.compose;
-const enhancer = compose(redux.applyMiddleware(epicMiddleware));
+const enhancer = compose(
+  redux.applyMiddleware(epicMiddleware, middleware.taskRunner),
+);
 
 export const store = automaton.createStore(
   reducers.rootReducer,
