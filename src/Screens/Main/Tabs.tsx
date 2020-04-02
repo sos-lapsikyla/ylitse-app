@@ -5,7 +5,7 @@ import { SafeAreaView } from 'react-navigation';
 import * as reactNavigationTab from 'react-navigation-tabs';
 
 import * as localization from '../../localization';
-import * as selectors from '../../state/selectors';
+import { isAnyMessageUnseen } from '../../state/reducers/messages';
 
 import colors from '../components/colors';
 import fonts from '../components/fonts';
@@ -95,7 +95,7 @@ const TabBar = ({
 };
 
 const UnseenDot = () => {
-  const isUnseen = reactRedux.useSelector(selectors.isAnyMessageUnseen);
+  const isUnseen = reactRedux.useSelector(isAnyMessageUnseen);
   return isUnseen ? <RN.View style={unseenDotStyles.dot} /> : null;
 };
 

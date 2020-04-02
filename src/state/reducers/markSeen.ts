@@ -1,9 +1,13 @@
 import * as automaton from 'redux-automaton';
-
 import * as actions from '../actions';
+import * as api from '../../api/messages';
 
-type State = Record<string, 'Requested'>;
+import { withToken } from './accessToken';
+
+type State = Record<string, boolean>;
 export const initialState = {};
+
+export const markSeen = actions.make('messages/markSeen');
 
 export const reducer: automaton.Reducer<State, actions.Action> = (
   state = initialState,
@@ -11,7 +15,19 @@ export const reducer: automaton.Reducer<State, actions.Action> = (
 ) => {
   switch (action.type) {
     case 'messages/markSeen':
-      return state;
+      const message = action.payload.message;
+      const id = message.messageId;
+      if (id in state || message.isSeen || message.type === 'Sent') {
+        return state;
+      }
+      const markSeenTask = api.markSeen(action.payload.message);
+      return automaton.loop(
+        { ...state, [id]: true },
+        withToken(markSeenTask, () => ({
+          type: 'messages/markSeen/end',
+          payload: undefined,
+        })),
+      );
     default:
       return state;
   }

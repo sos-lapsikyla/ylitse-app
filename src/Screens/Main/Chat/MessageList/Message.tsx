@@ -3,32 +3,30 @@ import RN from 'react-native';
 import * as redux from 'redux';
 import { useDispatch } from 'react-redux';
 
+import { markSeen } from '../../../../state/reducers/markSeen';
+import * as actions from '../../../../state/actions';
+
 import colors from '../../../components/colors';
 import fonts from '../../../components/fonts';
 import shadow from '../../../components/shadow';
 
-import * as actions from '../../../../state/actions';
 import * as messageApi from '../../../../api/messages';
 
-type Props = messageApi.Message;
+export type MessageProps = {
+  type: 'Message';
+  value: messageApi.Message;
+  id: string;
+};
 
-const Message = ({
-  content,
-  sentTime,
-  type,
-  isSeen,
-  buddyId,
-  messageId,
-}: Props) => {
+const Message = ({ value: message }: MessageProps) => {
+  const { content, sentTime, type } = message;
   const dispatch = useDispatch<redux.Dispatch<actions.Action>>();
   React.useEffect(() => {
-    if (!isSeen) {
-      dispatch({
-        type: 'messages/markSeen',
-        payload: { buddyId, messageId },
-      });
+    if (!message.isSeen && message.type === 'Received') {
+      dispatch(markSeen({ message }));
     }
   }, []);
+
   const bubbleStyle =
     type === 'Received' ? styles.leftBubble : styles.rightBubble;
 

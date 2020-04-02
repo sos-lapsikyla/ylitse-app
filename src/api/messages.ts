@@ -41,7 +41,7 @@ const toApiMessage: (userId: string, a: Message) => ApiMessage = (
   sender_id: type === 'Sent' ? userId : buddyId,
   id: messageId,
   created: sentTime,
-  opened: !isSeen,
+  opened: isSeen,
 });
 
 export type Message = {
@@ -61,7 +61,7 @@ const toMessage: (
   return {
     type: isSent ? 'Sent' : 'Received',
     buddyId: isSent ? apiMessage.recipient_id : apiMessage.sender_id,
-    isSeen: !apiMessage.opened,
+    isSeen: apiMessage.opened,
     content: apiMessage.content,
     sentTime: apiMessage.created,
     messageId: apiMessage.id,
