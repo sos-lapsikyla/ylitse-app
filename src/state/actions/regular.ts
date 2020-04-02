@@ -32,7 +32,7 @@ type RegularActions = {
   'changePassword/completed': Result<ReturnType<typeof authApi.changePassword>>;
   'changePassword/reset': undefined;
 
-  'changeEmail/start': { email?: string };
+  'changeEmail/start': { email?: string; account?: accountApi.UserAccount };
   'changeEmail/completed': E.Either<string, { email?: string }>;
   'changeEmail/reset': undefined;
 

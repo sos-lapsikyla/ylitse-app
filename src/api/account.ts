@@ -47,15 +47,19 @@ export type UserAccount = {
   userName: string;
   displayName: string;
   email?: string;
+  accountId: string;
+  userId: string;
 };
 export const toUserAccount: (a: ApiUserAccount) => UserAccount = ({
-  user: { display_name, role },
-  account: { login_name, email },
+  user: { display_name, role, id: userId },
+  account: { login_name, email, id: accountId },
 }) => ({
   role,
   userName: login_name,
   displayName: display_name,
   email,
+  accountId,
+  userId,
 });
 
 function postAccount({

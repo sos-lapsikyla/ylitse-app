@@ -16,7 +16,6 @@ import * as actions from '../actions';
 import { AppState } from '../model';
 import { cmd } from '../actions/epic';
 
-import { getAccount } from './userAccount';
 import { getToken } from './accessToken';
 
 export const changeEmail = actions.make('changeEmail/start');
@@ -25,20 +24,22 @@ export const resetChangeEmail = actions.make('changeEmail/reset')(undefined);
 export const initialState = RD.initial;
 export const coolDownDuration = 5000;
 
-const _changeEmail = (newEmailAddress?: string) => (appState: AppState) => {
-  const account = pipe(
-    RD.toOption(getAccount(appState)),
-    O.map(({ role, userName }) => ({ accountId }: authApi.AccessToken) => ({
+const _changeEmail = (
+  newEmailAddress?: string,
+  account?: accountApi.UserAccount,
+) => (appState: AppState) => {
+  const updatedAccount = pipe(
+    O.fromNullable(account),
+    O.map(({ role, userName, accountId }) => ({
       id: accountId,
       email: newEmailAddress,
       role,
       userName,
     })),
-    O.ap(getToken(appState)),
   );
 
   const both = pipe(
-    account,
+    updatedAccount,
     O.map(account_ => (token: authApi.AccessToken) => tuple(token, account_)),
     O.ap(getToken(appState)),
     E.fromOption(() => 'Failure on _changeEmail.'),
@@ -63,7 +64,7 @@ export const reducer: automaton.Reducer<
       }
       return automaton.loop(
         RD.pending,
-        cmd(_changeEmail(action.payload.email)),
+        cmd(_changeEmail(action.payload.email, action.payload.account)),
       );
     case 'changeEmail/completed':
       return automaton.loop(
