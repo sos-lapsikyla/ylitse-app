@@ -15,8 +15,6 @@ import * as mentorApi from '../api/mentors';
 import * as buddyApi from '../api/buddies';
 import * as authApi from '../api/auth';
 
-import * as localization from '../localization';
-
 import { AppState } from './model';
 
 export function getMentors(
@@ -50,34 +48,6 @@ export const getBuddyName = (
   );
 };
 
-const getDate = (n: number) => {
-  const date = new Date(n);
-  const year = date.getFullYear();
-  const month = date.getMonth();
-  const day = date.getDate();
-
-  const months: { [n: number]: string } = {
-    0: localization.trans('date.month.01'),
-    1: localization.trans('date.month.02'),
-    2: localization.trans('date.month.03'),
-    3: localization.trans('date.month.04'),
-    4: localization.trans('date.month.05'),
-    5: localization.trans('date.month.06'),
-    6: localization.trans('date.month.07'),
-    7: localization.trans('date.month.08'),
-    8: localization.trans('date.month.09'),
-    9: localization.trans('date.month.10'),
-    10: localization.trans('date.month.11'),
-    11: localization.trans('date.month.12'),
-  };
-
-  return `${day}. ${months[month]} ${year} `;
-};
-
-export type Message =
-  | { type: 'Message'; value: messageApi.Message; id: string; isSeen: boolean }
-  | { type: 'Date'; value: string; id: string };
-
 const messageList = (messageState: AppState['messages'], buddyId: string) => {
   const messagesById = RD.remoteData.map(messageState.messages, r =>
     record.lookup(buddyId, r),
@@ -90,36 +60,6 @@ const messageList = (messageState: AppState['messages'], buddyId: string) => {
     Object.values(messages).sort(({ sentTime: A }, { sentTime: B }) => A - B),
   );
 };
-
-export function getMessages(
-  messageState: AppState['messages'],
-  buddyId: string,
-): Message[] {
-  return messageList(messageState, buddyId)
-    .reduce((acc: Message[], m) => {
-      const last = acc[acc.length - 1];
-      const next = {
-        type: 'Message' as const,
-        value: m,
-        id: m.messageId,
-        isSeen: m.isSeen,
-      };
-      const date = getDate(next.value.sentTime);
-      const nextDate = { type: 'Date' as const, value: date, id: date };
-      if (
-        !!last &&
-        last.type === 'Message' &&
-        getDate(last.value.sentTime) === date
-      ) {
-        acc.push(next);
-        return acc;
-      }
-      acc.push(nextDate);
-      acc.push(next);
-      return acc;
-    }, [])
-    .reverse();
-}
 
 export type Buddy = buddyApi.Buddy & { hasNewMessages: boolean };
 
@@ -142,23 +82,3 @@ export function getChatList(
     RD.map(Object.values),
   );
 }
-
-export const isAnyMessageUnseen = ({ messages: messageState }: AppState) =>
-  getFoldableComposition(RD.remoteData, record.record).foldMap(monoidAny)(
-    messageState.messages,
-    record.some(({ isSeen }) => !isSeen),
-  );
-
-export const getMessage = (
-  { messages: messageState }: AppState,
-  index: {
-    buddyId: string;
-    messageId: string;
-  },
-) => {
-  return pipe(
-    RD.toOption(messageState.messages),
-    O.chain(threads => record.lookup(index.buddyId, threads)),
-    O.chain(threadMessages => record.lookup(index.messageId, threadMessages)),
-  );
-};

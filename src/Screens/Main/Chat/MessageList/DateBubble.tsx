@@ -6,9 +6,9 @@ import shadow from '../../../components/shadow';
 import colors from '../../../components/colors';
 import fonts from '../../../components/fonts';
 
-type Props = { type: 'Date'; value: string; id: string };
+export type DateBubbleProps = { type: 'Date'; value: string; id: string };
 
-const DateBubble = ({ value }: Props) => {
+const DateBubble = ({ value }: DateBubbleProps) => {
   return (
     <RN.View style={styles.bubble}>
       <RN.Text>{value}</RN.Text>

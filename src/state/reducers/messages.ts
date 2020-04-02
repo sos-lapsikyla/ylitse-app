@@ -1,7 +1,12 @@
 import * as automaton from 'redux-automaton';
+import * as ord from 'fp-ts/lib/Ord';
+import * as O from 'fp-ts/lib/Option';
 import * as RD from '@devexperts/remote-data-ts';
 import * as T from 'fp-ts/lib/Task';
-import { flow } from 'fp-ts/lib/function';
+import * as array from 'fp-ts/lib/Array';
+import { flow, identity } from 'fp-ts/lib/function';
+import * as record from 'fp-ts/lib/Record';
+import { pipe } from 'fp-ts/lib/pipeable';
 
 import * as messageApi from '../../api/messages';
 
@@ -23,7 +28,7 @@ export const reducer: automaton.Reducer<State, actions.Action> = (
   action,
 ) => {
   switch (action.type) {
-    case 'token/Acquired':
+    case 'token/Acquired': {
       return !RD.isInitial(state.messages)
         ? state
         : automaton.loop(
@@ -33,7 +38,8 @@ export const reducer: automaton.Reducer<State, actions.Action> = (
               actions.make('messages/get/completed'),
             ),
           );
-    case 'messages/get/completed':
+    }
+    case 'messages/get/completed': {
       if (!state.polling) {
         return state;
       }
@@ -52,9 +58,60 @@ export const reducer: automaton.Reducer<State, actions.Action> = (
         ),
         actions.make('messages/get/completed'),
       );
-
       return automaton.loop(nextState, nextCmd);
+    }
     default:
       return state;
   }
+};
+
+const getMessages = ({ messages: { messages } }: model.AppState) =>
+  RD.toOption(messages);
+
+export const getMessagesByBuddyId = (buddyId: string) => (
+  appState: model.AppState,
+) =>
+  pipe(
+    getMessages(appState),
+    O.chain(r => record.lookup(buddyId, r)),
+    O.map(r => Object.values(r)),
+    O.fold(() => [], identity),
+  );
+
+export const ordMessage: ord.Ord<messageApi.Message> = ord.fromCompare((a, b) =>
+  ord.ordNumber.compare(a.sentTime, b.sentTime),
+);
+
+export const hasUnseen: (
+  buddyId: string,
+) => (appState: model.AppState) => boolean = buddyId => appState =>
+  pipe(
+    getMessagesByBuddyId(buddyId)(appState),
+    array.sort(ordMessage),
+    array.last,
+    O.map(({ type, isSeen }) => type === 'Received' && isSeen === false),
+    O.fold(() => false, identity),
+  );
+
+export const isAnyMessageUnseen = (appState: model.AppState) =>
+  pipe(
+    getMessages(appState),
+    O.fold(() => ({}), identity),
+    Object.keys,
+    array.map(id => hasUnseen(id)(appState)),
+    array.reduce(false, (a, b) => a || b),
+  );
+
+export const getMessage = (
+  { messages: messageState }: model.AppState,
+  index: {
+    buddyId: string;
+    messageId: string;
+  },
+) => {
+  return pipe(
+    RD.toOption(messageState.messages),
+    O.chain(threads => record.lookup(index.buddyId, threads)),
+    O.chain(threadMessages => record.lookup(index.messageId, threadMessages)),
+  );
 };

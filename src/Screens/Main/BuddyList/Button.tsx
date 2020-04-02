@@ -1,5 +1,8 @@
 import React from 'react';
 import RN from 'react-native';
+import { useSelector } from 'react-redux';
+
+import { hasUnseen } from '../../../state/reducers/messages';
 
 import LinearGradient from 'react-native-linear-gradient';
 import { gradients } from '../../components/colors';
@@ -10,18 +13,11 @@ type Props = {
   buddyId: string;
   name: string;
   onPress: (buddyId: string) => void | undefined;
-  hasNewMessages: boolean;
 } & RN.ViewProps;
 
-const Button = ({
-  style,
-  buddyId,
-  name,
-  onPress,
-  hasNewMessages,
-  ...viewProps
-}: Props) => {
+const Button = ({ style, buddyId, name, onPress, ...viewProps }: Props) => {
   const onPressBuddy = () => onPress(buddyId);
+  const hasNewMessages = useSelector(hasUnseen(buddyId));
   return (
     <Card style={[styles.button, style]} {...viewProps}>
       <RN.TouchableOpacity style={styles.content} onPress={onPressBuddy}>

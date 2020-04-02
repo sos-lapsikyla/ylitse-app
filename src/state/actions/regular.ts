@@ -9,8 +9,6 @@ import * as buddyApi from '../../api/buddies';
 import * as messageApi from '../../api/messages';
 
 type RegularActions = {
-  nothing: any;
-
   'storage/readToken/start': undefined;
   'storage/readToken/end': E.Either<string, authApi.AccessToken>;
   'storage/writeToken/start': authApi.AccessToken;
@@ -52,7 +50,8 @@ type RegularActions = {
   'token/refresh/required': (token: authApi.AccessToken) => Action;
 
   'messages/get/completed': Result<typeof messageApi.fetchMessages>;
-  'messages/markSeen': { buddyId: string; messageId: string };
+  'messages/markSeen': { message: messageApi.Message };
+  'messages/markSeen/end': undefined;
 
   'buddies/completed': Result<typeof buddyApi.fetchBuddies>;
 

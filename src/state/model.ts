@@ -34,7 +34,7 @@ export type AppState = {
     messages: RD.RemoteData<string, messageApi.Threads>;
   };
   sendMessage: Record<string, RD.RemoteData<string, undefined>>;
-  markMessageSeen: Record<string, 'Requested'>;
+  markMessageSeen: Record<string, boolean>;
   notifications: {
     requestPermissions: RD.RemoteData<string, boolean>;
     sendDeviceToken: RD.RemoteData<string, undefined>;

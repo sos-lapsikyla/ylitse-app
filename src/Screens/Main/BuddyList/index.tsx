@@ -53,7 +53,6 @@ const BuddyList = ({ navigation, chatList }: Props) => {
                 onPress={onPress}
                 name={buddy.name}
                 buddyId={buddy.buddyId}
-                hasNewMessages={buddy.hasNewMessages}
               />
             ))}
           </RN.ScrollView>
