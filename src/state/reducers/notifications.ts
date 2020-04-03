@@ -10,7 +10,7 @@ import * as notificationsApi from '../../api/notifications';
 import { cmd } from '../middleware';
 import { withToken } from './accessToken';
 import * as actions from '../actions';
-import { AppState } from '../model';
+import { AppState } from '../types';
 
 type RequestPermissions = AppState['notifications']['requestPermissions'];
 type SendDeviceToken = AppState['notifications']['sendDeviceToken'];

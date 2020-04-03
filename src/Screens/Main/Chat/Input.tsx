@@ -1,53 +1,52 @@
 import React from 'react';
 import RN from 'react-native';
 import * as redux from 'redux';
-import * as ReactRedux from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { SafeAreaView } from 'react-navigation';
 
 import * as messageApi from '../../../api/messages';
+import * as newMessageState from '../../../state/reducers/newMessage';
 
-import * as state from '../../../state';
 import * as actions from '../../../state/actions';
 
 import fonts from '../../components/fonts';
 import colors from '../../components/colors';
 
-type StateProps = {};
-
-type DispatchProps = {
-  sendMessage: (params: {
-    buddyId: string;
-    content: string;
-  }) => void | undefined;
-};
-
-type OwnProps = {
+type Props = {
   buddyId: string;
   style?: RN.StyleProp<RN.ViewStyle>;
 };
 
-type Props = OwnProps & StateProps & DispatchProps;
+export default ({ buddyId }: Props) => {
+  const dispatch = useDispatch<redux.Dispatch<actions.Action>>();
+  const sendMessage = (payload: messageApi.SendMessageParams) => {
+    dispatch({ type: 'newMessage/send/start', payload });
+  };
 
-const Input = ({ buddyId, sendMessage }: Props) => {
-  const [text, onChangeText] = React.useState('');
+  const messageContent = useSelector(newMessageState.getText(buddyId));
+
+  const storeMessage = (text: string) => {
+    const payload = { text, buddyId };
+    dispatch({ type: 'newMessage/store/write/start', payload });
+  };
+
   const onSend = () => {
-    sendMessage({ buddyId, content: text });
-    onChangeText('');
+    sendMessage({ buddyId, text: messageContent });
   };
   return (
     <SafeAreaView style={styles.container} forceInset={{ bottom: 'always' }}>
       <RN.View style={styles.inputContainer}>
         <RN.TextInput
           style={styles.inputText}
-          onChangeText={onChangeText}
-          value={text}
+          onChangeText={storeMessage}
+          value={messageContent}
           multiline={true}
           editable={true}
         />
       </RN.View>
       <RN.TouchableOpacity
         onPress={onSend}
-        disabled={text === ''}
+        disabled={messageContent === ''}
         style={styles.send}
       >
         <RN.Image
@@ -106,19 +105,3 @@ const styles = RN.StyleSheet.create({
     marginRight: 4,
   },
 });
-
-export default ReactRedux.connect<
-  StateProps,
-  DispatchProps,
-  OwnProps,
-  state.AppState
->(
-  () => {
-    return {};
-  },
-  (dispatch: redux.Dispatch<actions.Action>) => ({
-    sendMessage: (payload: messageApi.SendMessageParams) => {
-      dispatch({ type: 'sendMessage/start', payload });
-    },
-  }),
-)(Input);

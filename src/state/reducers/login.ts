@@ -8,9 +8,9 @@ import * as authApi from '../../api/auth';
 
 import { cmd } from '../middleware';
 import * as actions from '../actions';
-import * as model from '../model';
+import * as types from '../types';
 
-export type State = model.AppState['login'];
+export type State = types.AppState['login'];
 
 export const initialState = RD.initial;
 

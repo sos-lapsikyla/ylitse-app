@@ -6,7 +6,7 @@ import * as O from 'fp-ts/lib/Option';
 import * as storageApi from '../../api/storage';
 
 import * as actions from '../actions';
-import { AppState } from '../model';
+import { AppState } from '../types';
 import { cmd } from '../middleware';
 
 export type State = AppState['storage'];

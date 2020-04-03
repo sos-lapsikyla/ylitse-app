@@ -11,11 +11,11 @@ import { pipe } from 'fp-ts/lib/pipeable';
 import * as messageApi from '../../api/messages';
 
 import * as actions from '../actions';
-import * as model from '../model';
+import * as types from '../types';
 
 import { withToken } from './accessToken';
 
-export type State = model.AppState['messages'];
+export type State = types.AppState['messages'];
 export type LoopState = actions.LS<State>;
 
 export const initialState = {
@@ -65,11 +65,11 @@ export const reducer: automaton.Reducer<State, actions.Action> = (
   }
 };
 
-const getMessages = ({ messages: { messages } }: model.AppState) =>
+const getMessages = ({ messages: { messages } }: types.AppState) =>
   RD.toOption(messages);
 
 export const getMessagesByBuddyId = (buddyId: string) => (
-  appState: model.AppState,
+  appState: types.AppState,
 ) =>
   pipe(
     getMessages(appState),
@@ -84,7 +84,7 @@ export const ordMessage: ord.Ord<messageApi.Message> = ord.fromCompare((a, b) =>
 
 export const hasUnseen: (
   buddyId: string,
-) => (appState: model.AppState) => boolean = buddyId => appState =>
+) => (appState: types.AppState) => boolean = buddyId => appState =>
   pipe(
     getMessagesByBuddyId(buddyId)(appState),
     array.sort(ordMessage),
@@ -93,7 +93,7 @@ export const hasUnseen: (
     O.fold(() => false, identity),
   );
 
-export const isAnyMessageUnseen = (appState: model.AppState) =>
+export const isAnyMessageUnseen = (appState: types.AppState) =>
   pipe(
     getMessages(appState),
     O.fold(() => ({}), identity),
@@ -103,7 +103,7 @@ export const isAnyMessageUnseen = (appState: model.AppState) =>
   );
 
 export const getMessage = (
-  { messages: messageState }: model.AppState,
+  { messages: messageState }: types.AppState,
   index: {
     buddyId: string;
     messageId: string;

@@ -1,6 +1,9 @@
 import * as t from 'io-ts';
 import * as TE from 'fp-ts/lib/TaskEither';
+import * as T from 'fp-ts/lib/Task';
+import * as O from 'fp-ts/lib/Option';
 import { pipe } from 'fp-ts/lib/pipeable';
+import AsyncStorage from '@react-native-community/async-storage';
 
 import * as http from '../lib/http';
 import * as validators from '../lib/validators';
@@ -92,7 +95,7 @@ export function fetchMessages(
 
 export type SendMessageParams = {
   buddyId: string;
-  content: string;
+  text: string;
 };
 
 export const sendMessage = (params: SendMessageParams) => (
@@ -102,7 +105,7 @@ export const sendMessage = (params: SendMessageParams) => (
   const message = {
     sender_id: accessToken.userId,
     recipient_id: params.buddyId,
-    content: params.content,
+    content: params.text,
     opened: false,
   };
   return pipe(
@@ -117,3 +120,22 @@ type buddyId = string;
 type messageId = string;
 export type Thread = Record<messageId, Message>;
 export type Threads = Record<buddyId, Thread>;
+
+const storageKey = (buddyId: string) => `message/${buddyId}`;
+
+export const storeMessage = ({ text, buddyId }: SendMessageParams) =>
+  TE.tryCatch(
+    () => AsyncStorage.setItem(storageKey(buddyId), text),
+    () => 'Failed to write message to disk.',
+  );
+
+export const readMessage = (buddyId: string) =>
+  pipe(
+    TE.tryCatch(
+      () => AsyncStorage.getItem(storageKey(buddyId)),
+      () => 'Failed to read message from disk.',
+    ),
+    T.map(O.fromEither),
+    T.map(O.chain(O.fromNullable)),
+    T.map(O.getOrElse(() => '')),
+  );
