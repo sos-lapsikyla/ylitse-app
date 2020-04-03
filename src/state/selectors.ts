@@ -15,7 +15,7 @@ import * as mentorApi from '../api/mentors';
 import * as buddyApi from '../api/buddies';
 import * as authApi from '../api/auth';
 
-import { AppState } from './model';
+import { AppState } from './types';
 
 export function getMentors(
   mentors: RD.RemoteData<string, Record<string, mentorsApi.Mentor>>,

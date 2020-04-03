@@ -7,9 +7,9 @@ import * as mentorsApi from '../../api/mentors';
 
 import { cmd } from '../middleware';
 import * as actions from '../actions';
-import * as model from '../model';
+import * as types from '../types';
 
-export type State = model.AppState['mentors'];
+export type State = types.AppState['mentors'];
 
 export const initialState = RD.initial;
 

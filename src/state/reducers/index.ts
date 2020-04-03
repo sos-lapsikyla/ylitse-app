@@ -1,6 +1,6 @@
 import * as automaton from 'redux-automaton';
 
-import * as model from '../model';
+import * as types from '../types';
 
 import * as storage from './storage';
 import * as accessToken from './accessToken';
@@ -8,7 +8,7 @@ import * as login from './login';
 import * as createUser from './createUser';
 import * as buddies from './buddies';
 import * as messages from './messages';
-import * as sendMessage from './sendMessage';
+import * as newMessage from './newMessage';
 import * as mentors from './mentors';
 import * as markSeen from './markSeen';
 import * as userAccount from './userAccount';
@@ -18,7 +18,7 @@ import * as notifications from './notifications';
 
 import * as actions from '../actions';
 
-export type AppState = model.AppState;
+export type AppState = types.AppState;
 
 export const rootReducer: automaton.Reducer<
   AppState,
@@ -36,7 +36,7 @@ export const rootReducer: automaton.Reducer<
   mentors: mentors.reducer,
   buddies: buddies.reducer,
   messages: messages.reducer,
-  sendMessage: sendMessage.reducer,
+  newMessage: newMessage.reducer,
   markMessageSeen: markSeen.reducer,
 });
 
@@ -53,6 +53,6 @@ export const initialState: AppState = {
   mentors: mentors.initialState,
   buddies: buddies.initialState,
   messages: messages.initialState,
-  sendMessage: {},
+  newMessage: {},
   markMessageSeen: {},
 };

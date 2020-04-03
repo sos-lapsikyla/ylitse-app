@@ -12,7 +12,7 @@ import * as storageApi from '../../api/storage';
 import * as http from '../../lib/http';
 
 import * as actions from '../actions';
-import { AppState } from '../model';
+import { AppState } from '../types';
 import { cmd } from '../middleware';
 
 export type State = AppState['accessToken'];

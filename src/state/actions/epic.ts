@@ -1,5 +1,5 @@
 import { Observable } from 'rxjs';
-import { AppState as State } from '../model';
+import { AppState as State } from '../types';
 import * as regular from './regular';
 
 export type FetchCmd = {

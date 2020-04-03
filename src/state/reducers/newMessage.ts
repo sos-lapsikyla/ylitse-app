@@ -2,37 +2,38 @@ import * as automaton from 'redux-automaton';
 import * as RD from '@devexperts/remote-data-ts';
 import * as T from 'fp-ts/lib/Task';
 import * as record from 'fp-ts/lib/Record';
-import * as E from 'fp-ts/lib/Either';
 import * as O from 'fp-ts/lib/Option';
 import { pipe } from 'fp-ts/lib/pipeable';
-import { constant } from 'fp-ts/lib/function';
 
 import * as messageApi from '../../api/messages';
 
 import * as actions from '../actions';
-import * as model from '../model';
+import { AppState } from '../types';
 import { withToken } from './accessToken';
 
-type Request = RD.RemoteData<string, undefined>;
+export type State = AppState['newMessage'];
 
-export type State = model.AppState['sendMessage'];
 export const reducer = (state: State, action: actions.Action) => {
   switch (action.type) {
-    case 'newMessage/send/start':
+    case 'newMessage/send/start': {
       const buddyId = action.payload.buddyId;
       const isLoading = pipe(
         record.lookup(buddyId, state),
-        O.fold(constant(false), RD.isPending),
+        O.fold(() => false, ({ sendRequest }) => RD.isPending(sendRequest)),
       );
 
       if (isLoading) {
         return state;
       }
 
-      const nextState = record.insertAt<string, Request>(
-        action.payload.buddyId,
-        RD.pending,
-      )(state);
+      const nextState: State = {
+        ...state,
+        [buddyId]: {
+          sendRequest: RD.pending,
+          storeText: RD.initial,
+          text: '',
+        },
+      };
       const nextAction = withToken(
         token =>
           T.task.map(
@@ -42,18 +43,21 @@ export const reducer = (state: State, action: actions.Action) => {
         actions.make('newMessage/send/end'),
       );
       return automaton.loop(nextState, nextAction);
-    case 'newMessage/send/end':
-      return pipe(
-        state,
-        record.insertAt<string, Request>(
-          action.payload.buddyId,
-          pipe(
-            action.payload.response,
-            E.fold(RD.failure, constant(RD.initial)),
-          ),
-        ),
-      );
-    default:
+    }
+    case 'newMessage/send/end': {
+      const { buddyId, response } = action.payload;
+
+      const result = {
+        ...state[buddyId],
+        sendRequest: RD.fromEither(response),
+      };
+      return {
+        ...state,
+        [buddyId]: result,
+      };
+    }
+    default: {
       return state;
+    }
   }
 };

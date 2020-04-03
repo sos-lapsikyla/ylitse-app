@@ -7,7 +7,7 @@ import * as accountApi from '../../api/account';
 
 import * as actions from '../actions';
 
-import { AppState } from '../model';
+import { AppState } from '../types';
 import { withToken } from './accessToken';
 
 export const initialState = RD.initial;

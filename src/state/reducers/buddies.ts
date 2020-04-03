@@ -9,9 +9,9 @@ import { pipe } from 'fp-ts/lib/pipeable';
 import * as buddyApi from '../../api/buddies';
 
 import * as actions from '../actions';
-import * as model from '../model';
+import * as types from '../types';
 
-export type State = model.AppState['buddies'];
+export type State = types.AppState['buddies'];
 
 import { withToken } from './accessToken';
 

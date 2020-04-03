@@ -10,7 +10,7 @@ import * as accountApi from '../../api/account';
 
 import * as actions from '../actions';
 
-import { AppState } from '../model';
+import { AppState } from '../types';
 import { cmd } from '../middleware';
 import { withToken } from './accessToken';
 

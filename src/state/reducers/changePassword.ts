@@ -7,7 +7,7 @@ import * as authApi from '../../api/auth';
 
 import * as actions from '../actions';
 
-import { AppState } from '../model';
+import { AppState } from '../types';
 import { withToken } from './accessToken';
 import { cmd } from '../middleware';
 
