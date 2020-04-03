@@ -9,6 +9,8 @@ import * as buddyApi from '../../api/buddies';
 import * as messageApi from '../../api/messages';
 
 type RegularActions = {
+  'none/none': undefined;
+
   'storage/readToken/start': undefined;
   'storage/readToken/end': E.Either<string, authApi.AccessToken>;
   'storage/writeToken/start': authApi.AccessToken;
@@ -60,7 +62,11 @@ type RegularActions = {
     buddyId: string;
     response: Result<ReturnType<typeof messageApi.sendMessage>>;
   };
-  'newMessage/store/start': messageApi.SendMessageParams;
+
+  'newMessage/store/write/start': messageApi.SendMessageParams;
+  'newMessage/store/write/end': messageApi.SendMessageParams;
+  'newMessage/store/read/start': { buddyId: string };
+  'newMessage/store/read/end': messageApi.SendMessageParams;
 
   'notifications/requestPermissions/init': undefined;
   'notifications/requestPermissions/completed': TE2E<

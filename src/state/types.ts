@@ -44,7 +44,6 @@ export type AppState = {
     BuddyId,
     {
       sendRequest: RemoteAction;
-      storeText: RemoteAction;
       text: string;
     }
   >;

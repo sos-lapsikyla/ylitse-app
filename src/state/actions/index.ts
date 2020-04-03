@@ -11,3 +11,4 @@ export type LS<S> = S | automaton.Loop<S, Action>;
 export type Reducer<S> = (state: S | undefined, action: Action) => LS<S>;
 
 export const make = regular.make;
+export const none = make('none/none')(undefined);

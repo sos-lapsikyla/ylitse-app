@@ -27,7 +27,7 @@ export default ({ buddyId }: Props) => {
 
   const storeMessage = (text: string) => {
     const payload = { text, buddyId };
-    dispatch({ type: 'newMessage/store/start', payload });
+    dispatch({ type: 'newMessage/store/write/start', payload });
   };
 
   const onSend = () => {

@@ -1,10 +1,12 @@
-import * as automaton from 'redux-automaton';
+import { loop } from 'redux-automaton';
 import * as RD from '@devexperts/remote-data-ts';
 import * as T from 'fp-ts/lib/Task';
 import * as record from 'fp-ts/lib/Record';
+import * as array from 'fp-ts/lib/Array';
 import * as O from 'fp-ts/lib/Option';
 import { pipe } from 'fp-ts/lib/pipeable';
 import { flow } from 'fp-ts/lib/function';
+import { cmd } from '../middleware';
 
 import * as messageApi from '../../api/messages';
 
@@ -27,20 +29,79 @@ export const getText: getText = buddyId =>
     O.getOrElse(() => ''),
   );
 
+const getPrev = (buddyId: string, state: State) =>
+  O.getOrElse<NewMessage>(() => ({
+    sendRequest: RD.initial,
+    text: '',
+    storeRequest: RD.initial,
+  }))(record.lookup(buddyId, state));
+
 export const reducer = (state: State, action: actions.Action) => {
   switch (action.type) {
-    case 'newMessage/store/start': {
+    case 'buddies/completed': {
+      const actionList = pipe(
+        O.fromEither(action.payload),
+        O.map(record.keys),
+        O.getOrElse<string[]>(() => []),
+        array.map(buddyId => ({ buddyId })),
+        array.map(actions.make('newMessage/store/read/start')),
+      );
+      return loop(state, ...actionList);
+    }
+    case 'newMessage/store/read/start': {
+      const { buddyId } = action.payload;
+      const nextAction = cmd(
+        pipe(
+          messageApi.readMessage(buddyId),
+          T.map(text =>
+            actions.make('newMessage/store/read/end')({ buddyId, text }),
+          ),
+        ),
+      );
+      return loop(state, nextAction);
+    }
+    case 'newMessage/store/read/end': {
       const { buddyId, text } = action.payload;
-      const prev = O.getOrElse<NewMessage>(() => ({
+      const next: NewMessage = {
         sendRequest: RD.initial,
-        text: '',
-        storeText: RD.initial,
-      }))(record.lookup(buddyId, state));
-      const next = {
-        ...prev,
         text,
       };
       return record.insertAt(buddyId, next)(state);
+    }
+    case 'newMessage/store/write/start': {
+      const { buddyId, text } = action.payload;
+      const prev = getPrev(buddyId, state);
+      if (text === prev.text) {
+        return state;
+      }
+      const next: NewMessage = {
+        sendRequest: RD.initial,
+        text,
+      };
+
+      const nextState = record.insertAt(buddyId, next)(state);
+      const nextAction = cmd(
+        T.delay(250)(
+          T.of(actions.make('newMessage/store/write/end')(action.payload)),
+        ),
+      );
+      return loop(nextState, nextAction);
+    }
+    case 'newMessage/store/write/end': {
+      const { buddyId, text } = action.payload;
+      const prev = getPrev(buddyId, state);
+      if (prev.text !== text) {
+        return state;
+      }
+      const next: NewMessage = { ...prev };
+      const nextState = record.insertAt(buddyId, next)(state);
+      const nextAction = cmd(
+        pipe(
+          messageApi.storeMessage(action.payload),
+          T.map(_ => actions.none),
+        ),
+      );
+      return loop(nextState, nextAction);
     }
     case 'newMessage/send/start': {
       const buddyId = action.payload.buddyId;
@@ -57,7 +118,6 @@ export const reducer = (state: State, action: actions.Action) => {
         ...state,
         [buddyId]: {
           sendRequest: RD.pending,
-          storeText: RD.initial,
           text: '',
         },
       };
@@ -69,13 +129,14 @@ export const reducer = (state: State, action: actions.Action) => {
           ),
         actions.make('newMessage/send/end'),
       );
-      return automaton.loop(nextState, nextAction);
+      return loop(nextState, nextAction);
     }
     case 'newMessage/send/end': {
       const { buddyId, response } = action.payload;
 
       const result = {
         ...state[buddyId],
+        text: '',
         sendRequest: RD.fromEither(response),
       };
       return {
