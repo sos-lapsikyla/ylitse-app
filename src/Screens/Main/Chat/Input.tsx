@@ -118,7 +118,7 @@ export default ReactRedux.connect<
   },
   (dispatch: redux.Dispatch<actions.Action>) => ({
     sendMessage: (payload: messageApi.SendMessageParams) => {
-      dispatch({ type: 'sendMessage/start', payload });
+      dispatch({ type: 'newMessage/send/start', payload });
     },
   }),
 )(Input);

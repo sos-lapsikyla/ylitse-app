@@ -55,8 +55,8 @@ type RegularActions = {
 
   'buddies/completed': Result<typeof buddyApi.fetchBuddies>;
 
-  'sendMessage/start': messageApi.SendMessageParams;
-  'sendMessage/end': {
+  'newMessage/send/start': messageApi.SendMessageParams;
+  'newMessage/send/end': {
     buddyId: string;
     response: Result<ReturnType<typeof messageApi.sendMessage>>;
   };

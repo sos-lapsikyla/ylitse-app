@@ -18,7 +18,7 @@ type Request = RD.RemoteData<string, undefined>;
 export type State = model.AppState['sendMessage'];
 export const reducer = (state: State, action: actions.Action) => {
   switch (action.type) {
-    case 'sendMessage/start':
+    case 'newMessage/send/start':
       const buddyId = action.payload.buddyId;
       const isLoading = pipe(
         record.lookup(buddyId, state),
@@ -39,10 +39,10 @@ export const reducer = (state: State, action: actions.Action) => {
             messageApi.sendMessage(action.payload)(token),
             response => ({ response, buddyId }),
           ),
-        actions.make('sendMessage/end'),
+        actions.make('newMessage/send/end'),
       );
       return automaton.loop(nextState, nextAction);
-    case 'sendMessage/end':
+    case 'newMessage/send/end':
       return pipe(
         state,
         record.insertAt<string, Request>(
