@@ -92,7 +92,7 @@ export function fetchMessages(
 
 export type SendMessageParams = {
   buddyId: string;
-  content: string;
+  text: string;
 };
 
 export const sendMessage = (params: SendMessageParams) => (
@@ -102,7 +102,7 @@ export const sendMessage = (params: SendMessageParams) => (
   const message = {
     sender_id: accessToken.userId,
     recipient_id: params.buddyId,
-    content: params.content,
+    content: params.text,
     opened: false,
   };
   return pipe(

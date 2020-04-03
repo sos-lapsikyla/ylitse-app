@@ -4,6 +4,7 @@ import * as T from 'fp-ts/lib/Task';
 import * as record from 'fp-ts/lib/Record';
 import * as O from 'fp-ts/lib/Option';
 import { pipe } from 'fp-ts/lib/pipeable';
+import { flow } from 'fp-ts/lib/function';
 
 import * as messageApi from '../../api/messages';
 
@@ -13,8 +14,34 @@ import { withToken } from './accessToken';
 
 export type State = AppState['newMessage'];
 
+type NewMessage = AppState['newMessage'][string];
+type get = (buddyId: string) => (appState: AppState) => O.Option<NewMessage>;
+const get: get = buddyId => ({ newMessage }) =>
+  record.lookup(buddyId, newMessage);
+
+type getText = (buddyId: string) => (appState: AppState) => string;
+export const getText: getText = buddyId =>
+  flow(
+    get(buddyId),
+    O.map(({ text }) => text),
+    O.getOrElse(() => ''),
+  );
+
 export const reducer = (state: State, action: actions.Action) => {
   switch (action.type) {
+    case 'newMessage/store/start': {
+      const { buddyId, text } = action.payload;
+      const prev = O.getOrElse<NewMessage>(() => ({
+        sendRequest: RD.initial,
+        text: '',
+        storeText: RD.initial,
+      }))(record.lookup(buddyId, state));
+      const next = {
+        ...prev,
+        text,
+      };
+      return record.insertAt(buddyId, next)(state);
+    }
     case 'newMessage/send/start': {
       const buddyId = action.payload.buddyId;
       const isLoading = pipe(

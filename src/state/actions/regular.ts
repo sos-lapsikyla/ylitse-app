@@ -60,6 +60,7 @@ type RegularActions = {
     buddyId: string;
     response: Result<ReturnType<typeof messageApi.sendMessage>>;
   };
+  'newMessage/store/start': messageApi.SendMessageParams;
 
   'notifications/requestPermissions/init': undefined;
   'notifications/requestPermissions/completed': TE2E<
