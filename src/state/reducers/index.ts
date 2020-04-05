@@ -1,4 +1,8 @@
 import * as automaton from 'redux-automaton';
+import * as T from 'fp-ts/lib/Task';
+
+import * as tokenStorage from '../../api/storage';
+import { cmd } from '../middleware';
 
 import * as types from '../types';
 
@@ -20,25 +24,45 @@ import * as actions from '../actions';
 
 export type AppState = types.AppState;
 
+const logout: automaton.Reducer<AppState, actions.Action> = (
+  state = initialState,
+  action,
+) => {
+  switch (action.type) {
+    case 'logout/logout': {
+      return automaton.loop(
+        initialState,
+        cmd(T.task.map(tokenStorage.purgeToken, _ => actions.none)),
+      );
+    }
+    default: {
+      return state;
+    }
+  }
+};
+
 export const rootReducer: automaton.Reducer<
   AppState,
   actions.Action
-> = automaton.combineReducers({
-  storage: storage.reducer,
-  accessToken: accessToken.reducer,
-  login: login.reducer,
-  createUser: createUser.reducer,
-  userAccount: userAccount.reducer,
-  changePassword: changePassword.reducer,
-  changeEmail: changeEmail.reducer,
-  notifications: notifications.reducer,
+> = automaton.reducerReducers(
+  logout,
+  automaton.combineReducers({
+    storage: storage.reducer,
+    accessToken: accessToken.reducer,
+    login: login.reducer,
+    createUser: createUser.reducer,
+    userAccount: userAccount.reducer,
+    changePassword: changePassword.reducer,
+    changeEmail: changeEmail.reducer,
+    notifications: notifications.reducer,
 
-  mentors: mentors.reducer,
-  buddies: buddies.reducer,
-  messages: messages.reducer,
-  newMessage: newMessage.reducer,
-  markMessageSeen: markSeen.reducer,
-});
+    mentors: mentors.reducer,
+    buddies: buddies.reducer,
+    messages: messages.reducer,
+    newMessage: newMessage.reducer,
+    markMessageSeen: markSeen.reducer,
+  }),
+);
 
 export const initialState: AppState = {
   storage: storage.initialState,

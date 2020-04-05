@@ -26,17 +26,21 @@ const colors = {
   green20: '#e8f2df',
   green40: '#d0e4bf',
   green60: '#b5d59d',
-  green80: '#98c679',
+
+  green80: '#98c679', // mentor green
   green100: '#76b856',
 
   blue100: '#009ee0',
-  blue80: '#00b1e6',
-  blue60: '#5cc5ed',
-  blue40: '#a2daf3',
+
+  blue80: '#00b1e6', // strongblue aka greenbutton
+  blue60: '#5cc5ed', // ==> BLUE on figma mentor blue
+  blue40: '#a2daf3', // ==> PILL BLUE
+
   blue20: '#d4edfa',
 
   red60: '#f19a9b',
-  red80: '#eb727c',
+
+  red80: '#eb727c', // mentor red
 };
 
 export const gradients = {
