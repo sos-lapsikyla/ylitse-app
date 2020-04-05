@@ -83,3 +83,8 @@ export const writeToken = (token: auth.AccessToken) =>
         () => 'Failed to write token to disk.',
       ),
   );
+
+export const purgeToken = TE.tryCatch(
+  () => AsyncStorage.removeItem(key),
+  () => 'Failed to purge token from disk.',
+);

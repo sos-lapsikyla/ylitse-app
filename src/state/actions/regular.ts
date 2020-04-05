@@ -10,6 +10,7 @@ import * as messageApi from '../../api/messages';
 
 type RegularActions = {
   'none/none': undefined;
+  'logout/logout': undefined;
 
   'storage/readToken/start': undefined;
   'storage/readToken/end': E.Either<string, authApi.AccessToken>;
