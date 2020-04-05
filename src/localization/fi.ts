@@ -57,6 +57,16 @@ export const messages = {
   'main.settings.account.title': 'Asetukset',
   'main.settings.account.userName': 'Käyttäjänimi (Yksityinen)',
 
+  'main.settings.deleteAccount.cancel': 'Peruuta',
+  'main.settings.deleteAccount.deleteAccount': 'Poista tili',
+  'main.settings.deleteAccount.text1':
+    'Oletko varma, että haluat poistaa tilin?',
+  'main.settings.deleteAccount.text2':
+    'Rekisteröitymistietosi ja käymäsi keskustelut poistuvat järjestelmästä.',
+  'main.settings.deleteAccount.text3':
+    'Tiliä ja siihen liittyviä tietoja ei voida palauttaa.  ',
+  'main.settings.deleteAccount.title': 'Tilin poisto',
+
   'main.settings.logout.cancel': 'Peruuta',
   'main.settings.logout.logout': 'Kirjaudu ulos',
   'main.settings.logout.text1': 'Olet kirjautumassa ulos.',

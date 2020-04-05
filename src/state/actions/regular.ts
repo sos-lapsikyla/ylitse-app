@@ -11,6 +11,8 @@ import * as messageApi from '../../api/messages';
 type RegularActions = {
   'none/none': undefined;
   'logout/logout': undefined;
+  'deleteAccount/start': undefined;
+  'deleteAccount/end': Result<typeof accountApi.deleteAccount>;
 
   'storage/readToken/start': undefined;
   'storage/readToken/end': E.Either<string, authApi.AccessToken>;

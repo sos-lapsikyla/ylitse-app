@@ -12,20 +12,25 @@ import fonts from '../../components/fonts';
 import UserAccount from './UserAccount';
 import BottomCard from './BottomCard';
 import { LogoutRoute } from './Logout';
+import { DeleteAccountRoute } from './DeleteAccount';
 
 export type SettingsRoute = {
   'Main/Settings': {};
 };
 
-type OwnProps = navigationProps.NavigationProps<SettingsRoute, LogoutRoute>;
+type OwnProps = navigationProps.NavigationProps<
+  SettingsRoute,
+  LogoutRoute & DeleteAccountRoute
+>;
 type Props = OwnProps;
 
 const Settings = ({ navigation }: Props) => {
   const onNavigateToLogout = () => {
     navigation.navigate('Main/Settings/Logout', {});
   };
-  const onNavigateToDeleteAccount = () => {};
-  React.useEffect(onNavigateToLogout, []);
+  const onNavigateToDeleteAccount = () => {
+    navigation.navigate('Main/Settings/DeleteAccount', {});
+  };
   return (
     <TitledContainer
       TitleComponent={

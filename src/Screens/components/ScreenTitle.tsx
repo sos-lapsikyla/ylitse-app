@@ -12,11 +12,15 @@ import fonts from './fonts';
 type Props = {
   id: MessageId;
   onBack?: () => void | undefined;
+  style?: RN.StyleProp<RN.ViewStyle>;
 };
 
-export default ({ id, onBack }: Props) => {
+export default ({ id, onBack, style }: Props) => {
   return (
-    <SafeAreaView style={styles.container} forceInset={{ top: 'always' }}>
+    <SafeAreaView
+      style={[styles.container, style]}
+      forceInset={{ top: 'always' }}
+    >
       <RN.View style={styles.content}>
         <RN.TouchableOpacity style={styles.button} onPress={onBack}>
           <RN.Image

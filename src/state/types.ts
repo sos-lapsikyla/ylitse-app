@@ -33,6 +33,8 @@ export type AppState = {
   changeEmail: RemoteData<{ email?: string }>;
   userAccount: RemoteData<accountApi.UserAccount>;
 
+  deleteAccount: RemoteAction;
+
   mentors: RemoteData<Record<BuddyId, mentorsApi.Mentor>>;
   buddies: RemoteData<Record<BuddyId, buddyApi.Buddy>>;
 

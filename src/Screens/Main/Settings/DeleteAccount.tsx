@@ -4,8 +4,8 @@ import * as redux from 'redux';
 import { useDispatch } from 'react-redux';
 import { SafeAreaView } from 'react-navigation';
 
-import * as navigationProps from '../../../lib/navigation-props';
 import * as actions from '../../../state/actions';
+import * as navigationProps from '../../../lib/navigation-props';
 
 import Message from '../../components/Message';
 import { textShadow } from '../../components/shadow';
@@ -18,16 +18,19 @@ import CreatedBySosBanner from '../../components/CreatedBySosBanner';
 import { MentorListRoute } from '../../Onboarding/MentorList';
 import navigateOnboarding from './navigateOnboarding';
 
-export type LogoutRoute = {
-  'Main/Settings/Logout': {};
+export type DeleteAccountRoute = {
+  'Main/Settings/DeleteAccount': {};
 };
 
-type Props = navigationProps.NavigationProps<LogoutRoute, MentorListRoute>;
+type Props = navigationProps.NavigationProps<
+  DeleteAccountRoute,
+  MentorListRoute
+>;
 
 export default ({ navigation }: Props) => {
   const dispatch = useDispatch<redux.Dispatch<actions.Action>>();
-  const onLogout = () => {
-    dispatch(actions.make('logout/logout')(undefined));
+  const onDeleteAccount = () => {
+    dispatch(actions.make('deleteAccount/start')(undefined));
     navigateOnboarding(navigation);
   };
   const onGoBack = () => {
@@ -35,7 +38,11 @@ export default ({ navigation }: Props) => {
   };
   return (
     <RN.View style={styles.screen}>
-      <ScreenTitle id="main.settings.logout.title" onBack={onGoBack} />
+      <ScreenTitle
+        style={styles.title}
+        id="main.settings.deleteAccount.title"
+        onBack={onGoBack}
+      />
       <RN.ScrollView
         style={styles.scrollView}
         contentContainerStyle={styles.scrollContent}
@@ -43,22 +50,32 @@ export default ({ navigation }: Props) => {
       >
         <RN.View />
         <RN.View style={styles.textContainer}>
-          <Message style={styles.text} id={'main.settings.logout.text1'} />
-          <Message style={styles.text} id={'main.settings.logout.text2'} />
+          <Message
+            style={styles.text}
+            id={'main.settings.deleteAccount.text1'}
+          />
+          <Message
+            style={styles.text}
+            id={'main.settings.deleteAccount.text2'}
+          />
+          <Message
+            style={styles.text}
+            id={'main.settings.deleteAccount.text3'}
+          />
         </RN.View>
         <SafeAreaView
           forceInset={{ bottom: 'always' }}
           style={styles.buttonContainer}
         >
           <MessageButton
-            style={styles.logoutButton}
-            onPress={onLogout}
-            messageId={'main.settings.logout.logout'}
+            style={styles.deleteAccountButton}
+            onPress={onDeleteAccount}
+            messageId={'main.settings.deleteAccount.deleteAccount'}
           />
           <MessageButton
             style={styles.cancelButton}
             onPress={onGoBack}
-            messageId={'main.settings.logout.cancel'}
+            messageId={'main.settings.deleteAccount.cancel'}
           />
           <CreatedBySosBanner />
         </SafeAreaView>
@@ -71,6 +88,9 @@ const styles = RN.StyleSheet.create({
   screen: {
     flex: 1,
     backgroundColor: colors.white,
+  },
+  title: {
+    backgroundColor: colors.danger,
   },
   screenTitleText: {
     marginTop: 16,
@@ -106,6 +126,6 @@ const styles = RN.StyleSheet.create({
     justifyContent: 'flex-end',
     paddingHorizontal: 40,
   },
-  logoutButton: { marginBottom: 40 },
+  deleteAccountButton: { backgroundColor: colors.danger, marginBottom: 40 },
   cancelButton: { backgroundColor: colors.gray, marginBottom: 40 },
 });
