@@ -56,6 +56,14 @@ export const messages = {
 
   'main.settings.account.title': 'Asetukset',
   'main.settings.account.userName': 'Käyttäjänimi (Yksityinen)',
+
+  'main.settings.logout.cancel': 'Peruuta',
+  'main.settings.logout.logout': 'Kirjaudu ulos',
+  'main.settings.logout.text1': 'Olet kirjautumassa ulos.',
+  'main.settings.logout.text2':
+    'Pääset halutessasi takaisin keskusteluihisi kirjautumalla sisään.',
+  'main.settings.logout.title': 'Kirjaudu ulos',
+
   'main.settings.other.button.deleteAccount': 'Poista tili',
   'main.settings.other.button.logOut': 'Kirjaudu ulos',
   'main.settings.other.feedBack': 'Anna palautetta : )',

@@ -13,7 +13,9 @@ import Tabs, { TabsRoute } from './Main/Tabs';
 import MentorCardExpanded, {
   MentorCardExpandedRoute,
 } from './Main/MentorCardExpanded';
+
 import Chat, { ChatRoute } from './Main/Chat';
+import Logout, { LogoutRoute } from './Main/Settings/Logout';
 
 type RouteName = keyof (SplashRoute &
   MentorListRoute &
@@ -24,7 +26,8 @@ type RouteName = keyof (SplashRoute &
   SignInRoute &
   TabsRoute &
   MentorCardExpandedRoute &
-  ChatRoute);
+  ChatRoute &
+  LogoutRoute);
 type Screen =
   | typeof Splash
   | typeof MentorList
@@ -35,7 +38,8 @@ type Screen =
   | typeof SignIn
   | typeof Tabs
   | typeof MentorCardExpanded
-  | typeof Chat;
+  | typeof Chat
+  | typeof Logout;
 
 export type Route = keyof typeof routes;
 const routes: {
@@ -70,6 +74,9 @@ const routes: {
   },
   'Main/Chat': {
     screen: Chat,
+  },
+  'Main/Settings/Logout': {
+    screen: Logout,
   },
 };
 

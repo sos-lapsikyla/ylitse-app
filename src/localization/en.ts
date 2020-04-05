@@ -58,6 +58,14 @@ export const messages: { [key in MessageId]: string } = {
 
   'main.settings.account.title': 'Account settings',
   'main.settings.account.userName': 'username (private)',
+
+  'main.settings.logout.cancel': 'Cancel',
+  'main.settings.logout.logout': 'Logout',
+  'main.settings.logout.text1': 'You are loggin out.',
+  'main.settings.logout.text2':
+    'You can get back to your conversations by loggin in.',
+  'main.settings.logout.title': 'Logout',
+
   'main.settings.other.button.deleteAccount': 'Delete account',
   'main.settings.other.button.logOut': 'Log out',
   'main.settings.other.feedBack': 'Give us feeback : )',
