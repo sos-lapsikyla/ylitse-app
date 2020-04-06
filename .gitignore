@@ -65,3 +65,4 @@ buck-out/
 
 # react-native-svg-asset-plugin
 src/Screens/images/.png-cache/
+src/Screens/images/flags/.png-cache/

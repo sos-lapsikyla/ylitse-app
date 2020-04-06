@@ -36,6 +36,10 @@ export const messages: { [key in MessageId]: string } = {
   'date.month.11': 'november',
   'date.month.12': 'decemer',
 
+  'main.mentor.other': 'I can also support with:',
+  'main.mentor.story': 'My story',
+  'main.mentor.subject': 'Subject:',
+
   'main.mentorCardExpanded.button': 'Chat',
   'main.mentorList.title': 'Mentors',
 

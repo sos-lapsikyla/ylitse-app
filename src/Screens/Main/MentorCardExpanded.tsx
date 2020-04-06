@@ -9,12 +9,22 @@ import * as mentorApi from '../../api/mentors';
 
 import MentorTitle from '../components/MentorTitle';
 import MentorStory from '../components/MentorStory';
-import MentorSkills from '../components/MentorSkills';
+import Skills from '../components/Skills';
+import Message from '../components/Message';
 import getBuddyColor from '../components/getBuddyColor';
 import Button from '../components/Button';
-import { gradients } from '../components/colors';
+import colors, { gradients } from '../components/colors';
+import fonts from '../components/fonts';
 
 import { ChatRoute } from './Chat';
+
+const langMap: Record<string, RN.ImageSourcePropType> = {
+  Finnish: require('../images/flags/fi.svg'),
+  Italian: require('../images/flags/it.svg'),
+  English: require('../images/flags/gb.svg'),
+  Swedish: require('../images/flags/se.svg'),
+  Russian: require('../images/flags/ru.svg'),
+};
 
 export type MentorCardExpandedRoute = {
   'Main/MentorCardExpanded': { mentor: mentorApi.Mentor };
@@ -44,13 +54,27 @@ const MentorCardExpanded = ({ navigation }: Props) => {
         onPress={goBack}
         safeArea={true}
       />
-      <RN.ScrollView contentContainerStyle={styles.scrollContent}>
+      <RN.ScrollView
+        contentContainerStyle={styles.scrollContent}
+        showsVerticalScrollIndicator={false}
+        showsHorizontalScrollIndicator={false}
+      >
+        <RN.View style={styles.flagContainer}>
+          {mentor.languages.map(lang =>
+            lang in langMap ? (
+              <RN.Image
+                style={styles.flag}
+                key={lang}
+                source={langMap[lang]}
+                width={48}
+                height={48}
+              />
+            ) : null,
+          )}
+        </RN.View>
+        <Message id={'main.mentor.story'} style={styles.subtitle} />
         <MentorStory style={styles.story} story={mentor.story} showAll={true} />
-        <MentorSkills
-          style={styles.skills}
-          color={color}
-          skills={mentor.skills}
-        />
+        <Skills style={styles.skills} color={color} skills={mentor.skills} />
         <SafeAreaView style={styles.safeArea} forceInset={{ bottom: 'always' }}>
           <Button
             style={styles.button}
@@ -77,8 +101,24 @@ const styles = RN.StyleSheet.create({
     flexGrow: 1,
     paddingBottom: 40,
   },
+  flagContainer: {
+    alignSelf: 'stretch',
+    marginTop: 32,
+    justifyContent: 'flex-end',
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+  },
+  flag: {
+    borderRadius: 24,
+    marginRight: 16,
+  },
+  subtitle: {
+    ...fonts.largeBold,
+    color: colors.deepBlue,
+    textAlign: 'left',
+  },
   story: {
-    marginTop: 24,
+    marginTop: 16,
   },
   skills: {
     marginTop: 24,
