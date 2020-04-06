@@ -34,6 +34,10 @@ export const messages = {
   'date.month.11': 'marraskuuta',
   'date.month.12': 'joulukuuta',
 
+  'main.mentor.other': 'Voin tukea myös:',
+  'main.mentor.story': 'Tarinani',
+  'main.mentor.subject': 'Aihealue:',
+
   'main.mentorCardExpanded.button': 'Juttele',
   'main.mentorList.title': 'Mentorit',
 
