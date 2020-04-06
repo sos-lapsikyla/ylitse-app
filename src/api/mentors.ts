@@ -48,7 +48,7 @@ export const fetchMentors: () => TE.TaskEither<
     fromMentorList,
   );
 
-export function compare(a: Mentor, b: Mentor) {
+export function compareLang(a: Mentor, b: Mentor) {
   if (isFinnishPhone) {
     return 0;
   }
@@ -63,3 +63,20 @@ export function compare(a: Mentor, b: Mentor) {
   }
   return 0;
 }
+
+const randomVal = Math.floor(Math.random() * 100);
+
+const compareIds = (userId: string | undefined, a: Mentor, b: Mentor) => {
+  const x: number = (userId ? userId.charCodeAt(0) : 0) + randomVal;
+  const y = a.buddyId.charCodeAt(0);
+  const z = b.buddyId.charCodeAt(0);
+
+  return Math.abs(x - z) - Math.abs(x - y);
+};
+
+export const compare = (userId: string | undefined) => (
+  a: Mentor,
+  b: Mentor,
+) => {
+  return compareLang(a, b) || compareIds(userId, a, b);
+};
