@@ -64,7 +64,7 @@ export const messages: { [key in MessageId]: string } = {
   'main.settings.deleteAccount.text1':
     'Are you sure you want to delete your account?',
   'main.settings.deleteAccount.text2':
-    'All your data will be destroyed fromn the system.',
+    'All your data will be destroyed from the system.',
   'main.settings.deleteAccount.text3':
     'Your account or conversations cannot be returned.',
   'main.settings.deleteAccount.title': 'Account deletion',
