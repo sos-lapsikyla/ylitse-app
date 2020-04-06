@@ -32,6 +32,12 @@ export const getUserId = flow(
   O.map(({ userId }) => userId),
   O.toUndefined,
 );
+export const isMentor = flow(
+  getToken,
+  O.map(({ mentorId }) => mentorId),
+  O.toUndefined,
+  id => !!id,
+);
 
 export function withToken<A>(
   task: (token: authApi.AccessToken) => T.Task<A>,
