@@ -7,10 +7,13 @@ import * as config from './config';
 
 type ApiLoginToken = t.TypeOf<typeof tokenType>;
 const tokenType = t.strict({
-  scopes: t.strict({
-    account_id: t.string,
-    user_id: t.string,
-  }),
+  scopes: t.intersection([
+    t.strict({
+      account_id: t.string,
+      user_id: t.string,
+    }),
+    t.partial({ mentor_id: t.string }),
+  ]),
   tokens: t.strict({
     access_token: t.string,
     refresh_token: t.string,
@@ -24,6 +27,7 @@ const newAccessTokenType = t.strict({
 export type AccessToken = {
   accountId: string;
   userId: string;
+  mentorId?: string;
   accessToken: string;
   refreshToken: string;
 };
@@ -36,12 +40,13 @@ export const invalidToken: AccessToken = {
 };
 
 function toAccessToken({
-  scopes: { account_id, user_id },
+  scopes: { account_id, user_id, mentor_id },
   tokens,
 }: ApiLoginToken): AccessToken {
   return {
     accountId: account_id,
     userId: user_id,
+    mentorId: mentor_id,
     accessToken: tokens.access_token,
     refreshToken: tokens.refresh_token,
   };
