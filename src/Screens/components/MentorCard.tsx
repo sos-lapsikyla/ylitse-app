@@ -20,12 +20,21 @@ interface Props {
 
 const MentorCard: React.FC<Props> = ({ onPress, style, mentor }) => {
   const color = getBuddyColor(mentor.buddyId);
+  const scroll = React.useRef<RN.ScrollView | null>(null);
+  React.useEffect(() => {
+    if (scroll) {
+      !!scroll.current && scroll.current.scrollToEnd();
+    }
+  }, [scroll]);
   return (
     <Card style={style}>
       <MentorTitle mentor={mentor} />
       <RN.ScrollView
+        ref={scroll}
         style={styles.content}
         contentContainerStyle={styles.contentContainer}
+        showsVerticalScrollIndicator={false}
+        showsHorizontalScrollIndicator={false}
       >
         <MentorStory
           style={styles.story}
@@ -70,15 +79,13 @@ const styles = RN.StyleSheet.create({
     flexDirection: 'row',
     flexWrap: 'wrap',
   },
-  story: {
-    marginTop: 8,
-  },
+  story: {},
   buttonContainer: {
     flex: 1,
     flexGrow: 1,
     justifyContent: 'flex-end',
   },
-  button: { marginTop: 24 },
+  button: {},
 });
 
 export default MentorCard;
