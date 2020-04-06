@@ -32,6 +32,7 @@ const routeConfig: {
 };
 
 const Main = reactNavigationTab.createBottomTabNavigator(routeConfig, {
+  initialRouteName: 'Main/MentorList',
   tabBarComponent: props => (
     <TabBar
       {...props}
