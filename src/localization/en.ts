@@ -133,8 +133,8 @@ export const messages: { [key in MessageId]: string } = {
   'onboarding.signUp.error.userNameShort': 'Username is too short',
   'onboarding.signUp.error.userNameTaken': 'Username is taken',
 
-  'onboarding.signUp.existingAccount.login': 'Kirjaudu sisään',
-  'onboarding.signUp.existingAccount.title': 'Minulla on jo tunnus',
+  'onboarding.signUp.existingAccount.login': 'Login',
+  'onboarding.signUp.existingAccount.title': 'I already have an account',
   'onboarding.signUp.nickName': 'Nickname',
   'onboarding.signUp.password': 'Password',
   'onboarding.signUp.signUp': 'Sign up',
