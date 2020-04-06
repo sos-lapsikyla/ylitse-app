@@ -40,7 +40,7 @@ export default ({ onPress }: Props) => {
         {mentors => (
           <RN.View style={styles.carouselContainer}>
             <snapCarousel.default
-              data={[...mentors].sort(mentorApi.compare)}
+              data={[...mentors].sort(mentorApi.compare(userId))}
               renderItem={renderMentorCard(height, onPress)}
               sliderWidth={measuredWidth}
               itemWidth={measuredWidth * 0.85}
