@@ -13,8 +13,8 @@ export const messages: { [key in MessageId]: string } = {
   'components.mentorCard.showMore': 'Show more...',
   'components.mentorCard.yearsAbbrev': 'y.',
 
-  'components.mentorSkills.title': 'I can help with',
-  'components.mentorStory.title': 'About me',
+  'components.mentorSkills.other': 'I can also help with:',
+  'components.mentorSkills.subject': 'Subject:',
 
   'components.remoteData.loading': 'Loading...',
   'components.remoteData.loadingFailed': 'Loading failed',

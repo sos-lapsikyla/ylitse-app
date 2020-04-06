@@ -1,13 +1,21 @@
 import React from 'react';
 import RN from 'react-native';
 
+import { pipe } from 'fp-ts/lib/pipeable';
+import * as O from 'fp-ts/lib/Option';
+import * as array from 'fp-ts/lib/Array';
+
 import * as api from '../../api/mentors';
 
 import Button from './Button';
 import Card from './Card';
 import MentorTitle from './MentorTitle';
-import MentorSkills from './MentorSkills';
+import Message from './Message';
 import MentorStory from './MentorStory';
+import Chip from './Chip';
+import colors from './colors';
+import getBuddyColor from './getBuddyColor';
+import fonts from './fonts';
 
 interface Props {
   style?: RN.StyleProp<RN.ViewStyle>;
@@ -15,7 +23,27 @@ interface Props {
   onPress?: (mentor: api.Mentor) => void | undefined;
 }
 
+const magicSkills = {
+  Lastensuojelu: null,
+  Italy: null,
+};
+
 const MentorCard: React.FC<Props> = ({ onPress, style, mentor }) => {
+  const skillTitle = pipe(
+    mentor.skills,
+    array.filter(name => name in magicSkills),
+    array.head,
+    O.toUndefined,
+  );
+
+  const skills = pipe(
+    mentor.skills,
+    array.filter(name => !(name in magicSkills)),
+    array.takeLeft(3),
+  );
+
+  const color = getBuddyColor(mentor.buddyId);
+
   return (
     <Card style={style}>
       <MentorTitle mentor={mentor} />
@@ -28,9 +56,21 @@ const MentorCard: React.FC<Props> = ({ onPress, style, mentor }) => {
           story={mentor.story}
           showAll={false}
         />
-        {mentor.skills.length === 0 ? null : (
-          <MentorSkills skills={mentor.skills} />
-        )}
+        {skillTitle ? (
+          <RN.View style={styles.chipContainer}>
+            <Message
+              style={styles.subtitle}
+              id="components.mentorSkills.subject"
+            />
+            <Chip color={color} name={skillTitle} />
+          </RN.View>
+        ) : null}
+        <Message style={styles.subtitle} id="components.mentorSkills.other" />
+        <RN.View style={styles.chipContainer}>
+          {skills.map(name => (
+            <Chip key={name} color={color} name={name} />
+          ))}
+        </RN.View>
         {!onPress ? null : (
           <RN.View style={styles.buttonContainer}>
             <Button
@@ -51,7 +91,20 @@ const styles = RN.StyleSheet.create({
     padding: 24,
     flexGrow: 1,
   },
+  row: {
+    marginTop: 24,
+    marginBottom: 8,
+    flexWrap: 'wrap',
+    flexDirection: 'row',
+  },
+  subtitle: {
+    marginRight: 16,
+    ...fonts.regularBold,
+    color: colors.deepBlue,
+  },
   chipContainer: {
+    marginTop: 16,
+    marginBottom: 16,
     flexDirection: 'row',
     flexWrap: 'wrap',
   },

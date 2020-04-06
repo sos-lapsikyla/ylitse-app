@@ -11,8 +11,8 @@ export const messages = {
   'components.mentorCard.showMore': 'Näytä lisää...',
   'components.mentorCard.yearsAbbrev': 'v.',
 
-  'components.mentorSkills.title': 'Voin auttaa',
-  'components.mentorStory.title': 'Tietoja minusta',
+  'components.mentorSkills.other': 'Voin tukea myös:',
+  'components.mentorSkills.subject': 'Aihealue:',
 
   'components.remoteData.loading': 'Ladataan...',
   'components.remoteData.loadingFailed': 'Lataus epäonnistui',

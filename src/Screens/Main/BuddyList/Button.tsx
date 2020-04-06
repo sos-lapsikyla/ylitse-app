@@ -4,10 +4,9 @@ import { useSelector } from 'react-redux';
 
 import { hasUnseen } from '../../../state/reducers/messages';
 
-import LinearGradient from 'react-native-linear-gradient';
-import { gradients } from '../../components/colors';
 import Card from '../../components/Card';
 import fonts from '../../components/fonts';
+import getBuddyColor from '../../components/getBuddyColor';
 
 type Props = {
   buddyId: string;
@@ -18,14 +17,15 @@ type Props = {
 const Button = ({ style, buddyId, name, onPress, ...viewProps }: Props) => {
   const onPressBuddy = () => onPress(buddyId);
   const hasNewMessages = useSelector(hasUnseen(buddyId));
+  const color = getBuddyColor(buddyId);
   return (
     <Card style={[styles.button, style]} {...viewProps}>
       <RN.TouchableOpacity style={styles.content} onPress={onPressBuddy}>
         <RN.Text style={styles.nameText}>{name}</RN.Text>
-        <LinearGradient style={styles.blob} colors={gradients.green}>
+        <RN.View style={[styles.blob, { backgroundColor: color }]}>
           {hasNewMessages ? <RN.View style={styles.newMessage} /> : null}
           <RN.Image source={require('../../images/balloon.svg')} />
-        </LinearGradient>
+        </RN.View>
       </RN.TouchableOpacity>
     </Card>
   );

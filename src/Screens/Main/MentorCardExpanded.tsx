@@ -10,6 +10,7 @@ import * as mentorApi from '../../api/mentors';
 import MentorTitle from '../components/MentorTitle';
 import MentorStory from '../components/MentorStory';
 import MentorSkills from '../components/MentorSkills';
+import getBuddyColor from '../components/getBuddyColor';
 import Button from '../components/Button';
 import { gradients } from '../components/colors';
 
@@ -28,6 +29,7 @@ type Props = OwnProps;
 
 const MentorCardExpanded = ({ navigation }: Props) => {
   const mentor = navigation.getParam('mentor');
+  const color = getBuddyColor(mentor.buddyId);
   const goBack = () => {
     navigation.goBack();
   };
@@ -46,8 +48,8 @@ const MentorCardExpanded = ({ navigation }: Props) => {
         <MentorStory style={styles.story} story={mentor.story} showAll={true} />
         <MentorSkills
           style={styles.skills}
+          color={color}
           skills={mentor.skills}
-          showAll={true}
         />
         <SafeAreaView style={styles.safeArea} forceInset={{ bottom: 'always' }}>
           <Button
