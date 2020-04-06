@@ -2,7 +2,7 @@ import React from 'react';
 import RN from 'react-native';
 import * as snapCarousel from 'react-native-snap-carousel';
 import * as redux from 'redux';
-import * as ReactRedux from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import * as RD from '@devexperts/remote-data-ts';
 
 import useLayout from '../../lib/use-layout';
