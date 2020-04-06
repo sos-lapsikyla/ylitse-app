@@ -3,6 +3,7 @@ import { createAppContainer } from 'react-navigation';
 import * as reactNavigationStack from 'react-navigation-stack';
 
 import Splash, { SplashRoute } from './Splash';
+import Welcome, { WelcomeRoute } from './Onboarding/Welcome';
 import MentorList, { MentorListRoute } from './Onboarding/MentorList';
 import SignUp, { SignUpRoute } from './Onboarding/SignUp';
 import DisplayName, { DisplayNameRoute } from './Onboarding/DisplayName';
@@ -21,6 +22,7 @@ import DeleteAccount, {
 } from './Main/Settings/DeleteAccount';
 
 type RouteName = keyof (SplashRoute &
+  WelcomeRoute &
   MentorListRoute &
   SignUpRoute &
   DisplayNameRoute &
@@ -34,6 +36,7 @@ type RouteName = keyof (SplashRoute &
   DeleteAccountRoute);
 type Screen =
   | typeof Splash
+  | typeof Welcome
   | typeof MentorList
   | typeof SignUp
   | typeof DisplayName
@@ -52,6 +55,9 @@ const routes: {
 } = {
   Splash: {
     screen: Splash,
+  },
+  'Onboarding/Welcome': {
+    screen: Welcome,
   },
   'Onboarding/MentorList': {
     screen: MentorList,

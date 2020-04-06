@@ -138,6 +138,13 @@ export const messages = {
   'onboarding.signUp.signUp': 'Luo tunnus',
   'onboarding.signUp.title': 'Luo tunnus',
 
+  'onboarding.welcome.button': 'Aloita',
+  'onboarding.welcome.text1': 'Kiva, että otit palvelun käyttöön!',
+  'onboarding.welcome.text2':
+    'Täällä voit luottamuksellisesti kysyä mentoreilta mieltäsi painavista asioista.',
+  'onboarding.welcome.text3': 'Mukavia keskusteluja!',
+  'onboarding.welcome.title': 'Moi!',
+
   'tabs.chats': 'Keskustelut',
   'tabs.mentors': 'Mentorit',
   'tabs.settings': 'Asetukset',

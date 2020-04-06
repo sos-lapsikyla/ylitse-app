@@ -140,6 +140,13 @@ export const messages: { [key in MessageId]: string } = {
   'onboarding.signUp.signUp': 'Sign up',
   'onboarding.signUp.title': 'Sign up',
 
+  'onboarding.welcome.button': 'Start',
+  'onboarding.welcome.text1': 'Cool, that you have started using the service!',
+  'onboarding.welcome.text2':
+    'Here you can ask confidental things from mentors.',
+  'onboarding.welcome.text3': 'We hope you wil have pleasant conversations!',
+  'onboarding.welcome.title': 'Hello!',
+
   'tabs.chats': 'Chats',
   'tabs.mentors': 'Mentors',
   'tabs.settings': 'Settings',

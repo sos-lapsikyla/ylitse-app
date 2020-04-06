@@ -11,7 +11,9 @@ import * as storage from '../../state/reducers/storage';
 import * as token from '../../state/reducers/accessToken';
 import * as actions from '../../state/actions';
 
-import { MentorListRoute } from '../Onboarding/MentorList';
+import colors from '../components/colors';
+
+import { WelcomeRoute } from '../Onboarding/Welcome';
 import { TabsRoute } from '../Main/Tabs';
 
 export type SplashRoute = {
@@ -20,7 +22,7 @@ export type SplashRoute = {
 
 type Props = navigationProps.NavigationProps<
   SplashRoute,
-  MentorListRoute & TabsRoute
+  WelcomeRoute & TabsRoute
 >;
 
 const Splash = ({ navigation }: Props) => {
@@ -33,16 +35,9 @@ const Splash = ({ navigation }: Props) => {
 
   React.useEffect(() => {
     if (RD.isFailure(readTokenState)) {
-      navigation.replace('Onboarding/MentorList', {});
+      navigation.replace('Onboarding/Welcome', {});
     }
   }, [readTokenState]);
-
-  React.useEffect(() => {
-    if (RD.isFailure(readTokenState)) {
-      navigation.replace('Onboarding/MentorList', {});
-    }
-  });
-
   const tokenState = useSelector(token.getToken);
   React.useEffect(() => {
     if (O.isSome(tokenState)) {
@@ -50,7 +45,14 @@ const Splash = ({ navigation }: Props) => {
     }
   });
 
-  return <RN.View />;
+  return <RN.View style={styles.background} />;
 };
+
+const styles = RN.StyleSheet.create({
+  background: {
+    backgroundColor: colors.blue60,
+    flex: 1,
+  },
+});
 
 export default Splash;
