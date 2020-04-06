@@ -64,10 +64,8 @@ export function compareLang(a: Mentor, b: Mentor) {
   return 0;
 }
 
-const randomVal = Math.floor(Math.random() * 100);
-
 const compareIds = (userId: string | undefined, a: Mentor, b: Mentor) => {
-  const x: number = (userId ? userId.charCodeAt(0) : 0) + randomVal;
+  const x: number = userId ? userId.charCodeAt(0) : 0;
   const y = a.buddyId.charCodeAt(0);
   const z = b.buddyId.charCodeAt(0);
 
