@@ -6,7 +6,7 @@ import { pipe } from 'fp-ts/lib/pipeable';
 const unauthorizedRequest = 'Request Unauthorized';
 export const isUnauthorized = (u: unknown) => u === unauthorizedRequest;
 
-const request = (url: string, options: RequestInit) =>
+export const request = (url: string, options: RequestInit) =>
   pipe(
     TE.tryCatch(() => fetch(url, options), () => 'Connection failure.'),
     TE.chain(response =>

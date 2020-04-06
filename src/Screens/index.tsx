@@ -16,6 +16,9 @@ import MentorCardExpanded, {
 
 import Chat, { ChatRoute } from './Main/Chat';
 import Logout, { LogoutRoute } from './Main/Settings/Logout';
+import DeleteAccount, {
+  DeleteAccountRoute,
+} from './Main/Settings/DeleteAccount';
 
 type RouteName = keyof (SplashRoute &
   MentorListRoute &
@@ -27,7 +30,8 @@ type RouteName = keyof (SplashRoute &
   TabsRoute &
   MentorCardExpandedRoute &
   ChatRoute &
-  LogoutRoute);
+  LogoutRoute &
+  DeleteAccountRoute);
 type Screen =
   | typeof Splash
   | typeof MentorList
@@ -39,7 +43,8 @@ type Screen =
   | typeof Tabs
   | typeof MentorCardExpanded
   | typeof Chat
-  | typeof Logout;
+  | typeof Logout
+  | typeof DeleteAccount;
 
 export type Route = keyof typeof routes;
 const routes: {
@@ -77,6 +82,9 @@ const routes: {
   },
   'Main/Settings/Logout': {
     screen: Logout,
+  },
+  'Main/Settings/DeleteAccount': {
+    screen: DeleteAccount,
   },
 };
 

@@ -59,6 +59,16 @@ export const messages: { [key in MessageId]: string } = {
   'main.settings.account.title': 'Account settings',
   'main.settings.account.userName': 'username (private)',
 
+  'main.settings.deleteAccount.cancel': 'Cancel',
+  'main.settings.deleteAccount.deleteAccount': 'Delete account',
+  'main.settings.deleteAccount.text1':
+    'Are you sure you want to delete your account?',
+  'main.settings.deleteAccount.text2':
+    'All your data will be destroyed fromn the system.',
+  'main.settings.deleteAccount.text3':
+    'Your account or conversations cannot be returned.',
+  'main.settings.deleteAccount.title': 'Account deletion',
+
   'main.settings.logout.cancel': 'Cancel',
   'main.settings.logout.logout': 'Logout',
   'main.settings.logout.text1': 'You are loggin out.',

@@ -194,3 +194,8 @@ export const getMyUser = (token: authApi.AccessToken) =>
     userAccountType,
     toUserAccount,
   );
+
+export const deleteAccount = (token: authApi.AccessToken) =>
+  http.request(`${config.baseUrl}/accounts/${token.accountId}`, {
+    method: 'DELETE',
+  });

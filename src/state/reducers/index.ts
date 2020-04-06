@@ -19,12 +19,13 @@ import * as userAccount from './userAccount';
 import * as changePassword from './changePassword';
 import * as changeEmail from './changeEmail';
 import * as notifications from './notifications';
+import * as deleteAccount from './deleteAccount';
 
 import * as actions from '../actions';
 
 export type AppState = types.AppState;
 
-const logout: automaton.Reducer<AppState, actions.Action> = (
+const exitReducer: automaton.Reducer<AppState, actions.Action> = (
   state = initialState,
   action,
 ) => {
@@ -45,7 +46,7 @@ export const rootReducer: automaton.Reducer<
   AppState,
   actions.Action
 > = automaton.reducerReducers(
-  logout,
+  exitReducer,
   automaton.combineReducers({
     storage: storage.reducer,
     accessToken: accessToken.reducer,
@@ -55,6 +56,7 @@ export const rootReducer: automaton.Reducer<
     changePassword: changePassword.reducer,
     changeEmail: changeEmail.reducer,
     notifications: notifications.reducer,
+    deleteAccount: deleteAccount.reducer,
 
     mentors: mentors.reducer,
     buddies: buddies.reducer,
@@ -73,6 +75,7 @@ export const initialState: AppState = {
   changePassword: changePassword.initialState,
   changeEmail: changeEmail.initialState,
   notifications: notifications.initialState,
+  deleteAccount: deleteAccount.initialState,
 
   mentors: mentors.initialState,
   buddies: buddies.initialState,
