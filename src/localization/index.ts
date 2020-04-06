@@ -4,7 +4,7 @@
 import isFinnishPhone from '../lib/isFinnishPhone';
 
 import * as fi from './fi';
-import * as en from './fi';
+import * as en from './en';
 
 export type MessageId = fi.MessageId;
 
