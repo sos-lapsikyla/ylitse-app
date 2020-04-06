@@ -42,9 +42,12 @@ export default ({ skills, color, style, amount }: SkillListProps) => {
       ) : null}
       <Message style={styles.lowerTitle} id="components.mentorSkills.other" />
       <RN.View style={styles.chipContainer}>
-        {skills.slice(0, amount).map(name => (
-          <Chip key={name} color={color} name={name} />
-        ))}
+        {[...skills]
+          .sort((a, b) => a.length - b.length)
+          .slice(0, amount)
+          .map(name => (
+            <Chip key={name} color={color} name={name} />
+          ))}
       </RN.View>
     </RN.View>
   );
