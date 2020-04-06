@@ -5,6 +5,7 @@ import * as automaton from 'redux-automaton';
 import * as O from 'fp-ts/lib/Option';
 import * as E from 'fp-ts/lib/Either';
 import { pipe } from 'fp-ts/lib/pipeable';
+import { flow } from 'fp-ts/lib/function';
 
 import * as authApi from '../../api/auth';
 import * as storageApi from '../../api/storage';
@@ -26,6 +27,11 @@ export const initialState: State = {
 };
 
 export const getToken = ({ accessToken }: AppState) => accessToken.currentToken;
+export const getUserId = flow(
+  getToken,
+  O.map(({ userId }) => userId),
+  O.toUndefined,
+);
 
 export function withToken<A>(
   task: (token: authApi.AccessToken) => T.Task<A>,

@@ -11,29 +11,32 @@ import MentorCard from '../components/MentorCard';
 import RemoteData from '../components/RemoteData';
 
 import * as mentorApi from '../../api/mentors';
-import * as state from '../../state';
+
+import * as mentorState from '../../state/reducers/mentors';
+import * as tokenState from '../../state/reducers/accessToken';
+
 import * as actions from '../../state/actions';
-import * as selectors from '../../state/selectors';
 
-type StateProps = {
-  mentorsState: RD.RemoteData<string, mentorApi.Mentor[]>;
-};
-type DispatchProps = {
-  fetchMentors: () => void | undefined;
-};
-
-type OwnProps = {
+type Props = {
   onPress?: (mentor: mentorApi.Mentor) => void | undefined;
 };
 
-type Props = StateProps & DispatchProps & OwnProps;
+export default ({ onPress }: Props) => {
+  const dispatch = useDispatch<redux.Dispatch<actions.Action>>();
+  const fetchMentors = () => {
+    dispatch({ type: 'mentors/start', payload: undefined });
+  };
 
-const MentorList = ({ fetchMentors, mentorsState, onPress }: Props) => {
+  const userId = useSelector(tokenState.getUserId);
+  const mentorList = RD.remoteData.map(useSelector(mentorState.get), mentors =>
+    mentors.filter(mentor => mentor.buddyId !== userId),
+  );
+
   const [{ width, height }, onLayout] = useLayout();
   const measuredWidth = width || RN.Dimensions.get('window').width;
   return (
     <RN.View onLayout={onLayout} style={styles.mentorListContainer}>
-      <RemoteData data={mentorsState} fetchData={fetchMentors}>
+      <RemoteData data={mentorList} fetchData={fetchMentors}>
         {mentors => (
           <RN.View style={styles.carouselContainer}>
             <snapCarousel.default
@@ -81,17 +84,3 @@ const styles = RN.StyleSheet.create({
     marginBottom: mentorCardBottomMargin,
   },
 });
-
-export default ReactRedux.connect<
-  StateProps,
-  DispatchProps,
-  OwnProps,
-  state.AppState
->(
-  ({ mentors }) => ({ mentorsState: selectors.getMentors(mentors) }),
-  (dispatch: redux.Dispatch<actions.Action>) => ({
-    fetchMentors: () => {
-      dispatch({ type: 'mentors/start', payload: undefined });
-    },
-  }),
-)(MentorList);
