@@ -1,14 +1,14 @@
 import React from 'react';
 import RN from 'react-native';
-import LinearGradient from 'react-native-linear-gradient';
 import { SafeAreaView } from 'react-navigation';
 
 import * as mentorApi from '../../api/mentors';
 
 import Message from './Message';
 import { cardBorderRadius } from './Card';
-import colors, { gradients } from './colors';
+import colors from './colors';
 import fonts from './fonts';
+import getBuddyColor from './getBuddyColor';
 
 type Props = {
   style?: RN.StyleProp<RN.ViewStyle>;
@@ -26,18 +26,13 @@ const SafeAreaWrapper: React.FC<{}> = ({ children }) => (
 const MentorTitle: React.FC<Props> = ({
   onPress,
   style,
-  mentor: { age, name, region },
+  mentor: { age, name, region, buddyId },
   safeArea,
 }) => {
-  const gradientMap: { [i: number]: string[] } = {
-    0: gradients.green,
-    1: gradients.red,
-    2: gradients.orange,
-  };
-  const gradient: string[] = gradientMap[name.length % 3];
   const Wrapper = safeArea ? SafeAreaWrapper : React.Fragment;
+  const color = getBuddyColor(buddyId);
   return (
-    <LinearGradient style={[styles.blob, style]} colors={gradient}>
+    <RN.View style={[styles.blob, { backgroundColor: color }, style]}>
       <Wrapper>
         {!onPress ? null : (
           <RN.TouchableOpacity style={styles.chevronButton} onPress={onPress}>
@@ -60,7 +55,7 @@ const MentorTitle: React.FC<Props> = ({
           </RN.Text>
         </RN.View>
       </Wrapper>
-    </LinearGradient>
+    </RN.View>
   );
 };
 

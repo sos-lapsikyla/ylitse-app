@@ -1,7 +1,9 @@
 import React from 'react';
 import RN from 'react-native';
+import { useSelector } from 'react-redux';
 
 import * as config from '../../../api/config';
+import * as tokenState from '../../../state/reducers/accessToken';
 
 import MessageButton from '../../components/MessageButton';
 import Card from '../../components/Card';
@@ -17,6 +19,7 @@ type Props = {
 };
 
 export default ({ navigateToDeleteAccount, navigateToLogout }: Props) => {
+  const isMentor = useSelector(tokenState.isMentor);
   return (
     <Card style={styles.card}>
       <Message
@@ -29,12 +32,16 @@ export default ({ navigateToDeleteAccount, navigateToLogout }: Props) => {
         linkName="main.settings.other.feedBackLink"
         url={config.feedBackUrl}
       />
-      <Message style={styles.fieldName} id="main.settings.other.howTo" />
-      <Link
-        style={styles.link}
-        linkName="main.settings.other.userGuide"
-        url={config.userGuideUrl}
-      />
+      {isMentor ? (
+        <>
+          <Message style={styles.fieldName} id="main.settings.other.howTo" />
+          <Link
+            style={styles.link}
+            linkName="main.settings.other.userGuide"
+            url={config.userGuideUrl}
+          />
+        </>
+      ) : null}
       <Message style={styles.fieldName} id="main.settings.other.whatToAgree" />
       <Link
         style={styles.link}

@@ -41,6 +41,8 @@ const colors = {
   red60: '#f19a9b',
 
   red80: '#eb727c', // mentor red
+
+  orange: '#F1923E',
 };
 
 export const gradients = {

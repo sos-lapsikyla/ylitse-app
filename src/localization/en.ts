@@ -13,8 +13,8 @@ export const messages: { [key in MessageId]: string } = {
   'components.mentorCard.showMore': 'Show more...',
   'components.mentorCard.yearsAbbrev': 'y.',
 
-  'components.mentorSkills.title': 'I can help with',
-  'components.mentorStory.title': 'About me',
+  'components.mentorSkills.other': 'I can also help with:',
+  'components.mentorSkills.subject': 'Subject:',
 
   'components.remoteData.loading': 'Loading...',
   'components.remoteData.loadingFailed': 'Loading failed',
@@ -57,7 +57,7 @@ export const messages: { [key in MessageId]: string } = {
   'main.settings.account.password.title': 'Password',
 
   'main.settings.account.title': 'Account settings',
-  'main.settings.account.userName': 'username (private)',
+  'main.settings.account.userName': 'Username (private)',
 
   'main.settings.deleteAccount.cancel': 'Cancel',
   'main.settings.deleteAccount.deleteAccount': 'Delete account',
@@ -83,7 +83,7 @@ export const messages: { [key in MessageId]: string } = {
   'main.settings.other.howTo': 'How should I use this application?',
   'main.settings.other.termsLink': 'Terms and conditions',
   'main.settings.other.title': 'Other',
-  'main.settings.other.userGuide': 'User guide',
+  'main.settings.other.userGuide': 'Mentoring guide (in Finnish)',
   'main.settings.other.whatToAgree': 'What do I agree when using this app?',
   'main.settings.title': 'Settings',
 

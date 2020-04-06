@@ -2,14 +2,14 @@ import React from 'react';
 import RN from 'react-native';
 import { SafeAreaView } from 'react-navigation';
 import * as ReactRedux from 'react-redux';
-import LinearGradient from 'react-native-linear-gradient';
 
 import * as state from '../../../state';
 import * as selectors from '../../../state/selectors';
 
-import colors, { gradients } from '../../components/colors';
+import colors from '../../components/colors';
 import { cardBorderRadius } from '../../components/Card';
 import fonts from '../../components/fonts';
+import getBuddyColor from '../../components/getBuddyColor';
 
 type StateProps = {
   name: string;
@@ -22,15 +22,10 @@ type OwnProps = {
 };
 type Props = OwnProps & DispatchProps & StateProps;
 
-const Title: React.FC<Props> = ({ style, onPress, name }) => {
-  const gradientMap: { [i: number]: string[] } = {
-    0: gradients.green,
-    1: gradients.red,
-    2: gradients.orange,
-  };
-  const gradient: string[] = gradientMap[name.length % 3];
+const Title: React.FC<Props> = ({ style, onPress, name, buddyId }) => {
+  const color = getBuddyColor(buddyId);
   return (
-    <LinearGradient style={[styles.blob, style]} colors={gradient}>
+    <RN.View style={[styles.blob, { backgroundColor: color }, style]}>
       <SafeAreaView style={styles.safeArea} forceInset={{ top: 'always' }}>
         {!onPress ? null : (
           <RN.TouchableOpacity style={styles.chevronButton} onPress={onPress}>
@@ -46,7 +41,7 @@ const Title: React.FC<Props> = ({ style, onPress, name }) => {
         />
         <RN.Text style={styles.name}>{name}</RN.Text>
       </SafeAreaView>
-    </LinearGradient>
+    </RN.View>
   );
 };
 

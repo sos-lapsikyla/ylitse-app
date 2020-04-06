@@ -2,7 +2,7 @@ import React from 'react';
 import RN from 'react-native';
 import * as snapCarousel from 'react-native-snap-carousel';
 import * as redux from 'redux';
-import * as ReactRedux from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import * as RD from '@devexperts/remote-data-ts';
 
 import useLayout from '../../lib/use-layout';
@@ -11,38 +11,41 @@ import MentorCard from '../components/MentorCard';
 import RemoteData from '../components/RemoteData';
 
 import * as mentorApi from '../../api/mentors';
-import * as state from '../../state';
+
+import * as mentorState from '../../state/reducers/mentors';
+import * as tokenState from '../../state/reducers/accessToken';
+
 import * as actions from '../../state/actions';
-import * as selectors from '../../state/selectors';
 
-type StateProps = {
-  mentorsState: RD.RemoteData<string, mentorApi.Mentor[]>;
-};
-type DispatchProps = {
-  fetchMentors: () => void | undefined;
-};
-
-type OwnProps = {
+type Props = {
   onPress?: (mentor: mentorApi.Mentor) => void | undefined;
 };
 
-type Props = StateProps & DispatchProps & OwnProps;
+export default ({ onPress }: Props) => {
+  const dispatch = useDispatch<redux.Dispatch<actions.Action>>();
+  const fetchMentors = () => {
+    dispatch({ type: 'mentors/start', payload: undefined });
+  };
 
-const MentorList = ({ fetchMentors, mentorsState, onPress }: Props) => {
+  const userId = useSelector(tokenState.getUserId);
+  const mentorList = RD.remoteData.map(useSelector(mentorState.get), mentors =>
+    mentors.filter(mentor => mentor.buddyId !== userId),
+  );
+
   const [{ width, height }, onLayout] = useLayout();
   const measuredWidth = width || RN.Dimensions.get('window').width;
   return (
     <RN.View onLayout={onLayout} style={styles.mentorListContainer}>
-      <RemoteData data={mentorsState} fetchData={fetchMentors}>
+      <RemoteData data={mentorList} fetchData={fetchMentors}>
         {mentors => (
           <RN.View style={styles.carouselContainer}>
             <snapCarousel.default
               data={[...mentors].sort(mentorApi.compare)}
               renderItem={renderMentorCard(height, onPress)}
               sliderWidth={measuredWidth}
-              itemWidth={measuredWidth * 0.9}
+              itemWidth={measuredWidth * 0.85}
               inactiveSlideOpacity={1}
-              inactiveSlideScale={1}
+              inactiveSlideScale={0.95}
             />
           </RN.View>
         )}
@@ -81,17 +84,3 @@ const styles = RN.StyleSheet.create({
     marginBottom: mentorCardBottomMargin,
   },
 });
-
-export default ReactRedux.connect<
-  StateProps,
-  DispatchProps,
-  OwnProps,
-  state.AppState
->(
-  ({ mentors }) => ({ mentorsState: selectors.getMentors(mentors) }),
-  (dispatch: redux.Dispatch<actions.Action>) => ({
-    fetchMentors: () => {
-      dispatch({ type: 'mentors/start', payload: undefined });
-    },
-  }),
-)(MentorList);

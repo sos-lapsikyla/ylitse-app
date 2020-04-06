@@ -34,3 +34,6 @@ export const reducer: automaton.Reducer<State, actions.Action> = (
       return state;
   }
 };
+
+export const get = ({ mentors }: types.AppState) =>
+  RD.remoteData.map(mentors, mentorRecord => Object.values(mentorRecord));

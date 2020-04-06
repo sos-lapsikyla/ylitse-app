@@ -11,8 +11,8 @@ export const messages = {
   'components.mentorCard.showMore': 'Näytä lisää...',
   'components.mentorCard.yearsAbbrev': 'v.',
 
-  'components.mentorSkills.title': 'Voin auttaa',
-  'components.mentorStory.title': 'Tietoja minusta',
+  'components.mentorSkills.other': 'Voin tukea myös:',
+  'components.mentorSkills.subject': 'Aihealue:',
 
   'components.remoteData.loading': 'Ladataan...',
   'components.remoteData.loadingFailed': 'Lataus epäonnistui',
@@ -44,7 +44,7 @@ export const messages = {
   'main.settings.account.email.success': 'Sähköpostin muutos onnistui!',
   'main.settings.account.email.title': 'Sähköposti',
 
-  'main.settings.account.nickName': 'Nikki (Julkinen)',
+  'main.settings.account.nickName': 'Nimimerkki (Julkinen)',
 
   'main.settings.account.password.button': 'vaihda salasana',
   'main.settings.account.password.current': 'nykyinen salasana',
@@ -52,7 +52,7 @@ export const messages = {
   'main.settings.account.password.new': 'uusi salasana',
   'main.settings.account.password.repeat': 'toista uusi salasana',
   'main.settings.account.password.success': 'Salasanan vaihto onnistui!',
-  'main.settings.account.password.title': 'salasana',
+  'main.settings.account.password.title': 'Salasana',
 
   'main.settings.account.title': 'Asetukset',
   'main.settings.account.userName': 'Käyttäjänimi (Yksityinen)',
@@ -81,7 +81,7 @@ export const messages = {
   'main.settings.other.howTo': 'Kuinka tätä käytetään?',
   'main.settings.other.termsLink': 'Yksityisyydensuoja',
   'main.settings.other.title': 'Muuta',
-  'main.settings.other.userGuide': 'Vertaismentorointiopas',
+  'main.settings.other.userGuide': 'Opas mentoreille',
   'main.settings.other.whatToAgree': 'Mihin suostun, kun käytän tätä?',
   'main.settings.title': 'Asetukset',
 

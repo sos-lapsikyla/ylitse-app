@@ -11,6 +11,7 @@ import * as actions from '../../../state/actions';
 
 import fonts from '../../components/fonts';
 import colors from '../../components/colors';
+import getBuddyColor from '../../components/getBuddyColor';
 
 type Props = {
   buddyId: string;
@@ -22,6 +23,8 @@ export default ({ buddyId }: Props) => {
   const sendMessage = (payload: messageApi.SendMessageParams) => {
     dispatch({ type: 'newMessage/send/start', payload });
   };
+
+  const color = getBuddyColor(buddyId);
 
   const messageContent = useSelector(newMessageState.getText(buddyId));
 
@@ -47,7 +50,7 @@ export default ({ buddyId }: Props) => {
       <RN.TouchableOpacity
         onPress={onSend}
         disabled={messageContent === ''}
-        style={styles.send}
+        style={[styles.send, { backgroundColor: color }]}
       >
         <RN.Image
           source={require('../../images/send.svg')}
@@ -91,14 +94,13 @@ const styles = RN.StyleSheet.create({
   send: {
     width: 64,
     height: 64,
-    backgroundColor: colors.faintGray,
     borderRadius: 32,
     alignItems: 'center',
     justifyContent: 'center',
     marginRight: 16,
   },
   sendIcon: {
-    tintColor: colors.faintBlue,
+    tintColor: colors.deepBlue,
     transform: [{ rotate: '45deg' }],
     width: 32,
     height: 32,

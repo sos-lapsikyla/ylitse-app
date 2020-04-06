@@ -1,7 +1,6 @@
 import React from 'react';
 import RN from 'react-native';
 
-import Message from './Message';
 import colors from './colors';
 import fonts from './fonts';
 
@@ -15,7 +14,6 @@ const MentorStory = ({ style, story, showAll }: Props) => {
   const numberOfLines = showAll ? undefined : 5;
   return (
     <RN.View style={[styles.container, style]}>
-      <Message style={styles.title} id="components.mentorStory.title" />
       <RN.Text style={styles.story} numberOfLines={numberOfLines}>
         {story}
       </RN.Text>
