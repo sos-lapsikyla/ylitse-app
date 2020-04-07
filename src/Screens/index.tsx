@@ -5,6 +5,7 @@ import * as reactNavigationStack from 'react-navigation-stack';
 import Splash, { SplashRoute } from './Splash';
 import Welcome, { WelcomeRoute } from './Onboarding/Welcome';
 import MentorList, { MentorListRoute } from './Onboarding/MentorList';
+import Sign, { SignRoute } from './Onboarding/Sign';
 import SignUp, { SignUpRoute } from './Onboarding/SignUp';
 import DisplayName, { DisplayNameRoute } from './Onboarding/DisplayName';
 import Email, { EmailRoute } from './Onboarding/Email';
@@ -25,6 +26,7 @@ type RouteName = keyof (SplashRoute &
   WelcomeRoute &
   MentorListRoute &
   SignUpRoute &
+  SignRoute &
   DisplayNameRoute &
   EmailRoute &
   PrivacyPolicyRoute &
@@ -38,6 +40,7 @@ type Screen =
   | typeof Splash
   | typeof Welcome
   | typeof MentorList
+  | typeof Sign
   | typeof SignUp
   | typeof DisplayName
   | typeof Email
@@ -61,6 +64,9 @@ const routes: {
   },
   'Onboarding/MentorList': {
     screen: MentorList,
+  },
+  'Onboarding/Sign': {
+    screen: Sign,
   },
   'Onboarding/SignUp': {
     screen: SignUp,

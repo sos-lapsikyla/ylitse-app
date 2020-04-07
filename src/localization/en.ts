@@ -124,6 +124,9 @@ export const messages: { [key in MessageId]: string } = {
   'onboarding.privacyPolicy.nextButton': 'Continue',
   'onboarding.privacyPolicy.title': 'Data Privacy & Security',
 
+  'onboarding.sign.up': 'Sign up',
+  'onboarding.sign.in': 'Sign in',
+
   'onboarding.signIn.button': 'Login',
   'onboarding.signIn.failure': 'Kirjautumien epäonnistui',
   'onboarding.signIn.title': 'Login',

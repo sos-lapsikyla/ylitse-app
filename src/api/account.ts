@@ -116,7 +116,7 @@ function putUser(
   user: ApiUser,
 ): TE.TaskEither<string, ApiUser> {
   return http.validateResponse(
-    http.put(`${config.baseUrl}/users`, user, {
+    http.put(`${config.baseUrl}/users/${token.userId}`, user, {
       headers: authApi.authHeader(token),
     }),
     userType,
@@ -198,4 +198,5 @@ export const getMyUser = (token: authApi.AccessToken) =>
 export const deleteAccount = (token: authApi.AccessToken) =>
   http.request(`${config.baseUrl}/accounts/${token.accountId}`, {
     method: 'DELETE',
+    headers: authApi.authHeader(token),
   });

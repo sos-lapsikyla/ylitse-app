@@ -122,6 +122,9 @@ export const messages = {
   'onboarding.privacyPolicy.nextButton': 'Jatka',
   'onboarding.privacyPolicy.title': 'Yksityisyydensuoja',
 
+  'onboarding.sign.in': 'Rekisteröidy',
+  'onboarding.sign.up': 'Kirjaudu',
+
   'onboarding.signIn.button': 'Kirjaudu',
   'onboarding.signIn.failure': 'Kirjautumien epäonnistui',
   'onboarding.signIn.title': 'Kirjaudu',
@@ -137,7 +140,7 @@ export const messages = {
 
   'onboarding.signUp.existingAccount.login': 'Kirjaudu sisään',
   'onboarding.signUp.existingAccount.title': 'Minulla on jo tunnus',
-  'onboarding.signUp.nickName': 'Nikki',
+  'onboarding.signUp.nickName': 'Nimimerkki',
   'onboarding.signUp.password': 'Salasana',
   'onboarding.signUp.signUp': 'Luo tunnus',
   'onboarding.signUp.title': 'Luo tunnus',
