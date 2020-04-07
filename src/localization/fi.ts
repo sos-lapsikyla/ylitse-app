@@ -3,7 +3,7 @@ export const messages = {
   'buddyList.title': 'Keskustelut',
 
   'components.appTitle.subTitle': 'MentorApp',
-  'components.appTitle.title': 'Ylitse',
+  'components.appTitle.title': 'YLITSE',
 
   'components.createdBySosBanner': 'Palvelun tarjoaa SOS-lapsikylä',
 

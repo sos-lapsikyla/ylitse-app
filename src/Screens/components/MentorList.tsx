@@ -43,9 +43,9 @@ export default ({ onPress }: Props) => {
               data={[...mentors].sort(mentorApi.compare(userId))}
               renderItem={renderMentorCard(height, onPress)}
               sliderWidth={measuredWidth}
-              itemWidth={measuredWidth * 0.9}
+              itemWidth={measuredWidth * 0.85}
               inactiveSlideOpacity={1}
-              inactiveSlideScale={1}
+              inactiveSlideScale={0.95}
             />
           </RN.View>
         )}
