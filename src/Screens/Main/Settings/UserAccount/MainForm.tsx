@@ -2,6 +2,8 @@ import React from 'react';
 import RN from 'react-native';
 import * as redux from 'redux';
 import { useDispatch, useSelector } from 'react-redux';
+import * as RD from '@devexperts/remote-data-ts';
+import { tuple } from 'fp-ts/lib/function';
 
 import * as userAccountState from '../../../../state/reducers/userAccount';
 import * as actions from '../../../../state/actions';
@@ -23,22 +25,30 @@ export default ({ openPasswordForm, openEmailForm }: Props) => {
   const fetchUserAccount = () => {
     dispatch({ type: 'userAccount/get/start', payload: undefined });
   };
+
+  const data = RD.remoteData.map(userAccount, account =>
+    tuple(account, account.userName !== account.displayName),
+  );
   return (
     <>
       <Message style={styles.accountSettingsText} id="main.settings.title" />
-      <RemoteData data={userAccount} fetchData={fetchUserAccount}>
-        {({ userName, displayName, email }) => (
+      <RemoteData data={data} fetchData={fetchUserAccount}>
+        {([{ userName, displayName, email }, hasBoth]) => (
           <>
             <Message
               style={styles.fieldName}
               id="main.settings.account.userName"
             />
             <RN.Text style={styles.fieldValueText}>{userName}</RN.Text>
-            <Message
-              style={styles.fieldName}
-              id="main.settings.account.nickName"
-            />
-            <RN.Text style={styles.fieldValueText}>{displayName}</RN.Text>
+            {hasBoth ? (
+              <>
+                <Message
+                  style={styles.fieldName}
+                  id="main.settings.account.nickName"
+                />
+                <RN.Text style={styles.fieldValueText}>{displayName}</RN.Text>
+              </>
+            ) : null}
             <Message
               style={styles.fieldName}
               id="main.settings.account.email.title"

@@ -48,7 +48,7 @@ export const messages = {
   'main.settings.account.email.success': 'Sähköpostin muutos onnistui!',
   'main.settings.account.email.title': 'Sähköposti',
 
-  'main.settings.account.nickName': 'Nimimerkki (Julkinen)',
+  'main.settings.account.nickName': 'Nimimerkki',
 
   'main.settings.account.password.button': 'vaihda salasana',
   'main.settings.account.password.current': 'nykyinen salasana',
@@ -59,7 +59,7 @@ export const messages = {
   'main.settings.account.password.title': 'Salasana',
 
   'main.settings.account.title': 'Asetukset',
-  'main.settings.account.userName': 'Käyttäjänimi (Yksityinen)',
+  'main.settings.account.userName': 'Käyttäjänimi',
 
   'main.settings.deleteAccount.cancel': 'Peruuta',
   'main.settings.deleteAccount.deleteAccount': 'Poista tili',
