@@ -31,8 +31,7 @@ const MentorList = (props: Props) => {
         style={styles.container}
         forceInset={{ top: 'always', bottom: 'always' }}
       >
-        <Message style={styles.title1} id="onboarding.mentorlist.upperTitle" />
-        <Message style={styles.title2} id="onboarding.mentorlist.lowerTitle" />
+        <Message style={styles.title} id="onboarding.mentorlist.lowerTitle" />
         <MentorListComponent />
         <RN.View style={styles.bottom}>
           <Button
@@ -54,13 +53,10 @@ const styles = RN.StyleSheet.create({
     flex: 1,
     alignItems: 'center',
   },
-  title1: {
-    ...fonts.title,
-    ...textShadow,
-    color: colors.white,
-  },
-  title2: {
-    ...fonts.specialTitle,
+  title: {
+    marginTop: 24,
+    marginBottom: 8,
+    ...fonts.titleLarge,
     ...textShadow,
     color: colors.white,
   },

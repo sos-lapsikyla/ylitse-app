@@ -77,6 +77,7 @@ const styles = RN.StyleSheet.create({
     marginBottom: 32,
   },
   appTitle: {
+    marginTop: 40,
     alignSelf: 'center',
     zIndex: 1,
   },

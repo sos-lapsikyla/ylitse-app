@@ -1,6 +1,5 @@
 import React from 'react';
 import RN from 'react-native';
-import * as snapCarousel from 'react-native-snap-carousel';
 import * as redux from 'redux';
 import { useSelector, useDispatch } from 'react-redux';
 import * as RD from '@devexperts/remote-data-ts';
@@ -39,13 +38,16 @@ export default ({ onPress }: Props) => {
       <RemoteData data={mentorList} fetchData={fetchMentors}>
         {mentors => (
           <RN.View style={styles.carouselContainer}>
-            <snapCarousel.default
+            <RN.FlatList
+              showsHorizontalScrollIndicator={false}
+              showsVerticalScrollIndicator={false}
+              contentContainerStyle={{
+                paddingHorizontal: 0.05 * measuredWidth + 8,
+              }}
               data={[...mentors].sort(mentorApi.compare(userId))}
-              renderItem={renderMentorCard(height, onPress)}
-              sliderWidth={measuredWidth}
-              itemWidth={measuredWidth * 0.85}
-              inactiveSlideOpacity={1}
-              inactiveSlideScale={0.95}
+              renderItem={renderMentorCard(height, measuredWidth, onPress)}
+              keyExtractor={({ buddyId }) => buddyId}
+              horizontal={true}
             />
           </RN.View>
         )}
@@ -58,10 +60,17 @@ const mentorCardBottomMargin = 16;
 
 const renderMentorCard = (
   maxHeight: number,
+  screenWidth: number,
   onPress?: (mentor: mentorApi.Mentor) => void | undefined,
 ) => ({ item }: { item: mentorApi.Mentor }) => (
   <MentorCard
-    style={[styles.card, { maxHeight: maxHeight - mentorCardBottomMargin }]}
+    style={[
+      styles.card,
+      {
+        maxHeight: maxHeight - mentorCardBottomMargin,
+        maxWidth: screenWidth * 0.9,
+      },
+    ]}
     mentor={item}
     onPress={onPress}
   />
@@ -77,6 +86,7 @@ const styles = RN.StyleSheet.create({
   carouselContainer: {
     flex: 1,
   },
+  scrollContainer: { paddingHorizontal: 16 },
   card: {
     alignSelf: 'stretch',
     marginHorizontal: 8,
