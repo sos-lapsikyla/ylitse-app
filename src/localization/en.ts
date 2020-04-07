@@ -50,7 +50,7 @@ export const messages: { [key in MessageId]: string } = {
   'main.settings.account.email.success': 'Changing email succeeded!',
   'main.settings.account.email.title': 'Email',
 
-  'main.settings.account.nickName': 'Nickname (public)',
+  'main.settings.account.nickName': 'Nickname',
 
   'main.settings.account.password.button': 'Change password',
   'main.settings.account.password.current': 'Current password',
@@ -61,7 +61,7 @@ export const messages: { [key in MessageId]: string } = {
   'main.settings.account.password.title': 'Password',
 
   'main.settings.account.title': 'Account settings',
-  'main.settings.account.userName': 'Username (private)',
+  'main.settings.account.userName': 'Username',
 
   'main.settings.deleteAccount.cancel': 'Cancel',
   'main.settings.deleteAccount.deleteAccount': 'Delete account',
@@ -124,8 +124,8 @@ export const messages: { [key in MessageId]: string } = {
   'onboarding.privacyPolicy.nextButton': 'Continue',
   'onboarding.privacyPolicy.title': 'Data Privacy & Security',
 
-  'onboarding.sign.up': 'Sign up',
   'onboarding.sign.in': 'Sign in',
+  'onboarding.sign.up': 'Sign up',
 
   'onboarding.signIn.button': 'Login',
   'onboarding.signIn.failure': 'Kirjautumien epäonnistui',
