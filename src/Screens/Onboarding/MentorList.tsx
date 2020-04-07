@@ -13,17 +13,17 @@ import Button from '../components/Button';
 import Message from '../components/Message';
 import CreatedBySosBanner from '../components/CreatedBySosBanner';
 
-import { SignUpRoute } from './SignUp';
+import { SignRoute } from './Sign';
 
 export type MentorListRoute = {
   'Onboarding/MentorList': {};
 };
 
-type Props = navigationProps.NavigationProps<MentorListRoute, SignUpRoute>;
+type Props = navigationProps.NavigationProps<MentorListRoute, SignRoute>;
 
 const MentorList = (props: Props) => {
   const navigateNext = () => {
-    props.navigation.navigate('Onboarding/SignUp', {});
+    props.navigation.navigate('Onboarding/Sign', {});
   };
   return (
     <Background>

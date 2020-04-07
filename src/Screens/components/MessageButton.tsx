@@ -7,6 +7,7 @@ import Message from './Message';
 import shadow from './shadow';
 import colors from './colors';
 import fonts from './fonts';
+import ButtonContainer from './ButtonContainer';
 
 interface Props {
   onPress: () => void | undefined;
@@ -17,9 +18,9 @@ interface Props {
 
 export default ({ onPress, style, messageId, messageStyle }: Props) => {
   return (
-    <RN.TouchableOpacity style={[styles.container, style]} onPress={onPress}>
+    <ButtonContainer style={style} onPress={onPress} hasShadow={true}>
       <Message style={[styles.message, messageStyle]} id={messageId} />
-    </RN.TouchableOpacity>
+    </ButtonContainer>
   );
 };
 

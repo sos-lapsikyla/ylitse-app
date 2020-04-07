@@ -4,7 +4,6 @@ import RN from 'react-native';
 import fonts from './fonts';
 import colors from './colors';
 import Message from './Message';
-import { textShadow } from './shadow';
 
 const AppTitle = (props: RN.ViewProps) => {
   return (
@@ -18,14 +17,12 @@ const AppTitle = (props: RN.ViewProps) => {
 const styles = RN.StyleSheet.create({
   title: {
     ...fonts.specialTitleLarge,
-    ...textShadow,
     textAlign: 'center',
     color: colors.white,
   },
   subTitle: {
     marginTop: -32,
     ...fonts.title,
-    ...textShadow,
     textAlign: 'center',
     color: colors.white,
   },

@@ -11,26 +11,15 @@ import * as navigationProps from '../../lib/navigation-props';
 import useRemoteData from '../../lib/use-remote-data';
 
 import OnboardingBackground from '../components/OnboardingBackground';
-import Card from '../components/Card';
-import fonts from '../components/fonts';
-import Message from '../components/Message';
-import { gradients } from '../components/colors';
-import Button from '../components/Button';
 import LoginCard from '../components/LoginCard';
 
-import { TabsRoute } from '../Main/Tabs';
-
 import { DisplayNameRoute } from './DisplayName';
-import { SignInRoute } from './SignIn';
 
 export type SignUpRoute = {
   'Onboarding/SignUp': {};
 };
 
-type Props = navigationProps.NavigationProps<
-  SignUpRoute,
-  SignInRoute & TabsRoute & DisplayNameRoute
->;
+type Props = navigationProps.NavigationProps<SignUpRoute, DisplayNameRoute>;
 const SignUp = ({ navigation }: Props) => {
   const [
     credentialsCheck,
@@ -53,10 +42,6 @@ const SignUp = ({ navigation }: Props) => {
   const onSignUp = (credentials: authApi.Credentials) => {
     checkCredentials(credentials);
   };
-  const navigateLogin = () => {
-    navigation.navigate('Onboarding/SignIn', {});
-  };
-
   const getErrorMessageId: () => localization.MessageId = () =>
     pipe(
       credentialsCheck,
@@ -79,28 +64,18 @@ const SignUp = ({ navigation }: Props) => {
         remoteAction={credentialsCheck}
         onChange={resetCredentialsCheck}
       />
-      <Card style={styles.card}>
-        <Message
-          style={styles.loginOldTitle}
-          id="onboarding.signUp.existingAccount.title"
-        />
-        <Button
-          onPress={navigateLogin}
-          messageId="onboarding.signUp.existingAccount.login"
-          gradient={gradients.faintGray}
-          noShadow={true}
-        />
-      </Card>
     </OnboardingBackground>
   );
 };
 
 const styles = RN.StyleSheet.create({
-  card: { marginVertical: 24, padding: 24, alignSelf: 'stretch', zIndex: 2 },
-  loginOldTitle: {
-    ...fonts.largeBold,
-    textAlign: 'center',
-    marginBottom: 24,
+  card: {
+    marginVertical: 24,
+    paddingHorizontal: 24,
+    paddingTop: 64,
+    paddingBottom: 48,
+    alignSelf: 'stretch',
+    zIndex: 2,
   },
 });
 
