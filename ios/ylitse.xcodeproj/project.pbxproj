@@ -712,7 +712,7 @@
 				CODE_SIGN_ENTITLEMENTS = ylitse/ylitse.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 17;
+				CURRENT_PROJECT_VERSION = 18;
 				DEAD_CODE_STRIPPING = NO;
 				DEVELOPMENT_TEAM = L4F7DPRAF7;
 				INFOPLIST_FILE = ylitse/Info.plist;
@@ -738,7 +738,7 @@
 				CODE_SIGN_ENTITLEMENTS = ylitse/ylitse.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 17;
+				CURRENT_PROJECT_VERSION = 18;
 				DEVELOPMENT_TEAM = L4F7DPRAF7;
 				INFOPLIST_FILE = ylitse/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
