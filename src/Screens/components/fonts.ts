@@ -41,12 +41,12 @@ const fonts = {
   },
   title: {
     fontFamily: 'Nunito-Regular',
-    fontSize: 32,
+    fontSize: 26,
     lineHeight: 44,
   },
   titleBold: {
     fontFamily: 'Nunito-Bold',
-    fontSize: 32,
+    fontSize: 26,
     lineHeight: 44,
   },
   titleLarge: {

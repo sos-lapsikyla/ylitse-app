@@ -7,7 +7,7 @@ export const messages = {
 
   'components.createdBySosBanner': 'Palvelun tarjoaa SOS-lapsikylä',
 
-  'components.mentorCard.readMore': 'Lue Lisää',
+  'components.mentorCard.readMore': 'Lue lisää',
   'components.mentorCard.showMore': 'Näytä lisää...',
   'components.mentorCard.yearsAbbrev': 'v.',
 
@@ -50,7 +50,7 @@ export const messages = {
 
   'main.settings.account.nickName': 'Nimimerkki',
 
-  'main.settings.account.password.button': 'vaihda salasana',
+  'main.settings.account.password.button': 'Vaihda salasana',
   'main.settings.account.password.current': 'nykyinen salasana',
   'main.settings.account.password.failure': 'Salasanan vaihto epäonnistui!',
   'main.settings.account.password.new': 'uusi salasana',
@@ -107,9 +107,8 @@ export const messages = {
   'onboarding.email.nextButton': 'Jatka',
   'onboarding.email.title': 'Sähköpostiosoite',
 
-  'onboarding.mentorlist.lowerTitle': 'Mentorimme',
+  'onboarding.mentorlist.lowerTitle': 'Mentorit',
   'onboarding.mentorlist.start': 'Aloita',
-  'onboarding.mentorlist.upperTitle': 'Tapaa',
 
   'onboarding.privacyPolicy.agreeButton': 'Hyväksy',
   'onboarding.privacyPolicy.bodyText1':
@@ -122,8 +121,8 @@ export const messages = {
   'onboarding.privacyPolicy.nextButton': 'Jatka',
   'onboarding.privacyPolicy.title': 'Yksityisyydensuoja',
 
-  'onboarding.sign.in': 'Rekisteröidy',
-  'onboarding.sign.up': 'Kirjaudu',
+  'onboarding.sign.in': 'Kirjaudu',
+  'onboarding.sign.up': 'Rekisteröidy',
 
   'onboarding.signIn.button': 'Kirjaudu',
   'onboarding.signIn.failure': 'Kirjautumien epäonnistui',
