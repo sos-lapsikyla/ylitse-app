@@ -48,11 +48,14 @@ const MentorTitle: React.FC<Props> = ({
         />
         <RN.View style={styles.column}>
           <RN.Text style={styles.name}>{name}</RN.Text>
-          <RN.Text style={styles.infoText}>
-            <RN.Text>{age}</RN.Text>
-            <Message id={'components.mentorCard.yearsAbbrev'} /> {' | '}
-            <RN.Text>{region}</RN.Text>
-          </RN.Text>
+          <RN.View style={styles.infoContainer}>
+            <RN.Text style={styles.infoText}>
+              <RN.Text> {age}</RN.Text>
+              <Message id={'components.mentorCard.yearsAbbrev'} />
+              <RN.Text>{' | '}</RN.Text>
+              <RN.Text>{region}</RN.Text>
+            </RN.Text>
+          </RN.View>
         </RN.View>
       </Wrapper>
     </RN.View>
@@ -96,7 +99,10 @@ const styles = RN.StyleSheet.create({
   name: {
     ...fonts.titleBold,
   },
+  infoContainer: { flexGrow: 1, flexDirection: 'row', flexWrap: 'wrap' },
   infoText: {
+    textAlign: 'left',
+    flex: 1,
     ...fonts.small,
   },
 });
