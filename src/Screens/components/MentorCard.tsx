@@ -4,7 +4,7 @@ import RN from 'react-native';
 import * as api from '../../api/mentors';
 
 import Button from './Button';
-import Card from './Card';
+import Card, { cardBorderRadius } from './Card';
 import MentorTitle from './MentorTitle';
 import MentorStory from './MentorStory';
 import Skills from './Skills';
@@ -20,17 +20,10 @@ interface Props {
 
 const MentorCard: React.FC<Props> = ({ onPress, style, mentor }) => {
   const color = getBuddyColor(mentor.buddyId);
-  const scroll = React.useRef<RN.ScrollView | null>(null);
-  React.useEffect(() => {
-    if (scroll) {
-      !!scroll.current && scroll.current.scrollToEnd();
-    }
-  }, [scroll]);
   return (
-    <Card style={style}>
+    <Card style={[styles.card, style]}>
       <MentorTitle mentor={mentor} />
       <RN.ScrollView
-        ref={scroll}
         style={styles.content}
         contentContainerStyle={styles.contentContainer}
         showsVerticalScrollIndicator={false}
@@ -41,25 +34,29 @@ const MentorCard: React.FC<Props> = ({ onPress, style, mentor }) => {
           story={mentor.story}
           showAll={false}
         />
-        <Skills skills={mentor.skills} color={color} amount={3} />
-        {!onPress ? null : (
-          <RN.View style={styles.buttonContainer}>
-            <Button
-              style={styles.button}
-              messageId="components.mentorCard.readMore"
-              onPress={() => onPress(mentor)}
-            />
-          </RN.View>
-        )}
+        <Skills skills={mentor.skills} color={color} amount={100} />
       </RN.ScrollView>
+      {!onPress ? null : (
+        <RN.View style={styles.buttonContainer}>
+          <Button
+            style={styles.button}
+            messageId="components.mentorCard.readMore"
+            onPress={() => onPress(mentor)}
+          />
+        </RN.View>
+      )}
     </Card>
   );
 };
 
 const styles = RN.StyleSheet.create({
+  card: {
+    justifyContent: 'space-between',
+  },
   content: { flexShrink: 1 },
   contentContainer: {
     padding: 24,
+    justifyContent: 'space-between',
     flexGrow: 1,
   },
   row: {
@@ -81,9 +78,11 @@ const styles = RN.StyleSheet.create({
   },
   story: {},
   buttonContainer: {
-    flex: 1,
-    flexGrow: 1,
-    justifyContent: 'flex-end',
+    zIndex: 2,
+    minHeight: 48,
+    paddingHorizontal: 24,
+    borderRadius: cardBorderRadius,
+    marginBottom: 8,
   },
   button: {},
 });

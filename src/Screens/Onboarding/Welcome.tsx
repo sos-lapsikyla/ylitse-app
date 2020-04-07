@@ -30,12 +30,13 @@ export default ({ navigation }: Props) => {
       forceInset={{ top: 'always', bottom: 'always' }}
       style={styles.background}
     >
-      <AppTitle style={styles.appTitle} />
-      <SosBanner style={styles.banner} />
       <RN.ScrollView
         style={styles.scroll}
         contentContainerStyle={styles.scrollContent}
+        showsVerticalScrollIndicator={false}
+        showsHorizontalScrollIndicator={false}
       >
+        <AppTitle style={styles.appTitle} />
         <Card style={styles.card}>
           <Message style={styles.titleText} id={'onboarding.welcome.title'} />
           <Message style={styles.text} id={'onboarding.welcome.text1'} />
@@ -48,6 +49,7 @@ export default ({ navigation }: Props) => {
             onPress={navigateNext}
           />
         </Card>
+        <SosBanner style={styles.banner} />
       </RN.ScrollView>
     </SafeAreaView>
   );
@@ -55,24 +57,10 @@ export default ({ navigation }: Props) => {
 
 const styles = RN.StyleSheet.create({
   background: {
-    paddingTop: 80,
     backgroundColor: colors.blue60,
     flex: 1,
-    paddingHorizontal: 24,
     alignItems: 'center',
     justifyContent: 'space-between',
-  },
-  appTitle: {
-    position: 'absolute',
-    top: 80,
-    alignSelf: 'center',
-    zIndex: 1,
-  },
-  banner: {
-    position: 'absolute',
-    bottom: 32,
-    alignSelf: 'center',
-    color: colors.white,
   },
   scroll: {
     flex: 1,
@@ -80,10 +68,22 @@ const styles = RN.StyleSheet.create({
   },
   scrollContent: {
     flexGrow: 1,
-    justifyContent: 'center',
+    justifyContent: 'space-between',
   },
   card: {
+    marginTop: 32,
     paddingHorizontal: 24,
+    marginHorizontal: 24,
+    marginBottom: 32,
+  },
+  appTitle: {
+    alignSelf: 'center',
+    zIndex: 1,
+  },
+  banner: {
+    alignSelf: 'center',
+    color: colors.white,
+    marginBottom: 16,
   },
   titleText: {
     marginTop: 40,

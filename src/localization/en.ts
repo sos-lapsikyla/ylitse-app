@@ -5,7 +5,7 @@ export const messages: { [key in MessageId]: string } = {
   'buddyList.title': 'Chats',
 
   'components.appTitle.subTitle': 'MentorApp',
-  'components.appTitle.title': 'Ylitse',
+  'components.appTitle.title': 'YLITSE',
 
   'components.createdBySosBanner': 'Brought to you by SOS-lapsikylä',
 
