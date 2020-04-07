@@ -7,7 +7,7 @@ export const messages = {
 
   'components.createdBySosBanner': 'Palvelun tarjoaa SOS-lapsikylä',
 
-  'components.mentorCard.readMore': 'Lue Lisää',
+  'components.mentorCard.readMore': 'Lue lisää',
   'components.mentorCard.showMore': 'Näytä lisää...',
   'components.mentorCard.yearsAbbrev': 'v.',
 
@@ -50,7 +50,7 @@ export const messages = {
 
   'main.settings.account.nickName': 'Nimimerkki',
 
-  'main.settings.account.password.button': 'vaihda salasana',
+  'main.settings.account.password.button': 'Vaihda salasana',
   'main.settings.account.password.current': 'nykyinen salasana',
   'main.settings.account.password.failure': 'Salasanan vaihto epäonnistui!',
   'main.settings.account.password.new': 'uusi salasana',
