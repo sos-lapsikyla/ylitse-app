@@ -33,6 +33,11 @@ export default ({ onPress }: Props) => {
 
   const [{ width, height }, onLayout] = useLayout();
   const measuredWidth = width || RN.Dimensions.get('window').width;
+
+  const interval = measuredWidth * (0.85 + 0.15 / 4);
+
+  const deccelerationRate = RN.Platform.OS === 'ios' ? 0.99 : 0.8;
+
   return (
     <RN.View onLayout={onLayout} style={styles.mentorListContainer}>
       <RemoteData data={mentorList} fetchData={fetchMentors}>
@@ -41,8 +46,10 @@ export default ({ onPress }: Props) => {
             <RN.FlatList
               showsHorizontalScrollIndicator={false}
               showsVerticalScrollIndicator={false}
+              decelerationRate={deccelerationRate}
+              snapToInterval={interval}
               contentContainerStyle={{
-                paddingHorizontal: 0.05 * measuredWidth + 8,
+                paddingLeft: (0.15 / 2) * measuredWidth,
               }}
               data={[...mentors].sort(mentorApi.compare(userId))}
               renderItem={renderMentorCard(height, measuredWidth, onPress)}
@@ -68,7 +75,8 @@ const renderMentorCard = (
       styles.card,
       {
         maxHeight: maxHeight - mentorCardBottomMargin,
-        maxWidth: screenWidth * 0.9,
+        width: screenWidth * 0.85,
+        marginRight: (0.15 / 4) * screenWidth,
       },
     ]}
     mentor={item}
@@ -79,7 +87,7 @@ const renderMentorCard = (
 const styles = RN.StyleSheet.create({
   mentorListContainer: {
     justifyContent: 'center',
-    alignItems: 'center',
+    alignItems: 'flex-start',
     flex: 1,
     alignSelf: 'stretch',
   },
@@ -89,7 +97,6 @@ const styles = RN.StyleSheet.create({
   scrollContainer: { paddingHorizontal: 16 },
   card: {
     alignSelf: 'stretch',
-    marginHorizontal: 8,
     flexGrow: 1,
     marginBottom: mentorCardBottomMargin,
   },
