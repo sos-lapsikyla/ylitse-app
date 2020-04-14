@@ -24,7 +24,7 @@
 		69FB89A6A32B417E8DC879AA /* Nunito-Black.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E2B92AD984004299A8FFE4A7 /* Nunito-Black.ttf */; };
 		7428BA40726AB1310A69940F /* libPods-ylitse-tvOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D0F49F342C31D51A7D6CAF7C /* libPods-ylitse-tvOS.a */; };
 		74A6F6A141ED4B14B4A74F3C /* Nunito-BoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 499DD7EA76E1496EB142F12E /* Nunito-BoldItalic.ttf */; };
-		759F04992422044B000840CD /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 759F04982422044B000840CD /* GoogleService-Info.plist */; };
+		7587366E2445B7B600227930 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7587366D2445B7B600227930 /* GoogleService-Info.plist */; };
 		7BDAC27095464256AE23897F /* Nunito-LightItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 43829F745BD14810A8C6895F /* Nunito-LightItalic.ttf */; };
 		85D11B6E52991FA637771222 /* libPods-ylitse-tvOSTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 43539919BF99A92C641C7CF4 /* libPods-ylitse-tvOSTests.a */; };
 		8A1A4D0841A84AF092876CC8 /* Nunito-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 887FD7CE57AD4A1291E94356 /* Nunito-Bold.ttf */; };
@@ -81,8 +81,8 @@
 		4BCC310E6DCB4925B37374BE /* Nunito-Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Nunito-Regular.ttf"; path = "../assets/fonts/Nunito-Regular.ttf"; sourceTree = "<group>"; };
 		4DB47D66F4443920236E2904 /* Pods-ylitse-tvOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ylitse-tvOS.release.xcconfig"; path = "Target Support Files/Pods-ylitse-tvOS/Pods-ylitse-tvOS.release.xcconfig"; sourceTree = "<group>"; };
 		5251F7504AA18DD9249ED5F9 /* Pods-ylitseTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ylitseTests.debug.xcconfig"; path = "Target Support Files/Pods-ylitseTests/Pods-ylitseTests.debug.xcconfig"; sourceTree = "<group>"; };
+		7587366D2445B7B600227930 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		759F049724220094000840CD /* ylitse.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = ylitse.entitlements; path = ylitse/ylitse.entitlements; sourceTree = "<group>"; };
-		759F04982422044B000840CD /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../Downloads/GoogleService-Info.plist"; sourceTree = "<group>"; };
 		7DE268A725FEC23080D7F1EC /* Pods-ylitse-tvOSTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ylitse-tvOSTests.debug.xcconfig"; path = "Target Support Files/Pods-ylitse-tvOSTests/Pods-ylitse-tvOSTests.debug.xcconfig"; sourceTree = "<group>"; };
 		887FD7CE57AD4A1291E94356 /* Nunito-Bold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Nunito-Bold.ttf"; path = "../assets/fonts/Nunito-Bold.ttf"; sourceTree = "<group>"; };
 		8B4F313D6C0141D5ADD6646A /* Baloo-Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Baloo-Regular.ttf"; path = "../assets/fonts/Baloo-Regular.ttf"; sourceTree = "<group>"; };
@@ -173,7 +173,6 @@
 		13B07FAE1A68108700A75B9A /* ylitse */ = {
 			isa = PBXGroup;
 			children = (
-				759F04982422044B000840CD /* GoogleService-Info.plist */,
 				759F049724220094000840CD /* ylitse.entitlements */,
 				008F07F21AC5B25A0029DE68 /* main.jsbundle */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
@@ -209,6 +208,7 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
+				7587366D2445B7B600227930 /* GoogleService-Info.plist */,
 				13B07FAE1A68108700A75B9A /* ylitse */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
 				00E356EF1AD99517003FC87E /* ylitseTests */,
@@ -412,7 +412,7 @@
 				F49AE8B0A9FC452081F5F477 /* Nunito-ExtraBoldItalic.ttf in Resources */,
 				ABC0C6EE9EA84C429FA9DA6B /* Nunito-ExtraLight.ttf in Resources */,
 				40077682FBDB43D682FEEA77 /* Nunito-ExtraLightItalic.ttf in Resources */,
-				759F04992422044B000840CD /* GoogleService-Info.plist in Resources */,
+				7587366E2445B7B600227930 /* GoogleService-Info.plist in Resources */,
 				AE49C27C336142C890589433 /* Nunito-Italic.ttf in Resources */,
 				0E005A2D17CF49B1A280A679 /* Nunito-Light.ttf in Resources */,
 				7BDAC27095464256AE23897F /* Nunito-LightItalic.ttf in Resources */,
