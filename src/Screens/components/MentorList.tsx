@@ -46,6 +46,7 @@ export default ({ onPress }: Props) => {
             <RN.FlatList
               showsHorizontalScrollIndicator={false}
               showsVerticalScrollIndicator={false}
+              initialNumToRender={2}
               decelerationRate={deccelerationRate}
               snapToInterval={interval}
               contentContainerStyle={{
