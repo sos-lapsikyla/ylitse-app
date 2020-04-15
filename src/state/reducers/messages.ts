@@ -115,3 +115,16 @@ export const getMessage = (
     O.chain(threadMessages => record.lookup(index.messageId, threadMessages)),
   );
 };
+
+export const getOrder: (
+  s: types.AppState,
+) => RD.RemoteData<string, Record<string, number>> = flow(
+  ({ messages }) => messages.messages,
+  RD.map(
+    record.map(messagesById => {
+      const messages = Object.values(messagesById).sort(ordMessage.compare);
+      const last = messages[messages.length - 1];
+      return last.sentTime;
+    }),
+  ),
+);
