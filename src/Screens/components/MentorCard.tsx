@@ -23,6 +23,12 @@ const MentorCard: React.FC<Props> = ({ onPress, style, mentor }) => {
   return (
     <Card style={[styles.card, style]}>
       <MentorTitle mentor={mentor} />
+      <RN.Image
+        style={styles.topGradient}
+        source={require('../images/gradient.svg')}
+        resizeMode="stretch"
+        resizeMethod="scale"
+      />
       <RN.ScrollView
         style={styles.content}
         contentContainerStyle={styles.contentContainer}
@@ -36,6 +42,12 @@ const MentorCard: React.FC<Props> = ({ onPress, style, mentor }) => {
         />
         <Skills skills={mentor.skills} color={color} amount={100} />
       </RN.ScrollView>
+      <RN.Image
+        style={styles.bottomGradient}
+        source={require('../images/gradient.svg')}
+        resizeMode="stretch"
+        resizeMethod="scale"
+      />
       {!onPress ? null : (
         <RN.View style={styles.buttonContainer}>
           <Button
@@ -50,7 +62,26 @@ const MentorCard: React.FC<Props> = ({ onPress, style, mentor }) => {
 };
 
 const styles = RN.StyleSheet.create({
+  topGradient: {
+    height: 40,
+    tintColor: colors.white,
+    marginBottom: -40,
+    width: '100%',
+    alignSelf: 'stretch',
+    zIndex: 1,
+  },
+  bottomGradient: {
+    height: 40,
+    tintColor: colors.white,
+    marginTop: -40,
+    width: '100%',
+    alignSelf: 'stretch',
+    transform: [{ rotate: '180deg' }],
+    zIndex: 1,
+  },
   card: {
+    overflow: 'hidden',
+    zIndex: 2,
     justifyContent: 'space-between',
   },
   content: { flexShrink: 1 },

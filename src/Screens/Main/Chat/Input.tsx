@@ -86,7 +86,7 @@ const styles = RN.StyleSheet.create({
     flexDirection: 'column',
     flexWrap: 'wrap',
     textAlignVertical: 'top', // IOS/ANDROID
-    marginTop: 14,
+    marginTop: RN.Platform.OS === 'ios' ? 14 : undefined,
     marginBottom: 0,
     maxHeight: 300,
     padding: 16,
