@@ -1,12 +1,12 @@
 import React from 'react';
 import RN from 'react-native';
-import * as ReactRedux from 'react-redux';
+import { useSelector } from 'react-redux';
 import * as RD from '@devexperts/remote-data-ts';
 
 import * as navigationProps from '../../../lib/navigation-props';
 
-import * as state from '../../../state';
-import * as selectors from '../../../state/selectors';
+import * as buddyState from '../../../state/reducers/buddies';
+import * as messageState from '../../../state/reducers/messages';
 
 import colors, { gradients } from '../../components/colors';
 import fonts from '../../components/fonts';
@@ -23,13 +23,17 @@ export type BuddyListRoute = {
   'Main/BuddyList': {};
 };
 
-type StateProps = {
-  chatList: RD.RemoteData<string, selectors.Buddy[]>;
-};
-type OwnProps = navigationProps.NavigationProps<BuddyListRoute, ChatRoute>;
-type Props = StateProps & OwnProps;
+type Props = navigationProps.NavigationProps<BuddyListRoute, ChatRoute>;
 
-const BuddyList = ({ navigation, chatList }: Props) => {
+export default ({ navigation }: Props) => {
+  const buddies = useSelector(buddyState.getBuddies);
+  const ordering = useSelector(messageState.getOrder);
+  const both = RD.combine(buddies, ordering);
+  const buddyList = RD.remoteData.map(both, ([buddyMapping, buddyOrder]) => {
+    return Object.values(buddyMapping).sort(
+      (a, b) => (buddyOrder[b.buddyId] || 0) - (buddyOrder[a.buddyId] || 0),
+    );
+  });
   const onPress = (buddyId: string) => {
     navigation.navigate('Main/Chat', { buddyId });
   };
@@ -40,7 +44,7 @@ const BuddyList = ({ navigation, chatList }: Props) => {
       }
       gradient={gradients.pillBlue}
     >
-      <RemoteData data={chatList} fetchData={() => {}}>
+      <RemoteData data={buddyList} fetchData={() => {}}>
         {value => (
           <RN.ScrollView
             style={styles.scrollView}
@@ -81,11 +85,3 @@ const styles = RN.StyleSheet.create({
   },
   button: { marginVertical: 16 },
 });
-
-export default ReactRedux.connect<StateProps, {}, OwnProps, state.AppState>(
-  appState => {
-    return {
-      chatList: selectors.getChatList(appState.buddies, appState.messages),
-    };
-  },
-)(BuddyList);

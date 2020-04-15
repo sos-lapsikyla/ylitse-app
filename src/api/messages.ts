@@ -71,6 +71,7 @@ const toMessage: (
   };
 };
 
+export type MessageMapping = Record<string, Record<string, Message>>;
 export function fetchMessages(
   accessToken: authApi.AccessToken,
 ): TE.TaskEither<string, Record<string, Record<string, Message>>> {
