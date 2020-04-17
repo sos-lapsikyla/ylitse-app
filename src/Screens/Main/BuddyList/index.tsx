@@ -52,7 +52,7 @@ export default ({ navigation }: Props) => {
           >
             {value.map(buddy => (
               <Button
-                key={buddy.buddyId}
+                key={buddy.buddyId + '1'}
                 style={styles.button}
                 onPress={onPress}
                 name={buddy.name}
@@ -82,6 +82,7 @@ const styles = RN.StyleSheet.create({
   scrollContent: {
     paddingTop: 48,
     paddingHorizontal: 16,
+    paddingBottom: 200,
   },
   button: { marginVertical: 16 },
 });
