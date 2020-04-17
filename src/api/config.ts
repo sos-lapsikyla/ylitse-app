@@ -1,4 +1,5 @@
 export const baseUrl = 'https://admin.ylitse.fi/api';
+export const loginUrl = 'https://admin.ylitse.fi/login';
 export const termsUrl =
   'https://sos-lapsikyla.fi/fileadmin/user_upload/tiedostot/kuvat/pdf-tiedostot/Ylitse_MentorApp_kayttyoehdot_tietosuojaseloste.pdf';
 export const userGuideUrl =

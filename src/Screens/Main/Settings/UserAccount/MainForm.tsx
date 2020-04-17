@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import * as RD from '@devexperts/remote-data-ts';
 import { tuple } from 'fp-ts/lib/function';
 
+import * as config from '../../../../api/config';
 import * as userAccountState from '../../../../state/reducers/userAccount';
 import * as actions from '../../../../state/actions';
 
@@ -20,6 +21,9 @@ type Props = {
 };
 
 export default ({ openPasswordForm, openEmailForm }: Props) => {
+  const openProfile = () => {
+    RN.Linking.openURL(config.loginUrl);
+  };
   const userAccount = useSelector(userAccountState.getAccount);
   const dispatch = useDispatch<redux.Dispatch<actions.Action>>();
   const fetchUserAccount = () => {
@@ -78,6 +82,17 @@ export default ({ openPasswordForm, openEmailForm }: Props) => {
               messageStyle={styles.buttonText}
               onPress={openPasswordForm}
               messageId="main.settings.account.password.button"
+              gradient={gradients.pillBlue}
+            />
+            <Message
+              style={styles.fieldName}
+              id="main.settings.account.profile.title"
+            />
+            <Button
+              style={styles.changePasswordButton}
+              messageStyle={styles.buttonText}
+              onPress={openProfile}
+              messageId="main.settings.account.profile.button"
               gradient={gradients.pillBlue}
             />
           </>

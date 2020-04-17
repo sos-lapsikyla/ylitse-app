@@ -60,6 +60,9 @@ export const messages: { [key in MessageId]: string } = {
   'main.settings.account.password.success': 'Password change succeeded',
   'main.settings.account.password.title': 'Password',
 
+  'main.settings.account.profile.button': 'Edit Profile',
+  'main.settings.account.profile.title': 'Profile',
+
   'main.settings.account.title': 'Account settings',
   'main.settings.account.userName': 'Username',
 
@@ -111,7 +114,6 @@ export const messages: { [key in MessageId]: string } = {
 
   'onboarding.mentorlist.lowerTitle': 'Mentors',
   'onboarding.mentorlist.start': 'Get started',
-  'onboarding.mentorlist.upperTitle': 'Meet our',
 
   'onboarding.privacyPolicy.agreeButton': 'I agree',
   'onboarding.privacyPolicy.bodyText1':
