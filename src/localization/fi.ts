@@ -58,6 +58,9 @@ export const messages = {
   'main.settings.account.password.success': 'Salasanan vaihto onnistui!',
   'main.settings.account.password.title': 'Salasana',
 
+  'main.settings.account.profile.button': 'Muokkaa profiilia',
+  'main.settings.account.profile.title': 'Profiili',
+
   'main.settings.account.title': 'Asetukset',
   'main.settings.account.userName': 'Käyttäjänimi',
 
