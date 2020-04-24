@@ -20,6 +20,7 @@ interface SkillListProps extends RN.ViewProps {
 const magicSkills = {
   Lastensuojelu: null,
   Italy: null,
+  'Lasinen lapsuus': null,
 };
 
 export default ({ skills, color, style, amount }: SkillListProps) => {
