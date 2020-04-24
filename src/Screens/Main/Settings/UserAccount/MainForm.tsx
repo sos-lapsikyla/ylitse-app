@@ -37,7 +37,7 @@ export default ({ openPasswordForm, openEmailForm }: Props) => {
     <>
       <Message style={styles.accountSettingsText} id="main.settings.title" />
       <RemoteData data={data} fetchData={fetchUserAccount}>
-        {([{ userName, displayName, email }, hasBoth]) => (
+        {([{ userName, displayName, email, role }, hasBoth]) => (
           <>
             <Message
               style={styles.fieldName}
@@ -84,17 +84,21 @@ export default ({ openPasswordForm, openEmailForm }: Props) => {
               messageId="main.settings.account.password.button"
               gradient={gradients.pillBlue}
             />
-            <Message
-              style={styles.fieldName}
-              id="main.settings.account.profile.title"
-            />
-            <Button
-              style={styles.changePasswordButton}
-              messageStyle={styles.buttonText}
-              onPress={openProfile}
-              messageId="main.settings.account.profile.button"
-              gradient={gradients.pillBlue}
-            />
+            {role === 'mentor' ? (
+              <>
+                <Message
+                  style={styles.fieldName}
+                  id="main.settings.account.profile.title"
+                />
+                <Button
+                  style={styles.changePasswordButton}
+                  messageStyle={styles.buttonText}
+                  onPress={openProfile}
+                  messageId="main.settings.account.profile.button"
+                  gradient={gradients.pillBlue}
+                />
+              </>
+            ) : null}
           </>
         )}
       </RemoteData>
