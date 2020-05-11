@@ -71,7 +71,7 @@ export const reducer = (state: State, action: actions.Action) => {
     case 'newMessage/store/write/start': {
       const { buddyId, text } = action.payload;
       const prev = getPrev(buddyId, state);
-      if (text === prev.text) {
+      if (text === prev.text || RD.isPending(prev.sendRequest)) {
         return state;
       }
       const next: NewMessage = {
@@ -139,10 +139,16 @@ export const reducer = (state: State, action: actions.Action) => {
         text: '',
         sendRequest: RD.fromEither(response),
       };
-      return {
-        ...state,
-        [buddyId]: result,
-      };
+      const nextAction = cmd(
+        T.of(actions.make('newMessage/store/write/end')({ buddyId, text: '' })),
+      );
+      return loop(
+        {
+          ...state,
+          [buddyId]: result,
+        },
+        nextAction,
+      );
     }
     default: {
       return state;
