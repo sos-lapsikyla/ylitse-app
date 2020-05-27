@@ -2,7 +2,7 @@ import * as t from 'io-ts';
 import * as TE from 'fp-ts/lib/TaskEither';
 import * as O from 'fp-ts/lib/Option';
 import { pipe } from 'fp-ts/lib/pipeable';
-import { flow } from 'fp-ts/lib/function';
+import { flow, identity } from 'fp-ts/lib/function';
 import AsyncStorage from '@react-native-community/async-storage';
 
 const storageKey = 'ChosedTopic';
@@ -31,8 +31,14 @@ export const readTopic = pipe(
   ),
 );
 
-export const writeTopic = (topic: Topic) =>
-  TE.tryCatch(
-    () => AsyncStorage.setItem(storageKey, topic),
-    () => 'Failed to write topic to disk.',
+export const writeTopic = (topic: O.Option<Topic>) => {
+  return pipe(
+    topic,
+    O.fold(() => '', identity),
+    _topic =>
+      TE.tryCatch(
+        () => AsyncStorage.setItem(storageKey, _topic),
+        () => 'Failed to write topic to disk.',
+      ),
   );
+};

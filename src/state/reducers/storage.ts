@@ -16,8 +16,6 @@ export const readToken = actions.make('storage/readToken/start')(undefined);
 export const initialState: State = {
   readToken: RD.initial,
   writeToken: RD.initial,
-  readTopic: RD.initial,
-  writeTopic: RD.initial,
 };
 
 export const reducer: automaton.Reducer<State, actions.Action> = (
