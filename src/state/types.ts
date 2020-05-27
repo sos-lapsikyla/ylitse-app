@@ -17,6 +17,8 @@ export type AppState = {
   storage: {
     readToken: RemoteData<authApi.AccessToken>;
     writeToken: RemoteData<void>;
+    readTopic: RemoteData<string>;
+    writeTopic: RemoteData<void>;
   };
 
   accessToken: {

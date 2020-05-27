@@ -8,7 +8,7 @@ import { pipe } from 'fp-ts/lib/pipeable';
 import { flow } from 'fp-ts/lib/function';
 
 import * as authApi from '../../api/auth';
-import * as storageApi from '../../api/storage';
+import * as storageApi from '../../api/token-storage';
 
 import * as http from '../../lib/http';
 

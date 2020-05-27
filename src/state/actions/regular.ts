@@ -19,6 +19,11 @@ type RegularActions = {
   'storage/writeToken/start': authApi.AccessToken;
   'storage/writeToken/end': undefined;
 
+  'storage/readTopic/start': undefined;
+  'storage/readTopix/end': E.Either<string, authApi.AccessToken>;
+  'storage/writeTopic/start': authApi.AccessToken;
+  'storage/writeTopic/end': undefined;
+
   'mentors/start': undefined;
   'mentors/end': Result<typeof mentorApi.fetchMentors>;
 

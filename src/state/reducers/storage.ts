@@ -3,7 +3,7 @@ import * as automaton from 'redux-automaton';
 import * as T from 'fp-ts/lib/Task';
 import * as O from 'fp-ts/lib/Option';
 
-import * as storageApi from '../../api/storage';
+import * as storageApi from '../../api/token-storage';
 
 import * as actions from '../actions';
 import { AppState } from '../types';
@@ -16,6 +16,8 @@ export const readToken = actions.make('storage/readToken/start')(undefined);
 export const initialState: State = {
   readToken: RD.initial,
   writeToken: RD.initial,
+  readTopic: RD.initial,
+  writeTopic: RD.initial,
 };
 
 export const reducer: automaton.Reducer<State, actions.Action> = (
@@ -53,4 +55,4 @@ export const reducer: automaton.Reducer<State, actions.Action> = (
   }
 };
 
-export const getReadToken = ({ storage: { readToken } }: AppState) => readToken;
+export const getReadToken = ({ storage }: AppState) => storage.readToken;

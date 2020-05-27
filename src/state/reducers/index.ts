@@ -1,7 +1,7 @@
 import * as automaton from 'redux-automaton';
 import * as T from 'fp-ts/lib/Task';
 
-import * as tokenStorage from '../../api/storage';
+import * as tokenStorage from '../../api/token-storage';
 import { cmd } from '../middleware';
 
 import * as types from '../types';
