@@ -4,7 +4,6 @@ import RN from 'react-native';
 import * as localization from '../../localization';
 
 import Message from './Message';
-import shadow from './shadow';
 import colors from './colors';
 import fonts from './fonts';
 import ButtonContainer from './ButtonContainer';
@@ -18,7 +17,7 @@ interface Props {
 
 export default ({ onPress, style, messageId, messageStyle }: Props) => {
   return (
-    <ButtonContainer style={style} onPress={onPress} hasShadow={true}>
+    <ButtonContainer style={[styles.container, style]} onPress={onPress}>
       <Message style={[styles.message, messageStyle]} id={messageId} />
     </ButtonContainer>
   );
@@ -35,7 +34,6 @@ const styles = RN.StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     flexDirection: 'column',
-    ...shadow(7),
     backgroundColor: colors.blue80,
   },
   message: {

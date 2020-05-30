@@ -43,11 +43,13 @@ const colors = {
   red80: '#eb727c', // mentor red
 
   orange: '#F1923E',
+
+  pillBlue: '#00B1E6',
 };
 
 export const gradients = {
   blue: ['#5CC5ED', '#5CC5ED'],
-  pillBlue: ['#00B1E6', '#00B1E6'],
+  pillBlue: [colors.pillBlue, colors.pillBlue],
 
   green: ['#98C679', '#98C679'],
   orange: ['#F1923E', '#F1923E'],

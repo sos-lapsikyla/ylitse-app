@@ -1,8 +1,6 @@
 import * as T from 'fp-ts/lib/Task';
-import * as record from 'fp-ts/lib/Record';
 import * as automaton from 'redux-automaton';
 import * as O from 'fp-ts/lib/Option';
-import * as E from 'fp-ts/lib/Either';
 import { pipe } from 'fp-ts/lib/pipeable';
 import { flow } from 'fp-ts/lib/function';
 
@@ -15,6 +13,8 @@ import { cmd } from '../middleware';
 export type State = AppState['topic'];
 
 export const initialState: State = O.none;
+
+export const storeTopic = actions.make('topic/write');
 
 export const reducer: automaton.Reducer<State, actions.Action> = (
   state = initialState,
@@ -38,7 +38,11 @@ export const reducer: automaton.Reducer<State, actions.Action> = (
       return action.payload;
     }
     case 'topic/write': {
-      const nextCmd = actions.make('topic/write')(action.payload);
+      const nextCmd = pipe(
+        topicApi.store(action.payload),
+        T.map(_ => actions.make('none/none')(undefined)),
+        cmd,
+      );
       return automaton.loop(action.payload, nextCmd);
     }
     default: {

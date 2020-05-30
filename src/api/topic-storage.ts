@@ -31,7 +31,7 @@ export const readTopic = pipe(
   ),
 );
 
-export const writeTopic = (topic: O.Option<Topic>) => {
+export const store = (topic: O.Option<Topic>) => {
   return pipe(
     topic,
     O.fold(() => '', identity),

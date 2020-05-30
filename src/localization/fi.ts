@@ -124,6 +124,11 @@ export const messages = {
   'onboarding.privacyPolicy.nextButton': 'Jatka',
   'onboarding.privacyPolicy.title': 'Yksityisyydensuoja',
 
+  'onboarding.selectTopic.skip': 'Ohita',
+  'onboarding.selectTopic.subtitle':
+    '(Mentoreiden järjestys määrittyy valintasi mukaisesti)',
+  'onboarding.selectTopic.title': 'Valitse aihealue',
+
   'onboarding.sign.in': 'Kirjaudu',
   'onboarding.sign.up': 'Rekisteröidy',
 
