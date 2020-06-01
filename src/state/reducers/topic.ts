@@ -16,6 +16,8 @@ export const initialState: State = O.none;
 
 export const storeTopic = actions.make('topic/write');
 
+export const getPreferredTopic = ({ topic }: AppState) => O.toUndefined(topic);
+
 export const reducer: automaton.Reducer<State, actions.Action> = (
   state = initialState,
   action,
