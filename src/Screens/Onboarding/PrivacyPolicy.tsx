@@ -21,7 +21,7 @@ import Button from '../components/Button';
 import ErrorMessage from '../components/ErrorMessage';
 import Link from '../components/Link';
 
-import { TabsRoute } from '../Main/Tabs';
+import { SelectTopicRoute } from './SelectTopic';
 import navigateMain from './navigateMain';
 
 export type PrivacyPolicyRoute = {
@@ -36,7 +36,10 @@ type StateProps = {
 type DispatchProps = {
   createUser: (user: accountApi.User) => void | undefined;
 };
-type OwnProps = navigationProps.NavigationProps<PrivacyPolicyRoute, TabsRoute>;
+type OwnProps = navigationProps.NavigationProps<
+  PrivacyPolicyRoute,
+  SelectTopicRoute
+>;
 
 type Props = StateProps & DispatchProps & OwnProps;
 
@@ -48,7 +51,7 @@ const PrivacyPolicy = ({
 }: Props) => {
   React.useEffect(() => {
     if (O.isSome(accessToken.currentToken)) {
-      navigateMain(navigation);
+      navigation.navigate('Onboarding/SelectTopic', {});
     }
   }, [accessToken]);
   const [isAgreed, setAgreed] = React.useState(false);

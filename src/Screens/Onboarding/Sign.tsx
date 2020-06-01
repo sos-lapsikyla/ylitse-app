@@ -46,11 +46,7 @@ export default ({ navigation }: Props) => {
           style={styles.nextButton}
           onPress={navigateSignIn}
         />
-        <ButtonContainer
-          style={styles.backButton}
-          onPress={goBack}
-          hasShadow={false}
-        >
+        <ButtonContainer style={styles.backButton} onPress={goBack}>
           <RN.Image source={require('../images/chevron-left.svg')} />
         </ButtonContainer>
       </Card>

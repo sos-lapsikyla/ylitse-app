@@ -126,6 +126,11 @@ export const messages: { [key in MessageId]: string } = {
   'onboarding.privacyPolicy.nextButton': 'Continue',
   'onboarding.privacyPolicy.title': 'Data Privacy & Security',
 
+  'onboarding.selectTopic.skip': 'Skip',
+  'onboarding.selectTopic.subtitle':
+    '(Mentor ordering is based on your choice.)',
+  'onboarding.selectTopic.title': 'Choose topic',
+
   'onboarding.sign.in': 'Sign in',
   'onboarding.sign.up': 'Sign up',
 

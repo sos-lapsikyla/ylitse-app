@@ -1,26 +1,15 @@
 import React from 'react';
 import RN from 'react-native';
 
-import shadow from './shadow';
-
 import colors from './colors';
 interface Props {
   onPress: () => void | undefined;
   style?: RN.StyleProp<RN.ViewStyle>;
-  hasShadow: boolean;
 }
 
-const ButtonContainer: React.FC<Props> = ({
-  onPress,
-  style,
-  children,
-  hasShadow,
-}) => {
+const ButtonContainer: React.FC<Props> = ({ onPress, style, children }) => {
   return (
-    <RN.TouchableOpacity
-      style={[styles.container, hasShadow ? shadow(7) : undefined, style]}
-      onPress={onPress}
-    >
+    <RN.TouchableOpacity style={[styles.container, style]} onPress={onPress}>
       {children}
     </RN.TouchableOpacity>
   );
