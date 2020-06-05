@@ -27,6 +27,7 @@ const topics: topicApi.Topic[] = [
   'Lastensuojelu',
   'Lasinen lapsuus',
   'Mielenterveys',
+  'Vanhemmat lastensuojelussa',
 ];
 
 export type SelectTopicRoute = {

@@ -7,12 +7,14 @@ import AsyncStorage from '@react-native-community/async-storage';
 
 const storageKey = 'ChosedTopic';
 
-export type Topic = t.TypeOf<typeof topicType>;
-const topicType = t.keyof({
+export type Topic = keyof typeof topics;
+export const topics = {
   Lastensuojelu: null,
-  Mielenterveys: null,
   'Lasinen lapsuus': null,
-});
+  'Vanhemmat lastensuojelussa': null,
+};
+
+const topicType = t.keyof(topics);
 const decode = flow(
   topicType.decode,
   O.fromEither,
