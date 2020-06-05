@@ -5,6 +5,8 @@ import { pipe } from 'fp-ts/lib/pipeable';
 import * as O from 'fp-ts/lib/Option';
 import * as array from 'fp-ts/lib/Array';
 
+import { topics } from '../../api/topic-storage';
+
 import fonts from './fonts';
 import Chip from './Chip';
 import Message from './Message';
@@ -17,16 +19,10 @@ interface SkillListProps extends RN.ViewProps {
   amount?: number;
 }
 
-const magicSkills = {
-  Lastensuojelu: null,
-  Italy: null,
-  'Lasinen lapsuus': null,
-};
-
 export default ({ skills, color, style, amount }: SkillListProps) => {
   const skillTitle = pipe(
     skills,
-    array.filter(name => name in magicSkills),
+    array.filter(name => name in topics),
     array.head,
     O.toUndefined,
   );
