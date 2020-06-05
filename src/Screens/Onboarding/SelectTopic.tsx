@@ -26,7 +26,6 @@ import navigateMain from './navigateMain';
 const topics: topicApi.Topic[] = [
   'Lastensuojelu',
   'Lasinen lapsuus',
-  'Mielenterveys',
   'Vanhemmat lastensuojelussa',
 ];
 
