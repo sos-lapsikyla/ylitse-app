@@ -35,6 +35,7 @@ export default ({ navigation }: Props) => {
         contentContainerStyle={styles.scrollContent}
         showsVerticalScrollIndicator={false}
         showsHorizontalScrollIndicator={false}
+        testID="welcomeScrollView"
       >
         <AppTitle style={styles.appTitle} />
         <Card style={styles.card}>
