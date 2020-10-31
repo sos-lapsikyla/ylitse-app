@@ -45,7 +45,7 @@ export default ({ navigation }: Props) => {
 
   return (
     <OnboardingBackground>
-      <Card style={styles.card}>
+      <Card style={styles.card} testID="selectTopicCard">
         <Message style={styles.title} id="onboarding.selectTopic.title" />
         <Message style={styles.subtitle} id="onboarding.selectTopic.subtitle" />
         {topics.map(topic => (
@@ -62,6 +62,7 @@ export default ({ navigation }: Props) => {
           messageStyle={styles.buttonText}
           messageId="onboarding.selectTopic.skip"
           onPress={select(O.none)}
+          testID="onboarding.selectTopic.skip"
         />
       </Card>
     </OnboardingBackground>
