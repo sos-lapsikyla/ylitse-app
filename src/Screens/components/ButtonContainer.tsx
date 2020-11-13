@@ -5,12 +5,11 @@ import colors from './colors';
 interface Props {
   onPress: () => void | undefined;
   style?: RN.StyleProp<RN.ViewStyle>;
-  testID?: string;
 }
 
-const ButtonContainer: React.FC<Props> = ({ onPress, style, children, testID }) => {
+const ButtonContainer: React.FC<Props> = ({ onPress, style, children }) => {
   return (
-    <RN.TouchableOpacity style={[styles.container, style]} onPress={onPress} testID={testID}>
+    <RN.TouchableOpacity style={[styles.container, style]} onPress={onPress}>
       {children}
     </RN.TouchableOpacity>
   );

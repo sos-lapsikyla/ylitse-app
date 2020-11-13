@@ -50,7 +50,7 @@ const LoginCard = ({
     onChangeCredentials({ ...credentials, password });
   const isEmptyFields = !credentials.password || !credentials.userName;
   return (
-    <Card {...viewProps} testID="loginCard">
+    <Card {...viewProps}>
       <Message style={styles.title} id={titleMessageId} />
       <NamedInputField
         autoCapitalize="none"
@@ -58,7 +58,6 @@ const LoginCard = ({
         name="onboarding.signUp.nickName"
         onChangeText={onUserNameChange}
         autoCompleteType="off"
-        testID="onboarding.signUp.nickName"
       />
       <NamedInputField
         autoCapitalize="none"
@@ -67,7 +66,6 @@ const LoginCard = ({
         isPasswordInput={true}
         onChangeText={onPasswordChange}
         autoCompleteType="off"
-        testID="onboarding.signUp.password"
       />
       <ErrorMessage
         style={styles.errorText}
@@ -82,7 +80,6 @@ const LoginCard = ({
           badge={require('../images/arrow.svg')}
           loading={RD.isPending(remoteAction)}
           disabled={isEmptyFields}
-          testID="onboarding.signUp.loginButton"
         />
         <Button
           gradient={[colors.faintGray, colors.faintGray]}
