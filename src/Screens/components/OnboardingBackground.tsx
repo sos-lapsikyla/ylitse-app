@@ -8,7 +8,7 @@ import AppTitle from '../components/AppTitle';
 
 type Props = RN.ViewProps;
 
-const OnboardinBackground: React.FC<Props> = ({ children, ...viewProps }) => (
+const OnboardinBackground: React.FC<Props> = ({ children, testID, ...viewProps }) => (
   <Background {...viewProps}>
     <AppTitle style={styles.appTitle} />
     <CreatedBySosBanner style={styles.banner} />
@@ -17,6 +17,7 @@ const OnboardinBackground: React.FC<Props> = ({ children, ...viewProps }) => (
         contentContainerStyle={styles.scrollContent}
         showsVerticalScrollIndicator={false}
         showsHorizontalScrollIndicator={false}
+        testID={testID}
       >
         <SafeAreaView
           style={styles.container}

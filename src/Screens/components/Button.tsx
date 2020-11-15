@@ -21,6 +21,7 @@ interface Props {
   disabled?: boolean;
   loading?: boolean;
   noShadow?: boolean;
+  testID?: string;
 }
 
 const Button = ({
@@ -34,6 +35,7 @@ const Button = ({
   loading,
   disabled,
   noShadow,
+  testID,
 }: Props) => {
   return (
     <RN.TouchableOpacity
@@ -45,6 +47,7 @@ const Button = ({
       ]}
       onPress={onPress}
       disabled={disabled || loading}
+      testID={testID}
     >
       <LinearGradient
         style={[styles.gradient, contentContainerStyle]}

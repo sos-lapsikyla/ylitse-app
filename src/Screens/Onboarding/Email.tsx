@@ -37,7 +37,7 @@ const Email = ({ navigation }: Props) => {
     });
   };
   return (
-    <OnboardingBackground>
+    <OnboardingBackground testID='onboarding.email.view'>
       <Card style={styles.card}>
         <Message style={styles.title} id="onboarding.email.title" />
         <NamedInputField
@@ -47,6 +47,7 @@ const Email = ({ navigation }: Props) => {
           onChangeText={setEmail}
           autoCompleteType="off"
           value={email}
+          testID='onboarding.email.inputTitle'
         />
         <Message style={styles.bodyText} id="onboarding.email.bodyText" />
         <Button
@@ -54,6 +55,7 @@ const Email = ({ navigation }: Props) => {
           onPress={navigateNext}
           messageId="onboarding.email.nextButton"
           badge={require('../images/arrow.svg')}
+          testID='onboarding.email.nextButton'
         />
         <Button
           gradient={[colors.faintGray, colors.faintGray]}

@@ -53,7 +53,7 @@ const SignUp = ({ navigation }: Props) => {
       ),
     );
   return (
-    <OnboardingBackground>
+    <OnboardingBackground testID='onboarding.signUp.view'>
       <LoginCard
         style={styles.card}
         titleMessageId="onboarding.signUp.title"

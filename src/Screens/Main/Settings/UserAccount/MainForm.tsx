@@ -43,14 +43,14 @@ export default ({ openPasswordForm, openEmailForm }: Props) => {
               style={styles.fieldName}
               id="main.settings.account.userName"
             />
-            <RN.Text style={styles.fieldValueText}>{userName}</RN.Text>
+            <RN.Text style={styles.fieldValueText} testID='main.settings.account.userName'>{userName}</RN.Text>
             {hasBoth ? (
               <>
                 <Message
                   style={styles.fieldName}
                   id="main.settings.account.nickName"
                 />
-                <RN.Text style={styles.fieldValueText}>{displayName}</RN.Text>
+                <RN.Text style={styles.fieldValueText} testID='main.settings.account.nickName'>{displayName}</RN.Text>
               </>
             ) : null}
             <Message
@@ -58,7 +58,7 @@ export default ({ openPasswordForm, openEmailForm }: Props) => {
               id="main.settings.account.email.title"
             />
             {email ? (
-              <RN.Text style={styles.fieldValueText}>{email}</RN.Text>
+              <RN.Text style={styles.fieldValueText} testID='main.settings.account.email'>{email}</RN.Text>
             ) : (
               <Message
                 style={styles.fieldValueText}

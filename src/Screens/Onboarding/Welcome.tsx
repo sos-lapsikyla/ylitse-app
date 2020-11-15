@@ -35,6 +35,7 @@ export default ({ navigation }: Props) => {
         contentContainerStyle={styles.scrollContent}
         showsVerticalScrollIndicator={false}
         showsHorizontalScrollIndicator={false}
+        testID='onboarding.welcome.view'
       >
         <AppTitle style={styles.appTitle} />
         <Card style={styles.card}>
@@ -47,6 +48,7 @@ export default ({ navigation }: Props) => {
             messageStyle={styles.buttonText}
             messageId={'onboarding.welcome.button'}
             onPress={navigateNext}
+            testID='onboarding.welcome.button'
           />
         </Card>
         <SosBanner style={styles.banner} />

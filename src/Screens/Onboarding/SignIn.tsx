@@ -45,7 +45,7 @@ const SignIn = (props: Props) => {
   //   props.login({ userName: 'test', password: 'test' });
   // }, []);
   return (
-    <OnboardingBackground>
+    <OnboardingBackground testID='onboarding.signIn.view'>
       <LoginCard
         style={styles.card}
         remoteAction={props.loginState}

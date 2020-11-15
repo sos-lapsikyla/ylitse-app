@@ -1,0 +1,10 @@
+{
+    "mentees": [
+        {
+            "loginName": "mentee",
+            "displayName": "mentee_nick",
+            "password": "menteementee",
+            "email": "mentee@mentee.mentee"
+        }
+    ]
+}
