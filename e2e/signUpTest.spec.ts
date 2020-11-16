@@ -1,12 +1,12 @@
 import { by, element, expect, device } from "detox"
-import { deleteAccountsDB, scrollDownAndTap, waitAndTypeText } from './helpers'
+import { APIDeleteAccounts, scrollDownAndTap, waitAndTypeText } from './helpers'
 
 const accountFixtures = require('./fixtures/accounts.json')
 
 
-describe('Register', () => {
+describe('SignUp', () => {
     beforeEach(async () => {
-        await deleteAccountsDB();
+        await APIDeleteAccounts();
         await device.reloadReactNative();
     })
 
@@ -26,7 +26,7 @@ describe('Register', () => {
 
         await waitAndTypeText('onboarding.email.inputTitle', mentee.email + "\n");
         await scrollDownAndTap('onboarding.email.nextButton', 'onboarding.email.view');
-        
+
         await scrollDownAndTap('onboarding.privacyPolicy.agreeButton', 'onboarding.privacyPolicy.view');
 
         await device.disableSynchronization();

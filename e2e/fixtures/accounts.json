@@ -4,7 +4,25 @@
             "loginName": "mentee",
             "displayName": "mentee_nick",
             "password": "menteementee",
-            "email": "mentee@mentee.mentee"
+            "email": "mentee@mentee.mentee",
+            "role": "mentee"
+        }
+    ],
+    "mentors": [
+        {
+            "loginName": "mentor1",
+            "displayName": "mentor1_nick",
+            "password": "mentormentor",
+            "email": "mentor1@mentor.mentor",
+            "birthYear": 1980,
+            "phone": "555-1234",
+            "story": "my story",
+            "languages": ["fi","se"],
+            "skills": ["vim", "c++", "python"],
+            "communication_channels": ["phone", "email"],
+            "gender": "other",
+            "region": "Tampesteri",
+            "role": "mentor"
         }
     ]
 }
