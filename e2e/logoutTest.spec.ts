@@ -4,16 +4,16 @@ import { APISignUpMentee, scrollDownTo, APIDeleteAccounts, scrollDownAndTap, wai
 const accountFixtures = require('./fixtures/accounts.json')
 
 
-describe('Deletes', () => {
+describe('Delete', () => {
     beforeEach(async () => {
         await APIDeleteAccounts();
         await device.reloadReactNative();
         await device.disableSynchronization();
     })
 
-    it('accou succesfully', async () => {
+    it('account succesfully', async () => {
         const mentee = accountFixtures.mentees[0];
-        APISignUpMentee(mentee);
+        await APISignUpMentee(mentee);
 
         await signIn(mentee);
         await scrollDownAndTap('onboarding.selectTopic.skip', 'onboarding.selectTopic.view');
@@ -48,7 +48,7 @@ describe('Deletes', () => {
 
     it('has cancel button', async () => {
         const mentee = accountFixtures.mentees[0];
-        APISignUpMentee(mentee);
+        await APISignUpMentee(mentee);
 
         await signIn(mentee);
         await scrollDownAndTap('onboarding.selectTopic.skip', 'onboarding.selectTopic.view');

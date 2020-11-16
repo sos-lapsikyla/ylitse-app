@@ -13,7 +13,7 @@ describe('Delete account', () => {
 
     it('for a mentee succesfully', async () => {
         const mentee = accountFixtures.mentees[0];
-        APISignUpMentee(mentee);
+        await APISignUpMentee(mentee);
 
         await signIn(mentee);
         await scrollDownAndTap('onboarding.selectTopic.skip', 'onboarding.selectTopic.view');
@@ -51,7 +51,7 @@ describe('Delete account', () => {
 
     it('can be cancelled', async () => {
         const mentee = accountFixtures.mentees[0];
-        APISignUpMentee(mentee);
+        await APISignUpMentee(mentee);
 
         await signIn(mentee);
         await scrollDownAndTap('onboarding.selectTopic.skip', 'onboarding.selectTopic.view');

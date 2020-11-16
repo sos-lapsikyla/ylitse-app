@@ -13,7 +13,7 @@ describe('SignIn', () => {
 
     it('mentee succesfully', async () => {
         const mentee = accountFixtures.mentees[0];
-        APISignUpMentee(mentee);
+        await APISignUpMentee(mentee);
 
         await signIn(mentee);
         await scrollDownAndTap('onboarding.selectTopic.skip', 'onboarding.selectTopic.view');
