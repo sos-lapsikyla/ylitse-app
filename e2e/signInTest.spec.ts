@@ -1,5 +1,5 @@
 import { by, element, expect, device } from "detox"
-import { APISignUpMentee, APISignUpMentor, APIDeleteAccounts, scrollDownAndTap, waitAndTypeText } from './helpers'
+import { APISignUpMentee, APISignUpMentor, APIDeleteAccounts, scrollDownAndTap, waitAndTypeText, signIn } from './helpers'
 
 const accountFixtures = require('./fixtures/accounts.json')
 
@@ -8,21 +8,14 @@ describe('SignIn', () => {
     beforeEach(async () => {
         await APIDeleteAccounts();
         await device.reloadReactNative();
+        await device.disableSynchronization();
     })
 
     it('mentee succesfully', async () => {
         const mentee = accountFixtures.mentees[0];
         APISignUpMentee(mentee);
 
-        await scrollDownAndTap('onboarding.welcome.button', 'onboarding.welcome.view');
-        await scrollDownAndTap('onboarding.mentorlist.start', 'onboarding.mentorlist.view');
-        await scrollDownAndTap('onboarding.sign.in', 'onboarding.mentorlist.view');
-
-        await waitAndTypeText('onboarding.signUp.nickName', mentee.loginName + "\n");
-        await waitAndTypeText('onboarding.signUp.password', mentee.password + "\n");
-
-        await device.disableSynchronization();
-        await scrollDownAndTap('onboarding.signUp.button', 'onboarding.signUp.view');
+        await signIn(mentee);
         await scrollDownAndTap('onboarding.selectTopic.skip', 'onboarding.selectTopic.view');
 
         await element(by.id('tabs.settings')).tap();

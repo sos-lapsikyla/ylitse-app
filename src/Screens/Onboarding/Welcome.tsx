@@ -35,7 +35,7 @@ export default ({ navigation }: Props) => {
         contentContainerStyle={styles.scrollContent}
         showsVerticalScrollIndicator={false}
         showsHorizontalScrollIndicator={false}
-        testID='onboarding.welcome.view'
+        testID={'onboarding.welcome.view'}
       >
         <AppTitle style={styles.appTitle} />
         <Card style={styles.card}>

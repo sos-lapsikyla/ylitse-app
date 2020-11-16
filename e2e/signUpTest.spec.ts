@@ -8,6 +8,7 @@ describe('SignUp', () => {
     beforeEach(async () => {
         await APIDeleteAccounts();
         await device.reloadReactNative();
+        await device.disableSynchronization();
     })
 
     it('mentee succesfully', async () => {
@@ -29,7 +30,6 @@ describe('SignUp', () => {
 
         await scrollDownAndTap('onboarding.privacyPolicy.agreeButton', 'onboarding.privacyPolicy.view');
 
-        await device.disableSynchronization();
         await scrollDownAndTap('onboarding.privacyPolicy.nextButton', 'onboarding.privacyPolicy.view');
         await scrollDownAndTap('onboarding.selectTopic.skip', 'onboarding.selectTopic.view');
 

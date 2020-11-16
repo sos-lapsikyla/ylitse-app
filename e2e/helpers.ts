@@ -5,9 +5,17 @@ import fetch from 'node-fetch'
  * Scrolls view down if needed and taps the given element
  */
 export async function scrollDownAndTap(elementId: string, viewId: string) {
-    await waitFor(element(by.id(elementId))).toBeVisible().whileElement(by.id(viewId)).scroll(100, 'down')
+    await scrollDownTo(elementId, viewId);
     await element(by.id(elementId)).tap();
 }
+
+/**
+ * Scrolls view down until element is found
+ */
+export async function scrollDownTo(elementId: string, viewId: string) {
+    await waitFor(element(by.id(elementId))).toBeVisible().whileElement(by.id(viewId)).scroll(100, 'down');
+}
+
 
 /**
  * Waits until input is visible and then types given text
@@ -15,6 +23,21 @@ export async function scrollDownAndTap(elementId: string, viewId: string) {
 export async function waitAndTypeText(elementId: string, text: string) {
     await waitFor(element(by.id(elementId))).toBeVisible().withTimeout(5000);
     await element(by.id(elementId)).typeText(text);
+}
+
+/**
+ * Sign in user 
+ */
+export async function signIn(details:any) {
+    await scrollDownAndTap('onboarding.welcome.button', 'onboarding.welcome.view');
+    await scrollDownAndTap('onboarding.mentorlist.start', 'onboarding.mentorlist.view');
+    await scrollDownAndTap('onboarding.sign.in', 'onboarding.mentorlist.view');
+
+    await waitAndTypeText('onboarding.signUp.nickName', details.loginName + "\n");
+    await waitAndTypeText('onboarding.signUp.password', details.password + "\n");
+
+    await waitFor(element(by.id('onboarding.signUp.button'))).toBeVisible().withTimeout(5000);
+    await scrollDownAndTap('onboarding.signUp.button', 'onboarding.signUp.view');
 }
 
 /**

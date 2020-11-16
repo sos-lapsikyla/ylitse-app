@@ -73,6 +73,7 @@ const LoginCard = ({
         style={styles.errorText}
         getMessageId={getErrorMessageId}
         data={remoteAction}
+        testID={'components.loginCard.errorMessage'}
       />
       <RN.View style={styles.buttonContainer}>
         <Button

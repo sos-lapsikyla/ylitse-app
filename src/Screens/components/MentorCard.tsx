@@ -34,6 +34,7 @@ const MentorCard: React.FC<Props> = ({ onPress, style, mentor }) => {
         contentContainerStyle={styles.contentContainer}
         showsVerticalScrollIndicator={false}
         showsHorizontalScrollIndicator={false}
+        testID={'components.mentorCard.view'}
       >
         <MentorStory
           style={styles.story}

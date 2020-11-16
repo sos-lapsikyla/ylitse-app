@@ -71,6 +71,7 @@ export default ({ openPasswordForm, openEmailForm }: Props) => {
               onPress={openEmailForm}
               messageId="main.settings.account.email.change"
               gradient={gradients.pillBlue}
+              testID='main.settings.account.email.change'
             />
             <Message
               style={styles.fieldName}
@@ -83,6 +84,7 @@ export default ({ openPasswordForm, openEmailForm }: Props) => {
               onPress={openPasswordForm}
               messageId="main.settings.account.password.button"
               gradient={gradients.pillBlue}
+              testID='main.settings.account.password.button'
             />
             {role === 'mentor' ? (
               <>

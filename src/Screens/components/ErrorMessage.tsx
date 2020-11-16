@@ -13,9 +13,10 @@ interface Props<E> {
   data: RD.RemoteData<E, unknown>;
   getMessageId: (e: E) => localization.MessageId;
   style?: RN.StyleProp<RN.TextStyle>;
+  testID?: string;
 }
 
-function ErrorMessage<E>({ style, data, getMessageId }: Props<E>) {
+function ErrorMessage<E>({ style, data, getMessageId, testID }: Props<E>) {
   const opacity = React.useRef(new RN.Animated.Value(0)).current;
   const defaultConfig = {
     animation: {
@@ -50,6 +51,7 @@ function ErrorMessage<E>({ style, data, getMessageId }: Props<E>) {
     <AnimatedMessage
       style={[styles.message, { opacity }, style]}
       id={messageId}
+      testID={testID}
     />
   );
 }
