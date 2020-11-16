@@ -46,7 +46,7 @@ describe('Delete account', () => {
         await device.reloadReactNative();
         await signIn(mentee);
         
-        await expect(element(by.id('components.loginCard.errorMessage'))).toHaveText('Kirjautumien epäonnistui');
+        await expect(element(by.id('components.loginCard.errorMessage'))).toHaveText('Kirjautuminen epäonnistui');
     });
 
     it('can be cancelled', async () => {
