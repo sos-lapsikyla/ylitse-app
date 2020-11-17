@@ -45,12 +45,14 @@ export default ({ buddyId }: Props) => {
           value={messageContent}
           multiline={true}
           editable={true}
+          testID='main.chat.input.input'
         />
       </RN.View>
       <RN.TouchableOpacity
         onPress={onSend}
         disabled={messageContent === ''}
         style={[styles.send, { backgroundColor: color }]}
+        testID={'main.chat.input.button'}
       >
         <RN.Image
           source={require('../../images/send.svg')}
