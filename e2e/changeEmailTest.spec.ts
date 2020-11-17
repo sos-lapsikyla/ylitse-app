@@ -25,6 +25,6 @@ describe('changeEmail', () => {
         await waitAndTypeText('main.settings.account.email.input', newEmail + "\n");
       
         await element(by.id('main.settings.account.email.save')).tap();
-        // TODO: finish after email change is working
+        await expect(element(by.text(newEmail))).toBeVisible();
     });
 });
