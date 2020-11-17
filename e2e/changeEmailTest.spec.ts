@@ -23,9 +23,8 @@ describe('changeEmail', () => {
         await element(by.id('main.settings.account.email.change')).tap();
 
         await waitAndTypeText('main.settings.account.email.input', newEmail + "\n");
+      
         await element(by.id('main.settings.account.email.save')).tap();
-        
-        // TODO: expect something
-
+        // TODO: finish after email change is working
     });
 });
