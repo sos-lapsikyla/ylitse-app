@@ -1,14 +1,7 @@
 import { by, element } from "detox"
 import fetch from 'node-fetch'
 
-// BEWARE! All accounts will be deleted using the API
-const config = {
-    admin: {
-        login_name: 'admin',
-        password: 'secret'
-    },
-    api_url: 'http://localhost:3000/api'
-}
+import * as config from './config.json';
 
 /**
  * Scrolls view down if needed and taps the given element
@@ -53,14 +46,14 @@ export async function signIn(details: any) {
  * Get access_token for admin 
  */
 export async function APIAdminAccessToken() {
-    return await APIAccessToken(config.admin.login_name, config.admin.password);
+    return await APIAccessToken(config.ylitseAPI.admin.login_name, config.ylitseAPI.admin.password);
 }
 
 /**
  * Get access_token
  */
 export async function APIAccessToken(login_name: string, password: string) {
-    const loginResponse = await fetch(`${config.api_url}/login`, {
+    const loginResponse = await fetch(`${config.ylitseAPI.url}/login`, {
         method: 'POST',
         body: JSON.stringify({ login_name: login_name, password: password }),
     })
@@ -75,7 +68,7 @@ export async function APIUsers(access_token: string) {
     const headers = {
         'Authorization': `Bearer ${access_token}`
     }
-    const usersResponse = await fetch(`${config.api_url}/users`, {
+    const usersResponse = await fetch(`${config.ylitseAPI.url}/users`, {
         method: 'GET',
         headers: headers
     })
@@ -97,7 +90,7 @@ export async function APIDeleteAccounts() {
         if (user.role == 'admin') {
             continue;
         }
-        await fetch(`${config.api_url}/accounts/${user.account_id}`, {
+        await fetch(`${config.ylitseAPI.url}/accounts/${user.account_id}`, {
             method: 'DELETE',
             headers: headers
         })
@@ -108,7 +101,7 @@ export async function APIDeleteAccounts() {
  * SignUp new mentee
  */
 export async function APISignUpMentee(mentee: any) {
-    const res = await fetch(`${config.api_url}/accounts`, {
+    const res = await fetch(`${config.ylitseAPI.url}/accounts`, {
         method: 'POST',
         body: JSON.stringify({ password: mentee.password, account: { role: mentee.role, login_name: mentee.loginName, email: mentee.email } })
     })
@@ -117,13 +110,13 @@ export async function APISignUpMentee(mentee: any) {
         'Authorization': `Bearer ${access_token}`
     }
 
-    const myUserRes = await fetch(`${config.api_url}/myuser`, {
+    const myUserRes = await fetch(`${config.ylitseAPI.url}/myuser`, {
         method: 'GET',
         headers: headers
     })
     const myuser: any = await myUserRes.json();
 
-    await fetch(`${config.api_url}/users/${myuser.user.id}`, {
+    await fetch(`${config.ylitseAPI.url}/users/${myuser.user.id}`, {
         method: 'PUT',
         headers: headers,
         body: JSON.stringify({ display_name: mentee.displayName, role: mentee.role, account_id: myuser.account.id, id: myuser.user.id })
@@ -139,7 +132,7 @@ export async function APISignUpMentor(mentor: any) {
     const admin_headers = {
         'Authorization': `Bearer ${admin_access_token}`
     }
-    const res = await fetch(`${config.api_url}/accounts`, {
+    const res = await fetch(`${config.ylitseAPI.url}/accounts`, {
         method: 'POST',
         headers: admin_headers,
         body: JSON.stringify({ password: mentor.password, account: { role: mentor.role, login_name: mentor.loginName, email: mentor.email, phone: mentor.phone } })
@@ -149,19 +142,19 @@ export async function APISignUpMentor(mentor: any) {
         'Authorization': `Bearer ${access_token}`
     }
 
-    const myUserRes = await fetch(`${config.api_url}/myuser`, {
+    const myUserRes = await fetch(`${config.ylitseAPI.url}/myuser`, {
         method: 'GET',
         headers: headers
     })
     const myuser: any = await myUserRes.json();
 
-    await fetch(`${config.api_url}/users/${myuser.user.id}`, {
+    await fetch(`${config.ylitseAPI.url}/users/${myuser.user.id}`, {
         method: 'PUT',
         headers: headers,
         body: JSON.stringify({ display_name: mentor.displayName, birth_year: mentor.birthYear, role: mentor.role, account_id: myuser.account.id, id: myuser.user.id, active: true })
     })
 
-    await fetch(`${config.api_url}/mentors/${myuser.mentor.id}`, {
+    await fetch(`${config.ylitseAPI.url}/mentors/${myuser.mentor.id}`, {
         method: 'PUT',
         headers: admin_headers,
         body: JSON.stringify({ birth_year: mentor.birthYear, display_name: mentor.displayName, gender: mentor.gender, languages: mentor.languages, region: mentor.region, skills: mentor.skills, story: mentor.story, communication_channels: mentor.communication_channels, account_id: myuser.account.id, user_id: myuser.user.id, id: myuser.mentor.id })
