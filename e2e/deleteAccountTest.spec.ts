@@ -27,24 +27,8 @@ describe('Delete account', () => {
 
     await element(by.id('tabs.settings')).tap();
 
-    // TODO: why cannot scroll normally
-    // await element(by.id('main.settings.index.view')).scrollTo('bottom');
+    // TODO: why cannot scroll normally, line below should not be needed
     await element(by.id('main.settings.account.userName')).swipe('up');
-    await element(by.id('main.settings.account.password.button')).swipe('up');
-    await element(by.id('main.settings.account.password.button')).swipe('up');
-    await element(by.id('main.settings.account.password.button')).swipe('up');
-    await element(by.id('main.settings.account.password.button')).swipe('up');
-    await element(by.id('main.settings.account.password.button')).swipe('up');
-    await element(by.id('main.settings.account.password.button')).swipe('up');
-    await element(by.id('main.settings.account.password.button')).swipe('up');
-    await element(by.id('main.settings.account.password.button')).swipe('up');
-    await element(by.id('main.settings.account.password.button')).swipe('up');
-    await element(by.id('main.settings.account.password.button')).swipe('up');
-    await element(by.id('main.settings.account.password.button')).swipe('up');
-    await element(by.id('main.settings.account.password.button')).swipe('up');
-    await element(by.id('main.settings.account.password.button')).swipe('up');
-    await element(by.id('main.settings.account.password.button')).swipe('up');
-    await element(by.id('main.settings.account.password.button')).swipe('up');
 
     await scrollDownAndTap(
       'main.settings.other.button.deleteAccount',
@@ -76,24 +60,8 @@ describe('Delete account', () => {
 
     await element(by.id('tabs.settings')).tap();
 
-    // TODO: why cannot scroll normally
-    // await element(by.id('main.settings.index.view')).scrollTo('bottom');
+    // TODO: why cannot scroll normally, line below should not be needed
     await element(by.id('main.settings.account.userName')).swipe('up');
-    await element(by.id('main.settings.account.password.button')).swipe('up');
-    await element(by.id('main.settings.account.password.button')).swipe('up');
-    await element(by.id('main.settings.account.password.button')).swipe('up');
-    await element(by.id('main.settings.account.password.button')).swipe('up');
-    await element(by.id('main.settings.account.password.button')).swipe('up');
-    await element(by.id('main.settings.account.password.button')).swipe('up');
-    await element(by.id('main.settings.account.password.button')).swipe('up');
-    await element(by.id('main.settings.account.password.button')).swipe('up');
-    await element(by.id('main.settings.account.password.button')).swipe('up');
-    await element(by.id('main.settings.account.password.button')).swipe('up');
-    await element(by.id('main.settings.account.password.button')).swipe('up');
-    await element(by.id('main.settings.account.password.button')).swipe('up');
-    await element(by.id('main.settings.account.password.button')).swipe('up');
-    await element(by.id('main.settings.account.password.button')).swipe('up');
-    await element(by.id('main.settings.account.password.button')).swipe('up');
 
     await scrollDownAndTap(
       'main.settings.other.button.deleteAccount',
