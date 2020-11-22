@@ -46,12 +46,7 @@ const Main = reactNavigationTab.createBottomTabNavigator(routeConfig, {
         require('../images/users.svg'),
         require('../images/balloon.svg'),
       ]}
-      testIDs={[
-        'tabs.settings',
-        'tabs.mentors',
-        'tabs.chats'
-      ]}
-    
+      testIDs={['tabs.settings', 'tabs.mentors', 'tabs.chats']}
     />
   ),
 });
@@ -67,7 +62,7 @@ const TabBar = ({
   onTabPress,
   labels,
   icons,
-  testIDs
+  testIDs,
 }: reactNavigationTab.BottomTabBarProps & Props) => {
   const routes = navigation.state.routes;
   const currentIndex = navigation.state.index;

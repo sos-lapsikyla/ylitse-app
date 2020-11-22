@@ -55,13 +55,13 @@ export default ({ navigation }: Props) => {
             style={styles.logoutButton}
             onPress={onLogout}
             messageId={'main.settings.logout.logout'}
-            testID='main.settings.logout.logout'
+            testID="main.settings.logout.logout"
           />
           <MessageButton
             style={styles.cancelButton}
             onPress={onGoBack}
             messageId={'main.settings.logout.cancel'}
-            testID='main.settings.logout.cancel'
+            testID="main.settings.logout.cancel"
           />
           <CreatedBySosBanner />
         </SafeAreaView>

@@ -43,14 +43,24 @@ export default ({ openPasswordForm, openEmailForm }: Props) => {
               style={styles.fieldName}
               id="main.settings.account.userName"
             />
-            <RN.Text style={styles.fieldValueText} testID='main.settings.account.userName'>{userName}</RN.Text>
+            <RN.Text
+              style={styles.fieldValueText}
+              testID="main.settings.account.userName"
+            >
+              {userName}
+            </RN.Text>
             {hasBoth ? (
               <>
                 <Message
                   style={styles.fieldName}
                   id="main.settings.account.nickName"
                 />
-                <RN.Text style={styles.fieldValueText} testID='main.settings.account.nickName'>{displayName}</RN.Text>
+                <RN.Text
+                  style={styles.fieldValueText}
+                  testID="main.settings.account.nickName"
+                >
+                  {displayName}
+                </RN.Text>
               </>
             ) : null}
             <Message
@@ -58,7 +68,12 @@ export default ({ openPasswordForm, openEmailForm }: Props) => {
               id="main.settings.account.email.title"
             />
             {email ? (
-              <RN.Text style={styles.fieldValueText} testID='main.settings.account.email'>{email}</RN.Text>
+              <RN.Text
+                style={styles.fieldValueText}
+                testID="main.settings.account.email"
+              >
+                {email}
+              </RN.Text>
             ) : (
               <Message
                 style={styles.fieldValueText}
@@ -71,7 +86,7 @@ export default ({ openPasswordForm, openEmailForm }: Props) => {
               onPress={openEmailForm}
               messageId="main.settings.account.email.change"
               gradient={gradients.pillBlue}
-              testID='main.settings.account.email.change'
+              testID="main.settings.account.email.change"
             />
             <Message
               style={styles.fieldName}
@@ -84,7 +99,7 @@ export default ({ openPasswordForm, openEmailForm }: Props) => {
               onPress={openPasswordForm}
               messageId="main.settings.account.password.button"
               gradient={gradients.pillBlue}
-              testID='main.settings.account.password.button'
+              testID="main.settings.account.password.button"
             />
             {role === 'mentor' ? (
               <>

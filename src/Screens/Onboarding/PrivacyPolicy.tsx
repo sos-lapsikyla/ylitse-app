@@ -63,7 +63,7 @@ const PrivacyPolicy = ({
     createUser(user);
   };
   return (
-    <OnboardingBackground testID='onboarding.privacyPolicy.view'>
+    <OnboardingBackground testID="onboarding.privacyPolicy.view">
       <Card style={styles.card}>
         <Message style={styles.title} id="onboarding.privacyPolicy.title" />
         <Message
@@ -94,7 +94,7 @@ const PrivacyPolicy = ({
           style={styles.nextButton}
           messageId="onboarding.privacyPolicy.agreeButton"
           disabled={isAgreed}
-          testID='onboarding.privacyPolicy.agreeButton'
+          testID="onboarding.privacyPolicy.agreeButton"
         />
         <Button
           style={styles.nextButton}
@@ -103,7 +103,7 @@ const PrivacyPolicy = ({
           badge={require('../images/arrow.svg')}
           disabled={!isAgreed}
           loading={RD.isPending(createUserState)}
-          testID='onboarding.privacyPolicy.nextButton'
+          testID="onboarding.privacyPolicy.nextButton"
         />
         <Button
           gradient={[colors.faintGray, colors.faintGray]}

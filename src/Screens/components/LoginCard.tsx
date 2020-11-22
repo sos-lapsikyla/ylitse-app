@@ -58,7 +58,7 @@ const LoginCard = ({
         name="onboarding.signUp.nickName"
         onChangeText={onUserNameChange}
         autoCompleteType="off"
-        testID='onboarding.signUp.nickName'
+        testID="onboarding.signUp.nickName"
       />
       <NamedInputField
         autoCapitalize="none"
@@ -67,7 +67,7 @@ const LoginCard = ({
         isPasswordInput={true}
         onChangeText={onPasswordChange}
         autoCompleteType="off"
-        testID='onboarding.signUp.password'
+        testID="onboarding.signUp.password"
       />
       <ErrorMessage
         style={styles.errorText}
@@ -83,7 +83,7 @@ const LoginCard = ({
           badge={require('../images/arrow.svg')}
           loading={RD.isPending(remoteAction)}
           disabled={isEmptyFields}
-          testID='onboarding.signUp.button'
+          testID="onboarding.signUp.button"
         />
         <Button
           gradient={[colors.faintGray, colors.faintGray]}

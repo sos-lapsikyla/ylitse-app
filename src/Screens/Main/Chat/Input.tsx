@@ -45,7 +45,7 @@ export default ({ buddyId }: Props) => {
           value={messageContent}
           multiline={true}
           editable={true}
-          testID='main.chat.input.input'
+          testID="main.chat.input.input"
         />
       </RN.View>
       <RN.TouchableOpacity

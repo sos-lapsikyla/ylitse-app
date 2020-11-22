@@ -33,7 +33,7 @@ const DisplayName = ({ navigation }: Props) => {
     });
   };
   return (
-    <OnboardingBackground testID='onboarding.displayName.view'>
+    <OnboardingBackground testID="onboarding.displayName.view">
       <Card style={styles.card}>
         <Message style={styles.title} id="onboarding.displayName.title" />
         <NamedInputField
@@ -43,7 +43,7 @@ const DisplayName = ({ navigation }: Props) => {
           onChangeText={setDisplayName}
           autoCompleteType="off"
           value={displayName}
-          testID='onboarding.displayName.inputTitle'
+          testID="onboarding.displayName.inputTitle"
         />
         <Message style={styles.bodyText} id="onboarding.displayName.bodyText" />
         <Button
@@ -51,7 +51,7 @@ const DisplayName = ({ navigation }: Props) => {
           onPress={navigateToEmailScreen}
           messageId="onboarding.displayName.nextButton"
           badge={require('../images/arrow.svg')}
-          testID='onboarding.displayName.nextButton'
+          testID="onboarding.displayName.nextButton"
         />
         <Button
           gradient={[colors.faintGray, colors.faintGray]}

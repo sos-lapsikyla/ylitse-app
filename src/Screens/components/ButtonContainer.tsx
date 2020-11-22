@@ -8,9 +8,18 @@ interface Props {
   testID?: string;
 }
 
-const ButtonContainer: React.FC<Props> = ({ onPress, style, children, testID }) => {
+const ButtonContainer: React.FC<Props> = ({
+  onPress,
+  style,
+  children,
+  testID,
+}) => {
   return (
-    <RN.TouchableOpacity style={[styles.container, style]} onPress={onPress} testID={testID}>
+    <RN.TouchableOpacity
+      style={[styles.container, style]}
+      onPress={onPress}
+      testID={testID}
+    >
       {children}
     </RN.TouchableOpacity>
   );

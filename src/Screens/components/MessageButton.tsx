@@ -18,7 +18,11 @@ interface Props {
 
 export default ({ onPress, style, messageId, messageStyle, testID }: Props) => {
   return (
-    <ButtonContainer style={[styles.container, style]} onPress={onPress} testID={testID}>
+    <ButtonContainer
+      style={[styles.container, style]}
+      onPress={onPress}
+      testID={testID}
+    >
       <Message style={[styles.message, messageStyle]} id={messageId} />
     </ButtonContainer>
   );

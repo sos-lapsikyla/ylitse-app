@@ -30,7 +30,7 @@ const MentorList = (props: Props) => {
       <SafeAreaView
         style={styles.container}
         forceInset={{ top: 'always', bottom: 'always' }}
-        testID='onboarding.mentorlist.view'
+        testID="onboarding.mentorlist.view"
       >
         <Message style={styles.title} id="onboarding.mentorlist.lowerTitle" />
         <MentorListComponent />
@@ -41,7 +41,7 @@ const MentorList = (props: Props) => {
             messageStyle={styles.buttonMessage}
             messageId="onboarding.mentorlist.start"
             badge={require('../images/arrow.svg')}
-            testID='onboarding.mentorlist.start'
+            testID="onboarding.mentorlist.start"
           />
           <CreatedBySosBanner style={styles.banner} />
         </RN.View>

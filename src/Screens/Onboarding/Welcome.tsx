@@ -48,7 +48,7 @@ export default ({ navigation }: Props) => {
             messageStyle={styles.buttonText}
             messageId={'onboarding.welcome.button'}
             onPress={navigateNext}
-            testID='onboarding.welcome.button'
+            testID="onboarding.welcome.button"
           />
         </Card>
         <SosBanner style={styles.banner} />

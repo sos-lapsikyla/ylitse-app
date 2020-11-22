@@ -63,7 +63,7 @@ export default ({ onClose }: Props) => {
                 name="main.settings.account.email.title"
                 value={email}
                 onChangeText={setEmail}
-                testID='main.settings.account.email.input'
+                testID="main.settings.account.email.input"
               />
               <RN.View style={styles.buttonContainer}>
                 <Button
@@ -72,7 +72,7 @@ export default ({ onClose }: Props) => {
                   onPress={onClose}
                   messageId="meta.cancel"
                   gradient={gradients.faintGray}
-                  testID='main.settings.account.email.cancel'
+                  testID="main.settings.account.email.cancel"
                 />
                 <Button
                   style={styles.changePasswordButton}
@@ -80,7 +80,7 @@ export default ({ onClose }: Props) => {
                   onPress={onButtonPress}
                   messageId="meta.save"
                   gradient={gradients.pillBlue}
-                  testID='main.settings.account.email.save'
+                  testID="main.settings.account.email.save"
                 />
               </RN.View>
             </>
