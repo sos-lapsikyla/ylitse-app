@@ -3,7 +3,7 @@ const adapter = require('detox/runners/jest/adapter');
 const config = require('../.detoxrc.json');
 
 // eslint-disable-next-line no-undef
-jest.setTimeout(120000);
+jest.setTimeout(240000);
 // eslint-disable-next-line no-undef
 jasmine.getEnv().addReporter(adapter);
 
