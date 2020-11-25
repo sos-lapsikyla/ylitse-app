@@ -26,14 +26,11 @@ export const reducer: automaton.Reducer<State, actions.Action> = (
     case 'mentors/start':
       return automaton.loop(RD.pending, cmd(fetchMentors));
     case 'mentors/end':
-      return pipe(
-        action.payload,
-        RD.fromEither,
-      );
+      return pipe(action.payload, RD.fromEither);
     default:
       return state;
   }
 };
 
 export const get = ({ mentors }: types.AppState) =>
-  RD.remoteData.map(mentors, mentorRecord => Object.values(mentorRecord));
+  RD.remoteData.map(mentors, (mentorRecord) => Object.values(mentorRecord));

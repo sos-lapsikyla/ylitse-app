@@ -60,7 +60,7 @@ function RemoteData<E, A>({
           </Card>
         </RN.View>
       ),
-      value => <>{children(value)}</>,
+      (value) => <>{children(value)}</>,
     ),
   );
 }

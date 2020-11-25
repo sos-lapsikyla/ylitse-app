@@ -9,8 +9,11 @@ export const isUnauthorized = (u: unknown) => u === unauthorizedRequest;
 
 export const request = (url: string, options: RequestInit) =>
   pipe(
-    TE.tryCatch(() => fetch(url, options), () => 'Connection failure.'),
-    TE.chain(response =>
+    TE.tryCatch(
+      () => fetch(url, options),
+      () => 'Connection failure.',
+    ),
+    TE.chain((response) =>
       response.ok
         ? TE.right(response)
         : TE.left(response.status === 401 ? unauthorizedRequest : 'Bad status'),
@@ -38,7 +41,12 @@ export const put = (url: string, body: any, options?: RequestInit) =>
   });
 
 const getJson = (response: Response) =>
-  pipe(TE.tryCatch(() => response.json(), () => 'Failed to get json.'));
+  pipe(
+    TE.tryCatch(
+      () => response.json(),
+      () => 'Failed to get json.',
+    ),
+  );
 
 const decode = <A, B>(model: t.Type<A, B, unknown>) => (u: unknown) =>
   pipe(
@@ -52,10 +60,4 @@ export const validateResponse = <A, B, C>(
   task: TE.TaskEither<string, Response>,
   model: t.Type<A, B, unknown>,
   fromModel: (a: A) => C,
-) =>
-  pipe(
-    task,
-    TE.chain(getJson),
-    TE.chain(decode(model)),
-    TE.map(fromModel),
-  );
+) => pipe(task, TE.chain(getJson), TE.chain(decode(model)), TE.map(fromModel));

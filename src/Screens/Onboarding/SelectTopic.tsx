@@ -52,7 +52,7 @@ export default ({ navigation }: Props) => {
           testID="onboarding.selectTopic.title"
         />
         <Message style={styles.subtitle} id="onboarding.selectTopic.subtitle" />
-        {topics.map(topic => (
+        {topics.map((topic) => (
           <TextButton
             key={topic}
             text={topic}

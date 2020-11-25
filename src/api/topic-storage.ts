@@ -15,10 +15,7 @@ export const topics = {
 };
 
 const topicType = t.keyof(topics);
-const decode = flow(
-  topicType.decode,
-  O.fromEither,
-);
+const decode = flow(topicType.decode, O.fromEither);
 
 export const readTopic = pipe(
   TE.tryCatch(
@@ -28,7 +25,10 @@ export const readTopic = pipe(
   TE.chain(
     flow(
       decode,
-      O.fold(() => TE.left('No topic found'), token => TE.right(token)),
+      O.fold(
+        () => TE.left('No topic found'),
+        (token) => TE.right(token),
+      ),
     ),
   ),
 );
@@ -37,7 +37,7 @@ export const store = (topic: O.Option<Topic>) => {
   return pipe(
     topic,
     O.fold(() => '', identity),
-    _topic =>
+    (_topic) =>
       TE.tryCatch(
         () => AsyncStorage.setItem(storageKey, _topic),
         () => 'Failed to write topic to disk.',

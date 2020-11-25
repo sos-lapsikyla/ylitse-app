@@ -27,7 +27,7 @@ export const reducer: automaton.Reducer<State, actions.Action> = (
         action.payload,
         E.fold(
           () => state,
-          messages => {
+          (messages) => {
             const requiredBuddies = set.fromArray(Eq.eqString)(
               record.keys(messages),
             );
@@ -35,7 +35,7 @@ export const reducer: automaton.Reducer<State, actions.Action> = (
               state,
               RD.map(record.keys),
               RD.map(set.fromArray(Eq.eqString)),
-              RD.map(existingBuddies =>
+              RD.map((existingBuddies) =>
                 set.getEq(Eq.eqString).equals(existingBuddies, requiredBuddies),
               ),
               RD.getOrElse(() => false),

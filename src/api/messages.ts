@@ -29,7 +29,7 @@ export const markSeen = (message: Message) => (token: authApi.AccessToken) => {
       headers: authApi.authHeader(token),
     }),
     t.unknown,
-    _ => true,
+    (_) => true,
   );
 };
 
@@ -57,9 +57,9 @@ export type Message = {
   isSeen: boolean;
 };
 
-const toMessage: (
-  a: string,
-) => (b: ApiMessage) => Message = userId => apiMessage => {
+const toMessage: (a: string) => (b: ApiMessage) => Message = (userId) => (
+  apiMessage,
+) => {
   const isSent = userId === apiMessage.sender_id;
   return {
     type: isSent ? 'Sent' : 'Received',
@@ -113,7 +113,7 @@ export const sendMessage = (params: SendMessageParams) => (
     http.post(url, message, {
       headers: authApi.authHeader(accessToken),
     }),
-    TE.map(_ => undefined),
+    TE.map((_) => undefined),
   );
 };
 

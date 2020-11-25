@@ -45,13 +45,13 @@ export default ({ navigation }: Props) => {
       gradient={gradients.pillBlue}
     >
       <RemoteData data={buddyList} fetchData={() => {}}>
-        {value => (
+        {(value) => (
           <RN.ScrollView
             style={styles.scrollView}
             contentContainerStyle={styles.scrollContent}
             testID={'main.buddyList.view'}
           >
-            {value.map(buddy => (
+            {value.map((buddy) => (
               <Button
                 key={buddy.buddyId + '1'}
                 style={styles.button}

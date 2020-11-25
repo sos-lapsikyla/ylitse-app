@@ -33,7 +33,7 @@ export const requestPermissions = TE.taskEither.chain(
 );
 
 export const sendDeviceToken = (accessToken: authApi.AccessToken) =>
-  TE.taskEither.chain(getDeviceToken, deviceToken =>
+  TE.taskEither.chain(getDeviceToken, (deviceToken) =>
     http.validateResponse(
       http.put(
         `${config.baseUrl}/users/${accessToken.userId}/device`,
@@ -41,6 +41,6 @@ export const sendDeviceToken = (accessToken: authApi.AccessToken) =>
         { headers: authApi.authHeader(accessToken) },
       ),
       t.unknown,
-      _ => undefined,
+      (_) => undefined,
     ),
   );

@@ -22,7 +22,7 @@ interface SkillListProps extends RN.ViewProps {
 export default ({ skills, color, style, amount }: SkillListProps) => {
   const skillTitle = pipe(
     skills,
-    array.filter(name => name in topics),
+    array.filter((name) => name in topics),
     array.head,
     O.toUndefined,
   );
@@ -42,7 +42,7 @@ export default ({ skills, color, style, amount }: SkillListProps) => {
         {[...skills]
           .sort((a, b) => a.length - b.length)
           .slice(0, amount)
-          .map(name => (
+          .map((name) => (
             <Chip key={name} color={color} name={name} />
           ))}
       </RN.View>

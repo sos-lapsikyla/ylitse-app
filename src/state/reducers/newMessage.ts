@@ -18,11 +18,11 @@ export type State = AppState['newMessage'];
 
 type NewMessage = AppState['newMessage'][string];
 type get = (buddyId: string) => (appState: AppState) => O.Option<NewMessage>;
-const get: get = buddyId => ({ newMessage }) =>
+const get: get = (buddyId) => ({ newMessage }) =>
   record.lookup(buddyId, newMessage);
 
 type getText = (buddyId: string) => (appState: AppState) => string;
-export const getText: getText = buddyId =>
+export const getText: getText = (buddyId) =>
   flow(
     get(buddyId),
     O.map(({ text }) => text),
@@ -43,7 +43,7 @@ export const reducer = (state: State, action: actions.Action) => {
         O.fromEither(action.payload),
         O.map(record.keys),
         O.getOrElse<string[]>(() => []),
-        array.map(buddyId => ({ buddyId })),
+        array.map((buddyId) => ({ buddyId })),
         array.map(actions.make('newMessage/store/read/start')),
       );
       return loop(state, ...actionList);
@@ -53,7 +53,7 @@ export const reducer = (state: State, action: actions.Action) => {
       const nextAction = cmd(
         pipe(
           messageApi.readMessage(buddyId),
-          T.map(text =>
+          T.map((text) =>
             actions.make('newMessage/store/read/end')({ buddyId, text }),
           ),
         ),
@@ -98,7 +98,7 @@ export const reducer = (state: State, action: actions.Action) => {
       const nextAction = cmd(
         pipe(
           messageApi.storeMessage(action.payload),
-          T.map(_ => actions.none),
+          T.map((_) => actions.none),
         ),
       );
       return loop(nextState, nextAction);
@@ -107,7 +107,10 @@ export const reducer = (state: State, action: actions.Action) => {
       const buddyId = action.payload.buddyId;
       const isLoading = pipe(
         record.lookup(buddyId, state),
-        O.fold(() => false, ({ sendRequest }) => RD.isPending(sendRequest)),
+        O.fold(
+          () => false,
+          ({ sendRequest }) => RD.isPending(sendRequest),
+        ),
       );
 
       if (isLoading) {
@@ -122,10 +125,10 @@ export const reducer = (state: State, action: actions.Action) => {
         },
       };
       const nextAction = withToken(
-        token =>
+        (token) =>
           T.task.map(
             messageApi.sendMessage(action.payload)(token),
-            response => ({ response, buddyId }),
+            (response) => ({ response, buddyId }),
           ),
         actions.make('newMessage/send/end'),
       );

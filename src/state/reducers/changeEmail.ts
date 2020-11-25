@@ -36,7 +36,7 @@ const _changeEmail = ({
       userName,
     })),
     TE.fromOption(() => 'Bad stuff'),
-    TE.chain(accountWithNewEmail =>
+    TE.chain((accountWithNewEmail) =>
       accountApi.putAccount(token, accountWithNewEmail),
     ),
     TE.map(({ email }) => ({ email })),
@@ -62,12 +62,7 @@ export const reducer: automaton.Reducer<
     case 'changeEmail/completed':
       return automaton.loop(
         RD.fromEither(action.payload),
-        cmd(
-          pipe(
-            T.of(resetChangeEmail),
-            T.delay(coolDownDuration),
-          ),
-        ),
+        cmd(pipe(T.of(resetChangeEmail), T.delay(coolDownDuration))),
       );
     case 'changeEmail/reset':
       if (RD.isPending(state)) {

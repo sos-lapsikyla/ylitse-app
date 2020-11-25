@@ -82,7 +82,7 @@ export default ({ buddyId }: Props) => {
       contentContainerStyle={styles.scrollContent}
       data={messages}
       renderItem={renderItem}
-      keyExtractor={item => item.id}
+      keyExtractor={(item) => item.id}
       inverted={true}
     />
   );

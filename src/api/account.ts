@@ -136,16 +136,16 @@ export function createUser(
   return pipe(
     user,
     postAccount,
-    TE.chain(createdUser =>
+    TE.chain((createdUser) =>
       pipe(
         authApi.login({ userName, password }),
-        TE.map(token => tuple(createdUser, token)),
+        TE.map((token) => tuple(createdUser, token)),
       ),
     ),
     TE.chain(([createdUser, token]) =>
       pipe(
         putUser(token, { ...createdUser.user, display_name: user.displayName }),
-        TE.map(_ => token),
+        TE.map((_) => token),
       ),
     ),
   );
@@ -178,7 +178,7 @@ export function checkCredentials({
     isUserNameFree(userName),
     TE.fold(
       () => fail('onboarding.signUp.error.probablyNetwork'),
-      isFree =>
+      (isFree) =>
         isFree
           ? TE.right({ userName, password })
           : fail('onboarding.signUp.error.userNameTaken'),

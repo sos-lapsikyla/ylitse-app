@@ -28,8 +28,8 @@ export const reducer: Reducer<AppState['deleteAccount'], Action> = (
       return pipe(
         action.payload,
         E.fold(
-          fail => loop<State, Action>(RD.failure(fail)),
-          _ => loop(RD.success(undefined), make('logout/logout')(undefined)),
+          (fail) => loop<State, Action>(RD.failure(fail)),
+          (_) => loop(RD.success(undefined), make('logout/logout')(undefined)),
         ),
       );
     }

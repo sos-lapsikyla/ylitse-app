@@ -36,7 +36,7 @@ export const isMentor = flow(
   getToken,
   O.map(({ mentorId }) => mentorId),
   O.toUndefined,
-  id => !!id,
+  (id) => !!id,
 );
 
 export function withToken<A>(
@@ -81,7 +81,7 @@ export const reducer: automaton.Reducer<State, actions.Action> = (
       };
       const task = action.payload.task(token);
       const nextCmd = cmd(
-        T.task.map(task, result =>
+        T.task.map(task, (result) =>
           actions.make('token/doRequest/completed')({
             index: `${index}`,
             result,
@@ -92,25 +92,14 @@ export const reducer: automaton.Reducer<State, actions.Action> = (
     }
     case 'token/doRequest/completed': {
       const index = action.payload.index;
-      const taskAndTasks = pipe(
-        state.tasks,
-        record.pop(index),
-        O.toNullable,
-      );
+      const taskAndTasks = pipe(state.tasks, record.pop(index), O.toNullable);
       if (!taskAndTasks) {
         return state;
       }
       const [task, tasks] = taskAndTasks;
 
       const result = action.payload.result;
-      if (
-        pipe(
-          result,
-          O.getLeft,
-          O.toNullable,
-          http.isUnauthorized,
-        )
-      ) {
+      if (pipe(result, O.getLeft, O.toNullable, http.isUnauthorized)) {
         return automaton.loop(
           {
             ...state,
@@ -149,10 +138,10 @@ export const reducer: automaton.Reducer<State, actions.Action> = (
       return pipe(
         action.payload,
         E.fold<string, authApi.AccessToken, actions.LS<State>>(
-          err => ({ ...state, nextToken: RD.failure(err) }),
-          token => {
-            const nextActions = state.deferredTasks.map(t =>
-              cmd(T.task.map(t.task(token), result => t.action(result))),
+          (err) => ({ ...state, nextToken: RD.failure(err) }),
+          (token) => {
+            const nextActions = state.deferredTasks.map((t) =>
+              cmd(T.task.map(t.task(token), (result) => t.action(result))),
             );
             return automaton.loop(
               {

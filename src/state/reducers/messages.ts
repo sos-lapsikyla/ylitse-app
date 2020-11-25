@@ -52,10 +52,7 @@ export const reducer: automaton.Reducer<State, actions.Action> = (
       };
 
       const nextCmd = withToken(
-        flow(
-          messageApi.fetchMessages,
-          T.delay(2000),
-        ),
+        flow(messageApi.fetchMessages, T.delay(2000)),
         actions.make('messages/get/completed'),
       );
       return automaton.loop(nextState, nextCmd);
@@ -73,8 +70,8 @@ export const getMessagesByBuddyId = (buddyId: string) => (
 ) =>
   pipe(
     getMessages(appState),
-    O.chain(r => record.lookup(buddyId, r)),
-    O.map(r => Object.values(r)),
+    O.chain((r) => record.lookup(buddyId, r)),
+    O.map((r) => Object.values(r)),
     O.fold(() => [], identity),
   );
 
@@ -84,7 +81,7 @@ export const ordMessage: ord.Ord<messageApi.Message> = ord.fromCompare((a, b) =>
 
 export const hasUnseen: (
   buddyId: string,
-) => (appState: types.AppState) => boolean = buddyId => appState =>
+) => (appState: types.AppState) => boolean = (buddyId) => (appState) =>
   pipe(
     getMessagesByBuddyId(buddyId)(appState),
     array.sort(ordMessage),
@@ -98,7 +95,7 @@ export const isAnyMessageUnseen = (appState: types.AppState) =>
     getMessages(appState),
     O.fold(() => ({}), identity),
     Object.keys,
-    array.map(id => hasUnseen(id)(appState)),
+    array.map((id) => hasUnseen(id)(appState)),
     array.reduce(false, (a, b) => a || b),
   );
 
@@ -111,8 +108,8 @@ export const getMessage = (
 ) => {
   return pipe(
     RD.toOption(messageState.messages),
-    O.chain(threads => record.lookup(index.buddyId, threads)),
-    O.chain(threadMessages => record.lookup(index.messageId, threadMessages)),
+    O.chain((threads) => record.lookup(index.buddyId, threads)),
+    O.chain((threadMessages) => record.lookup(index.messageId, threadMessages)),
   );
 };
 
@@ -121,7 +118,7 @@ export const getOrder: (
 ) => RD.RemoteData<string, Record<string, number>> = flow(
   ({ messages }) => messages.messages,
   RD.map(
-    record.map(messagesById => {
+    record.map((messagesById) => {
       const messages = Object.values(messagesById).sort(ordMessage.compare);
       const last = messages[messages.length - 1];
       return last.sentTime;

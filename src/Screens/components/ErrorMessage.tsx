@@ -32,7 +32,7 @@ function ErrorMessage<E>({ style, data, getMessageId, testID }: Props<E>) {
     RD.fold(
       () => defaultConfig,
       () => defaultConfig,
-      e => ({
+      (e) => ({
         animation: {
           useNativeDriver: true,
           easing: RN.Easing.linear,

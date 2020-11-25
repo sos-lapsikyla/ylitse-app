@@ -39,7 +39,7 @@ export const reducer: automaton.Reducer<
         E.fold(
           () => state,
           ({ email }) =>
-            RD.remoteData.map(state, account => ({ ...account, email })),
+            RD.remoteData.map(state, (account) => ({ ...account, email })),
         ),
       );
     default:

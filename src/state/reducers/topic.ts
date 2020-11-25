@@ -26,12 +26,7 @@ export const reducer: automaton.Reducer<State, actions.Action> = (
     case 'topic/read/start': {
       const nextCmd = pipe(
         topicApi.readTopic,
-        T.map(
-          flow(
-            O.fromEither,
-            actions.make('topic/read/end'),
-          ),
-        ),
+        T.map(flow(O.fromEither, actions.make('topic/read/end'))),
         cmd,
       );
       return automaton.loop(state, nextCmd);
@@ -42,7 +37,7 @@ export const reducer: automaton.Reducer<State, actions.Action> = (
     case 'topic/write': {
       const nextCmd = pipe(
         topicApi.store(action.payload),
-        T.map(_ => actions.make('none/none')(undefined)),
+        T.map((_) => actions.make('none/none')(undefined)),
         cmd,
       );
       return automaton.loop(action.payload, nextCmd);

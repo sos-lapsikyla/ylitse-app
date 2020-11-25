@@ -114,5 +114,5 @@ export const changePassword = ({
       },
     ),
     t.any,
-    _ => true as const,
+    (_) => true as const,
   );

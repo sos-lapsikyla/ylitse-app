@@ -30,7 +30,7 @@ export default ({ openPasswordForm, openEmailForm }: Props) => {
     dispatch({ type: 'userAccount/get/start', payload: undefined });
   };
 
-  const data = RD.remoteData.map(userAccount, account =>
+  const data = RD.remoteData.map(userAccount, (account) =>
     tuple(account, account.userName !== account.displayName),
   );
   return (

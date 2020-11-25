@@ -61,7 +61,7 @@ const MentorCardExpanded = ({ navigation }: Props) => {
         testID={'main.mentorCardExpanded.view'}
       >
         <RN.View style={styles.flagContainer}>
-          {mentor.languages.map(lang =>
+          {mentor.languages.map((lang) =>
             lang in langMap ? (
               <RN.Image
                 style={styles.flag}

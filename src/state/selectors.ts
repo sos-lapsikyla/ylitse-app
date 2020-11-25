@@ -37,7 +37,7 @@ export const getBuddyName = (
   mentorState: AppState['mentors'],
 ) => {
   const look = (fa: RD.RemoteData<unknown, Record<string, { name: string }>>) =>
-    RD.remoteData.map(fa, a => record.lookup(buddyId, a));
+    RD.remoteData.map(fa, (a) => record.lookup(buddyId, a));
   const buddy = getOptionM(RD.remoteData).alt(look(buddyState), () =>
     look(mentorState),
   );
@@ -49,7 +49,7 @@ export const getBuddyName = (
 };
 
 const messageList = (messageState: AppState['messages'], buddyId: string) => {
-  const messagesById = RD.remoteData.map(messageState.messages, r =>
+  const messagesById = RD.remoteData.map(messageState.messages, (r) =>
     record.lookup(buddyId, r),
   );
   return getFoldableComposition(RD.remoteData, O.option).reduce<
@@ -74,7 +74,7 @@ export function getChatList(
         ...buddy,
         hasNewMessages: pipe(
           messageList(messageState, buddyId),
-          array.filter(message => message.type === 'Received'),
+          array.filter((message) => message.type === 'Received'),
           array.foldMap(monoidAny)(({ isSeen }) => !isSeen),
         ),
       })),

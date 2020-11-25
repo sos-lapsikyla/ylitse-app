@@ -35,14 +35,11 @@ export const reducer = (state: State, action: actions.Action) => {
           authApi.AccessToken,
           automaton.Loop<State, actions.Action> | State
         >(
-          e => RD.failure(e),
-          token =>
+          (e) => RD.failure(e),
+          (token) =>
             automaton.loop(
               RD.success(token),
-              pipe(
-                token,
-                actions.make('token/Acquired'),
-              ),
+              pipe(token, actions.make('token/Acquired')),
             ),
         ),
       );

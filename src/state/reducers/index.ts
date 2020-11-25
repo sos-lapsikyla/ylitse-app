@@ -34,7 +34,7 @@ const exitReducer: automaton.Reducer<AppState, actions.Action> = (
     case 'logout/logout': {
       return automaton.loop(
         initialState,
-        cmd(T.task.map(tokenStorage.purgeToken, _ => actions.none)),
+        cmd(T.task.map(tokenStorage.purgeToken, (_) => actions.none)),
       );
     }
     default: {

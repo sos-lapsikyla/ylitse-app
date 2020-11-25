@@ -44,11 +44,14 @@ const toStorabeToken: (a: auth.AccessToken) => StorableToken = ({
 
 const parseToken = (str: string) =>
   pipe(
-    E.tryCatch(() => JSON.parse(str), () => 'Failed to parse JSON.'),
+    E.tryCatch(
+      () => JSON.parse(str),
+      () => 'Failed to parse JSON.',
+    ),
     E.chain(
       flow(
         storableTokenType.decode,
-        E.mapLeft(_ => 'Failed to decode JSON.'),
+        E.mapLeft((_) => 'Failed to decode JSON.'),
       ),
     ),
     E.map(toAccessToken),
@@ -65,7 +68,7 @@ export const readToken = pipe(
       O.fromNullable,
       O.fold(
         () => TE.left('Token not found from async storage.'),
-        token => TE.right(token),
+        (token) => TE.right(token),
       ),
     ),
   ),
@@ -73,15 +76,11 @@ export const readToken = pipe(
 );
 
 export const writeToken = (token: auth.AccessToken) =>
-  pipe(
-    token,
-    toStorabeToken,
-    JSON.stringify,
-    str =>
-      TE.tryCatch(
-        () => AsyncStorage.setItem(key, str),
-        () => 'Failed to write token to disk.',
-      ),
+  pipe(token, toStorabeToken, JSON.stringify, (str) =>
+    TE.tryCatch(
+      () => AsyncStorage.setItem(key, str),
+      () => 'Failed to write token to disk.',
+    ),
   );
 
 export const purgeToken = TE.tryCatch(

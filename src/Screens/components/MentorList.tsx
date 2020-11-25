@@ -30,8 +30,9 @@ export default ({ onPress }: Props) => {
     dispatch({ type: 'mentors/start', payload: undefined });
   };
 
-  const mentorList = RD.remoteData.map(useSelector(mentorState.get), mentors =>
-    mentors.filter(mentor => mentor.buddyId !== userId),
+  const mentorList = RD.remoteData.map(
+    useSelector(mentorState.get),
+    (mentors) => mentors.filter((mentor) => mentor.buddyId !== userId),
   );
 
   const [{ width, height }, onLayout] = useLayout();
@@ -44,7 +45,7 @@ export default ({ onPress }: Props) => {
   return (
     <RN.View onLayout={onLayout} style={styles.mentorListContainer}>
       <RemoteData data={mentorList} fetchData={fetchMentors}>
-        {mentors => (
+        {(mentors) => (
           <RN.View style={styles.carouselContainer}>
             <RN.FlatList
               showsHorizontalScrollIndicator={false}
