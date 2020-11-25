@@ -1,4 +1,6 @@
 import { by, element, expect, device } from 'detox';
+import { describe, it, beforeEach } from '@jest/globals';
+
 import {
   APISignUpMentee,
   scrollDownTo,

@@ -1,24 +1,24 @@
 import { cleanup, init } from 'detox';
+import { Jasmine } from 'jest-jasmine2/build/types';
+
 const adapter = require('detox/runners/jest/adapter');
 const config = require('../.detoxrc.json');
 
-// eslint-disable-next-line no-undef
-jest.setTimeout(240000);
-// eslint-disable-next-line no-undef
+import * as j from '@jest/globals';
+declare const jasmine: Jasmine;
+
+j.jest.setTimeout(240000);
 jasmine.getEnv().addReporter(adapter);
 
-// eslint-disable-next-line no-undef
-beforeAll(async () => {
-  await init(config);
+j.beforeAll(async () => {
+  await init(config, { initGlobals: false });
 });
 
-// eslint-disable-next-line no-undef
-beforeEach(async () => {
+j.beforeEach(async () => {
   await adapter.beforeEach();
 });
 
-// eslint-disable-next-line no-undef
-afterAll(async () => {
+j.afterAll(async () => {
   await adapter.afterAll();
   await cleanup();
 });

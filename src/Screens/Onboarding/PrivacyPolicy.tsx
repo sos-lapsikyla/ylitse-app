@@ -22,7 +22,6 @@ import ErrorMessage from '../components/ErrorMessage';
 import Link from '../components/Link';
 
 import { SelectTopicRoute } from './SelectTopic';
-import navigateMain from './navigateMain';
 
 export type PrivacyPolicyRoute = {
   'Onboarding/PrivacyPolicy': { user: accountApi.User };
