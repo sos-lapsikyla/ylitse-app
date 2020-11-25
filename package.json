@@ -13,8 +13,8 @@
     "lint": "npx tsc && npm run eslint && npm run prettier"
   },
   "dependencies": {
-    "@devexperts/remote-data-ts": "^2.0.3",
-    "@react-native-community/async-storage": "^1.8.1",
+    "@devexperts/remote-data-ts": "^2.0.4",
+    "@react-native-async-storage/async-storage": "^1.13.2",
     "@react-native-community/masked-view": "^0.1.5",
     "fp-ts": "^2.4.0",
     "fp-ts-rxjs": "^0.6.8",
