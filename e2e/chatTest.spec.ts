@@ -16,7 +16,6 @@ describe('Chat', () => {
   beforeEach(async () => {
     await APIDeleteAccounts();
     await device.reloadReactNative();
-    await device.disableSynchronization();
   });
 
   it('with new mentor', async () => {
@@ -44,7 +43,6 @@ describe('Chat', () => {
     await device.uninstallApp();
     await device.installApp();
     await device.launchApp({ newInstance: true });
-    await device.disableSynchronization();
 
     await signIn(mentor);
     await scrollDownAndTap(
@@ -62,7 +60,6 @@ describe('Chat', () => {
     await device.uninstallApp();
     await device.installApp();
     await device.launchApp({ newInstance: true });
-    await device.disableSynchronization();
 
     await signIn(mentee);
     await scrollDownAndTap(

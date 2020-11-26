@@ -14,7 +14,6 @@ describe('SignIn', () => {
   beforeEach(async () => {
     await APIDeleteAccounts();
     await device.reloadReactNative();
-    await device.disableSynchronization();
   });
 
   it('mentee succesfully', async () => {

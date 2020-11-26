@@ -15,7 +15,6 @@ describe('changePassword', () => {
   beforeEach(async () => {
     await APIDeleteAccounts();
     await device.reloadReactNative();
-    await device.disableSynchronization();
   });
 
   it('for a mentee succesfully', async () => {
@@ -50,7 +49,6 @@ describe('changePassword', () => {
     await device.uninstallApp();
     await device.installApp();
     await device.launchApp({ newInstance: true });
-    await device.disableSynchronization();
 
     await signIn({ loginName: mentee.loginName, password: newPassword });
     await scrollDownAndTap(

@@ -15,7 +15,6 @@ describe('Browse mentors', () => {
   beforeEach(async () => {
     await APIDeleteAccounts();
     await device.reloadReactNative();
-    await device.disableSynchronization();
   });
 
   it('without login', async () => {

@@ -15,7 +15,6 @@ describe('Delete', () => {
   beforeEach(async () => {
     await APIDeleteAccounts();
     await device.reloadReactNative();
-    await device.disableSynchronization();
   });
 
   it('account succesfully', async () => {

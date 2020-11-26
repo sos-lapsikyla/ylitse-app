@@ -54,7 +54,7 @@ export const reducer: automaton.Reducer<State, actions.Action> = (
       const nextCmd = withToken(
         flow(
           messageApi.fetchMessages,
-          T.delay(1000),
+          T.delay(2000),
         ),
         actions.make('messages/get/completed'),
       );
