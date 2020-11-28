@@ -7,6 +7,6 @@ describe('Detox', () => {
   });
 
   it('finds a word from first screen', async () => {
-    await expect(element(by.text('Start'))).toBeVisible();
+    await expect(element(by.text('Hello!'))).toBeVisible();
   });
 });
