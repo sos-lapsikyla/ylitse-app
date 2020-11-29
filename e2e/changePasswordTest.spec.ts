@@ -31,7 +31,11 @@ describe('changePassword', () => {
     await element(by.id('tabs.settings')).tap();
 
     // TODO: why cannot scroll normally, line below should not be needed
-    await element(by.id('main.settings.account.userName')).swipe('up', 'slow', 0.35);
+    await element(by.id('main.settings.account.userName')).swipe(
+      'up',
+      'slow',
+      0.35,
+    );
 
     await scrollDownAndTap(
       'main.settings.account.password.button',
@@ -55,7 +59,6 @@ describe('changePassword', () => {
       'main.settings.account.password.save',
       'main.settings.index.view',
     );
-
 
     // Logout the fast style
     await device.uninstallApp();

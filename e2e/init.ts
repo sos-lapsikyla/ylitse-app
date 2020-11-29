@@ -16,7 +16,9 @@ j.beforeAll(async () => {
   try {
     await APIAdminAccessToken();
   } catch (error) {
-    console.error("Cannot connect to YLITSE API. YLITSE_API_ADMIN_LOGIN_NAME=... YLITSE_API_ADMIN_PASSWORD=... YLITSE_API_URL=...");
+    console.error(
+      'Cannot connect to YLITSE API. YLITSE_API_ADMIN_LOGIN_NAME=... YLITSE_API_ADMIN_PASSWORD=... YLITSE_API_URL=...',
+    );
     process.exit(1);
   }
 
