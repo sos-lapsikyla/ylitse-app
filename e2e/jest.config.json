@@ -3,5 +3,6 @@
   "testEnvironment": "node",
   "setupFilesAfterEnv": [
     "./init.ts"
-  ]
+  ],
+  "bail": 1
 }
