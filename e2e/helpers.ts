@@ -1,7 +1,17 @@
 import { by, element, waitFor } from 'detox';
 import fetch from 'node-fetch';
 
-import * as config from './config.json';
+import * as config from './config.defaults.json';
+if(process.env.YLITSE_API_ADMIN_LOGIN_NAME){
+  config.ylitseAPI.admin.login_name = process.env.YLITSE_API_ADMIN_LOGIN_NAME
+}
+if(process.env.YLITSE_API_ADMIN_PASSWORD){
+  config.ylitseAPI.admin.password = process.env.YLITSE_API_ADMIN_PASSWORD
+}
+if(process.env.YLITSE_API_URL){
+  config.ylitseAPI.url = process.env.YLITSE_API_URL
+}
+
 
 /**
  * Scrolls view down if needed and taps the given element
