@@ -29,7 +29,14 @@ describe('changePassword', () => {
     );
 
     await element(by.id('tabs.settings')).tap();
-    await element(by.id('main.settings.account.password.button')).tap();
+
+    // TODO: why cannot scroll normally, line below should not be needed
+    await element(by.id('main.settings.account.userName')).swipe('up', 'slow', 0.35);
+
+    await scrollDownAndTap(
+      'main.settings.account.password.button',
+      'main.settings.index.view',
+    );
 
     await waitAndTypeText(
       'main.settings.account.password.current',
@@ -43,7 +50,12 @@ describe('changePassword', () => {
       'main.settings.account.password.repeat',
       `${newPassword}\n`,
     );
-    await element(by.id('main.settings.account.password.save')).tap();
+
+    await scrollDownAndTap(
+      'main.settings.account.password.save',
+      'main.settings.index.view',
+    );
+
 
     // Logout the fast style
     await device.uninstallApp();
