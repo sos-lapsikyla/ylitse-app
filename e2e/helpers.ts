@@ -1,16 +1,9 @@
 import { by, element, waitFor } from 'detox';
 import fetch from 'node-fetch';
 
-import * as config from './config.defaults.json';
-if (process.env.YLITSE_API_ADMIN_LOGIN_NAME) {
-  config.ylitseAPI.admin.login_name = process.env.YLITSE_API_ADMIN_LOGIN_NAME;
-}
-if (process.env.YLITSE_API_ADMIN_PASSWORD) {
-  config.ylitseAPI.admin.password = process.env.YLITSE_API_ADMIN_PASSWORD;
-}
-if (process.env.YLITSE_API_URL) {
-  config.ylitseAPI.url = process.env.YLITSE_API_URL;
-}
+const API_URL = process.env.YLITSE_API_URL || 'http://localhost:8080';
+const API_USER = process.env.YLITSE_API_USER || 'admin';
+const API_PASS = process.env.YLITSE_API_PASS || '';
 
 /**
  * Scrolls view down if needed and taps the given element
@@ -90,17 +83,14 @@ export async function signIn(details: any) {
  * Get access_token for admin
  */
 export async function APIAdminAccessToken() {
-  return await APIAccessToken(
-    config.ylitseAPI.admin.login_name,
-    config.ylitseAPI.admin.password,
-  );
+  return await APIAccessToken(API_USER, API_PASS);
 }
 
 /**
  * Get access_token
  */
 export async function APIAccessToken(login_name: string, password: string) {
-  const loginResponse = await fetch(`${config.ylitseAPI.url}/login`, {
+  const loginResponse = await fetch(`${API_URL}/login`, {
     method: 'POST',
     body: JSON.stringify({ login_name: login_name, password: password }),
   });
@@ -115,7 +105,7 @@ export async function APIUsers(access_token: string) {
   const headers = {
     Authorization: `Bearer ${access_token}`,
   };
-  const usersResponse = await fetch(`${config.ylitseAPI.url}/users`, {
+  const usersResponse = await fetch(`${API_URL}/users`, {
     method: 'GET',
     headers: headers,
   });
@@ -137,7 +127,7 @@ export async function APIDeleteAccounts() {
     if (user.role === 'admin') {
       continue;
     }
-    await fetch(`${config.ylitseAPI.url}/accounts/${user.account_id}`, {
+    await fetch(`${API_URL}/accounts/${user.account_id}`, {
       method: 'DELETE',
       headers: headers,
     });
@@ -148,7 +138,7 @@ export async function APIDeleteAccounts() {
  * SignUp new mentee
  */
 export async function APISignUpMentee(mentee: any) {
-  await fetch(`${config.ylitseAPI.url}/accounts`, {
+  await fetch(`${API_URL}/accounts`, {
     method: 'POST',
     body: JSON.stringify({
       password: mentee.password,
@@ -164,13 +154,13 @@ export async function APISignUpMentee(mentee: any) {
     Authorization: `Bearer ${access_token}`,
   };
 
-  const myUserRes = await fetch(`${config.ylitseAPI.url}/myuser`, {
+  const myUserRes = await fetch(`${API_URL}/myuser`, {
     method: 'GET',
     headers: headers,
   });
   const myuser: any = await myUserRes.json();
 
-  await fetch(`${config.ylitseAPI.url}/users/${myuser.user.id}`, {
+  await fetch(`${API_URL}/users/${myuser.user.id}`, {
     method: 'PUT',
     headers: headers,
     body: JSON.stringify({
@@ -190,7 +180,7 @@ export async function APISignUpMentor(mentor: any) {
   const admin_headers = {
     Authorization: `Bearer ${admin_access_token}`,
   };
-  await fetch(`${config.ylitseAPI.url}/accounts`, {
+  await fetch(`${API_URL}/accounts`, {
     method: 'POST',
     headers: admin_headers,
     body: JSON.stringify({
@@ -208,13 +198,13 @@ export async function APISignUpMentor(mentor: any) {
     Authorization: `Bearer ${access_token}`,
   };
 
-  const myUserRes = await fetch(`${config.ylitseAPI.url}/myuser`, {
+  const myUserRes = await fetch(`${API_URL}/myuser`, {
     method: 'GET',
     headers: headers,
   });
   const myuser: any = await myUserRes.json();
 
-  await fetch(`${config.ylitseAPI.url}/users/${myuser.user.id}`, {
+  await fetch(`${API_URL}/users/${myuser.user.id}`, {
     method: 'PUT',
     headers: headers,
     body: JSON.stringify({
@@ -227,7 +217,7 @@ export async function APISignUpMentor(mentor: any) {
     }),
   });
 
-  await fetch(`${config.ylitseAPI.url}/mentors/${myuser.mentor.id}`, {
+  await fetch(`${API_URL}/mentors/${myuser.mentor.id}`, {
     method: 'PUT',
     headers: admin_headers,
     body: JSON.stringify({

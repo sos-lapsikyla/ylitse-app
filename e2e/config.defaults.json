@@ -1,9 +1,0 @@
-{
-  "ylitseAPI": {
-    "admin": {
-      "login_name": "admin",
-      "password": "secret"
-    },
-    "url": "http://localhost:3000/api"
-  }
-}

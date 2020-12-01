@@ -41,3 +41,34 @@ Or on an iOS device (you have to use a MacBook for this):
 ```sh
 npm run ios
 ```
+
+### Running end-to-end tests
+
+Run the steps described below in separate terminals.
+
+1. Go to Ylitse API repo and start the backend locally (make sure `admin`
+   user exists):
+
+```sh
+source env/bin/activate
+make run-gunicorn
+```
+
+2. Start bundler:
+
+```sh
+make bundler
+```
+
+3. And finally run tests (make sure password matches the one configured for
+   the local API):
+
+```sh
+YLITSE_API_PASS=random make e2e
+```
+
+By default emulator device name is `pixel`, but you can overwrite it like so:
+
+```sh
+YLITSE_DEVICE=pixel_xl YLITSE_API_PASS=random make e2e
+```
