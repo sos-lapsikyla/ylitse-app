@@ -7,6 +7,7 @@ import {
   scrollDownAndTap,
   waitAndTypeText,
   signIn,
+  scrollUpTo,
 } from './helpers';
 
 const accountFixtures = require('./fixtures/accounts.json');
@@ -30,15 +31,13 @@ describe('changePassword', () => {
 
     await element(by.id('tabs.settings')).tap();
 
-    // TODO: why cannot scroll normally, line below should not be needed
-    await element(by.id('main.settings.account.userName')).swipe(
-      'up',
-      'slow',
-      0.35,
-    );
-
     await scrollDownAndTap(
       'main.settings.account.password.button',
+      'main.settings.index.view',
+    );
+
+    scrollUpTo(
+      'main.settings.account.password.current',
       'main.settings.index.view',
     );
 

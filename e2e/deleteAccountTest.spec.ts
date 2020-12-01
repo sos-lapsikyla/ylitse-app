@@ -28,18 +28,6 @@ describe('Delete account', () => {
 
     await element(by.id('tabs.settings')).tap();
 
-    // TODO: why cannot scroll normally, line below should not be needed
-    await element(by.id('main.settings.account.userName')).swipe(
-      'up',
-      'fast',
-      1,
-    );
-    await element(by.id('main.settings.other.button.logOut')).swipe(
-      'up',
-      'fast',
-      1,
-    );
-
     await scrollDownAndTap(
       'main.settings.other.button.deleteAccount',
       'main.settings.index.view',
@@ -69,18 +57,6 @@ describe('Delete account', () => {
     );
 
     await element(by.id('tabs.settings')).tap();
-
-    // TODO: why cannot scroll normally, line below should not be needed
-    await element(by.id('main.settings.account.userName')).swipe(
-      'up',
-      'fast',
-      1,
-    );
-    await element(by.id('main.settings.other.button.logOut')).swipe(
-      'up',
-      'fast',
-      1,
-    );
 
     await scrollDownAndTap(
       'main.settings.other.button.deleteAccount',
