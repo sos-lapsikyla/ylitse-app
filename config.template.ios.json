@@ -1,7 +1,13 @@
 {
   "baseUrl": "http://localhost:8080",
   "loginUrl": "http://localhost:3000/login",
+<<<<<<< HEAD
   "feedBackUrl": "http://localhost:3000",
   "termsUrl": "http://localhost:3000",
   "userGuideUrl": "http://localhost:3000"
+=======
+  "feedBackUrl": "https://forms.gle/1QnYEENA48xVPmkw9",
+  "termsUrl": "https://sos-lapsikyla.fi/fileadmin/user_upload/tiedostot/kuvat/pdf-tiedostot/Ylitse_MentorApp_kayttyoehdot_tietosuojaseloste.pdf",
+  "userGuideUrl": "https://www.sos-lapsikyla.fi/fileadmin/user_upload/tiedostot/kuvat/pdf-tiedostot/Ylitse-vertaismentorointiopas-web.pdf"
+>>>>>>> Provide config templates for iOS and Android
 }

@@ -1,7 +1,7 @@
 {
   "baseUrl": "http://10.0.2.2:8080",
   "loginUrl": "http://10.0.2.2:3000/login",
-  "feedBackUrl": "http://10.0.2.2:3000",
-  "termsUrl": "http://10.0.2.2:3000",
-  "userGuideUrl": "http://10.0.2.2:3000"
+  "feedBackUrl": "https://forms.gle/1QnYEENA48xVPmkw9",
+  "termsUrl": "https://sos-lapsikyla.fi/fileadmin/user_upload/tiedostot/kuvat/pdf-tiedostot/Ylitse_MentorApp_kayttyoehdot_tietosuojaseloste.pdf",
+  "userGuideUrl": "https://www.sos-lapsikyla.fi/fileadmin/user_upload/tiedostot/kuvat/pdf-tiedostot/Ylitse-vertaismentorointiopas-web.pdf"
 }
