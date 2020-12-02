@@ -1,4 +1,4 @@
-import { cleanup, init } from 'detox';
+import { cleanup, init, device } from 'detox';
 import { Jasmine } from 'jest-jasmine2/build/types';
 
 const adapter = require('detox/runners/jest/adapter');
@@ -22,8 +22,10 @@ j.beforeAll(async () => {
     process.exit(1);
   }
 
-  await init(config, { initGlobals: false });
-});
+  await init(config, {launchApp: false, initGlobals: false});
+  await device.launchApp({permissions: {
+    notifications: 'YES'
+  }});});
 
 j.beforeEach(async () => {
   await adapter.beforeEach();

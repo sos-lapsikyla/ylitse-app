@@ -14,7 +14,7 @@ export async function scrollDownAndTap(elementId: string, viewId: string) {
   // App has big sticky toolbar at the bottom
   // Scroll down little bit more to be able to tap the element
   try {
-    await element(by.id(viewId)).scroll(100, 'down', 0.5, 0.5);
+    await element(by.id(viewId)).scroll(100, 'down', 0.1, 0.2);
   } catch (error) {
     // Do nothing, cannot scroll down anymore
   }
@@ -29,9 +29,9 @@ export async function scrollDownTo(elementId: string, viewId: string) {
   await waitFor(element(by.id(elementId)))
     .toBeVisible()
     .whileElement(by.id(viewId))
-    // Needs to scroll from the middle of the screen
+    // Needs to scroll from x=0.1, y=0.2
     // because of the big sticky toolbar
-    .scroll(200, 'down', 0.5, 0.5);
+    .scroll(200, 'down', 0.1, 0.2);
 }
 
 /**
@@ -41,9 +41,9 @@ export async function scrollUpTo(elementId: string, viewId: string) {
   await waitFor(element(by.id(elementId)))
     .toBeVisible()
     .whileElement(by.id(viewId))
-    // Needs to scroll from the middle of the screen
+    // Needs to scroll from x=0.1, y=0.2
     // because of the big sticky toolbar
-    .scroll(100, 'up', 0.5, 0.5);
+    .scroll(100, 'up', 0.1, 0.2);
 }
 
 /**
