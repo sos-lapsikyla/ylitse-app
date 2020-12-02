@@ -22,10 +22,13 @@ j.beforeAll(async () => {
     process.exit(1);
   }
 
-  await init(config, {launchApp: false, initGlobals: false});
-  await device.launchApp({permissions: {
-    notifications: 'YES'
-  }});});
+  await init(config, { launchApp: false, initGlobals: false });
+  await device.launchApp({
+    permissions: {
+      notifications: 'YES',
+    },
+  });
+});
 
 j.beforeEach(async () => {
   await adapter.beforeEach();

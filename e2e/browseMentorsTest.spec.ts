@@ -31,8 +31,15 @@ describe('Browse mentors', () => {
     await element(by.id('components.mentorList')).swipe('left');
     await element(by.id('components.mentorList')).swipe('left');
 
-    // TODO: what to match here
-    await expect(element(by.id('components.mentorList'))).toBeVisible();
+    await expect(
+      element(by.text(accountFixtures.mentors[0].displayName)),
+    ).toExist();
+    await expect(
+      element(by.text(accountFixtures.mentors[1].displayName)),
+    ).toExist();
+    await expect(
+      element(by.text(accountFixtures.mentors[2].displayName)),
+    ).toExist();
   });
 
   it('after login', async () => {

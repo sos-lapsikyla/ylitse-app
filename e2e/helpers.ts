@@ -1,4 +1,4 @@
-import { by, element, waitFor } from 'detox';
+import { by, element, waitFor, device } from 'detox';
 import fetch from 'node-fetch';
 
 const API_URL = process.env.YLITSE_API_URL || 'http://localhost:8080';
@@ -77,6 +77,20 @@ export async function signIn(details: any) {
     .toBeVisible()
     .withTimeout(5000);
   await scrollDownAndTap('onboarding.signUp.button', 'onboarding.signUp.view');
+}
+
+/**
+ * Logout by reinstalling and launching app
+ */
+export async function forceLogout() {
+  await device.uninstallApp();
+  await device.installApp();
+  await device.launchApp({
+    newInstance: true,
+    permissions: {
+      notifications: 'YES',
+    },
+  });
 }
 
 /**

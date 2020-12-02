@@ -8,6 +8,7 @@ import {
   waitAndTypeText,
   signIn,
   scrollUpTo,
+  forceLogout,
 } from './helpers';
 
 const accountFixtures = require('./fixtures/accounts.json');
@@ -59,10 +60,7 @@ describe('changePassword', () => {
       'main.settings.index.view',
     );
 
-    // Logout the fast style
-    await device.uninstallApp();
-    await device.installApp();
-    await device.launchApp({ newInstance: true });
+    await forceLogout();
 
     await signIn({ loginName: mentee.loginName, password: newPassword });
     await scrollDownAndTap(

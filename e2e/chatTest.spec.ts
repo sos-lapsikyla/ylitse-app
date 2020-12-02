@@ -1,4 +1,4 @@
-import { by, element, device } from 'detox'; // expect
+import { by, element, device, expect } from 'detox';
 import { describe, it, beforeEach } from '@jest/globals';
 
 import {
@@ -8,6 +8,7 @@ import {
   scrollDownAndTap,
   waitAndTypeText,
   signIn,
+  forceLogout,
 } from './helpers';
 
 const accountFixtures = require('./fixtures/accounts.json');
@@ -24,6 +25,9 @@ describe('Chat', () => {
     const mentor = accountFixtures.mentors[0];
     await APISignUpMentor(mentor);
 
+    const message_from_mentee = 'Hi!';
+    const message_from_mentor = 'Hello!';
+
     await signIn(mentee);
     await scrollDownAndTap(
       'onboarding.selectTopic.skip',
@@ -33,16 +37,10 @@ describe('Chat', () => {
     await element(by.text('Read more')).tap();
     await element(by.text('Chat')).tap();
 
-    await waitAndTypeText('main.chat.input.input', 'Hi!');
+    await waitAndTypeText('main.chat.input.input', message_from_mentee);
     await element(by.id('main.chat.input.button')).tap();
 
-    // TODO: what to expect
-    // await expect(element(by.text('Hi from mentee!'))).toBeVisible();
-
-    // Logout the fast style
-    await device.uninstallApp();
-    await device.installApp();
-    await device.launchApp({ newInstance: true });
+    await forceLogout();
 
     await signIn(mentor);
     await scrollDownAndTap(
@@ -53,13 +51,10 @@ describe('Chat', () => {
 
     await element(by.text(mentee.displayName)).tap();
 
-    await waitAndTypeText('main.chat.input.input', 'Hello!');
+    await waitAndTypeText('main.chat.input.input', message_from_mentor);
     await element(by.id('main.chat.input.button')).tap();
 
-    // Logout the fast style
-    await device.uninstallApp();
-    await device.installApp();
-    await device.launchApp({ newInstance: true });
+    await forceLogout();
 
     await signIn(mentee);
     await scrollDownAndTap(
@@ -68,8 +63,11 @@ describe('Chat', () => {
     );
 
     await element(by.id('tabs.chats')).tap();
-    await element(by.text(mentor.displayName)).tap();
+    await element(by.text(mentor.displayName))
+      .atIndex(0)
+      .tap();
 
-    //TODO: expect something
+    await expect(element(by.text(message_from_mentee))).toBeVisible();
+    await expect(element(by.text(message_from_mentor))).toBeVisible();
   });
 });
