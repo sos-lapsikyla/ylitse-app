@@ -63,6 +63,7 @@ export default ({ onClose }: Props) => {
                 isPasswordInput={true}
                 value={currentPassword}
                 onChangeText={setCurrentPassword}
+                testID="main.settings.account.password.current"
               />
               <NamedInputField
                 style={styles.field}
@@ -70,6 +71,7 @@ export default ({ onClose }: Props) => {
                 isPasswordInput={true}
                 value={newPassword}
                 onChangeText={setNewPassword}
+                testID="main.settings.account.password.new"
               />
               <NamedInputField
                 style={styles.field}
@@ -77,6 +79,7 @@ export default ({ onClose }: Props) => {
                 isPasswordInput={true}
                 value={repeatedNewPassword}
                 onChangeText={setRepeatedNewPassword}
+                testID="main.settings.account.password.repeat"
               />
               <RN.View style={styles.buttonContainer}>
                 <Button
@@ -85,6 +88,7 @@ export default ({ onClose }: Props) => {
                   onPress={onClose}
                   messageId="meta.cancel"
                   gradient={gradients.faintGray}
+                  testID="main.settings.account.password.cancel"
                 />
                 <Button
                   style={styles.changePasswordButton}
@@ -93,6 +97,7 @@ export default ({ onClose }: Props) => {
                   messageId="meta.save"
                   gradient={gradients.pillBlue}
                   disabled={!isOkay}
+                  testID="main.settings.account.password.save"
                 />
               </RN.View>
             </>

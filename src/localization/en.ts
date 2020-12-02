@@ -135,7 +135,7 @@ export const messages: { [key in MessageId]: string } = {
   'onboarding.sign.up': 'Sign up',
 
   'onboarding.signIn.button': 'Login',
-  'onboarding.signIn.failure': 'Kirjautumien epäonnistui',
+  'onboarding.signIn.failure': 'Kirjautuminen epäonnistui',
   'onboarding.signIn.title': 'Login',
 
   'onboarding.signUp.back': 'Back',

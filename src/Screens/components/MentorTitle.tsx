@@ -35,7 +35,11 @@ const MentorTitle: React.FC<Props> = ({
     <RN.View style={[styles.blob, { backgroundColor: color }, style]}>
       <Wrapper>
         {!onPress ? null : (
-          <RN.TouchableOpacity style={styles.chevronButton} onPress={onPress}>
+          <RN.TouchableOpacity
+            style={styles.chevronButton}
+            onPress={onPress}
+            testID={'components.mentorTitle.chevronLeft'}
+          >
             <RN.Image
               source={require('../images/chevron-left.svg')}
               style={styles.chevronIcon}

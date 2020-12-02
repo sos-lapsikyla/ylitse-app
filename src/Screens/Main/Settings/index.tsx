@@ -42,6 +42,7 @@ const Settings = ({ navigation }: Props) => {
         style={styles.scrollView}
         contentContainerStyle={styles.scrollContent}
         showsVerticalScrollIndicator={false}
+        testID={'main.settings.index.view'}
       >
         <UserAccount />
         <BottomCard

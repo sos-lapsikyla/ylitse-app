@@ -133,7 +133,7 @@ export const messages = {
   'onboarding.sign.up': 'Rekisteröidy',
 
   'onboarding.signIn.button': 'Kirjaudu',
-  'onboarding.signIn.failure': 'Kirjautumien epäonnistui',
+  'onboarding.signIn.failure': 'Kirjautuminen epäonnistui',
   'onboarding.signIn.title': 'Kirjaudu',
 
   'onboarding.signUp.back': 'Takaisin',

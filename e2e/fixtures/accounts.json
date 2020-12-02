@@ -1,0 +1,58 @@
+{
+    "mentees": [
+        {
+            "loginName": "mentee",
+            "displayName": "mentee_nick",
+            "password": "menteementee",
+            "email": "mentee@mentee.mentee",
+            "role": "mentee"
+        }
+    ],
+    "mentors": [
+        {
+            "loginName": "mentor1",
+            "displayName": "mentor1_nick",
+            "password": "mentormentor",
+            "email": "mentor1@mentor.mentor",
+            "birthYear": 1980,
+            "phone": "555-1234",
+            "story": "my story",
+            "languages": ["fi","se"],
+            "skills": ["vim", "c++", "python"],
+            "communication_channels": ["phone", "email"],
+            "gender": "other",
+            "region": "Tampesteri",
+            "role": "mentor"
+        },
+        {
+            "loginName": "mentor2",
+            "displayName": "mentor2_nick",
+            "password": "mentormentor2",
+            "email": "mentor2@mentor.mentor",
+            "birthYear": 1982,
+            "phone": "555-12342",
+            "story": "my story 2",
+            "languages": ["fi","se"],
+            "skills": ["vim", "c++", "python"],
+            "communication_channels": ["phone", "email"],
+            "gender": "other",
+            "region": "Tampesteri",
+            "role": "mentor"
+        },
+        {
+            "loginName": "mentor3",
+            "displayName": "mentor3_nick",
+            "password": "mentormentor3",
+            "email": "mentor3@mentor.mentor",
+            "birthYear": 1983,
+            "phone": "555-12343",
+            "story": "my story",
+            "languages": ["fi","se"],
+            "skills": ["vim", "c++", "python"],
+            "communication_channels": ["phone", "email"],
+            "gender": "other",
+            "region": "Tampesteri",
+            "role": "mentor"
+        }
+    ]
+}

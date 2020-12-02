@@ -61,6 +61,7 @@ export default ({ onPress }: Props) => {
               renderItem={renderMentorCard(height, measuredWidth, onPress)}
               keyExtractor={({ buddyId }) => buddyId}
               horizontal={true}
+              testID={'components.mentorList'}
             />
           </RN.View>
         )}

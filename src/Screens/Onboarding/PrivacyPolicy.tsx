@@ -22,7 +22,6 @@ import ErrorMessage from '../components/ErrorMessage';
 import Link from '../components/Link';
 
 import { SelectTopicRoute } from './SelectTopic';
-import navigateMain from './navigateMain';
 
 export type PrivacyPolicyRoute = {
   'Onboarding/PrivacyPolicy': { user: accountApi.User };
@@ -63,7 +62,7 @@ const PrivacyPolicy = ({
     createUser(user);
   };
   return (
-    <OnboardingBackground>
+    <OnboardingBackground testID="onboarding.privacyPolicy.view">
       <Card style={styles.card}>
         <Message style={styles.title} id="onboarding.privacyPolicy.title" />
         <Message
@@ -94,6 +93,7 @@ const PrivacyPolicy = ({
           style={styles.nextButton}
           messageId="onboarding.privacyPolicy.agreeButton"
           disabled={isAgreed}
+          testID="onboarding.privacyPolicy.agreeButton"
         />
         <Button
           style={styles.nextButton}
@@ -102,6 +102,7 @@ const PrivacyPolicy = ({
           badge={require('../images/arrow.svg')}
           disabled={!isAgreed}
           loading={RD.isPending(createUserState)}
+          testID="onboarding.privacyPolicy.nextButton"
         />
         <Button
           gradient={[colors.faintGray, colors.faintGray]}

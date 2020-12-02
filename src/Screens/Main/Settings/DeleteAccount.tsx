@@ -47,6 +47,7 @@ export default ({ navigation }: Props) => {
         style={styles.scrollView}
         contentContainerStyle={styles.scrollContent}
         showsVerticalScrollIndicator={false}
+        testID={'main.settings.deleteAccount.view'}
       >
         <RN.View />
         <RN.View style={styles.textContainer}>
@@ -71,11 +72,13 @@ export default ({ navigation }: Props) => {
             style={styles.deleteAccountButton}
             onPress={onDeleteAccount}
             messageId={'main.settings.deleteAccount.deleteAccount'}
+            testID={'main.settings.deleteAccount.deleteAccount'}
           />
           <MessageButton
             style={styles.cancelButton}
             onPress={onGoBack}
             messageId={'main.settings.deleteAccount.cancel'}
+            testID={'main.settings.deleteAccount.cancel'}
           />
           <CreatedBySosBanner />
         </SafeAreaView>

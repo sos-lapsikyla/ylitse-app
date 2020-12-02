@@ -53,12 +53,14 @@ export default ({ navigateToDeleteAccount, navigateToLogout }: Props) => {
         messageStyle={styles.buttonText}
         onPress={navigateToLogout}
         messageId="main.settings.other.button.logOut"
+        testID="main.settings.other.button.logOut"
       />
       <MessageButton
         style={styles.deleteAccountButton}
         messageStyle={styles.buttonText}
         onPress={navigateToDeleteAccount}
         messageId="main.settings.other.button.deleteAccount"
+        testID="main.settings.other.button.deleteAccount"
       />
     </Card>
   );

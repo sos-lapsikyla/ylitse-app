@@ -1,3 +1,4 @@
+/* global RequestInit */
 import * as TE from 'fp-ts/lib/TaskEither';
 import * as t from 'io-ts';
 

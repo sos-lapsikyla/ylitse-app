@@ -46,6 +46,7 @@ const Main = reactNavigationTab.createBottomTabNavigator(routeConfig, {
         require('../images/users.svg'),
         require('../images/balloon.svg'),
       ]}
+      testIDs={['tabs.settings', 'tabs.mentors', 'tabs.chats']}
     />
   ),
 });
@@ -53,6 +54,7 @@ const Main = reactNavigationTab.createBottomTabNavigator(routeConfig, {
 type Props = {
   labels: string[];
   icons: RN.ImageSourcePropType[];
+  testIDs: string[];
 };
 
 const TabBar = ({
@@ -60,6 +62,7 @@ const TabBar = ({
   onTabPress,
   labels,
   icons,
+  testIDs,
 }: reactNavigationTab.BottomTabBarProps & Props) => {
   const routes = navigation.state.routes;
   const currentIndex = navigation.state.index;
@@ -70,6 +73,7 @@ const TabBar = ({
         {routes.map((route, index) => {
           const navRoute = { route };
           const routeName = labels[index];
+          const testID = testIDs[index];
 
           const [iconStyle, labelStyle] =
             index === currentIndex
@@ -82,6 +86,7 @@ const TabBar = ({
               <RN.TouchableOpacity
                 style={styles.tab}
                 onPress={() => onTabPress(navRoute)}
+                testID={testID}
               >
                 {index === 2 ? <UnseenDot /> : null}
                 <RN.Image style={iconStyle} source={icons[index]} />

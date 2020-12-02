@@ -58,6 +58,7 @@ const MentorCardExpanded = ({ navigation }: Props) => {
         contentContainerStyle={styles.scrollContent}
         showsVerticalScrollIndicator={false}
         showsHorizontalScrollIndicator={false}
+        testID={'main.mentorCardExpanded.view'}
       >
         <RN.View style={styles.flagContainer}>
           {mentor.languages.map(lang =>

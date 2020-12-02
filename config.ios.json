@@ -1,0 +1,7 @@
+{
+  "baseUrl": "http://localhost:8080",
+  "loginUrl": "http://localhost:3000/login",
+  "feedBackUrl": "http://localhost:3000",
+  "termsUrl": "http://localhost:3000",
+  "userGuideUrl": "http://localhost:3000"
+}
