@@ -25,6 +25,14 @@
       "device": {
         "avdName": "pixel"
       }
+    },
+    "ios.sim.debug": {
+      "binaryPath": "ios/build/Build/Products/Debug-iphonesimulator/ylitse.app",
+      "build": "xcodebuild -workspace ios/ylitse.xcworkspace -configuration Debug -scheme ylitse -destination id=310849A8-BC8E-43F4-9AD1-183CB3540A9F -derivedDataPath ios/build",
+      "type": "ios.simulator",
+      "device": {
+        "type": "iPhone 11"
+      }
     }
   }
 }

@@ -42,7 +42,7 @@
     "@babel/runtime": "7.8.4",
     "@react-native-community/eslint-config": "2.0.0",
     "@types/detox": "^16.4.2",
-    "@types/react-native": "0.61.5",
+    "@types/react-native": "0.63.8",
     "@types/react-native-snap-carousel": "^3.8.2",
     "@types/react-redux": "^7.1.11",
     "@types/react-test-renderer": "16.9.0",
