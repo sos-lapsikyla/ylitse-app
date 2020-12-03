@@ -1,5 +1,5 @@
 import { by, element, expect, device } from 'detox';
-import { describe, it, beforeEach } from '@jest/globals';
+import { describe, it, beforeEach, expect as jestExpect } from '@jest/globals';
 
 import {
   APISignUpMentee,
@@ -28,18 +28,57 @@ describe('Browse mentors', () => {
     );
 
     await expect(element(by.id('components.mentorList'))).toBeVisible();
-    await element(by.id('components.mentorList')).swipe('left');
-    await element(by.id('components.mentorList')).swipe('left');
 
-    await expect(
-      element(by.text(accountFixtures.mentors[0].displayName)),
-    ).toExist();
-    await expect(
-      element(by.text(accountFixtures.mentors[1].displayName)),
-    ).toExist();
-    await expect(
-      element(by.text(accountFixtures.mentors[2].displayName)),
-    ).toExist();
+    // Try to find a mentor from 3 possibilities. Swipe and repeat.
+    // 3 mentors so we need 2 swipes.
+    let mentorsFound = {
+      [accountFixtures.mentors[0].displayName]: false,
+      [accountFixtures.mentors[1].displayName]: false,
+      [accountFixtures.mentors[2].displayName]: false,
+    };
+    const mentorIndexes = [0, 1, 2];
+    for (let i in mentorIndexes) {
+      try {
+        await expect(
+          element(by.text(accountFixtures.mentors[i].displayName)),
+        ).toBeVisible();
+        mentorsFound[accountFixtures.mentors[i].displayName] = true;
+      } catch (error) {
+        continue;
+      }
+    }
+
+    await element(by.id('components.mentorList')).swipe('left', 'slow');
+
+    for (let i in mentorIndexes) {
+      try {
+        await expect(
+          element(by.text(accountFixtures.mentors[i].displayName)),
+        ).toBeVisible();
+        mentorsFound[accountFixtures.mentors[i].displayName] = true;
+      } catch (error) {
+        continue;
+      }
+    }
+
+    await element(by.id('components.mentorList')).swipe('left', 'slow');
+
+    for (let i in mentorIndexes) {
+      try {
+        await expect(
+          element(by.text(accountFixtures.mentors[i].displayName)),
+        ).toBeVisible();
+        mentorsFound[accountFixtures.mentors[i].displayName] = true;
+      } catch (error) {
+        continue;
+      }
+    }
+    const expectedMentors = {
+      [accountFixtures.mentors[0].displayName]: true,
+      [accountFixtures.mentors[1].displayName]: true,
+      [accountFixtures.mentors[2].displayName]: true,
+    };
+    jestExpect(mentorsFound).toEqual(expectedMentors);
   });
 
   it('after login', async () => {
