@@ -19,9 +19,10 @@ const NamedInputField = ({
   ...textInputProps
 }: Props) => {
   const [isSecureText, setSecureText] = React.useState(
-    isPasswordInput || false,
+    false, // secureText will be enabled in the onFocus callback
   );
   const toggleSecureText = () => setSecureText(!isSecureText);
+  const enableSecureText = () => setSecureText(true);
 
   return (
     <RN.View style={style}>
@@ -32,6 +33,7 @@ const NamedInputField = ({
           editable={true}
           secureTextEntry={isSecureText}
           {...textInputProps}
+          onFocus={isPasswordInput ? enableSecureText : () => {}}
         />
         {isPasswordInput ? (
           <RN.TouchableOpacity
