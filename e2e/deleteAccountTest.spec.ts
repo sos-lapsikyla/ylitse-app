@@ -43,7 +43,7 @@ describe('Delete account', () => {
 
     await expect(
       element(by.id('components.loginCard.errorMessage')),
-    ).toHaveText('Kirjautuminen epäonnistui');
+    ).toBeVisible();
   });
 
   it('can be cancelled', async () => {
