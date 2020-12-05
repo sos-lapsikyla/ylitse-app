@@ -191,7 +191,6 @@ android {
 }
 
 dependencies {
-    implementation project(':react-native-firebase')
     implementation fileTree(dir: "libs", include: ["*.jar"])
     //noinspection GradleDynamicVersion
     implementation "com.facebook.react:react-native:+"  // From node_modules
@@ -213,12 +212,6 @@ dependencies {
     // https://raw.githubusercontent.com/react-native-community/rn-diff-purge/release/0.63.3/RnDiffApp/android/app/build.gradle
     // implementation 'androidx.appcompat:appcompat:1.1.0-rc01'
     // implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.1.0-alpha02'
-
-
-    // Firebase dependencies
-    implementation "com.google.android.gms:play-services-base:16.1.0"
-    implementation "com.google.firebase:firebase-core:16.0.9"
-    implementation "com.google.firebase:firebase-messaging:18.0.0"
 
 
     if (enableHermes) {

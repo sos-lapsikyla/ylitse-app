@@ -2,25 +2,36 @@ import RN from 'react-native';
 import * as t from 'io-ts';
 import { fold } from 'fp-ts/lib/boolean';
 import * as TE from 'fp-ts/lib/TaskEither';
-import * as firebase from 'react-native-firebase';
+import messaging from '@react-native-firebase/messaging';
 
 import * as http from '../lib/http';
 
 import * as config from './config';
 import * as authApi from './auth';
 
+// Get rid of warning about not having handler attached
+messaging().setBackgroundMessageHandler(async _ => {});
+
 const checkIfHasPermission = TE.tryCatch(
-  () => firebase.messaging().hasPermission(),
+  () =>
+    messaging()
+      .hasPermission()
+      .then(authStatus => {
+        return (
+          authStatus === messaging.AuthorizationStatus.AUTHORIZED ||
+          authStatus === messaging.AuthorizationStatus.PROVISIONAL
+        );
+      }),
   () => 'Has permissions threw.',
 );
 
 const requestPermission = TE.tryCatch(
-  () => firebase.messaging().requestPermission(),
+  () => messaging().requestPermission(),
   () => 'Permissions requesting threw.',
 );
 
 const getDeviceToken = TE.tryCatch(
-  () => firebase.messaging().getToken(),
+  () => messaging().getToken(),
   () => 'Get token threw.',
 );
 
