@@ -37,7 +37,7 @@ describe('changePassword', () => {
       'main.settings.index.view',
     );
 
-    scrollUpTo(
+    await scrollUpTo(
       'main.settings.account.password.current',
       'main.settings.index.view',
     );

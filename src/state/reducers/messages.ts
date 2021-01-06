@@ -9,6 +9,7 @@ import * as record from 'fp-ts/lib/Record';
 import { pipe } from 'fp-ts/lib/pipeable';
 
 import * as messageApi from '../../api/messages';
+import * as config from '../../api/config';
 
 import * as actions from '../actions';
 import * as types from '../types';
@@ -54,7 +55,7 @@ export const reducer: automaton.Reducer<State, actions.Action> = (
       const nextCmd = withToken(
         flow(
           messageApi.fetchMessages,
-          T.delay(2000),
+          T.delay(config.messageFetchDelay),
         ),
         actions.make('messages/get/completed'),
       );

@@ -63,13 +63,7 @@ const MentorCardExpanded = ({ navigation }: Props) => {
         <RN.View style={styles.flagContainer}>
           {mentor.languages.map(lang =>
             lang in langMap ? (
-              <RN.Image
-                style={styles.flag}
-                key={lang}
-                source={langMap[lang]}
-                width={48}
-                height={48}
-              />
+              <RN.Image style={styles.flag} key={lang} source={langMap[lang]} />
             ) : null,
           )}
         </RN.View>
@@ -112,6 +106,8 @@ const styles = RN.StyleSheet.create({
   flag: {
     borderRadius: 24,
     marginRight: 16,
+    width: 48,
+    height: 48,
   },
   subtitle: {
     ...fonts.largeBold,
