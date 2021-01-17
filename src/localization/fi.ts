@@ -5,7 +5,7 @@ export const messages = {
   'components.appTitle.subTitle': 'MentorApp',
   'components.appTitle.title': 'YLITSE',
 
-  'components.createdBySosBanner': 'Palvelun tarjoaa SOS-lapsikylä',
+  'components.createdBySosBanner': 'Palvelun tarjoaa SOS-Lapsikylä',
 
   'components.mentorCard.readMore': 'Lue lisää',
   'components.mentorCard.showMore': 'Näytä lisää...',
@@ -84,7 +84,7 @@ export const messages = {
   'main.settings.other.button.deleteAccount': 'Poista tili',
   'main.settings.other.button.logOut': 'Kirjaudu ulos',
   'main.settings.other.feedBack': 'Anna palautetta : )',
-  'main.settings.other.feedBackLink': 'Palaute lomake',
+  'main.settings.other.feedBackLink': 'Palautelomake',
   'main.settings.other.howTo': 'Kuinka tätä käytetään?',
   'main.settings.other.termsLink': 'Yksityisyydensuoja',
   'main.settings.other.title': 'Muuta',
@@ -126,7 +126,7 @@ export const messages = {
 
   'onboarding.selectTopic.skip': 'Ohita',
   'onboarding.selectTopic.subtitle':
-    '(Mentoreiden järjestys määrittyy valintasi mukaisesti)',
+    '(Mentorit järjestetään valintasi mukaisesti)',
   'onboarding.selectTopic.title': 'Valitse aihealue',
 
   'onboarding.sign.in': 'Kirjaudu',
@@ -140,7 +140,7 @@ export const messages = {
 
   'onboarding.signUp.error.passwordLong': 'Salasana on liian pitkä',
   'onboarding.signUp.error.passwordShort': 'Salasana on liian lyhyt',
-  'onboarding.signUp.error.probablyNetwork': 'Yhteys virhe',
+  'onboarding.signUp.error.probablyNetwork': 'Yhteysvirhe',
   'onboarding.signUp.error.userNameLong': 'Käyttäjänimi on liian Pitkä',
   'onboarding.signUp.error.userNameShort': 'Käyttäjänimi on liian lyhyt',
   'onboarding.signUp.error.userNameTaken': 'Käyttäjänimi on varattu',
@@ -155,13 +155,18 @@ export const messages = {
   'onboarding.welcome.button': 'Aloita',
   'onboarding.welcome.text1': 'Kiva, että otit palvelun käyttöön!',
   'onboarding.welcome.text2':
-    'Täällä voit luottamuksellisesti kysyä mentoreilta mieltäsi painavista asioista.',
+    'Voit kysyä mentoreilta mieltäsi painavista asioista luottamuksellisesti.',
   'onboarding.welcome.text3': 'Mukavia keskusteluja!',
   'onboarding.welcome.title': 'Moi!',
 
   'tabs.chats': 'Keskustelut',
   'tabs.mentors': 'Mentorit',
   'tabs.settings': 'Asetukset',
+
+  'main.mentorsTitleAndSearchButton.search': 'Hae',
+  'main.mentorsTitleAndSearchButton.reset': 'Tyhjennä',
+  'main.searchMentor.title': 'Hae mentoria',
+  'main.searchMentor.skillSearch.title': 'Hae',
 };
 
 export type MessageId = keyof typeof messages;
