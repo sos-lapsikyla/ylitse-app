@@ -43,6 +43,11 @@ export const messages: { [key in MessageId]: string } = {
   'main.mentorCardExpanded.button': 'Chat',
   'main.mentorList.title': 'Mentors',
 
+  'main.mentorsTitleAndSearchButton.reset': 'Reset',
+  'main.mentorsTitleAndSearchButton.search': 'Search',
+  'main.searchMentor.skillSearch.title': 'Search',
+  'main.searchMentor.title': 'Search',
+
   'main.settings.account.email.change': 'Change email',
   'main.settings.account.email.fail': 'Changing email failed!',
   'main.settings.account.email.fieldTitle': 'Email',
@@ -126,11 +131,6 @@ export const messages: { [key in MessageId]: string } = {
   'onboarding.privacyPolicy.nextButton': 'Continue',
   'onboarding.privacyPolicy.title': 'Data Privacy & Security',
 
-  'onboarding.selectTopic.skip': 'Skip',
-  'onboarding.selectTopic.subtitle':
-    '(Mentor ordering is based on your choice.)',
-  'onboarding.selectTopic.title': 'Choose topic',
-
   'onboarding.sign.in': 'Sign in',
   'onboarding.sign.up': 'Sign up',
 
@@ -164,9 +164,4 @@ export const messages: { [key in MessageId]: string } = {
   'tabs.chats': 'Chats',
   'tabs.mentors': 'Mentors',
   'tabs.settings': 'Settings',
-
-  'main.mentorsTitleAndSearchButton.search': 'Search',
-  'main.mentorsTitleAndSearchButton.reset': 'Reset',
-  'main.searchMentor.title': 'Search',
-  'main.searchMentor.skillSearch.title': 'Search',
 };

@@ -1,4 +1,3 @@
-import * as O from 'fp-ts/lib/Option';
 import * as E from 'fp-ts/lib/Either';
 import * as TE from 'fp-ts/lib/TaskEither';
 
@@ -8,7 +7,6 @@ import * as mentorApi from '../../api/mentors';
 import * as authApi from '../../api/auth';
 import * as buddyApi from '../../api/buddies';
 import * as messageApi from '../../api/messages';
-import * as topicApi from '../../api/topic-storage';
 
 type RegularActions = {
   'none/none': undefined;
@@ -20,11 +18,6 @@ type RegularActions = {
   'storage/readToken/end': E.Either<string, authApi.AccessToken>;
   'storage/writeToken/start': authApi.AccessToken;
   'storage/writeToken/end': undefined;
-
-  'storage/readTopic/start': undefined;
-  'storage/readTopix/end': E.Either<string, authApi.AccessToken>;
-  'storage/writeTopic/start': authApi.AccessToken;
-  'storage/writeTopic/end': undefined;
 
   'mentors/start': undefined;
   'mentors/end': Result<typeof mentorApi.fetchMentors>;
@@ -45,10 +38,6 @@ type RegularActions = {
   'changeEmail/start': { email?: string; account?: accountApi.UserAccount };
   'changeEmail/completed': E.Either<string, { email?: string }>;
   'changeEmail/reset': undefined;
-
-  'topic/read/start': undefined;
-  'topic/read/end': O.Option<topicApi.Topic>;
-  'topic/write': O.Option<topicApi.Topic>;
 
   'token/Acquired': authApi.AccessToken;
   'token/refresh/start': undefined;

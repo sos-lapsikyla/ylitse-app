@@ -13,7 +13,6 @@ import * as mentorApi from '../../api/mentors';
 
 import * as mentorState from '../../state/reducers/mentors';
 import * as tokenState from '../../state/reducers/accessToken';
-import * as topicState from '../../state/reducers/topic';
 
 import * as actions from '../../state/actions';
 
@@ -23,7 +22,6 @@ type Props = {
 
 export default ({ onPress }: Props) => {
   const userId = useSelector(tokenState.getUserId);
-  const preferredTopic = useSelector(topicState.getPreferredTopic);
 
   const dispatch = useDispatch<redux.Dispatch<actions.Action>>();
   const fetchMentors = () => {
@@ -55,9 +53,7 @@ export default ({ onPress }: Props) => {
               contentContainerStyle={{
                 paddingLeft: (0.15 / 2) * measuredWidth,
               }}
-              data={[...mentors].sort(
-                mentorApi.compare(preferredTopic, userId),
-              )}
+              data={[...mentors].sort(mentorApi.compare(userId))}
               renderItem={renderMentorCard(height, measuredWidth, onPress)}
               keyExtractor={({ buddyId }) => buddyId}
               horizontal={true}

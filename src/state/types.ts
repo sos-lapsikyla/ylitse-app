@@ -6,7 +6,6 @@ import * as accountApi from '../api/account';
 import * as buddyApi from '../api/buddies';
 import * as mentorsApi from '../api/mentors';
 import * as messageApi from '../api/messages';
-import * as topicApi from '../api/topic-storage';
 
 export type indexStr = string;
 export type BuddyId = string;
@@ -19,7 +18,6 @@ export type AppState = {
     readToken: RemoteData<authApi.AccessToken>;
     writeToken: RemoteData<void>;
   };
-  topic: O.Option<topicApi.Topic>;
 
   accessToken: {
     currentToken: O.Option<authApi.AccessToken>;

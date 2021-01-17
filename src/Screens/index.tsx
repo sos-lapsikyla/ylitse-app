@@ -10,7 +10,6 @@ import SignUp, { SignUpRoute } from './Onboarding/SignUp';
 import DisplayName, { DisplayNameRoute } from './Onboarding/DisplayName';
 import Email, { EmailRoute } from './Onboarding/Email';
 import PrivacyPolicy, { PrivacyPolicyRoute } from './Onboarding/PrivacyPolicy';
-import SelectTopic, { SelectTopicRoute } from './Onboarding/SelectTopic';
 
 import SignIn, { SignInRoute } from './Onboarding/SignIn';
 import Tabs, { TabsRoute } from './Main/Tabs';
@@ -32,7 +31,6 @@ type RouteName = keyof (SplashRoute &
   DisplayNameRoute &
   EmailRoute &
   PrivacyPolicyRoute &
-  SelectTopicRoute &
   SignInRoute &
   TabsRoute &
   MentorCardExpandedRoute &
@@ -48,7 +46,6 @@ type Screen =
   | typeof DisplayName
   | typeof Email
   | typeof PrivacyPolicy
-  | typeof SelectTopic
   | typeof SignIn
   | typeof Tabs
   | typeof MentorCardExpanded
@@ -86,9 +83,6 @@ const routes: {
   },
   'Onboarding/PrivacyPolicy': {
     screen: PrivacyPolicy,
-  },
-  'Onboarding/SelectTopic': {
-    screen: SelectTopic,
   },
   'Main/Tabs': {
     screen: Tabs,

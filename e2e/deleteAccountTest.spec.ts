@@ -21,10 +21,6 @@ describe('Delete account', () => {
     await APISignUpMentee(mentee);
 
     await signIn(mentee);
-    await scrollDownAndTap(
-      'onboarding.selectTopic.skip',
-      'onboarding.selectTopic.view',
-    );
 
     await element(by.id('tabs.settings')).tap();
 
@@ -51,10 +47,6 @@ describe('Delete account', () => {
     await APISignUpMentee(mentee);
 
     await signIn(mentee);
-    await scrollDownAndTap(
-      'onboarding.selectTopic.skip',
-      'onboarding.selectTopic.view',
-    );
 
     await element(by.id('tabs.settings')).tap();
 

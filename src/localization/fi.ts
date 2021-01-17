@@ -41,6 +41,11 @@ export const messages = {
   'main.mentorCardExpanded.button': 'Juttele',
   'main.mentorList.title': 'Mentorit',
 
+  'main.mentorsTitleAndSearchButton.reset': 'Tyhjennä',
+  'main.mentorsTitleAndSearchButton.search': 'Hae',
+  'main.searchMentor.skillSearch.title': 'Hae',
+  'main.searchMentor.title': 'Hae mentoria',
+
   'main.settings.account.email.change': 'Muuta sähköposti',
   'main.settings.account.email.fail': 'Sähköpostin muutos epäonnistui!',
   'main.settings.account.email.fieldTitle': 'Sähköposti',
@@ -124,11 +129,6 @@ export const messages = {
   'onboarding.privacyPolicy.nextButton': 'Jatka',
   'onboarding.privacyPolicy.title': 'Yksityisyydensuoja',
 
-  'onboarding.selectTopic.skip': 'Ohita',
-  'onboarding.selectTopic.subtitle':
-    '(Mentorit järjestetään valintasi mukaisesti)',
-  'onboarding.selectTopic.title': 'Valitse aihealue',
-
   'onboarding.sign.in': 'Kirjaudu',
   'onboarding.sign.up': 'Rekisteröidy',
 
@@ -162,11 +162,6 @@ export const messages = {
   'tabs.chats': 'Keskustelut',
   'tabs.mentors': 'Mentorit',
   'tabs.settings': 'Asetukset',
-
-  'main.mentorsTitleAndSearchButton.search': 'Hae',
-  'main.mentorsTitleAndSearchButton.reset': 'Tyhjennä',
-  'main.searchMentor.title': 'Hae mentoria',
-  'main.searchMentor.skillSearch.title': 'Hae',
 };
 
 export type MessageId = keyof typeof messages;

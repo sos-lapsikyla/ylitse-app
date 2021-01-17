@@ -20,7 +20,6 @@ import * as changePassword from './changePassword';
 import * as changeEmail from './changeEmail';
 import * as notifications from './notifications';
 import * as deleteAccount from './deleteAccount';
-import * as topic from './topic';
 
 import * as actions from '../actions';
 
@@ -50,7 +49,6 @@ export const rootReducer: automaton.Reducer<
   exitReducer,
   automaton.combineReducers({
     storage: storage.reducer,
-    topic: topic.reducer,
     accessToken: accessToken.reducer,
     login: login.reducer,
     createUser: createUser.reducer,
@@ -70,7 +68,6 @@ export const rootReducer: automaton.Reducer<
 
 export const initialState: AppState = {
   storage: storage.initialState,
-  topic: topic.initialState,
   accessToken: accessToken.initialState,
   login: login.initialState,
   createUser: createUser.initialState,
