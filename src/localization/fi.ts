@@ -41,9 +41,10 @@ export const messages = {
   'main.mentorCardExpanded.button': 'Juttele',
   'main.mentorList.title': 'Mentorit',
 
-  'main.mentorsTitleAndSearchButton.reset': 'Tyhjennä',
-  'main.mentorsTitleAndSearchButton.search': 'Hae',
-  'main.searchMentor.skillSearch.title': 'Hae',
+  'main.mentorsTitleAndSearchButton': 'Hae',
+  'main.searchMentor.resetButton': 'Tyhjennä',
+  'main.searchMentor.searchField.placeholder': 'Kirjoita hakusana',
+  'main.searchMentor.showButton': 'Näytä',
   'main.searchMentor.title': 'Hae mentoria',
 
   'main.settings.account.email.change': 'Muuta sähköposti',

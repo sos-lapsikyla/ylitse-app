@@ -43,9 +43,10 @@ export const messages: { [key in MessageId]: string } = {
   'main.mentorCardExpanded.button': 'Chat',
   'main.mentorList.title': 'Mentors',
 
-  'main.mentorsTitleAndSearchButton.reset': 'Reset',
-  'main.mentorsTitleAndSearchButton.search': 'Search',
-  'main.searchMentor.skillSearch.title': 'Search',
+  'main.mentorsTitleAndSearchButton': 'Search',
+  'main.searchMentor.resetButton': 'Reset',
+  'main.searchMentor.searchField.placeholder': 'Type in keyword',
+  'main.searchMentor.showButton': 'Show',
   'main.searchMentor.title': 'Search',
 
   'main.settings.account.email.change': 'Change email',

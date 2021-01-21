@@ -17,10 +17,12 @@ import * as tokenState from '../../state/reducers/accessToken';
 import * as actions from '../../state/actions';
 
 type Props = {
+  skills?: string[];
   onPress?: (mentor: mentorApi.Mentor) => void | undefined;
+  testID?: string;
 };
 
-export default ({ onPress }: Props) => {
+export default ({ skills, onPress, testID }: Props) => {
   const userId = useSelector(tokenState.getUserId);
 
   const dispatch = useDispatch<redux.Dispatch<actions.Action>>();
@@ -28,9 +30,19 @@ export default ({ onPress }: Props) => {
     dispatch({ type: 'mentors/start', payload: undefined });
   };
 
-  const mentorList = RD.remoteData.map(useSelector(mentorState.get), mentors =>
+  let mentorList = RD.remoteData.map(useSelector(mentorState.get), mentors =>
     mentors.filter(mentor => mentor.buddyId !== userId),
   );
+
+  if (skills && skills.length > 0) {
+    mentorList = RD.remoteData.map(useSelector(mentorState.get), mentors =>
+      mentors.filter(
+        mentor =>
+          mentor.buddyId !== userId &&
+          mentor.skills.filter(e => skills.includes(e)).length > 0,
+      ),
+    );
+  }
 
   const [{ width, height }, onLayout] = useLayout();
   const measuredWidth = width || RN.Dimensions.get('window').width;
@@ -40,7 +52,11 @@ export default ({ onPress }: Props) => {
   const deccelerationRate = RN.Platform.OS === 'ios' ? 0.99 : 0.8;
 
   return (
-    <RN.View onLayout={onLayout} style={styles.mentorListContainer}>
+    <RN.View
+      onLayout={onLayout}
+      style={styles.mentorListContainer}
+      testID={testID}
+    >
       <RemoteData data={mentorList} fetchData={fetchMentors}>
         {mentors => (
           <RN.View style={styles.carouselContainer}>
