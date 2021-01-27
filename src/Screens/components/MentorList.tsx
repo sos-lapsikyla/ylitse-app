@@ -17,32 +17,29 @@ import * as tokenState from '../../state/reducers/accessToken';
 import * as actions from '../../state/actions';
 
 type Props = {
-  skills?: string[];
   onPress?: (mentor: mentorApi.Mentor) => void | undefined;
   testID?: string;
 };
 
-export default ({ skills, onPress, testID }: Props) => {
+export default ({ onPress, testID }: Props) => {
   const userId = useSelector(tokenState.getUserId);
+  const selectedSkills = useSelector(mentorState.getSelectedSkills);
 
   const dispatch = useDispatch<redux.Dispatch<actions.Action>>();
   const fetchMentors = () => {
     dispatch({ type: 'mentors/start', payload: undefined });
   };
 
-  let mentorList = RD.remoteData.map(useSelector(mentorState.get), mentors =>
-    mentors.filter(mentor => mentor.buddyId !== userId),
-  );
-
-  if (skills && skills.length > 0) {
-    mentorList = RD.remoteData.map(useSelector(mentorState.get), mentors =>
-      mentors.filter(
-        mentor =>
-          mentor.buddyId !== userId &&
-          mentor.skills.filter(e => skills.includes(e)).length > 0,
-      ),
-    );
+  const filterSameIdAndSelectedSkills = (a: mentorApi.Mentor, selectedSkills: string[]) => {
+    return selectedSkills.length > 0 ?
+    a.buddyId !== userId &&
+    a.skills.filter(e => selectedSkills.includes(e)).length > 0
+    :
+    a.buddyId !== userId 
   }
+
+  const mentorList = RD.remoteData.map(useSelector(mentorState.get), mentors =>
+  mentors.filter(mentor => filterSameIdAndSelectedSkills(mentor, selectedSkills)));
 
   const [{ width, height }, onLayout] = useLayout();
   const measuredWidth = width || RN.Dimensions.get('window').width;

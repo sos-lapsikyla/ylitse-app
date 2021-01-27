@@ -1,9 +1,11 @@
 import React from 'react';
 import RN from 'react-native';
-import { useSelector } from 'react-redux';
-import * as RD from '@devexperts/remote-data-ts';
+import * as redux from 'redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import * as navigationProps from '../../lib/navigation-props';
+
+import * as actions from '../../state/actions';
 
 import fonts from '../components/fonts';
 import Message from '../components/Message';
@@ -16,10 +18,10 @@ import { textShadow } from '../components/shadow';
 import colors, { gradients } from '../components/colors';
 
 import * as mentorState from '../../state/reducers/mentors';
-import RemoteData from '../components/RemoteData';
-import { SearchMentorResultsRoute } from './SearchMentorResults';
+import { MentorListRoute } from './MentorList';
 
 import CreatedBySosBanner from '../components/CreatedBySosBanner';
+
 
 export type SearchMentorRoute = {
   'Main/SearchMentor': {};
@@ -27,54 +29,29 @@ export type SearchMentorRoute = {
 
 type Props = navigationProps.NavigationProps<
   SearchMentorRoute,
-  SearchMentorResultsRoute
+  MentorListRoute
 >;
 
 export default ({ navigation }: Props) => {
-  const [selectedSkills, selectSkill] = React.useState<string[]>([]);
   const [skillSearch, setSkillSearch] = React.useState('');
+  const dispatch = useDispatch<redux.Dispatch<actions.Action>>();
 
-  const fetchMentors = () => {};
+  
+  const allSkills = useSelector(mentorState.getSkillList);
+  const selectedSkills = useSelector(mentorState.getSelectedSkills);
+  const skillsToShow = allSkills.filter(skill => skill.toLowerCase().includes(skillSearch.toLowerCase()));
 
-  const skillsList = RD.remoteData.map(
-    useSelector(mentorState.get),
-    mentors =>
-      mentors
-        .map(mentor => mentor.skills) // collect all skills
-        .flat() // flatten results into one array
-        .filter((item, index, self) => self.indexOf(item) === index) // remove duplicates
-        .filter(e =>
-          skillSearch
-            ? e.toLowerCase().includes(skillSearch.toLowerCase())
-            : true,
-        ) // skill searching
-        .sort(), // simple alphabetical sort
-  );
-
-  const onPressSearch = () => {
-    navigation.navigate('Main/SearchMentorResults', {
-      skills: selectedSkills,
-    });
-  };
 
   const onPressBack = () => {
     navigation.goBack();
   };
 
-  const onPressSkill = (item: any) => {
-    let s = selectedSkills.slice();
-    if (s.includes(item)) {
-      const filteredAry = s.filter(e => e !== item);
-      selectSkill(filteredAry);
-    } else {
-      s.push(item);
-      selectSkill(s);
-    }
+  const onPressSkill = (item: string) => {
+    dispatch({ type: 'skillFilter/toggled', payload: {skillName: item}});
   };
 
   const onPressReset = () => {
-    setSkillSearch('');
-    selectSkill([]);
+    dispatch({ type: 'skillFilter/reset', payload: undefined });
   };
 
   const maxHeight = RN.Dimensions.get('window').height - 350;
@@ -120,51 +97,48 @@ export default ({ navigation }: Props) => {
         </RN.View>
 
         <RN.View testID="main.searchMentor.skills.view">
-          <RemoteData data={skillsList} fetchData={fetchMentors}>
-            {skills => (
-              <RN.View>
-                <RN.Image
-                  style={styles.topGradient}
-                  source={require('../images/gradient.svg')}
-                  resizeMode="stretch"
-                  resizeMethod="scale"
-                />
-                <RN.ScrollView
-                  style={{ ...styles.carouselContainer, height: maxHeight }}
-                  showsHorizontalScrollIndicator={true}
-                  contentContainerStyle={styles.contentContainer}
-                >
-                  <RN.View style={styles.chipContainer}>
-                    {skills.map(skill => {
-                      const isSelected = selectedSkills.includes(skill);
+            <RN.View>
+              <RN.Image
+                style={styles.topGradient}
+                source={require('../images/gradient.svg')}
+                resizeMode="stretch"
+                resizeMethod="scale"
+              />
+              <RN.ScrollView
+                style={{ ...styles.carouselContainer, height: maxHeight }}
+                showsHorizontalScrollIndicator={true}
+                contentContainerStyle={styles.contentContainer}
+              >
+                <RN.View style={styles.chipContainer}>
+                  {skillsToShow.map(skill => {
+                    const isSelected = selectedSkills.includes(skill);
 
-                      return (
-                        <TextButton
-                          key={skill}
-                          style={
-                            isSelected
-                              ? styles.skillPillButtonSelected
-                              : styles.skillPillButton
-                          }
-                          onPress={() => onPressSkill(skill)}
-                          text={skill}
-                          textStyle={styles.skillPillButtonText}
-                          testID={`main.searchMentor.result.${skill}`}
-                        />
-                      );
-                    })}
-                  </RN.View>
-                </RN.ScrollView>
-                <RN.Image
-                  style={styles.bottomGradient}
-                  source={require('../images/gradient.svg')}
-                  resizeMode="stretch"
-                  resizeMethod="scale"
-                />
-              </RN.View>
-            )}
-          </RemoteData>
+                    return (
+                      <TextButton
+                        key={skill}
+                        style={
+                          isSelected
+                            ? styles.skillPillButtonSelected
+                            : styles.skillPillButton
+                        }
+                        onPress={() => onPressSkill(skill)}
+                        text={skill}
+                        textStyle={styles.skillPillButtonText}
+                        testID={`main.searchMentor.result.${skill}`}
+                      />
+                    );
+                  })}
+                </RN.View>
+              </RN.ScrollView>
+              <RN.Image
+                style={styles.bottomGradient}
+                source={require('../images/gradient.svg')}
+                resizeMode="stretch"
+                resizeMethod="scale"
+              />
+            </RN.View>
         </RN.View>
+
         <RN.View style={styles.searcResetContainer}>
           <MessageButton
             style={styles.resetButton}
@@ -175,7 +149,7 @@ export default ({ navigation }: Props) => {
           />
           <MessageButton
             style={styles.searchButton}
-            onPress={onPressSearch}
+            onPress={onPressBack}
             messageId={'main.searchMentor.showButton'}
             testID={'main.searchMentor.showButton'}
           />

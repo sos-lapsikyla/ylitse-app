@@ -16,6 +16,7 @@ import fonts from '../components/fonts';
 import { MentorCardExpandedRoute } from './MentorCardExpanded';
 import { SearchMentorRoute } from '../Main/SearchMentor';
 
+
 export type MentorListRoute = {
   'Main/MentorList': {};
 };
@@ -30,9 +31,12 @@ const MentorList = (props: Props) => {
   const onPressMentor = (mentor: mentorApi.Mentor) => {
     props.navigation.navigate('Main/MentorCardExpanded', { mentor });
   };
+
   const onPressSearchMentor = () => {
     props.navigation.navigate('Main/SearchMentor', {});
   };
+
+  
   return (
     <Background>
       <SafeAreaView

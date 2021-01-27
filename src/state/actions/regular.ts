@@ -22,6 +22,9 @@ type RegularActions = {
   'mentors/start': undefined;
   'mentors/end': Result<typeof mentorApi.fetchMentors>;
 
+  'skillFilter/toggled': {skillName: string};
+  'skillFilter/reset': undefined;
+
   'login/start': authApi.Credentials;
   'login/end': Result<typeof authApi.login>;
 

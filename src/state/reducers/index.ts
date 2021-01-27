@@ -59,6 +59,7 @@ export const rootReducer: automaton.Reducer<
     deleteAccount: deleteAccount.reducer,
 
     mentors: mentors.reducer,
+    skillFilter: mentors.skillReducer,
     buddies: buddies.reducer,
     messages: messages.reducer,
     newMessage: newMessage.reducer,
@@ -78,6 +79,7 @@ export const initialState: AppState = {
   deleteAccount: deleteAccount.initialState,
 
   mentors: mentors.initialState,
+  skillFilter: [],
   buddies: buddies.initialState,
   messages: messages.initialState,
   newMessage: {},

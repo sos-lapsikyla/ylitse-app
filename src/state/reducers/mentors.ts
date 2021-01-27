@@ -9,6 +9,7 @@ import { cmd } from '../middleware';
 import * as actions from '../actions';
 import * as types from '../types';
 
+
 export type State = types.AppState['mentors'];
 
 export const initialState = RD.initial;
@@ -34,6 +35,38 @@ export const reducer: automaton.Reducer<State, actions.Action> = (
       return state;
   }
 };
+
+
+export const skillReducer: automaton.Reducer<string[], actions.Action> = (
+  state = [],
+  action,
+) => {
+  switch (action.type){
+    case 'skillFilter/toggled':
+      return state.includes(action.payload.skillName) 
+      ? state.filter(skill => skill !== action.payload.skillName) 
+      : state.concat(action.payload.skillName)
+    case 'skillFilter/reset':
+      return []
+    default:
+      return state
+  }
+}
+
+
+export const getSelectedSkills = (state: types.AppState) => state.skillFilter
+
+
+export const getSkillList = (state: types.AppState) => {
+  const remoteDataMentorList = get(state)
+  return pipe(remoteDataMentorList, RD.getOrElse<unknown, mentorsApi.Mentor[]>(() => []))
+  .map(mentor => mentor.skills)
+  .flat()
+  .filter((item, index, self) => self.indexOf(item) === index) // remove duplicates
+  .sort()
+}
+  
+
 
 export const get = ({ mentors }: types.AppState) =>
   RD.remoteData.map(mentors, mentorRecord => Object.values(mentorRecord));
