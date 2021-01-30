@@ -42,11 +42,7 @@ describe('Skill filter', () => {
     for (let i in mentorIndexes) {
       try {
         await expect(
-          element(
-            by
-              .text(accountFixtures.mentors[i].displayName)
-              .withAncestor(by.id('main.searchMentorResults.view')),
-          ),
+          element(by.text(accountFixtures.mentors[i].displayName)),
         ).toBeVisible();
         mentorsFound[accountFixtures.mentors[i].displayName] = true;
       } catch (error) {
@@ -54,20 +50,12 @@ describe('Skill filter', () => {
       }
     }
 
-    await element(
-      by
-        .id('components.mentorList')
-        .withAncestor(by.id('main.searchMentorResults.view')),
-    ).swipe('left', 'slow');
+    await element(by.id('components.mentorList')).swipe('left', 'slow');
 
     for (let i in mentorIndexes) {
       try {
         await expect(
-          element(
-            by
-              .text(accountFixtures.mentors[i].displayName)
-              .withAncestor(by.id('main.searchMentorResults.view')),
-          ),
+          element(by.text(accountFixtures.mentors[i].displayName)),
         ).toBeVisible();
         mentorsFound[accountFixtures.mentors[i].displayName] = true;
       } catch (error) {
@@ -75,20 +63,12 @@ describe('Skill filter', () => {
       }
     }
 
-    await element(
-      by
-        .id('components.mentorList')
-        .withAncestor(by.id('main.searchMentorResults.view')),
-    ).swipe('left', 'slow');
+    await element(by.id('components.mentorList')).swipe('left', 'slow');
 
     for (let i in mentorIndexes) {
       try {
         await expect(
-          element(
-            by
-              .text(accountFixtures.mentors[i].displayName)
-              .withAncestor(by.id('main.searchMentorResults.view')),
-          ),
+          element(by.text(accountFixtures.mentors[i].displayName)),
         ).toBeVisible();
         mentorsFound[accountFixtures.mentors[i].displayName] = true;
       } catch (error) {
@@ -120,11 +100,7 @@ describe('Skill filter', () => {
 
     await element(by.id('main.searchMentor.showButton')).tap();
     await expect(
-      element(
-        by
-          .text(accountFixtures.mentors[0].displayName)
-          .withAncestor(by.id('main.searchMentorResults.view')),
-      ),
+      element(by.text(accountFixtures.mentors[0].displayName)),
     ).toBeVisible();
   });
 

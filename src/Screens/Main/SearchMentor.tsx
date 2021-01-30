@@ -51,6 +51,7 @@ export default ({ navigation }: Props) => {
   };
 
   const onPressReset = () => {
+    setSkillSearch('');
     dispatch({ type: 'skillFilter/reset', payload: undefined });
   };
 
