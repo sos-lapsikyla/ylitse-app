@@ -30,16 +30,21 @@ export default ({ onPress, testID }: Props) => {
     dispatch({ type: 'mentors/start', payload: undefined });
   };
 
-  const filterSameIdAndSelectedSkills = (a: mentorApi.Mentor, selectedSkills: string[]) => {
-    return selectedSkills.length > 0 ?
-    a.buddyId !== userId &&
-    a.skills.filter(e => selectedSkills.includes(e)).length > 0
-    :
-    a.buddyId !== userId 
-  }
+  const filterSameIdAndSelectedSkills = (
+    a: mentorApi.Mentor,
+    selectedSkills: string[],
+  ) => {
+    return selectedSkills.length > 0
+      ? a.buddyId !== userId &&
+          a.skills.filter(e => selectedSkills.includes(e)).length > 0
+      : a.buddyId !== userId;
+  };
 
   const mentorList = RD.remoteData.map(useSelector(mentorState.get), mentors =>
-  mentors.filter(mentor => filterSameIdAndSelectedSkills(mentor, selectedSkills)));
+    mentors.filter(mentor =>
+      filterSameIdAndSelectedSkills(mentor, selectedSkills),
+    ),
+  );
 
   const [{ width, height }, onLayout] = useLayout();
   const measuredWidth = width || RN.Dimensions.get('window').width;

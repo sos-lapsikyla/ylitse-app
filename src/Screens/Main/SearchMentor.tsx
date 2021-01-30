@@ -22,7 +22,6 @@ import { MentorListRoute } from './MentorList';
 
 import CreatedBySosBanner from '../components/CreatedBySosBanner';
 
-
 export type SearchMentorRoute = {
   'Main/SearchMentor': {};
 };
@@ -36,18 +35,18 @@ export default ({ navigation }: Props) => {
   const [skillSearch, setSkillSearch] = React.useState('');
   const dispatch = useDispatch<redux.Dispatch<actions.Action>>();
 
-  
   const allSkills = useSelector(mentorState.getSkillList);
   const selectedSkills = useSelector(mentorState.getSelectedSkills);
-  const skillsToShow = allSkills.filter(skill => skill.toLowerCase().includes(skillSearch.toLowerCase()));
-
+  const skillsToShow = allSkills.filter(skill =>
+    skill.toLowerCase().includes(skillSearch.toLowerCase()),
+  );
 
   const onPressBack = () => {
     navigation.goBack();
   };
 
   const onPressSkill = (item: string) => {
-    dispatch({ type: 'skillFilter/toggled', payload: {skillName: item}});
+    dispatch({ type: 'skillFilter/toggled', payload: { skillName: item } });
   };
 
   const onPressReset = () => {
@@ -98,46 +97,46 @@ export default ({ navigation }: Props) => {
         </RN.View>
 
         <RN.View testID="main.searchMentor.skills.view">
-            <RN.View>
-              <RN.Image
-                style={styles.topGradient}
-                source={require('../images/gradient.svg')}
-                resizeMode="stretch"
-                resizeMethod="scale"
-              />
-              <RN.ScrollView
-                style={{ ...styles.carouselContainer, height: maxHeight }}
-                showsHorizontalScrollIndicator={true}
-                contentContainerStyle={styles.contentContainer}
-              >
-                <RN.View style={styles.chipContainer}>
-                  {skillsToShow.map(skill => {
-                    const isSelected = selectedSkills.includes(skill);
+          <RN.View>
+            <RN.Image
+              style={styles.topGradient}
+              source={require('../images/gradient.svg')}
+              resizeMode="stretch"
+              resizeMethod="scale"
+            />
+            <RN.ScrollView
+              style={{ ...styles.carouselContainer, height: maxHeight }}
+              showsHorizontalScrollIndicator={true}
+              contentContainerStyle={styles.contentContainer}
+            >
+              <RN.View style={styles.chipContainer}>
+                {skillsToShow.map(skill => {
+                  const isSelected = selectedSkills.includes(skill);
 
-                    return (
-                      <TextButton
-                        key={skill}
-                        style={
-                          isSelected
-                            ? styles.skillPillButtonSelected
-                            : styles.skillPillButton
-                        }
-                        onPress={() => onPressSkill(skill)}
-                        text={skill}
-                        textStyle={styles.skillPillButtonText}
-                        testID={`main.searchMentor.result.${skill}`}
-                      />
-                    );
-                  })}
-                </RN.View>
-              </RN.ScrollView>
-              <RN.Image
-                style={styles.bottomGradient}
-                source={require('../images/gradient.svg')}
-                resizeMode="stretch"
-                resizeMethod="scale"
-              />
-            </RN.View>
+                  return (
+                    <TextButton
+                      key={skill}
+                      style={
+                        isSelected
+                          ? styles.skillPillButtonSelected
+                          : styles.skillPillButton
+                      }
+                      onPress={() => onPressSkill(skill)}
+                      text={skill}
+                      textStyle={styles.skillPillButtonText}
+                      testID={`main.searchMentor.result.${skill}`}
+                    />
+                  );
+                })}
+              </RN.View>
+            </RN.ScrollView>
+            <RN.Image
+              style={styles.bottomGradient}
+              source={require('../images/gradient.svg')}
+              resizeMode="stretch"
+              resizeMethod="scale"
+            />
+          </RN.View>
         </RN.View>
 
         <RN.View style={styles.searcResetContainer}>

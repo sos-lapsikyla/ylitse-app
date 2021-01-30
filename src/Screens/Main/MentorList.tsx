@@ -16,7 +16,6 @@ import fonts from '../components/fonts';
 import { MentorCardExpandedRoute } from './MentorCardExpanded';
 import { SearchMentorRoute } from '../Main/SearchMentor';
 
-
 export type MentorListRoute = {
   'Main/MentorList': {};
 };
@@ -36,7 +35,6 @@ const MentorList = (props: Props) => {
     props.navigation.navigate('Main/SearchMentor', {});
   };
 
-  
   return (
     <Background>
       <SafeAreaView
