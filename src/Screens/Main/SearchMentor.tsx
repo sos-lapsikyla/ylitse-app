@@ -57,8 +57,6 @@ export default ({ navigation }: Props) => {
 
   const [{ height }, onLayout] = useLayout();
   const maxHeight = (height || 350) - 350;
-  
-
 
   return (
     <TitledContainer

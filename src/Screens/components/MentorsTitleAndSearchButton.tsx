@@ -11,36 +11,39 @@ import { textShadow } from '../components/shadow';
 import * as localization from '../../localization';
 import MessageButtonWithIcon from './MessageButtonWithIcon';
 
-
 interface Props extends RN.TextProps {
   id: localization.MessageId;
   onPress: () => void | undefined;
 }
 
-const MentorsTitleAndSearchButton = ({ id, onPress }: Props) => 
-{
-
-  const { kind, message} = useSelector(mentorState.getActiveFilters)
+const MentorsTitleAndSearchButton = ({ id, onPress }: Props) => {
+  const { kind, message } = useSelector(mentorState.getActiveFilters);
 
   const { buttonStyle, messageStyle } = {
-    NoFilters: { buttonStyle: styles.noFilterButton, messageStyle: styles.noFilterMessage },
-    FiltersActive: { buttonStyle: styles.filterButton, messageStyle: styles.filterMessage },
-  }[kind]
-
+    NoFilters: {
+      buttonStyle: styles.noFilterButton,
+      messageStyle: styles.noFilterMessage,
+    },
+    FiltersActive: {
+      buttonStyle: styles.filterButton,
+      messageStyle: styles.filterMessage,
+    },
+  }[kind];
 
   return (
-  <RN.View style={styles.container}>
-    <RN.Text style={styles.mentorsTitle}>{localization.trans(id)}</RN.Text>
-    <MessageButtonWithIcon
-      style={buttonStyle}
-      messageStyle={styles.searchMessage}
-      onPress={onPress}
-      testID={'main.mentorsTitleAndSearchButton'}>
+    <RN.View style={styles.container}>
+      <RN.Text style={styles.mentorsTitle}>{localization.trans(id)}</RN.Text>
+      <MessageButtonWithIcon
+        style={buttonStyle}
+        messageStyle={styles.searchMessage}
+        onPress={onPress}
+        testID={'main.mentorsTitleAndSearchButton'}
+      >
         <RN.Text style={messageStyle}>{message}</RN.Text>
       </MessageButtonWithIcon>
-  </RN.View>
-);
-  }
+    </RN.View>
+  );
+};
 
 export default MentorsTitleAndSearchButton;
 
@@ -65,7 +68,7 @@ const styles = RN.StyleSheet.create({
     justifyContent: 'space-between',
   },
   searchMessage: {
-    color: colors.deepBlue
+    color: colors.deepBlue,
   },
 
   mentorsTitle: {
@@ -77,7 +80,7 @@ const styles = RN.StyleSheet.create({
   },
   filterMessage: {
     ...fonts.regularBold,
-    
+
     textAlign: 'center',
     color: colors.white,
     flexDirection: 'column',

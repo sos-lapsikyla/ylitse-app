@@ -3,7 +3,7 @@ import fetch from 'node-fetch';
 
 const API_URL = process.env.YLITSE_API_URL || 'http://localhost:8080';
 const API_USER = process.env.YLITSE_API_USER || 'admin';
-const API_PASS = process.env.YLITSE_API_PASS || 'secret';
+const API_PASS = process.env.YLITSE_API_PASS || '';
 
 /**
  * Scrolls view down if needed and taps the given element

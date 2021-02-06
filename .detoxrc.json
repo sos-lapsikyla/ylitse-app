@@ -7,7 +7,7 @@
       "build": "cd android && ./gradlew assembleDebug assembleAndroidTest -DtestBuildType=debug && cd ..",
       "type": "android.attached",
       "device": {
-        "name": "73QDU17B01000166"
+        "name": "TODO_INSERT_DEVICE_ID_HERE"
       }
     },
     "android.emu.debug": {
@@ -15,7 +15,7 @@
       "build": "cd android && ./gradlew assembleDebug assembleAndroidTest -DtestBuildType=debug && cd ..",
       "type": "android.emulator",
       "device": {
-        "avdName": "Pixel_API_28_YLITSE_PLAY"
+        "avdName": "pixel"
       }
     },
     "android.emu.release": {

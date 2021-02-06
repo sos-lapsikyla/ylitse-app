@@ -18,7 +18,11 @@ const TitledContainer: React.FC<Props> = ({
   children,
 }) => {
   return (
-    <LinearGradient onLayout={onLayout} style={styles.background} colors={gradients.whitegray}>
+    <LinearGradient
+      onLayout={onLayout}
+      style={styles.background}
+      colors={gradients.whitegray}
+    >
       <RN.View style={styles.shadow}>
         <LinearGradient style={styles.blob} colors={gradient}>
           <SafeAreaView forceInset={{ top: 'always' }}>
