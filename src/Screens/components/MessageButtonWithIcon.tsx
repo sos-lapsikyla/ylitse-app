@@ -11,57 +11,47 @@ import ButtonContainer from './ButtonContainer';
 interface Props {
   onPress: () => void | undefined;
   style?: RN.StyleProp<RN.ViewStyle>;
-  messageId: localization.MessageId;
   messageStyle?: RN.StyleProp<RN.TextStyle>;
   testID?: string;
 }
 
-export default ({ onPress, style, messageId, messageStyle, testID }: Props) => {
+ const FilterButton: React.FC<Props> = ({ onPress, style, children, testID }) => {
   return (
     <ButtonContainer
       style={[styles.container, style]}
       onPress={onPress}
       testID={testID}
     >
-      <RN.View style={styles.subContainer}>
         <RN.Image
           style={styles.icon}
           source={require('../images/search.svg')}
           resizeMode="stretch"
           resizeMethod="scale"
         />
-        <Message style={[styles.message, messageStyle]} id={messageId} />
-      </RN.View>
+        {children}
     </ButtonContainer>
   );
 };
 
+export default FilterButton;
+
 const borderRadius = 18;
 const styles = RN.StyleSheet.create({
-  subContainer: {
-    flexDirection: 'row',
-  },
+  
   icon: {
     tintColor: colors.faintBlue,
     height: 20,
     width: 20,
   },
   container: {
+    flexDirection: 'row',
     minHeight: 40,
     alignSelf: 'stretch',
     borderRadius,
     justifyContent: 'center',
     alignItems: 'center',
-    flexDirection: 'column',
     backgroundColor: colors.blue80,
     marginLeft: 20,
     marginTop: 30,
-  },
-  message: {
-    ...fonts.regularBold,
-    textAlign: 'center',
-    color: colors.white,
-    flexDirection: 'column',
-    paddingLeft: 5,
-  },
+  }
 });

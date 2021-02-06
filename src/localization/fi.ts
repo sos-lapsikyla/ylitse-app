@@ -42,6 +42,7 @@ export const messages = {
   'main.mentorList.title': 'Mentorit',
 
   'main.mentorsTitleAndSearchButton': 'Hae',
+  'main.mentorsTitleAndSearchButtonFiltersActive': 'Filtterit',
   'main.searchMentor.resetButton': 'Tyhjennä',
   'main.searchMentor.searchField.placeholder': 'Kirjoita hakusana',
   'main.searchMentor.showButton': 'Näytä',

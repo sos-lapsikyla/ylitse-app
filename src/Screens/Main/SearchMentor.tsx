@@ -4,6 +4,7 @@ import * as redux from 'redux';
 import { useDispatch, useSelector } from 'react-redux';
 
 import * as navigationProps from '../../lib/navigation-props';
+import useLayout from 'src/lib/use-layout';
 
 import * as actions from '../../state/actions';
 
@@ -54,10 +55,14 @@ export default ({ navigation }: Props) => {
     dispatch({ type: 'skillFilter/reset', payload: undefined });
   };
 
-  const maxHeight = RN.Dimensions.get('window').height - 350;
+  const [{ height }, onLayout] = useLayout();
+  const maxHeight = (height || 350) - 350;
+  
+
 
   return (
     <TitledContainer
+      onLayout={onLayout}
       TitleComponent={
         <RN.View style={styles.titleContainer}>
           <RN.TouchableOpacity

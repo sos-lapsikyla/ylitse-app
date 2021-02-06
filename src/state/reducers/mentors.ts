@@ -3,11 +3,14 @@ import * as RD from '@devexperts/remote-data-ts';
 import * as T from 'fp-ts/lib/Task';
 import { pipe } from 'fp-ts/lib/pipeable';
 
+import * as localization from '../../localization'
+
 import * as mentorsApi from '../../api/mentors';
 
 import { cmd } from '../middleware';
 import * as actions from '../actions';
 import * as types from '../types';
+import { AppState } from 'react-native';
 
 export type State = types.AppState['mentors'];
 
@@ -52,6 +55,16 @@ export const skillReducer: automaton.Reducer<string[], actions.Action> = (
 };
 
 export const getSelectedSkills = (state: types.AppState) => state.skillFilter;
+
+export type ActiveFilters = { kind: 'NoFilters'; message: string } | { kind: 'FiltersActive'; message: string } 
+export function getActiveFilters({skillFilter}: types.AppState): ActiveFilters {
+  const amount = skillFilter.length
+  if(amount === 0){
+    return {kind: 'NoFilters', message: localization.trans('main.mentorsTitleAndSearchButton')}
+  
+} 
+  return {kind: 'FiltersActive', message: `${localization.trans('main.mentorsTitleAndSearchButtonFiltersActive')}: ${amount}`}
+} 
 
 export const getSkillList = (state: types.AppState) => {
   const remoteDataMentorList = get(state);

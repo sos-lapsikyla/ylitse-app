@@ -6,7 +6,7 @@ import { SafeAreaView } from 'react-navigation';
 import { gradients } from '../components/colors';
 import shadow from '../components/shadow';
 
-type Props = {
+type Props = RN.ViewProps & {
   TitleComponent: React.ReactElement;
   gradient: string[];
 };
@@ -14,10 +14,11 @@ type Props = {
 const TitledContainer: React.FC<Props> = ({
   gradient,
   TitleComponent,
+  onLayout,
   children,
 }) => {
   return (
-    <LinearGradient style={styles.background} colors={gradients.whitegray}>
+    <LinearGradient onLayout={onLayout} style={styles.background} colors={gradients.whitegray}>
       <RN.View style={styles.shadow}>
         <LinearGradient style={styles.blob} colors={gradient}>
           <SafeAreaView forceInset={{ top: 'always' }}>
