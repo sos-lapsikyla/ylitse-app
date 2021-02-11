@@ -5,7 +5,6 @@ import isFinnishPhone from '../lib/isFinnishPhone';
 import * as http from '../lib/http';
 
 import * as config from './config';
-import * as topicApi from './topic-storage';
 
 type ApiMentor = t.TypeOf<typeof mentorType>;
 const mentorType = t.strict({
@@ -73,31 +72,9 @@ const compareIds = (userId: string | undefined, a: Mentor, b: Mentor) => {
   return Math.abs(x - z) - Math.abs(x - y);
 };
 
-const compareTopic = (
-  preferredTopic: topicApi.Topic | undefined,
-  first: Mentor,
-  second: Mentor,
+export const compare = (userId: string | undefined) => (
+  a: Mentor,
+  b: Mentor,
 ) => {
-  if (preferredTopic === undefined) {
-    return 0;
-  }
-
-  const firstHasTopic = first.skills.includes(preferredTopic);
-  const secondHasTopic = second.skills.includes(preferredTopic);
-  if (firstHasTopic && !secondHasTopic) {
-    return -1;
-  }
-  if (!firstHasTopic && secondHasTopic) {
-    return 1;
-  }
-  return 0;
-};
-
-export const compare = (
-  topic: topicApi.Topic | undefined,
-  userId: string | undefined,
-) => (a: Mentor, b: Mentor) => {
-  return (
-    compareTopic(topic, a, b) || compareLang(a, b) || compareIds(userId, a, b)
-  );
+  return compareLang(a, b) || compareIds(userId, a, b);
 };

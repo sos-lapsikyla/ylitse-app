@@ -10,7 +10,7 @@ import SignUp, { SignUpRoute } from './Onboarding/SignUp';
 import DisplayName, { DisplayNameRoute } from './Onboarding/DisplayName';
 import Email, { EmailRoute } from './Onboarding/Email';
 import PrivacyPolicy, { PrivacyPolicyRoute } from './Onboarding/PrivacyPolicy';
-import SelectTopic, { SelectTopicRoute } from './Onboarding/SelectTopic';
+import SearchMentor, { SearchMentorRoute } from './Main/SearchMentor';
 
 import SignIn, { SignInRoute } from './Onboarding/SignIn';
 import Tabs, { TabsRoute } from './Main/Tabs';
@@ -32,13 +32,13 @@ type RouteName = keyof (SplashRoute &
   DisplayNameRoute &
   EmailRoute &
   PrivacyPolicyRoute &
-  SelectTopicRoute &
   SignInRoute &
   TabsRoute &
   MentorCardExpandedRoute &
   ChatRoute &
   LogoutRoute &
-  DeleteAccountRoute);
+  DeleteAccountRoute &
+  SearchMentorRoute);
 type Screen =
   | typeof Splash
   | typeof Welcome
@@ -48,13 +48,13 @@ type Screen =
   | typeof DisplayName
   | typeof Email
   | typeof PrivacyPolicy
-  | typeof SelectTopic
   | typeof SignIn
   | typeof Tabs
   | typeof MentorCardExpanded
   | typeof Chat
   | typeof Logout
-  | typeof DeleteAccount;
+  | typeof DeleteAccount
+  | typeof SearchMentor;
 
 export type Route = keyof typeof routes;
 const routes: {
@@ -87,9 +87,6 @@ const routes: {
   'Onboarding/PrivacyPolicy': {
     screen: PrivacyPolicy,
   },
-  'Onboarding/SelectTopic': {
-    screen: SelectTopic,
-  },
   'Main/Tabs': {
     screen: Tabs,
   },
@@ -104,6 +101,9 @@ const routes: {
   },
   'Main/Settings/DeleteAccount': {
     screen: DeleteAccount,
+  },
+  'Main/SearchMentor': {
+    screen: SearchMentor,
   },
 };
 

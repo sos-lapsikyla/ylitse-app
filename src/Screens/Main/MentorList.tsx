@@ -8,12 +8,13 @@ import * as mentorApi from '../../api/mentors';
 
 import Background from '../components/Background';
 import { textShadow } from '../components/shadow';
-import Message from '../components/Message';
+import MentorsTitleAndSearchButton from '../components/MentorsTitleAndSearchButton';
 import MentorListComponent from '../components/MentorList';
 import colors from '../components/colors';
 import fonts from '../components/fonts';
 
 import { MentorCardExpandedRoute } from './MentorCardExpanded';
+import { SearchMentorRoute } from '../Main/SearchMentor';
 
 export type MentorListRoute = {
   'Main/MentorList': {};
@@ -21,7 +22,7 @@ export type MentorListRoute = {
 
 type OwnProps = navigationProps.NavigationProps<
   MentorListRoute,
-  MentorCardExpandedRoute
+  MentorCardExpandedRoute & SearchMentorRoute
 >;
 type Props = OwnProps;
 
@@ -29,13 +30,21 @@ const MentorList = (props: Props) => {
   const onPressMentor = (mentor: mentorApi.Mentor) => {
     props.navigation.navigate('Main/MentorCardExpanded', { mentor });
   };
+
+  const onPressSearchMentor = () => {
+    props.navigation.navigate('Main/SearchMentor', {});
+  };
+
   return (
     <Background>
       <SafeAreaView
         style={styles.container}
         forceInset={{ top: 'always', bottom: 'always' }}
       >
-        <Message style={styles.title} id="main.mentorList.title" />
+        <MentorsTitleAndSearchButton
+          id="main.mentorList.title"
+          onPress={onPressSearchMentor}
+        />
         <MentorListComponent onPress={onPressMentor} />
         <RN.View style={styles.bottomSeparator} />
       </SafeAreaView>

@@ -25,10 +25,6 @@ describe('changePassword', () => {
     await APISignUpMentee(mentee);
 
     await signIn(mentee);
-    await scrollDownAndTap(
-      'onboarding.selectTopic.skip',
-      'onboarding.selectTopic.view',
-    );
 
     await element(by.id('tabs.settings')).tap();
 
@@ -63,10 +59,6 @@ describe('changePassword', () => {
     await forceLogout();
 
     await signIn({ loginName: mentee.loginName, password: newPassword });
-    await scrollDownAndTap(
-      'onboarding.selectTopic.skip',
-      'onboarding.selectTopic.view',
-    );
 
     await element(by.id('tabs.settings')).tap();
     await expect(element(by.id('main.settings.account.userName'))).toHaveText(

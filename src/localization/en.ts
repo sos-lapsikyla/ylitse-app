@@ -7,7 +7,7 @@ export const messages: { [key in MessageId]: string } = {
   'components.appTitle.subTitle': 'MentorApp',
   'components.appTitle.title': 'YLITSE',
 
-  'components.createdBySosBanner': 'Brought to you by SOS-lapsikylä',
+  'components.createdBySosBanner': 'Brought to you by SOS-Lapsikylä',
 
   'components.mentorCard.readMore': 'Read more',
   'components.mentorCard.showMore': 'Show more...',
@@ -23,18 +23,18 @@ export const messages: { [key in MessageId]: string } = {
   'date.day.today': 'today',
   'date.day.yesterday': 'yesterday',
 
-  'date.month.01': 'january',
-  'date.month.02': 'february',
-  'date.month.03': 'march',
-  'date.month.04': 'april',
-  'date.month.05': 'may',
-  'date.month.06': 'june',
-  'date.month.07': 'july',
-  'date.month.08': 'august',
-  'date.month.09': 'september',
-  'date.month.10': 'october',
-  'date.month.11': 'november',
-  'date.month.12': 'decemer',
+  'date.month.01': 'January',
+  'date.month.02': 'February',
+  'date.month.03': 'March',
+  'date.month.04': 'April',
+  'date.month.05': 'May',
+  'date.month.06': 'June',
+  'date.month.07': 'July',
+  'date.month.08': 'August',
+  'date.month.09': 'September',
+  'date.month.10': 'October',
+  'date.month.11': 'November',
+  'date.month.12': 'December',
 
   'main.mentor.other': 'I can also support with:',
   'main.mentor.story': 'My story',
@@ -42,6 +42,13 @@ export const messages: { [key in MessageId]: string } = {
 
   'main.mentorCardExpanded.button': 'Chat',
   'main.mentorList.title': 'Mentors',
+
+  'main.mentorsTitleAndSearchButton': 'Search',
+  'main.mentorsTitleAndSearchButtonFiltersActive': 'Filters',
+  'main.searchMentor.resetButton': 'Reset',
+  'main.searchMentor.searchField.placeholder': 'Type in keyword',
+  'main.searchMentor.showButton': 'Show',
+  'main.searchMentor.title': 'Search',
 
   'main.settings.account.email.change': 'Change email',
   'main.settings.account.email.fail': 'Changing email failed!',
@@ -78,14 +85,14 @@ export const messages: { [key in MessageId]: string } = {
 
   'main.settings.logout.cancel': 'Cancel',
   'main.settings.logout.logout': 'Logout',
-  'main.settings.logout.text1': 'You are loggin out.',
+  'main.settings.logout.text1': 'You are logging out.',
   'main.settings.logout.text2':
-    'You can get back to your conversations by loggin in.',
+    'You can get back to your conversations by logging in.',
   'main.settings.logout.title': 'Logout',
 
   'main.settings.other.button.deleteAccount': 'Delete account',
   'main.settings.other.button.logOut': 'Log out',
-  'main.settings.other.feedBack': 'Give us feeback : )',
+  'main.settings.other.feedBack': 'Give us feedback : )',
   'main.settings.other.feedBackLink': 'Feedback form',
   'main.settings.other.howTo': 'How should I use this application?',
   'main.settings.other.termsLink': 'Terms and conditions',
@@ -97,17 +104,17 @@ export const messages: { [key in MessageId]: string } = {
   'meta.back': 'Back',
   'meta.blank': ' ',
   'meta.cancel': 'Cancel',
-  'meta.error': 'Virhe, yritä uudelleen',
+  'meta.error': 'An error occurred, please try again',
   'meta.save': 'Save',
 
   'onboarding.displayName.bodyText':
-    "*if you want to stay anonymous to our mentors, please enter a loginName that can't identify you.",
+    "*if you want to stay anonymous to our mentors, please enter a display name that can't identify you.",
   'onboarding.displayName.inputTitle': 'Display name*',
   'onboarding.displayName.nextButton': 'Continue',
   'onboarding.displayName.title': 'Almost ready',
 
   'onboarding.email.bodyText':
-    '* Entering your email address wil help you retreive your password later, in case you lose it. We will not use it for anything else.',
+    '* Entering your email address will help you retrieve your password later, in case you lose it. We will not use it for anything else.',
   'onboarding.email.inputTitle': 'Email*',
   'onboarding.email.nextButton': 'Continue',
   'onboarding.email.title': 'Email',
@@ -126,16 +133,11 @@ export const messages: { [key in MessageId]: string } = {
   'onboarding.privacyPolicy.nextButton': 'Continue',
   'onboarding.privacyPolicy.title': 'Data Privacy & Security',
 
-  'onboarding.selectTopic.skip': 'Skip',
-  'onboarding.selectTopic.subtitle':
-    '(Mentor ordering is based on your choice.)',
-  'onboarding.selectTopic.title': 'Choose topic',
-
   'onboarding.sign.in': 'Sign in',
   'onboarding.sign.up': 'Sign up',
 
   'onboarding.signIn.button': 'Login',
-  'onboarding.signIn.failure': 'Kirjautuminen epäonnistui',
+  'onboarding.signIn.failure': 'Login failed',
   'onboarding.signIn.title': 'Login',
 
   'onboarding.signUp.back': 'Back',
@@ -157,8 +159,8 @@ export const messages: { [key in MessageId]: string } = {
   'onboarding.welcome.button': 'Start',
   'onboarding.welcome.text1': 'Cool, that you have started using the service!',
   'onboarding.welcome.text2':
-    'Here you can ask confidental things from mentors.',
-  'onboarding.welcome.text3': 'We hope you wil have pleasant conversations!',
+    'Here you can ask confidential things from mentors.',
+  'onboarding.welcome.text3': 'We hope you will have pleasant conversations!',
   'onboarding.welcome.title': 'Hello!',
 
   'tabs.chats': 'Chats',

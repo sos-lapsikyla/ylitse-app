@@ -14,6 +14,10 @@ bundler:
 android:
 	react-native run-android
 
+build-apk:
+	cd android && ./gradlew assembleRelease
+	@echo "adb install ./android/app/build/outputs/apk/release/app-release.apk"
+
 e2e:
 	detox build --configuration android.emu.debug
 	detox test --device-name ${YLITSE_DEVICE} --configuration android.emu.debug
@@ -33,4 +37,4 @@ reset: clean
 
 .EXPORT_ALL_VARIABLES:
 
-.PHONY: install bundler android e2e clean
+.PHONY: install bundler android build-apk e2e clean

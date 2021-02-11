@@ -21,10 +21,6 @@ describe('Delete account', () => {
     await APISignUpMentee(mentee);
 
     await signIn(mentee);
-    await scrollDownAndTap(
-      'onboarding.selectTopic.skip',
-      'onboarding.selectTopic.view',
-    );
 
     await element(by.id('tabs.settings')).tap();
 
@@ -43,7 +39,7 @@ describe('Delete account', () => {
 
     await expect(
       element(by.id('components.loginCard.errorMessage')),
-    ).toHaveText('Kirjautuminen epäonnistui');
+    ).toBeVisible();
   });
 
   it('can be cancelled', async () => {
@@ -51,10 +47,6 @@ describe('Delete account', () => {
     await APISignUpMentee(mentee);
 
     await signIn(mentee);
-    await scrollDownAndTap(
-      'onboarding.selectTopic.skip',
-      'onboarding.selectTopic.view',
-    );
 
     await element(by.id('tabs.settings')).tap();
 

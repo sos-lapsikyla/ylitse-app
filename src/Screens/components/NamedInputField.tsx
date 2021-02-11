@@ -10,12 +10,14 @@ import colors from './colors';
 export interface Props extends RN.TextInputProps {
   name: localization.MessageId;
   isPasswordInput?: boolean;
+  inputStyle?: RN.StyleProp<RN.ViewStyle>;
 }
 
 const NamedInputField = ({
   name,
   isPasswordInput,
   style,
+  inputStyle,
   ...textInputProps
 }: Props) => {
   const [isSecureText, setSecureText] = React.useState(
@@ -29,7 +31,7 @@ const NamedInputField = ({
       <Message style={styles.nameText} id={name} />
       <RN.View>
         <RN.TextInput
-          style={styles.inputText}
+          style={[inputStyle, styles.inputText]}
           editable={true}
           secureTextEntry={isSecureText}
           {...textInputProps}

@@ -62,10 +62,6 @@ describe('SignUp', () => {
       'onboarding.privacyPolicy.nextButton',
       'onboarding.privacyPolicy.view',
     );
-    await scrollDownAndTap(
-      'onboarding.selectTopic.skip',
-      'onboarding.selectTopic.view',
-    );
 
     await element(by.id('tabs.settings')).tap();
     await expect(element(by.id('main.settings.account.userName'))).toHaveText(

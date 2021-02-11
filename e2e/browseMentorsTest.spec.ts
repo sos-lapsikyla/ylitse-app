@@ -88,10 +88,6 @@ describe('Browse mentors', () => {
     const mentee = accountFixtures.mentees[0];
     await APISignUpMentee(mentee);
     await signIn(mentee);
-    await scrollDownAndTap(
-      'onboarding.selectTopic.skip',
-      'onboarding.selectTopic.view',
-    );
 
     await expect(element(by.text(mentor1.displayName))).toBeVisible();
     await element(by.text('Read more')).tap();

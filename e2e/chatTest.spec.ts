@@ -5,7 +5,6 @@ import {
   APISignUpMentee,
   APISignUpMentor,
   APIDeleteAccounts,
-  scrollDownAndTap,
   waitAndTypeText,
   signIn,
   forceLogout,
@@ -29,10 +28,6 @@ describe('Chat', () => {
     const message_from_mentor = 'Hello!';
 
     await signIn(mentee);
-    await scrollDownAndTap(
-      'onboarding.selectTopic.skip',
-      'onboarding.selectTopic.view',
-    );
 
     await element(by.text('Read more')).tap();
     await element(by.text('Chat')).tap();
@@ -43,10 +38,7 @@ describe('Chat', () => {
     await forceLogout();
 
     await signIn(mentor);
-    await scrollDownAndTap(
-      'onboarding.selectTopic.skip',
-      'onboarding.selectTopic.view',
-    );
+
     await element(by.id('tabs.chats')).tap();
 
     await element(by.text(mentee.displayName)).tap();
@@ -57,10 +49,6 @@ describe('Chat', () => {
     await forceLogout();
 
     await signIn(mentee);
-    await scrollDownAndTap(
-      'onboarding.selectTopic.skip',
-      'onboarding.selectTopic.view',
-    );
 
     await element(by.id('tabs.chats')).tap();
     await element(by.text(mentor.displayName))

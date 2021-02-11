@@ -1,12 +1,7 @@
 import { by, element, expect, device } from 'detox';
 import { describe, it, beforeEach } from '@jest/globals';
 
-import {
-  APISignUpMentee,
-  APIDeleteAccounts,
-  scrollDownAndTap,
-  signIn,
-} from './helpers';
+import { APISignUpMentee, APIDeleteAccounts, signIn } from './helpers';
 
 const accountFixtures = require('./fixtures/accounts.json');
 
@@ -21,10 +16,6 @@ describe('SignIn', () => {
     await APISignUpMentee(mentee);
 
     await signIn(mentee);
-    await scrollDownAndTap(
-      'onboarding.selectTopic.skip',
-      'onboarding.selectTopic.view',
-    );
 
     await element(by.id('tabs.settings')).tap();
     await expect(element(by.id('main.settings.account.userName'))).toHaveText(
