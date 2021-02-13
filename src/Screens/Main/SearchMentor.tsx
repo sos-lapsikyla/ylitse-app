@@ -16,7 +16,7 @@ import MessageButton from '../components/MessageButton';
 import TextButton from '../components/TextButton';
 import TitledContainer from '../components/TitledContainer';
 import { textShadow } from '../components/shadow';
-import colors, { gradients } from '../components/colors';
+import colors from '../components/colors';
 
 import * as mentorState from '../../state/reducers/mentors';
 import { MentorListRoute } from './MentorList';
@@ -80,7 +80,7 @@ export default ({ navigation }: Props) => {
           <RN.View style={styles.titleBalancer} />
         </RN.View>
       }
-      gradient={gradients.pillBlue}
+      color={colors.pillBlue}
     >
       <RN.View style={styles.contentMargins}>
         <RN.View style={styles.searchContainer}>

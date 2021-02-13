@@ -54,10 +54,10 @@ const DisplayName = ({ navigation }: Props) => {
           testID="onboarding.displayName.nextButton"
         />
         <Button
-          gradient={[colors.faintGray, colors.faintGray]}
           messageId="onboarding.signUp.back"
           onPress={goBack}
           noShadow={true}
+          style={{backgroundColor: colors.faintGray}}
         />
       </Card>
     </OnboardingBackground>

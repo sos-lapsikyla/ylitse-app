@@ -55,18 +55,4 @@ const colors = {
   pillBlue: '#00B1E6',
 };
 
-export const gradients = {
-  blue: ['#5CC5ED', '#5CC5ED'],
-  pillBlue: [colors.pillBlue, colors.pillBlue],
-
-  green: ['#98C679', '#98C679'],
-  orange: ['#F1923E', '#F1923E'],
-  red: ['#EB727C', '#EB727C'],
-
-  acidGreen: [colors.acidGreen1, colors.acidGreen2],
-  faintGray: [colors.faintGray, colors.faintGray],
-  whitegray: [colors.faintGray, colors.white],
-  danger: [colors.danger, '#C50D2E'],
-};
-
 export default colors;

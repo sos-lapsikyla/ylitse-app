@@ -1,6 +1,5 @@
 import React from 'react';
 import RN from 'react-native';
-import LinearGradient from 'react-native-linear-gradient';
 
 import * as navigationProps from '../../../lib/navigation-props';
 
@@ -8,7 +7,7 @@ import Title from './Title';
 import Input from './Input';
 import MessageList from './MessageList';
 
-import { gradients } from '../../components/colors';
+import colors from '../../components/colors';
 
 export type ChatRoute = {
   'Main/Chat': { buddyId: string };
@@ -23,7 +22,7 @@ const Chat = ({ navigation }: Props) => {
   const keyboardViewBehaviour =
     RN.Platform.OS === 'ios' ? 'padding' : undefined;
   return (
-    <LinearGradient style={styles.screen} colors={gradients.whitegray}>
+    <RN.View style={styles.screen}>
       <Title style={styles.title} onPress={goBack} buddyId={buddyId} />
       <RN.KeyboardAvoidingView
         style={styles.container}
@@ -32,7 +31,7 @@ const Chat = ({ navigation }: Props) => {
         <MessageList buddyId={buddyId} />
         <Input style={styles.input} buddyId={buddyId} />
       </RN.KeyboardAvoidingView>
-    </LinearGradient>
+    </RN.View>
   );
 };
 
@@ -40,6 +39,7 @@ const styles = RN.StyleSheet.create({
   screen: {
     flex: 1,
     paddingBottom: 8,
+    backgroundColor: colors.faintGray
   },
   container: {
     flex: 1,

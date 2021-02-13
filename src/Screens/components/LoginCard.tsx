@@ -86,10 +86,10 @@ const LoginCard = ({
           testID="onboarding.signUp.button"
         />
         <Button
-          gradient={[colors.faintGray, colors.faintGray]}
           messageId="onboarding.signUp.back"
           onPress={onPressBack}
           noShadow={true}
+          style={{backgroundColor: colors.faintGray}}
         />
       </RN.View>
     </Card>

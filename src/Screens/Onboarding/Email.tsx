@@ -58,10 +58,10 @@ const Email = ({ navigation }: Props) => {
           testID="onboarding.email.nextButton"
         />
         <Button
-          gradient={[colors.faintGray, colors.faintGray]}
           messageId="onboarding.signUp.back"
           onPress={goBack}
           noShadow={true}
+          style={{backgroundColor: colors.faintGray}}
         />
       </Card>
     </OnboardingBackground>

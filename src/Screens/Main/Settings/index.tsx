@@ -6,7 +6,7 @@ import * as navigationProps from '../../../lib/navigation-props';
 import Message from '../../components/Message';
 import { textShadow } from '../../components/shadow';
 import TitledContainer from '../../components/TitledContainer';
-import colors, { gradients } from '../../components/colors';
+import colors from '../../components/colors';
 import fonts from '../../components/fonts';
 
 import UserAccount from './UserAccount';
@@ -36,7 +36,7 @@ const Settings = ({ navigation }: Props) => {
       TitleComponent={
         <Message id="main.settings.title" style={styles.screenTitleText} />
       }
-      gradient={gradients.pillBlue}
+      color={colors.pillBlue}
     >
       <RN.ScrollView
         style={styles.scrollView}

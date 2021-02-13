@@ -1,52 +1,43 @@
 import React from 'react';
 import RN from 'react-native';
-import LinearGradient from 'react-native-linear-gradient';
 import { SafeAreaView } from 'react-navigation';
 
-import { gradients } from '../components/colors';
+import colors from '../components/colors';
 import shadow from '../components/shadow';
 
 type Props = RN.ViewProps & {
   TitleComponent: React.ReactElement;
-  gradient: string[];
+  color: string;
 };
 
 const TitledContainer: React.FC<Props> = ({
-  gradient,
+  color,
   TitleComponent,
   onLayout,
   children,
 }) => {
   return (
-    <LinearGradient
-      onLayout={onLayout}
-      style={styles.background}
-      colors={gradients.whitegray}
-    >
-      <RN.View style={styles.shadow}>
-        <LinearGradient style={styles.blob} colors={gradient}>
+    <RN.View style={styles.background} onLayout={onLayout}>
+      <RN.View style={[styles.shadow, {backgroundColor: color}]}>
+
           <SafeAreaView forceInset={{ top: 'always' }}>
             {TitleComponent}
           </SafeAreaView>
-        </LinearGradient>
       </RN.View>
       {children}
-    </LinearGradient>
+    </RN.View>
   );
 };
 const styles = RN.StyleSheet.create({
   background: {
     flex: 1,
+    backgroundColor: colors.faintGray
   },
   shadow: {
     ...shadow(7),
     borderBottomLeftRadius: 40,
     borderBottomRightRadius: 40,
     zIndex: 2,
-  },
-  blob: {
-    borderBottomLeftRadius: 40,
-    borderBottomRightRadius: 40,
     alignSelf: 'stretch',
     justifyContent: 'center',
   },

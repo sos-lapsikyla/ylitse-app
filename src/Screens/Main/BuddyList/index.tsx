@@ -8,7 +8,7 @@ import * as navigationProps from '../../../lib/navigation-props';
 import * as buddyState from '../../../state/reducers/buddies';
 import * as messageState from '../../../state/reducers/messages';
 
-import colors, { gradients } from '../../components/colors';
+import colors from '../../components/colors';
 import fonts from '../../components/fonts';
 import { textShadow } from '../../components/shadow';
 import Message from '../../components/Message';
@@ -42,7 +42,7 @@ export default ({ navigation }: Props) => {
       TitleComponent={
         <Message id="buddyList.title" style={styles.screenTitleText} />
       }
-      gradient={gradients.pillBlue}
+      color={colors.pillBlue}
     >
       <RemoteData data={buddyList} fetchData={() => {}}>
         {value => (
