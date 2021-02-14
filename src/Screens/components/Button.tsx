@@ -61,7 +61,7 @@ const styles = RN.StyleSheet.create({
     minHeight: 40,
     alignSelf: 'stretch',
     borderRadius,
-    backgroundColor: colors.blue60,
+    backgroundColor: colors.lightBlue,
     paddingVertical: 4,
     paddingHorizontal: 16,
     flexDirection: 'row',
@@ -95,7 +95,7 @@ const styles = RN.StyleSheet.create({
   message: {
     ...fonts.largeBold,
     textAlign: 'center',
-    color: colors.deepBlue,
+    color: colors.darkestBlue,
     flexDirection: 'column',
   },
 });

@@ -127,7 +127,7 @@ const styles = RN.StyleSheet.create({
     right: 0,
     borderRadius: 40,
     minHeight: 64,
-    backgroundColor: colors.haze,
+    backgroundColor: colors.lightestGray,
   },
   safeArea: {
     paddingTop: 20,
@@ -145,7 +145,7 @@ const styles = RN.StyleSheet.create({
   separator: {
     height: 48,
     width: 1,
-    backgroundColor: colors.lightTeal,
+    backgroundColor: colors.teal,
     opacity: 0.8,
   },
   tab: {
@@ -157,17 +157,17 @@ const styles = RN.StyleSheet.create({
   label: {
     ...fonts.small,
     textAlign: 'center',
-    color: colors.faintBlue,
+    color: colors.blueGray,
     marginTop: 8,
   },
   selectedLabel: {
     ...fonts.smallBold,
     textAlign: 'center',
-    color: colors.deepBlue,
+    color: colors.darkestBlue,
     marginTop: 8,
   },
-  icon: { tintColor: colors.faintBlue },
-  selectedIcon: { tintColor: colors.deepBlue },
+  icon: { tintColor: colors.blueGray },
+  selectedIcon: { tintColor: colors.darkestBlue },
 });
 
 export default Main;

@@ -57,7 +57,7 @@ const DisplayName = ({ navigation }: Props) => {
           messageId="onboarding.signUp.back"
           onPress={goBack}
           noShadow={true}
-          style={{backgroundColor: colors.faintGray}}
+          style={{backgroundColor: colors.lightestGray}}
         />
       </Card>
     </OnboardingBackground>
@@ -72,7 +72,7 @@ const styles = RN.StyleSheet.create({
   title: {
     ...fonts.titleBold,
     textAlign: 'center',
-    color: colors.deepBlue,
+    color: colors.darkestBlue,
     marginBottom: 40,
   },
   nickNameInput: {
@@ -80,7 +80,7 @@ const styles = RN.StyleSheet.create({
   },
   bodyText: {
     ...fonts.regular,
-    color: colors.deepBlue,
+    color: colors.darkestBlue,
     marginBottom: 40,
   },
   nextButton: { marginBottom: 16 },

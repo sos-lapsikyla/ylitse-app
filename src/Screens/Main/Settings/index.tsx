@@ -36,7 +36,7 @@ const Settings = ({ navigation }: Props) => {
       TitleComponent={
         <Message id="main.settings.title" style={styles.screenTitleText} />
       }
-      color={colors.pillBlue}
+      color={colors.blue}
     >
       <RN.ScrollView
         style={styles.scrollView}

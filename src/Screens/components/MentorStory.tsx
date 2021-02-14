@@ -25,12 +25,12 @@ const styles = RN.StyleSheet.create({
   container: {},
   title: {
     ...fonts.regularBold,
-    color: colors.deepBlue,
+    color: colors.darkestBlue,
     marginBottom: 8,
   },
   story: {
     ...fonts.regular,
-    color: colors.deepBlue,
+    color: colors.darkestBlue,
   },
 });
 

@@ -34,11 +34,11 @@ const styles = RN.StyleSheet.create({
   subtitle: {
     marginRight: 16,
     ...fonts.regularBold,
-    color: colors.deepBlue,
+    color: colors.darkestBlue,
   },
   lowerTitle: {
     ...fonts.regularBold,
-    color: colors.deepBlue,
+    color: colors.darkestBlue,
   },
   chipContainer: {
     marginTop: 16,

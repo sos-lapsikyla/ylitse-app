@@ -39,7 +39,7 @@ const styles = RN.StyleSheet.create({
   screen: {
     flex: 1,
     paddingBottom: 8,
-    backgroundColor: colors.faintGray
+    backgroundColor: colors.lightestGray
   },
   container: {
     flex: 1,

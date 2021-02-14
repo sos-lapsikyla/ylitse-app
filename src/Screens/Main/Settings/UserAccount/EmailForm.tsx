@@ -113,7 +113,7 @@ const styles = RN.StyleSheet.create({
   },
   title: {
     ...fonts.titleBold,
-    color: colors.deepBlue,
+    color: colors.darkestBlue,
     marginBottom: 24,
   },
   spinner: {
@@ -123,7 +123,7 @@ const styles = RN.StyleSheet.create({
     tintColor: colors.danger,
   },
   successBox: {
-    tintColor: colors.blue100,
+    tintColor: colors.darkBlue,
   },
   field: {
     marginVertical: 8,
@@ -135,17 +135,17 @@ const styles = RN.StyleSheet.create({
     marginTop: 8,
     alignSelf: 'flex-start',
     marginRight: 16,
-    backgroundColor: colors.faintGray
+    backgroundColor: colors.lightestGray
   },
   cancelButtonText: {
     ...fonts.large,
-    color: colors.deepBlue,
+    color: colors.darkestBlue,
   },
   changePasswordButton: {
     marginTop: 8,
     alignSelf: 'flex-start',
     flexGrow: 1,
-    backgroundColor: colors.pillBlue
+    backgroundColor: colors.blue
   },
   buttonText: {
     ...fonts.largeBold,

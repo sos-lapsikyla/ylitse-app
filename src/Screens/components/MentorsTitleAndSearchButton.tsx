@@ -52,7 +52,7 @@ const styles = RN.StyleSheet.create({
     flexDirection: 'row',
   },
   filterButton: {
-    backgroundColor: colors.veryDarkBlue,
+    backgroundColor: colors.darkestBlue,
     marginTop: 24,
     marginBottom: 8,
     height: '50%',
@@ -60,7 +60,7 @@ const styles = RN.StyleSheet.create({
     justifyContent: 'space-between',
   },
   noFilterButton: {
-    backgroundColor: colors.faintGray,
+    backgroundColor: colors.lightestGray,
     marginTop: 24,
     marginBottom: 8,
     height: '50%',
@@ -68,7 +68,7 @@ const styles = RN.StyleSheet.create({
     justifyContent: 'space-between',
   },
   searchMessage: {
-    color: colors.deepBlue,
+    color: colors.darkestBlue,
   },
 
   mentorsTitle: {
@@ -89,7 +89,7 @@ const styles = RN.StyleSheet.create({
   noFilterMessage: {
     ...fonts.regularBold,
     textAlign: 'center',
-    color: colors.deepBlue,
+    color: colors.darkestBlue,
     flexDirection: 'column',
     paddingLeft: 5,
   },

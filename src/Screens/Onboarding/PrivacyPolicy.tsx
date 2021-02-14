@@ -119,7 +119,7 @@ const styles = RN.StyleSheet.create({
   title: {
     ...fonts.titleBold,
     textAlign: 'center',
-    color: colors.deepBlue,
+    color: colors.darkestBlue,
     marginBottom: 40,
   },
   nickNameInput: {
@@ -127,12 +127,12 @@ const styles = RN.StyleSheet.create({
   },
   bodyText: {
     ...fonts.regular,
-    color: colors.deepBlue,
+    color: colors.darkestBlue,
     marginBottom: 40,
   },
   bodyText3: {
     ...fonts.regular,
-    color: colors.deepBlue,
+    color: colors.darkestBlue,
     marginBottom: 40,
   },
   link: { alignSelf: 'center' },
@@ -141,7 +141,7 @@ const styles = RN.StyleSheet.create({
   },
   nextButton: { 
     marginBottom: 16,
-    backgroundColor: colors.pillBlue
+    backgroundColor: colors.blue
   },
 });
 

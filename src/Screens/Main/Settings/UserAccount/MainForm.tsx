@@ -128,17 +128,17 @@ const styles = RN.StyleSheet.create({
   },
   accountSettingsText: {
     ...fonts.titleBold,
-    color: colors.deepBlue,
+    color: colors.darkestBlue,
     marginBottom: 24,
   },
   fieldName: {
     ...fonts.regular,
-    color: colors.faintBlue,
+    color: colors.blueGray,
     marginTop: 16,
   },
   fieldValueText: {
     ...fonts.largeBold,
-    color: colors.deepBlue,
+    color: colors.darkestBlue,
   },
   link: {
     marginTop: 8,
@@ -147,7 +147,7 @@ const styles = RN.StyleSheet.create({
   changePasswordButton: {
     marginTop: 8,
     alignSelf: 'flex-start',
-    backgroundColor: colors.pillBlue
+    backgroundColor: colors.blue
   },
   buttonText: {
     ...fonts.regularBold,

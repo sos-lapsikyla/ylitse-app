@@ -16,13 +16,13 @@ const Background: React.FC<Props> = ({ children, ...ViewProps }) => (
 const styles = RN.StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: colors.haze,
+    backgroundColor: colors.lightestGray,
   },
   blob: {
     flex: 1,
     borderBottomLeftRadius: 40,
     borderBottomRightRadius: 40,
-    backgroundColor: colors.blue60
+    backgroundColor: colors.lightBlue
   },
   filler: {
     flex: 1,

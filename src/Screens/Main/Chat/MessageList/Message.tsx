@@ -60,7 +60,7 @@ const styles = RN.StyleSheet.create({
     borderTopLeftRadius: 24,
     borderBottomRightRadius: 24,
     borderBottomLeftRadius: 24,
-    backgroundColor: colors.faintGray,
+    backgroundColor: colors.lightestGray,
     alignSelf: 'flex-end',
   },
   bubble: {

@@ -74,12 +74,12 @@ const styles = RN.StyleSheet.create({
   },
   accountSettingsText: {
     ...fonts.titleBold,
-    color: colors.deepBlue,
+    color: colors.darkestBlue,
     marginBottom: 24,
   },
   fieldName: {
     ...fonts.regular,
-    color: colors.faintBlue,
+    color: colors.blueGray,
   },
   link: {
     marginTop: 8,

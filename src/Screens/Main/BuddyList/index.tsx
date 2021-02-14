@@ -42,7 +42,7 @@ export default ({ navigation }: Props) => {
       TitleComponent={
         <Message id="buddyList.title" style={styles.screenTitleText} />
       }
-      color={colors.pillBlue}
+      color={colors.blue}
     >
       <RemoteData data={buddyList} fetchData={() => {}}>
         {value => (

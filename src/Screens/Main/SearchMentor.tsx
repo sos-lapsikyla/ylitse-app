@@ -80,7 +80,7 @@ export default ({ navigation }: Props) => {
           <RN.View style={styles.titleBalancer} />
         </RN.View>
       }
-      color={colors.pillBlue}
+      color={colors.blue}
     >
       <RN.View style={styles.contentMargins}>
         <RN.View style={styles.searchContainer}>
@@ -247,13 +247,13 @@ const styles = RN.StyleSheet.create({
   },
   searchField: {
     flex: 1,
-    borderColor: colors.lightBluishGray,
+    borderColor: colors.lightGray,
     borderWidth: 1,
-    backgroundColor: colors.faintGray,
+    backgroundColor: colors.lightestGray,
     height: 40,
 
     ...fonts.largeBold,
-    color: colors.deepBlue,
+    color: colors.darkestBlue,
     alignSelf: 'stretch',
     flexGrow: 1,
     paddingVertical: 8,
@@ -262,7 +262,7 @@ const styles = RN.StyleSheet.create({
     borderRadius: 16,
   },
   skillPillButton: {
-    backgroundColor: colors.veryFaintBlue,
+    backgroundColor: colors.lightCyan,
     margin: 4,
     minHeight: 28,
     borderRadius: 20,
@@ -295,11 +295,11 @@ const styles = RN.StyleSheet.create({
     color: colors.white,
   },
   searchButton: {
-    backgroundColor: colors.slightlyDesaturatedGreen,
+    backgroundColor: colors.green,
     marginBottom: 40,
   },
-  resetButton: { backgroundColor: colors.lightGrayishBlue, marginBottom: 40 },
-  resetButtonText: { color: colors.veryDarkBlue },
+  resetButton: { backgroundColor: colors.lightestGray, marginBottom: 40 },
+  resetButtonText: { color: colors.darkestBlue },
   searcResetContainer: {
     flexDirection: 'row',
     justifyContent: 'space-around',

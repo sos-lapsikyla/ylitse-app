@@ -55,7 +55,7 @@ function RemoteData<E, A>({
               onPress={fetchData}
               messageStyle={styles.retryButtonText}
               messageId="components.remoteData.retry"
-              style={{backgroundColor: colors.pillBlue}}
+              style={{backgroundColor: colors.blue}}
             />
           </Card>
         </RN.View>
@@ -73,7 +73,7 @@ const styles = RN.StyleSheet.create({
   },
   loadingText: {
     marginTop: 8,
-    color: colors.deepBlue,
+    color: colors.darkestBlue,
     ...fonts.largeBold,
   },
   errorCard: {
@@ -89,7 +89,7 @@ const styles = RN.StyleSheet.create({
   },
   failureText: {
     marginBottom: 32,
-    color: colors.deepBlue,
+    color: colors.darkestBlue,
     ...fonts.largeBold,
   },
   retryButtonText: {
