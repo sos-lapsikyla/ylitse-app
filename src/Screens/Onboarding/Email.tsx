@@ -61,7 +61,7 @@ const Email = ({ navigation }: Props) => {
           messageId="onboarding.signUp.back"
           onPress={goBack}
           noShadow={true}
-          style={{backgroundColor: colors.lightestGray}}
+          style={{ backgroundColor: colors.lightestGray }}
         />
       </Card>
     </OnboardingBackground>

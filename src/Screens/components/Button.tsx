@@ -43,14 +43,12 @@ const Button = ({
       onPress={onPress}
       disabled={disabled || loading}
       testID={testID}
-      
     >
-
-        <Message style={[styles.message, messageStyle]} id={messageId} />
-        {!badge || loading ? null : (
-          <RN.Image style={styles.badge} source={badge} />
-        )}
-        {loading ? <Spinner style={styles.badge} /> : null}
+      <Message style={[styles.message, messageStyle]} id={messageId} />
+      {!badge || loading ? null : (
+        <RN.Image style={styles.badge} source={badge} />
+      )}
+      {loading ? <Spinner style={styles.badge} /> : null}
     </RN.TouchableOpacity>
   );
 };

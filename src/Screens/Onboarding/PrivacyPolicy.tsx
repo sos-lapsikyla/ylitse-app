@@ -101,11 +101,7 @@ const PrivacyPolicy = ({
           loading={RD.isPending(createUserState)}
           testID="onboarding.privacyPolicy.nextButton"
         />
-        <Button
-          messageId="meta.back"
-          onPress={goBack}
-          noShadow={true}
-        />
+        <Button messageId="meta.back" onPress={goBack} noShadow={true} />
       </Card>
     </OnboardingBackground>
   );
@@ -139,9 +135,9 @@ const styles = RN.StyleSheet.create({
   errorText: {
     marginBottom: 16,
   },
-  nextButton: { 
+  nextButton: {
     marginBottom: 16,
-    backgroundColor: colors.blue
+    backgroundColor: colors.blue,
   },
 });
 

@@ -1,7 +1,6 @@
 const colors = {
-
   // common colors
-  lightestGray: "#EEF4F9",
+  lightestGray: '#EEF4F9',
   lightGray: '#D2D9DE',
   white: '#FFF',
   gray: '#8F9EAC',
@@ -27,6 +26,6 @@ const colors = {
   danger: '#E93C66',
   teal: '#75C9C3',
   blueGray: '#5A7C9B',
-}
+};
 
 export default colors;

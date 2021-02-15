@@ -22,7 +22,7 @@ const styles = RN.StyleSheet.create({
     flex: 1,
     borderBottomLeftRadius: 40,
     borderBottomRightRadius: 40,
-    backgroundColor: colors.lightBlue
+    backgroundColor: colors.lightBlue,
   },
   filler: {
     flex: 1,

@@ -89,7 +89,7 @@ const LoginCard = ({
           messageId="onboarding.signUp.back"
           onPress={onPressBack}
           noShadow={true}
-          style={{backgroundColor: colors.lightestGray}}
+          style={{ backgroundColor: colors.lightestGray }}
         />
       </RN.View>
     </Card>

@@ -18,11 +18,10 @@ const TitledContainer: React.FC<Props> = ({
 }) => {
   return (
     <RN.View style={styles.background} onLayout={onLayout}>
-      <RN.View style={[styles.shadow, {backgroundColor: color}]}>
-
-          <SafeAreaView forceInset={{ top: 'always' }}>
-            {TitleComponent}
-          </SafeAreaView>
+      <RN.View style={[styles.shadow, { backgroundColor: color }]}>
+        <SafeAreaView forceInset={{ top: 'always' }}>
+          {TitleComponent}
+        </SafeAreaView>
       </RN.View>
       {children}
     </RN.View>
@@ -31,7 +30,7 @@ const TitledContainer: React.FC<Props> = ({
 const styles = RN.StyleSheet.create({
   background: {
     flex: 1,
-    backgroundColor: colors.lightestGray
+    backgroundColor: colors.lightestGray,
   },
   shadow: {
     ...shadow(7),

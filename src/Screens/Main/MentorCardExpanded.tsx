@@ -84,7 +84,7 @@ const MentorCardExpanded = ({ navigation }: Props) => {
 const styles = RN.StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: colors.lightestGray
+    backgroundColor: colors.lightestGray,
   },
   mentorTitle: {
     borderTopLeftRadius: 0,

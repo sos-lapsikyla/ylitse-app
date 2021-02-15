@@ -147,7 +147,7 @@ const styles = RN.StyleSheet.create({
   changePasswordButton: {
     marginTop: 8,
     alignSelf: 'flex-start',
-    backgroundColor: colors.blue
+    backgroundColor: colors.blue,
   },
   buttonText: {
     ...fonts.regularBold,

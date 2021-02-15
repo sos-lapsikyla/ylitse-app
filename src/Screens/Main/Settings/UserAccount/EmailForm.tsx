@@ -135,7 +135,7 @@ const styles = RN.StyleSheet.create({
     marginTop: 8,
     alignSelf: 'flex-start',
     marginRight: 16,
-    backgroundColor: colors.lightestGray
+    backgroundColor: colors.lightestGray,
   },
   cancelButtonText: {
     ...fonts.large,
@@ -145,7 +145,7 @@ const styles = RN.StyleSheet.create({
     marginTop: 8,
     alignSelf: 'flex-start',
     flexGrow: 1,
-    backgroundColor: colors.blue
+    backgroundColor: colors.blue,
   },
   buttonText: {
     ...fonts.largeBold,
