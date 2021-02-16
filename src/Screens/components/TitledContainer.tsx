@@ -30,7 +30,7 @@ const TitledContainer: React.FC<Props> = ({
 const styles = RN.StyleSheet.create({
   background: {
     flex: 1,
-    backgroundColor: colors.lightestGray,
+    backgroundColor: colors.background,
   },
   shadow: {
     ...shadow(7),

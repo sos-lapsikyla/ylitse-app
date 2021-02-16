@@ -216,7 +216,7 @@ const styles = RN.StyleSheet.create({
   },
   bottomGradient: {
     height: 40,
-    tintColor: colors.white,
+    tintColor: colors.background,
     marginTop: -40,
     width: '100%',
     alignSelf: 'stretch',

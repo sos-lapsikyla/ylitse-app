@@ -1,6 +1,7 @@
 const colors = {
   // common colors
-  lightestGray: '#EEF4F9',
+  background: '#F4F8FC',
+  lightestGray: '#EBF2F8',
   lightGray: '#D2D9DE',
   white: '#FFF',
   gray: '#8F9EAC',
