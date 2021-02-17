@@ -56,7 +56,13 @@ export default ({ navigation }: Props) => {
   };
 
   const [{ height }, onLayout] = useLayout();
-  const maxHeight = (height || 350) - 350;
+  let maxHeight = (height || 350) - 350;
+
+  // Make sure skill area has enough space even when keyboard is showing.
+  const minimumSkillAreaHeight = 250;
+  if (maxHeight < minimumSkillAreaHeight) {
+    maxHeight = minimumSkillAreaHeight;
+  }
 
   return (
     <TitledContainer
