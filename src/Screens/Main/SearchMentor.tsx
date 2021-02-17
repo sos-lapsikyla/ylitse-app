@@ -56,13 +56,11 @@ export default ({ navigation }: Props) => {
   };
 
   const [{ height }, onLayout] = useLayout();
-  let maxHeight = (height || 350) - 350;
 
-  // Make sure skill area has enough space even when keyboard is showing.
-  const minimumSkillAreaHeight = 250;
-  if (maxHeight < minimumSkillAreaHeight) {
-    maxHeight = minimumSkillAreaHeight;
-  }
+  // Make sure skill area has enough height even when keyboard is showing.
+  const min = 250;
+  const max = (height || 350) - 350;
+  const skillAreaHeight = max >= min ? max : min;
 
   return (
     <TitledContainer
@@ -114,7 +112,7 @@ export default ({ navigation }: Props) => {
               resizeMethod="scale"
             />
             <RN.ScrollView
-              style={{ ...styles.carouselContainer, height: maxHeight }}
+              style={{ ...styles.carouselContainer, height: skillAreaHeight }}
               showsHorizontalScrollIndicator={true}
               contentContainerStyle={styles.contentContainer}
             >
