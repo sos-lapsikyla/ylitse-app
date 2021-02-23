@@ -11,7 +11,7 @@ import * as actions from '../../../../state/actions';
 import NamedInputField from '../../../components/NamedInputField';
 import Button from '../../../components/Button';
 import Spinner from '../../../components/Spinner';
-import colors, { gradients } from '../../../components/colors';
+import colors from '../../../components/colors';
 import fonts from '../../../components/fonts';
 import { textShadow } from '../../../components/shadow';
 import Message from '../../../components/Message';
@@ -87,7 +87,6 @@ export default ({ onClose }: Props) => {
                   messageStyle={styles.cancelButtonText}
                   onPress={onClose}
                   messageId="meta.cancel"
-                  gradient={gradients.faintGray}
                   testID="main.settings.account.password.cancel"
                 />
                 <Button
@@ -95,7 +94,6 @@ export default ({ onClose }: Props) => {
                   messageStyle={styles.buttonText}
                   onPress={onButtonPress}
                   messageId="meta.save"
-                  gradient={gradients.pillBlue}
                   disabled={!isOkay}
                   testID="main.settings.account.password.save"
                 />
@@ -132,7 +130,7 @@ const styles = RN.StyleSheet.create({
   },
   title: {
     ...fonts.titleBold,
-    color: colors.deepBlue,
+    color: colors.darkestBlue,
     marginBottom: 24,
   },
   spinner: {
@@ -142,7 +140,7 @@ const styles = RN.StyleSheet.create({
     tintColor: colors.danger,
   },
   successBox: {
-    tintColor: colors.blue100,
+    tintColor: colors.darkBlue,
   },
   field: {
     marginVertical: 8,
@@ -154,15 +152,17 @@ const styles = RN.StyleSheet.create({
     marginTop: 8,
     alignSelf: 'flex-start',
     marginRight: 16,
+    backgroundColor: colors.lightestGray,
   },
   cancelButtonText: {
     ...fonts.large,
-    color: colors.deepBlue,
+    color: colors.darkestBlue,
   },
   changePasswordButton: {
     marginTop: 8,
     alignSelf: 'flex-start',
     flexGrow: 1,
+    backgroundColor: colors.blue,
   },
   buttonText: {
     ...fonts.largeBold,

@@ -2,8 +2,8 @@ import colors from './colors';
 
 const mapping: Record<number, string> = {
   0: colors.orange,
-  1: colors.green80,
-  2: colors.red80,
+  1: colors.green,
+  2: colors.red,
 };
 
 export default (str: string) => {

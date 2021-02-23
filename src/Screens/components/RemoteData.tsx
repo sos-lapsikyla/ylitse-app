@@ -8,7 +8,7 @@ import Spinner from './Spinner';
 import Button from './Button';
 import Message from './Message';
 import fonts from './fonts';
-import colors, { gradients } from './colors';
+import colors from './colors';
 import { textShadow } from './shadow';
 
 interface Props<E, A> {
@@ -52,10 +52,10 @@ function RemoteData<E, A>({
               id="components.remoteData.loadingFailed"
             />
             <Button
-              gradient={gradients.pillBlue}
               onPress={fetchData}
               messageStyle={styles.retryButtonText}
               messageId="components.remoteData.retry"
+              style={{ backgroundColor: colors.blue }}
             />
           </Card>
         </RN.View>
@@ -73,7 +73,7 @@ const styles = RN.StyleSheet.create({
   },
   loadingText: {
     marginTop: 8,
-    color: colors.deepBlue,
+    color: colors.darkestBlue,
     ...fonts.largeBold,
   },
   errorCard: {
@@ -89,7 +89,7 @@ const styles = RN.StyleSheet.create({
   },
   failureText: {
     marginBottom: 32,
-    color: colors.deepBlue,
+    color: colors.darkestBlue,
     ...fonts.largeBold,
   },
   retryButtonText: {

@@ -39,7 +39,7 @@ export default FilterButton;
 const borderRadius = 18;
 const styles = RN.StyleSheet.create({
   icon: {
-    tintColor: colors.faintBlue,
+    tintColor: colors.blueGray,
     height: 20,
     width: 20,
   },
@@ -50,7 +50,7 @@ const styles = RN.StyleSheet.create({
     borderRadius,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: colors.blue80,
+    backgroundColor: colors.blue,
     marginLeft: 20,
     marginTop: 30,
   },

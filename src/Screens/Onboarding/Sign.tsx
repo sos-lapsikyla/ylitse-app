@@ -59,7 +59,7 @@ export default ({ navigation }: Props) => {
 const styles = RN.StyleSheet.create({
   signText: {
     ...fonts.titleBold,
-    color: colors.deepBlue,
+    color: colors.darkestBlue,
   },
   card: {
     marginVertical: 24,
@@ -75,6 +75,6 @@ const styles = RN.StyleSheet.create({
   },
   backButton: {
     minHeight: 64,
-    backgroundColor: colors.faintGray,
+    backgroundColor: colors.lightestGray,
   },
 });

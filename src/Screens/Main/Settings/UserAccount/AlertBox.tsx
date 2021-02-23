@@ -59,14 +59,14 @@ const styles = RN.StyleSheet.create({
     padding: 24,
   },
   text: {
-    color: colors.deepBlue,
+    color: colors.darkestBlue,
     ...fonts.largeBold,
     textAlign: 'center',
   },
   image: {
     width: 160,
     height: 160,
-    tintColor: colors.deepBlue,
+    tintColor: colors.darkestBlue,
     marginBottom: 40,
   },
 });

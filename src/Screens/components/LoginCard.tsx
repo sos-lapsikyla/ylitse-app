@@ -86,10 +86,10 @@ const LoginCard = ({
           testID="onboarding.signUp.button"
         />
         <Button
-          gradient={[colors.faintGray, colors.faintGray]}
           messageId="onboarding.signUp.back"
           onPress={onPressBack}
           noShadow={true}
+          style={{ backgroundColor: colors.lightestGray }}
         />
       </RN.View>
     </Card>
@@ -100,7 +100,7 @@ const styles = RN.StyleSheet.create({
   title: {
     ...fonts.titleBold,
     textAlign: 'center',
-    color: colors.deepBlue,
+    color: colors.darkestBlue,
     marginBottom: 40,
   },
   nickNameInput: {

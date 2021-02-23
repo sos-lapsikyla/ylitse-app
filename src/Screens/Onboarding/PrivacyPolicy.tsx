@@ -16,7 +16,7 @@ import OnboardingBackground from '../components/OnboardingBackground';
 import Card from '../components/Card';
 import fonts from '../components/fonts';
 import Message from '../components/Message';
-import colors, { gradients } from '../components/colors';
+import colors from '../components/colors';
 import Button from '../components/Button';
 import ErrorMessage from '../components/ErrorMessage';
 import Link from '../components/Link';
@@ -87,7 +87,6 @@ const PrivacyPolicy = ({
         />
         <Button
           onPress={() => setAgreed(true)}
-          gradient={gradients.pillBlue}
           style={styles.nextButton}
           messageId="onboarding.privacyPolicy.agreeButton"
           disabled={isAgreed}
@@ -102,12 +101,7 @@ const PrivacyPolicy = ({
           loading={RD.isPending(createUserState)}
           testID="onboarding.privacyPolicy.nextButton"
         />
-        <Button
-          gradient={[colors.faintGray, colors.faintGray]}
-          messageId="meta.back"
-          onPress={goBack}
-          noShadow={true}
-        />
+        <Button messageId="meta.back" onPress={goBack} noShadow={true} />
       </Card>
     </OnboardingBackground>
   );
@@ -121,7 +115,7 @@ const styles = RN.StyleSheet.create({
   title: {
     ...fonts.titleBold,
     textAlign: 'center',
-    color: colors.deepBlue,
+    color: colors.darkestBlue,
     marginBottom: 40,
   },
   nickNameInput: {
@@ -129,19 +123,22 @@ const styles = RN.StyleSheet.create({
   },
   bodyText: {
     ...fonts.regular,
-    color: colors.deepBlue,
+    color: colors.darkestBlue,
     marginBottom: 40,
   },
   bodyText3: {
     ...fonts.regular,
-    color: colors.deepBlue,
+    color: colors.darkestBlue,
     marginBottom: 40,
   },
   link: { alignSelf: 'center' },
   errorText: {
     marginBottom: 16,
   },
-  nextButton: { marginBottom: 16 },
+  nextButton: {
+    marginBottom: 16,
+    backgroundColor: colors.blue,
+  },
 });
 
 export default ReactRedux.connect<StateProps, {}, OwnProps, state.AppState>(

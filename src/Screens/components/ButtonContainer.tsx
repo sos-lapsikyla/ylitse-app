@@ -36,7 +36,7 @@ const styles = RN.StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     flexDirection: 'column',
-    backgroundColor: colors.blue80,
+    backgroundColor: colors.blue,
   },
 });
 

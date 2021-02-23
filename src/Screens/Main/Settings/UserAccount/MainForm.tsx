@@ -12,7 +12,7 @@ import * as actions from '../../../../state/actions';
 import RemoteData from '../../../components/RemoteData';
 import Button from '../../../components/Button';
 import Message from '../../../components/Message';
-import colors, { gradients } from '../../../components/colors';
+import colors from '../../../components/colors';
 import fonts from '../../../components/fonts';
 
 type Props = {
@@ -85,7 +85,6 @@ export default ({ openPasswordForm, openEmailForm }: Props) => {
               messageStyle={styles.buttonText}
               onPress={openEmailForm}
               messageId="main.settings.account.email.change"
-              gradient={gradients.pillBlue}
               testID="main.settings.account.email.change"
             />
             <Message
@@ -98,7 +97,6 @@ export default ({ openPasswordForm, openEmailForm }: Props) => {
               messageStyle={styles.buttonText}
               onPress={openPasswordForm}
               messageId="main.settings.account.password.button"
-              gradient={gradients.pillBlue}
               testID="main.settings.account.password.button"
             />
             {role === 'mentor' ? (
@@ -112,7 +110,6 @@ export default ({ openPasswordForm, openEmailForm }: Props) => {
                   messageStyle={styles.buttonText}
                   onPress={openProfile}
                   messageId="main.settings.account.profile.button"
-                  gradient={gradients.pillBlue}
                 />
               </>
             ) : null}
@@ -131,17 +128,17 @@ const styles = RN.StyleSheet.create({
   },
   accountSettingsText: {
     ...fonts.titleBold,
-    color: colors.deepBlue,
+    color: colors.darkestBlue,
     marginBottom: 24,
   },
   fieldName: {
     ...fonts.regular,
-    color: colors.faintBlue,
+    color: colors.blueGray,
     marginTop: 16,
   },
   fieldValueText: {
     ...fonts.largeBold,
-    color: colors.deepBlue,
+    color: colors.darkestBlue,
   },
   link: {
     marginTop: 8,
@@ -150,6 +147,7 @@ const styles = RN.StyleSheet.create({
   changePasswordButton: {
     marginTop: 8,
     alignSelf: 'flex-start',
+    backgroundColor: colors.blue,
   },
   buttonText: {
     ...fonts.regularBold,

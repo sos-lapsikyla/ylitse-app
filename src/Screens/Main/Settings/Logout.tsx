@@ -100,7 +100,7 @@ const styles = RN.StyleSheet.create({
   },
   text: {
     ...fonts.largeBold,
-    color: colors.deepBlue,
+    color: colors.darkestBlue,
     textAlign: 'center',
     marginBottom: 40,
   },

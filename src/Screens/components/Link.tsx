@@ -33,7 +33,7 @@ const styles = RN.StyleSheet.create({
   },
   linkText: {
     ...fonts.largeBold,
-    color: colors.deepBlue,
+    color: colors.darkestBlue,
     textDecorationLine: 'underline',
     marginRight: 16,
   },

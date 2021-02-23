@@ -26,7 +26,7 @@ export default ({ name, style, color, ...viewProps }: ChipProps) => (
 const chipStyles = RN.StyleSheet.create({
   chip: {
     ...shadow(),
-    backgroundColor: colors.blue40,
+    backgroundColor: colors.lighterBlue,
     borderRadius: 20,
     justifyContent: 'center',
     alignItems: 'center',

@@ -1,20 +1,17 @@
 import React from 'react';
 import RN from 'react-native';
-import LinearGradient from 'react-native-linear-gradient';
 
 import * as localization from '../../localization';
 
 import Message from './Message';
 import shadow from './shadow';
-import colors, { gradients } from './colors';
+import colors from './colors';
 import fonts from './fonts';
 import Spinner from './Spinner';
 
 interface Props {
   onPress: () => void | undefined;
-  gradient?: string[];
   style?: RN.StyleProp<RN.ViewStyle>;
-  contentContainerStyle?: RN.StyleProp<RN.ViewStyle>;
   messageId: localization.MessageId;
   messageStyle?: RN.StyleProp<RN.TextStyle>;
   badge?: RN.ImageSourcePropType;
@@ -25,8 +22,6 @@ interface Props {
 }
 
 const Button = ({
-  gradient,
-  contentContainerStyle,
   messageId,
   messageStyle,
   onPress,
@@ -49,16 +44,11 @@ const Button = ({
       disabled={disabled || loading}
       testID={testID}
     >
-      <LinearGradient
-        style={[styles.gradient, contentContainerStyle]}
-        colors={gradient ? gradient : gradients.blue}
-      >
-        <Message style={[styles.message, messageStyle]} id={messageId} />
-        {!badge || loading ? null : (
-          <RN.Image style={styles.badge} source={badge} />
-        )}
-        {loading ? <Spinner style={styles.badge} /> : null}
-      </LinearGradient>
+      <Message style={[styles.message, messageStyle]} id={messageId} />
+      {!badge || loading ? null : (
+        <RN.Image style={styles.badge} source={badge} />
+      )}
+      {loading ? <Spinner style={styles.badge} /> : null}
     </RN.TouchableOpacity>
   );
 };
@@ -69,6 +59,12 @@ const styles = RN.StyleSheet.create({
     minHeight: 40,
     alignSelf: 'stretch',
     borderRadius,
+    backgroundColor: colors.lightBlue,
+    paddingVertical: 4,
+    paddingHorizontal: 16,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   shadow: shadow(7),
   disabled: {
@@ -97,7 +93,7 @@ const styles = RN.StyleSheet.create({
   message: {
     ...fonts.largeBold,
     textAlign: 'center',
-    color: colors.deepBlue,
+    color: colors.darkestBlue,
     flexDirection: 'column',
   },
 });

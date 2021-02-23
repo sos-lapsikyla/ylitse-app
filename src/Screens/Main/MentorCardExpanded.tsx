@@ -1,6 +1,5 @@
 import React from 'react';
 import RN from 'react-native';
-import LinearGradient from 'react-native-linear-gradient';
 import { SafeAreaView } from 'react-navigation';
 
 import * as navigationProps from '../../lib/navigation-props';
@@ -13,7 +12,7 @@ import Skills from '../components/Skills';
 import Message from '../components/Message';
 import getBuddyColor from '../components/getBuddyColor';
 import Button from '../components/Button';
-import colors, { gradients } from '../components/colors';
+import colors from '../components/colors';
 import fonts from '../components/fonts';
 
 import { ChatRoute } from './Chat';
@@ -47,7 +46,7 @@ const MentorCardExpanded = ({ navigation }: Props) => {
     navigation.navigate('Main/Chat', { buddyId: mentor.buddyId });
   };
   return (
-    <LinearGradient style={styles.container} colors={gradients.whitegray}>
+    <RN.View style={styles.container}>
       <MentorTitle
         style={styles.mentorTitle}
         mentor={mentor}
@@ -78,13 +77,14 @@ const MentorCardExpanded = ({ navigation }: Props) => {
           />
         </SafeAreaView>
       </RN.ScrollView>
-    </LinearGradient>
+    </RN.View>
   );
 };
 
 const styles = RN.StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: colors.lightestGray,
   },
   mentorTitle: {
     borderTopLeftRadius: 0,
@@ -111,7 +111,7 @@ const styles = RN.StyleSheet.create({
   },
   subtitle: {
     ...fonts.largeBold,
-    color: colors.deepBlue,
+    color: colors.darkestBlue,
     textAlign: 'left',
   },
   story: {

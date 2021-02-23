@@ -70,7 +70,7 @@ const styles = RN.StyleSheet.create({
   button: { marginHorizontal: 24, alignSelf: 'stretch' },
   buttonMessage: {
     textAlign: 'center',
-    color: colors.deepBlue,
+    color: colors.darkestBlue,
     ...fonts.titleBold,
     marginRight: 16,
   },
