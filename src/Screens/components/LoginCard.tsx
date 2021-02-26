@@ -55,10 +55,10 @@ const LoginCard = ({
       <NamedInputField
         autoCapitalize="none"
         style={styles.nickNameInput}
-        name="onboarding.signUp.nickName"
+        name="onboarding.signUp.userName"
         onChangeText={onUserNameChange}
         autoCompleteType="off"
-        testID="onboarding.signUp.nickName"
+        testID="onboarding.signUp.userName"
       />
       <NamedInputField
         autoCapitalize="none"

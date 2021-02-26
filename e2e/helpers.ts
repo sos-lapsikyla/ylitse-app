@@ -70,7 +70,7 @@ export async function signIn(details: any) {
   );
   await scrollDownAndTap('onboarding.sign.in', 'onboarding.mentorlist.view');
 
-  await waitAndTypeText('onboarding.signUp.nickName', `${details.loginName}\n`);
+  await waitAndTypeText('onboarding.signUp.userName', `${details.loginName}\n`);
   await waitAndTypeText('onboarding.signUp.password', `${details.password}\n`);
 
   await waitFor(element(by.id('onboarding.signUp.button')))
