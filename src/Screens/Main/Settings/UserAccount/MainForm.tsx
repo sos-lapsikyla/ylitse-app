@@ -53,11 +53,11 @@ export default ({ openPasswordForm, openEmailForm }: Props) => {
               <>
                 <Message
                   style={styles.fieldName}
-                  id="main.settings.account.nickName"
+                  id="main.settings.account.displayName"
                 />
                 <RN.Text
                   style={styles.fieldValueText}
-                  testID="main.settings.account.nickName"
+                  testID="main.settings.account.displayName"
                 >
                   {displayName}
                 </RN.Text>

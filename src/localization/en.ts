@@ -50,14 +50,14 @@ export const messages: { [key in MessageId]: string } = {
   'main.searchMentor.showButton': 'Show',
   'main.searchMentor.title': 'Search',
 
+  'main.settings.account.displayName': 'Display name',
+
   'main.settings.account.email.change': 'Change email',
   'main.settings.account.email.fail': 'Changing email failed!',
   'main.settings.account.email.fieldTitle': 'Email',
   'main.settings.account.email.missing': 'no email',
   'main.settings.account.email.success': 'Changing email succeeded!',
   'main.settings.account.email.title': 'Email',
-
-  'main.settings.account.nickName': 'Nickname',
 
   'main.settings.account.password.button': 'Change password',
   'main.settings.account.password.current': 'Current password',
@@ -151,10 +151,10 @@ export const messages: { [key in MessageId]: string } = {
 
   'onboarding.signUp.existingAccount.login': 'Login',
   'onboarding.signUp.existingAccount.title': 'I already have an account',
-  'onboarding.signUp.nickName': 'Nickname',
   'onboarding.signUp.password': 'Password',
   'onboarding.signUp.signUp': 'Sign up',
   'onboarding.signUp.title': 'Sign up',
+  'onboarding.signUp.userName': 'Username',
 
   'onboarding.welcome.button': 'Start',
   'onboarding.welcome.text1': 'Cool, that you have started using the service!',

@@ -21,9 +21,9 @@ describe('SignIn', () => {
     await expect(element(by.id('main.settings.account.userName'))).toHaveText(
       mentee.loginName,
     );
-    await expect(element(by.id('main.settings.account.nickName'))).toHaveText(
-      mentee.displayName,
-    );
+    await expect(
+      element(by.id('main.settings.account.displayName')),
+    ).toHaveText(mentee.displayName);
     await expect(element(by.id('main.settings.account.email'))).toHaveText(
       mentee.email,
     );

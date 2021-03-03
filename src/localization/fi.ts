@@ -48,14 +48,14 @@ export const messages = {
   'main.searchMentor.showButton': 'Näytä',
   'main.searchMentor.title': 'Hae mentoria',
 
+  'main.settings.account.displayName': 'Nimimerkki',
+
   'main.settings.account.email.change': 'Muuta sähköposti',
   'main.settings.account.email.fail': 'Sähköpostin muutos epäonnistui!',
   'main.settings.account.email.fieldTitle': 'Sähköposti',
   'main.settings.account.email.missing': 'ei sähköpostia',
   'main.settings.account.email.success': 'Sähköpostin muutos onnistui!',
   'main.settings.account.email.title': 'Sähköposti',
-
-  'main.settings.account.nickName': 'Nimimerkki',
 
   'main.settings.account.password.button': 'Vaihda salasana',
   'main.settings.account.password.current': 'nykyinen salasana',
@@ -69,7 +69,7 @@ export const messages = {
   'main.settings.account.profile.title': 'Profiili',
 
   'main.settings.account.title': 'Asetukset',
-  'main.settings.account.userName': 'Käyttäjänimi',
+  'main.settings.account.userName': 'Käyttäjätunnus',
 
   'main.settings.deleteAccount.cancel': 'Peruuta',
   'main.settings.deleteAccount.deleteAccount': 'Poista tili',
@@ -143,16 +143,16 @@ export const messages = {
   'onboarding.signUp.error.passwordLong': 'Salasana on liian pitkä',
   'onboarding.signUp.error.passwordShort': 'Salasana on liian lyhyt',
   'onboarding.signUp.error.probablyNetwork': 'Yhteysvirhe',
-  'onboarding.signUp.error.userNameLong': 'Käyttäjänimi on liian Pitkä',
-  'onboarding.signUp.error.userNameShort': 'Käyttäjänimi on liian lyhyt',
-  'onboarding.signUp.error.userNameTaken': 'Käyttäjänimi on varattu',
+  'onboarding.signUp.error.userNameLong': 'Käyttäjätunnus on liian Pitkä',
+  'onboarding.signUp.error.userNameShort': 'Käyttäjätunnus on liian lyhyt',
+  'onboarding.signUp.error.userNameTaken': 'Käyttäjätunnus on varattu',
 
   'onboarding.signUp.existingAccount.login': 'Kirjaudu sisään',
   'onboarding.signUp.existingAccount.title': 'Minulla on jo tunnus',
-  'onboarding.signUp.nickName': 'Nimimerkki',
   'onboarding.signUp.password': 'Salasana',
   'onboarding.signUp.signUp': 'Luo tunnus',
   'onboarding.signUp.title': 'Luo tunnus',
+  'onboarding.signUp.userName': 'Käyttäjätunnus',
 
   'onboarding.welcome.button': 'Aloita',
   'onboarding.welcome.text1': 'Kiva, että otit palvelun käyttöön!',
