@@ -11,7 +11,7 @@ export const messages = {
   'components.mentorCard.showMore': 'Näytä lisää...',
   'components.mentorCard.yearsAbbrev': 'v.',
 
-  'components.mentorSkills.other': 'Voin tukea myös:',
+  'components.mentorSkills.other': 'Pystyn auttamaan näissä:',
   'components.mentorSkills.subject': 'Aihealue:',
 
   'components.remoteData.loading': 'Ladataan...',
@@ -34,7 +34,7 @@ export const messages = {
   'date.month.11': 'marraskuuta',
   'date.month.12': 'joulukuuta',
 
-  'main.mentor.other': 'Voin tukea myös:',
+  'main.mentor.other': 'Pystyn auttamaan näissä:',
   'main.mentor.story': 'Tarinani',
   'main.mentor.subject': 'Aihealue:',
 
