@@ -13,6 +13,8 @@ import UserAccount from './UserAccount';
 import BottomCard from './BottomCard';
 import { LogoutRoute } from './Logout';
 import { DeleteAccountRoute } from './DeleteAccount';
+import { PasswordChangeRoute } from './Password';
+import { EmailChangeRoute } from './Email';
 
 export type SettingsRoute = {
   'Main/Settings': {};
@@ -20,7 +22,7 @@ export type SettingsRoute = {
 
 type OwnProps = navigationProps.NavigationProps<
   SettingsRoute,
-  LogoutRoute & DeleteAccountRoute
+  LogoutRoute & DeleteAccountRoute & PasswordChangeRoute & EmailChangeRoute
 >;
 type Props = OwnProps;
 
@@ -30,6 +32,12 @@ const Settings = ({ navigation }: Props) => {
   };
   const onNavigateToDeleteAccount = () => {
     navigation.navigate('Main/Settings/DeleteAccount', {});
+  };
+  const onNavigateToPasswordChange = () => {
+    navigation.navigate('Main/Settings/PasswordChange', {});
+  };
+  const onNavigateToEmailChange = () => {
+    navigation.navigate('Main/Settings/EmailChange', {});
   };
   return (
     <TitledContainer
@@ -44,7 +52,10 @@ const Settings = ({ navigation }: Props) => {
         showsVerticalScrollIndicator={false}
         testID={'main.settings.index.view'}
       >
-        <UserAccount />
+        <UserAccount
+          navigateToPassword={onNavigateToPasswordChange}
+          navigateToEmail={onNavigateToEmailChange}
+        />
         <BottomCard
           navigateToLogout={onNavigateToLogout}
           navigateToDeleteAccount={onNavigateToDeleteAccount}
