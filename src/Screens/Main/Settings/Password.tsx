@@ -4,9 +4,11 @@ import * as redux from 'redux';
 import { useDispatch, useSelector } from 'react-redux';
 import { pipe } from 'fp-ts/lib/pipeable';
 import * as RD from '@devexperts/remote-data-ts';
+import * as O from 'fp-ts/lib/Option';
 
 import * as navigationProps from '../../../lib/navigation-props';
 import * as actions from '../../../state/actions';
+import * as accountState from '../../../state/reducers/userAccount';
 import * as state from '../../../state/reducers/changePassword';
 
 import Message from '../../components/Message';
@@ -33,6 +35,13 @@ type Props = navigationProps.NavigationProps<
 >;
 
 export default ({ navigation }: Props) => {
+  const account = RD.toOption(useSelector(accountState.getAccount));
+  const storedUsername = pipe(
+    account,
+    O.map(({ userName }) => userName),
+    O.toUndefined,
+  );
+
   const [currentPassword, setCurrentPassword] = React.useState('');
   const [newPassword, setNewPassword] = React.useState('');
   const [repeatedNewPassword, setRepeatedNewPassword] = React.useState('');
@@ -77,6 +86,14 @@ export default ({ navigation }: Props) => {
           style={styles.title}
           id="main.settings.account.password.title"
         />
+        <Message
+          style={styles.fieldName}
+          id="main.settings.account.userName"
+        />
+        <RN.Text
+          style={styles.fieldValueText}>
+          {storedUsername}
+        </RN.Text>
         {pipe(
           requestState,
           RD.fold(
@@ -161,6 +178,15 @@ const styles = RN.StyleSheet.create({
   },
   field: {
     marginVertical: 10,
+  },
+  fieldName: {
+    ...fonts.regular,
+    color: colors.blueGray,
+    marginTop: 16,
+  },
+  fieldValueText: {
+    ...fonts.largeBold,
+    color: colors.darkestBlue,
   },
   scrollView: {
     zIndex: 1,

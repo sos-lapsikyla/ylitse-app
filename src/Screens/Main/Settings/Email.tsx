@@ -40,6 +40,11 @@ export default ({ navigation }: Props) => {
     O.map(({ email }) => email),
     O.toUndefined,
   );
+  const storedUsername = pipe(
+    account,
+    O.map(({ userName }) => userName),
+    O.toUndefined,
+  );
 
   const [email, setEmail] = React.useState(storedEmail || '');
   const dispatch = useDispatch<redux.Dispatch<actions.Action>>();
@@ -78,6 +83,14 @@ export default ({ navigation }: Props) => {
             style={styles.title}
             id="main.settings.account.email.title"
           />
+          <Message
+          style={styles.fieldName}
+          id="main.settings.account.userName"
+        />
+        <RN.Text
+          style={styles.fieldValueText}>
+          {storedUsername}
+        </RN.Text>
           {pipe(
             requestState,
             RD.fold(
@@ -146,6 +159,15 @@ const styles = RN.StyleSheet.create({
   },
   field: {
     marginVertical: 8,
+  },
+  fieldName: {
+    ...fonts.regular,
+    color: colors.blueGray,
+    marginTop: 16,
+  },
+  fieldValueText: {
+    ...fonts.largeBold,
+    color: colors.darkestBlue,
   },
   scrollView: {
     zIndex: 1,
