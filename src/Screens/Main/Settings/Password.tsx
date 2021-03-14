@@ -2,6 +2,7 @@ import React from 'react';
 import RN from 'react-native';
 import * as redux from 'redux';
 import { useDispatch, useSelector } from 'react-redux';
+import { SafeAreaView } from 'react-navigation';
 import { pipe } from 'fp-ts/lib/pipeable';
 import * as RD from '@devexperts/remote-data-ts';
 import * as O from 'fp-ts/lib/Option';
@@ -82,86 +83,88 @@ export default ({ navigation }: Props) => {
         showsVerticalScrollIndicator={false}
         testID={'main.settings.password.view'}
       >
-        <Message
-          style={styles.title}
-          id="main.settings.account.password.title"
-        />
-        <Message
-          style={styles.fieldName}
-          id="main.settings.account.userName"
-        />
-        <RN.Text
-          style={styles.fieldValueText}>
-          {storedUsername}
-        </RN.Text>
-        {pipe(
-          requestState,
-          RD.fold(
-            () => (
-              <>
-                <NamedInputField
-                  style={styles.field}
-                  name="main.settings.account.password.current"
-                  isPasswordInput={true}
-                  value={currentPassword}
-                  onChangeText={setCurrentPassword}
-                  testID="main.settings.account.password.current"
-                />
-                <NamedInputField
-                  style={styles.field}
-                  name="main.settings.account.password.new"
-                  isPasswordInput={true}
-                  value={newPassword}
-                  onChangeText={setNewPassword}
-                  testID="main.settings.account.password.new"
-                />
-                <NamedInputField
-                  style={styles.field}
-                  name="main.settings.account.password.repeat"
-                  isPasswordInput={true}
-                  value={repeatedNewPassword}
-                  onChangeText={setRepeatedNewPassword}
-                  testID="main.settings.account.password.repeat"
-                />
-                <RN.View style={styles.buttonContainer}>
-                  <Button
-                    style={styles.cancelButton}
-                    messageStyle={styles.cancelButtonText}
-                    onPress={onGoBack}
-                    messageId="meta.cancel"
-                    testID="main.settings.account.password.cancel"
+        <SafeAreaView
+          forceInset={{ bottom: 'always' }}
+          style={styles.buttonContainer}
+        >
+          <Message
+            style={styles.title}
+            id="main.settings.account.password.title"
+          />
+          <Message
+            style={styles.fieldName}
+            id="main.settings.account.userName"
+          />
+          <RN.Text style={styles.fieldValueText}>{storedUsername}</RN.Text>
+          {pipe(
+            requestState,
+            RD.fold(
+              () => (
+                <>
+                  <NamedInputField
+                    style={styles.field}
+                    name="main.settings.account.password.current"
+                    isPasswordInput={true}
+                    value={currentPassword}
+                    onChangeText={setCurrentPassword}
+                    testID="main.settings.account.password.current"
                   />
-                  <Button
-                    style={styles.changePasswordButton}
-                    messageStyle={styles.buttonText}
-                    onPress={onButtonPress}
-                    messageId="meta.save"
-                    disabled={!isOkay}
-                    testID="main.settings.account.password.save"
+                  <NamedInputField
+                    style={styles.field}
+                    name="main.settings.account.password.new"
+                    isPasswordInput={true}
+                    value={newPassword}
+                    onChangeText={setNewPassword}
+                    testID="main.settings.account.password.new"
                   />
-                </RN.View>
-              </>
+                  <NamedInputField
+                    style={styles.field}
+                    name="main.settings.account.password.repeat"
+                    isPasswordInput={true}
+                    value={repeatedNewPassword}
+                    onChangeText={setRepeatedNewPassword}
+                    testID="main.settings.account.password.repeat"
+                  />
+                  <RN.View style={styles.buttonContainer}>
+                    <Button
+                      style={styles.cancelButton}
+                      messageStyle={styles.cancelButtonText}
+                      onPress={onGoBack}
+                      messageId="meta.cancel"
+                      testID="main.settings.account.password.cancel"
+                    />
+                    <Button
+                      style={styles.changePasswordButton}
+                      messageStyle={styles.buttonText}
+                      onPress={onButtonPress}
+                      messageId="meta.save"
+                      disabled={!isOkay}
+                      testID="main.settings.account.password.save"
+                    />
+                  </RN.View>
+                </>
+              ),
+              () => <Spinner style={styles.spinner} />,
+              () => (
+                <AlertBox
+                  imageStyle={styles.failBox}
+                  imageSource={require('../../images/alert-circle.svg')}
+                  duration={state.coolDownDuration}
+                  messageId="main.settings.account.password.failure"
+                />
+              ),
+              () => (
+                <AlertBox
+                  imageStyle={styles.successBox}
+                  imageSource={require('../../images/checkmark-circle-outline.svg')}
+                  duration={state.coolDownDuration}
+                  messageId="main.settings.account.password.success"
+                />
+              ),
             ),
-            () => <Spinner style={styles.spinner} />,
-            () => (
-              <AlertBox
-                imageStyle={styles.failBox}
-                imageSource={require('../../images/alert-circle.svg')}
-                duration={state.coolDownDuration}
-                messageId="main.settings.account.password.failure"
-              />
-            ),
-            () => (
-              <AlertBox
-                imageStyle={styles.successBox}
-                imageSource={require('../../images/checkmark-circle-outline.svg')}
-                duration={state.coolDownDuration}
-                messageId="main.settings.account.password.success"
-              />
-            ),
-          ),
-        )}
-        <CreatedBySosBanner />
+          )}
+          <CreatedBySosBanner />
+        </SafeAreaView>
       </RN.ScrollView>
     </RN.View>
   );
@@ -197,7 +200,6 @@ const styles = RN.StyleSheet.create({
     color: colors.darkestBlue,
   },
   changePasswordButton: {
-    flexGrow: 1,
     backgroundColor: colors.blue,
   },
   scrollContent: {
@@ -215,12 +217,11 @@ const styles = RN.StyleSheet.create({
     tintColor: colors.darkBlue,
   },
   buttonContainer: {
+    flex: 1,
     alignSelf: 'stretch',
-    paddingHorizontal: 40,
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    flexDirection: 'column',
-    paddingTop: 40,
+    justifyContent: 'flex-end',
+    paddingHorizontal: 20,
+    marginVertical: 20,
   },
   buttonText: {
     ...fonts.largeBold,

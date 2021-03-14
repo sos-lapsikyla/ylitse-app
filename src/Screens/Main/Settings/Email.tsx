@@ -84,13 +84,10 @@ export default ({ navigation }: Props) => {
             id="main.settings.account.email.title"
           />
           <Message
-          style={styles.fieldName}
-          id="main.settings.account.userName"
-        />
-        <RN.Text
-          style={styles.fieldValueText}>
-          {storedUsername}
-        </RN.Text>
+            style={styles.fieldName}
+            id="main.settings.account.userName"
+          />
+          <RN.Text style={styles.fieldValueText}>{storedUsername}</RN.Text>
           {pipe(
             requestState,
             RD.fold(
@@ -179,7 +176,6 @@ const styles = RN.StyleSheet.create({
   },
   changePasswordButton: {
     marginTop: 8,
-    flexGrow: 1,
     backgroundColor: colors.blue,
   },
   scrollContent: {
@@ -203,10 +199,11 @@ const styles = RN.StyleSheet.create({
     tintColor: colors.darkBlue,
   },
   buttonContainer: {
+    flex: 1,
     alignSelf: 'stretch',
     justifyContent: 'flex-end',
-    paddingHorizontal: 40,
-    marginTop: 20,
+    paddingHorizontal: 20,
+    marginVertical: 20,
   },
   buttonText: {
     ...fonts.largeBold,
