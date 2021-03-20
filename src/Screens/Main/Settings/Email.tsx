@@ -73,7 +73,7 @@ export default ({ navigation }: Props) => {
         style={styles.scrollView}
         contentContainerStyle={styles.scrollContent}
         showsVerticalScrollIndicator={false}
-        testID={'main.settings.password.view'}
+        testID={'main.settings.email.view'}
       >
         <SafeAreaView
           forceInset={{ bottom: 'always' }}
