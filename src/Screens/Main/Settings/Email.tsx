@@ -46,7 +46,7 @@ export default ({ navigation }: Props) => {
     O.toUndefined,
   );
 
-  const [email, setEmail] = React.useState(storedEmail || '');
+  const [email, setEmail] = React.useState(storedEmail ?? '');
   const dispatch = useDispatch<redux.Dispatch<actions.Action>>();
 
   const onGoBack = () => {
@@ -61,11 +61,12 @@ export default ({ navigation }: Props) => {
 
   React.useEffect(() => {
     if (RD.isSuccess(requestState)) {
-      setEmail(requestState.value.email || '');
+      setEmail(requestState.value.email ?? '');
       const timeout = setTimeout(onGoBack, changeEmailState.coolDownDuration);
       return () => clearTimeout(timeout);
     }
   }, [requestState]);
+
   return (
     <RN.View style={styles.screen}>
       <ScreenTitle id="main.settings.account.email.title" onBack={onGoBack} />
@@ -168,14 +169,12 @@ const styles = RN.StyleSheet.create({
   },
   scrollView: {
     zIndex: 1,
-    marginTop: -32,
   },
   cancelButtonText: {
     ...fonts.large,
     color: colors.darkestBlue,
   },
   changePasswordButton: {
-    marginTop: 8,
     backgroundColor: colors.blue,
   },
   scrollContent: {
@@ -202,13 +201,13 @@ const styles = RN.StyleSheet.create({
     flex: 1,
     alignSelf: 'stretch',
     justifyContent: 'flex-end',
-    paddingHorizontal: 20,
-    marginVertical: 20,
+    paddingHorizontal: 24,
+    marginVertical: 24,
   },
   buttonText: {
     ...fonts.largeBold,
     ...textShadow,
     color: colors.white,
   },
-  cancelButton: { backgroundColor: colors.gray, marginBottom: 10 },
+  cancelButton: { backgroundColor: colors.gray, marginBottom: 16 },
 });

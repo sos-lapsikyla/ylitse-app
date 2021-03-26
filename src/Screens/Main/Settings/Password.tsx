@@ -71,6 +71,7 @@ export default ({ navigation }: Props) => {
       return () => clearTimeout(timeout);
     }
   }, [requestState]);
+  
   return (
     <RN.View style={styles.screen}>
       <ScreenTitle
@@ -193,7 +194,6 @@ const styles = RN.StyleSheet.create({
   },
   scrollView: {
     zIndex: 1,
-    marginTop: -32,
   },
   cancelButtonText: {
     ...fonts.large,
@@ -220,13 +220,13 @@ const styles = RN.StyleSheet.create({
     flex: 1,
     alignSelf: 'stretch',
     justifyContent: 'flex-end',
-    paddingHorizontal: 20,
-    marginVertical: 20,
+    paddingHorizontal: 24,
+    marginVertical: 24,
   },
   buttonText: {
     ...fonts.largeBold,
     ...textShadow,
     color: colors.white,
   },
-  cancelButton: { backgroundColor: colors.gray, marginBottom: 20 },
+  cancelButton: { backgroundColor: colors.gray, marginBottom: 16 },
 });
