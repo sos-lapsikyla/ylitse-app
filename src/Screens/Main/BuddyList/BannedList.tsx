@@ -18,48 +18,41 @@ import TitledContainer from '../../components/TitledContainer';
 import Button from './Button';
 
 import { ChatRoute } from '../Chat';
-import DropDown from 'src/Screens/components/DropDownMenu';
-import { BannedListRoute } from './BannedList';
 
-import * as localization from '../../../localization';
-
-type Item = {
-  text: localization.MessageId;
-  action: () => void;
-  id: string;
+export type BannedListRoute = {
+  'Main/BuddyList/BannedList': {};
 };
 
-export type BuddyListRoute = {
-  'Main/BuddyList': {};
-};
-
-type Props = navigationProps.NavigationProps<
-  BuddyListRoute,
-  ChatRoute & BannedListRoute
->;
+type Props = navigationProps.NavigationProps<BannedListRoute, ChatRoute>;
 
 export default ({ navigation }: Props) => {
-  const buddies = useSelector(buddyState.getActiveBuddies);
+  const buddies = useSelector(buddyState.getBannedBuddies);
 
   const onPress = (buddyId: string) => {
     navigation.navigate('Main/Chat', { buddyId });
   };
 
-
-  const navigateToBanned = () => {
-    navigation.navigate('Main/BuddyList/BannedList', {});
+  const onPressBack = () => {
+    navigation.goBack();
   };
 
-  const dropdown: Item[] = [
-    { text: 'main.chat.navigation.banned', action: navigateToBanned, id: '1' },
-    { text: 'main.chat.navigation.banned', action: navigateToBanned, id: '2' },
-  ];
   return (
     <TitledContainer
       TitleComponent={
         <RN.View style={styles.header}>
-          <Message id="buddyList.title" style={styles.screenTitleText} />
-          <DropDown items={dropdown} />
+          <RN.TouchableOpacity
+            style={styles.backButtonTouchable}
+            onPress={onPressBack}
+          >
+            <RN.Image
+              source={require('../../images/chevron-left.svg')}
+              style={styles.backButtonIcon}
+            />
+          </RN.TouchableOpacity>
+          <Message
+            id="main.chat.navigation.banned"
+            style={styles.screenTitleText}
+          />
         </RN.View>
       }
       color={colors.blue}
@@ -89,8 +82,7 @@ export default ({ navigation }: Props) => {
 
 const styles = RN.StyleSheet.create({
   screenTitleText: {
-    marginTop: 16,
-    marginBottom: 16,
+    marginTop: 8,
     ...fonts.titleLarge,
     ...textShadow,
     textAlign: 'center',
@@ -107,11 +99,19 @@ const styles = RN.StyleSheet.create({
   },
   button: { marginVertical: 16 },
   header: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    paddingVertical: 16,
+    paddingHorizontal: 16,
+    alignSelf: 'stretch',
     justifyContent: 'center',
-    zIndex: 11,
-    elevation: 11,
-    overflow: 'visible',
+  },
+  backButtonIcon: {
+    tintColor: colors.white,
+    width: 48,
+    height: 48,
+  },
+  backButtonTouchable: {
+    position: 'absolute',
+    left: 8,
+    zIndex: 3,
   },
 });

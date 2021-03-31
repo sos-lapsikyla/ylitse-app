@@ -8,15 +8,24 @@ import * as config from './config';
 import * as authApi from './auth';
 
 type ApiBuddy = t.TypeOf<typeof buddyType>;
-const buddyType = t.strict({
-  display_name: t.string,
-  id: t.string,
-});
+const buddyType = t.intersection([
+  t.strict({
+    display_name: t.string,
+    id: t.string,
+  }),
+  t.partial({ status: t.literal('banned') }),
+]);
 
-export type Buddy = ReturnType<typeof toBuddy>;
-const toBuddy = ({ id, display_name }: ApiBuddy) => ({
+export type Buddy = {
+  buddyId: string;
+  name: string;
+  status: 'Banned' | 'Active';
+}
+
+const toBuddy = ({ id, display_name, status,}: ApiBuddy): Buddy => ({
   buddyId: id,
   name: display_name,
+  status: status === 'banned' ? 'Banned' : 'Active',
 });
 
 export function fetchBuddies(
