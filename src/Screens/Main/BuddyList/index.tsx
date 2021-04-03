@@ -18,7 +18,7 @@ import TitledContainer from '../../components/TitledContainer';
 import Button from './Button';
 
 import { ChatRoute } from '../Chat';
-import DropDown from 'src/Screens/components/DropDownMenu';
+import DropDown from 'src/Screens/components/DropDownMenu3';
 import { BannedListRoute } from './BannedList';
 
 import * as localization from '../../../localization';
@@ -45,12 +45,11 @@ export default ({ navigation }: Props) => {
     navigation.navigate('Main/Chat', { buddyId });
   };
 
-
   const navigateToBanned = () => {
     navigation.navigate('Main/BuddyList/BannedList', {});
   };
 
-  const dropdown: Item[] = [
+  const items: Item[] = [
     { text: 'main.chat.navigation.banned', action: navigateToBanned, id: '1' },
     { text: 'main.chat.navigation.banned', action: navigateToBanned, id: '2' },
   ];
@@ -59,7 +58,7 @@ export default ({ navigation }: Props) => {
       TitleComponent={
         <RN.View style={styles.header}>
           <Message id="buddyList.title" style={styles.screenTitleText} />
-          <DropDown items={dropdown} />
+          <DropDown items={items} />
         </RN.View>
       }
       color={colors.blue}
@@ -110,8 +109,6 @@ const styles = RN.StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    zIndex: 11,
-    elevation: 11,
     overflow: 'visible',
   },
 });
