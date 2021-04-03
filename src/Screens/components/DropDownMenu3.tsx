@@ -4,7 +4,9 @@ import RN from 'react-native';
 import * as localization from '../../localization';
 
 import colors from './colors';
+import fonts from './fonts';
 import Message from './Message';
+import shadow from './shadow';
 
 type Item = {
   text: localization.MessageId;
@@ -30,24 +32,26 @@ const DropDown: React.FC<Props> = ({ items }) => {
 
   return (
     <>
-      <RN.TouchableOpacity style={styles.button} onPress={toggleOpen}>
+      <RN.TouchableHighlight style={styles.button} onPress={toggleOpen} 
+                  underlayColor={colors.darkBlue}>
         <RN.Image
-          source={require('../images/search.svg')}
+          source={require('../images/three-dot-menu.svg')}
           style={styles.icon}
         />
-      </RN.TouchableOpacity>
+      </RN.TouchableHighlight>
       <RN.Modal visible={isOpen} transparent onRequestClose={toggleOpen}>
         <RN.TouchableWithoutFeedback onPress={toggleOpen}>
           <RN.View style={RN.StyleSheet.absoluteFill}>
             <RN.View style={styles.dropdown}>
               {items.map(item => (
-                <RN.TouchableOpacity
+                <RN.TouchableHighlight
                   key={item.id}
                   style={styles.buttons}
+                  underlayColor={colors.lighterBlue}
                   onPress={() => itemActionAndCloseModal(item.action)}
                 >
-                  <Message id={item.text} />
-                </RN.TouchableOpacity>
+                  <Message id={item.text} style={styles.text}/>
+                </RN.TouchableHighlight>
               ))}
             </RN.View>
           </RN.View>
@@ -61,27 +65,35 @@ export default DropDown;
 
 const styles = RN.StyleSheet.create({
   dropdown: {
+
+    ...shadow(7),
     position: 'absolute',
-    backgroundColor: colors.orange,
     zIndex: 1,
     right: 8,
-    top: 64,
+    top: 100,
+    borderRadius: 8,
+    paddingVertical: 16,
+    backgroundColor: colors.lightestGray,
     width: '50%',
   },
   icon: {
-    tintColor: colors.blueGray,
-    height: 20,
-    width: 20,
+    tintColor: colors.white,
   },
   button: {
     position: 'absolute',
     right: 16,
+    height: 40,
+    width: 40,
+    borderRadius: 20,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   buttons: {
-    marginTop: 8,
-    padding: 8,
-    backgroundColor: colors.white,
-    borderWidth: 1,
-    borderColor: colors.gray,
+    padding: 16,
+    backgroundColor: colors.lightestGray,
   },
+  text: {
+
+    ...fonts.largeBold,
+  }
 });
