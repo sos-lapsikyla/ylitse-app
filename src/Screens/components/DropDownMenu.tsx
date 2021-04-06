@@ -18,7 +18,7 @@ interface Props {
   testID?: string;
 }
 
-const DropDown: React.FC<Props> = ({ items }) => {
+const DropDown: React.FC<Props> = ({ items, testID }) => {
   const [isOpen, setOpen] = React.useState(false);
   const toggleOpen = () => {
     setOpen(!isOpen);
@@ -35,6 +35,7 @@ const DropDown: React.FC<Props> = ({ items }) => {
         style={styles.button}
         onPress={toggleOpen}
         underlayColor={colors.darkBlue}
+        testID={testID}
       >
         <RN.Image
           source={require('../images/three-dot-menu.svg')}

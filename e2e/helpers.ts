@@ -249,3 +249,31 @@ export async function APISignUpMentor(mentor: any) {
     }),
   });
 }
+
+export async function APIBan(sender: any, reciever: any) {
+  const admin_access_token = await APIAdminAccessToken();
+  const info = await APIUsers(admin_access_token);
+
+  let sender_info = info.find(
+    (o: any) => o.display_name === sender.displayName,
+  );
+  let reciever_info = info.find(
+    (o: any) => o.display_name === reciever.displayName,
+  );
+
+  const access_token = await APIAccessToken(sender.loginName, sender.password);
+  const headers = {
+    Authorization: `Bearer ${access_token}`,
+  };
+
+  await fetch(
+    `${API_URL}/users/${sender_info.id}/contacts/${reciever_info.id}`,
+    {
+      method: 'PUT',
+      headers: headers,
+      body: JSON.stringify({
+        status: 'banned',
+      }),
+    },
+  );
+}
