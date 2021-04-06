@@ -4,16 +4,17 @@ import RN from 'react-native';
 import * as localization from '../../localization';
 
 import colors from './colors';
+import fonts from './fonts';
 import Message from './Message';
+import shadow from './shadow';
 
-type Item = {
-  text: localization.MessageId;
-  action: () => void;
-  id: string;
+export type DropDownItem = {
+  textId: localization.MessageId;
+  onPress: () => void;
 };
 
 interface Props {
-  items?: Item[];
+  items: DropDownItem[];
   testID?: string;
 }
 
@@ -23,67 +24,76 @@ const DropDown: React.FC<Props> = ({ items }) => {
     setOpen(!isOpen);
   };
 
-  function renderItem({ item }: { item: Item }) {
-    return (
-      <RN.TouchableOpacity style={styles.buttons} onPress={item.action}>
-        <Message id={item.text}></Message>
-      </RN.TouchableOpacity>
-    );
-  }
+  const itemActionAndCloseModal = (action: () => void) => {
+    action();
+    toggleOpen();
+  };
 
   return (
     <>
-      <RN.TouchableOpacity style={styles.button} onPress={toggleOpen}>
+      <RN.TouchableHighlight
+        style={styles.button}
+        onPress={toggleOpen}
+        underlayColor={colors.darkBlue}
+      >
         <RN.Image
-          source={require('../images/search.svg')}
+          source={require('../images/three-dot-menu.svg')}
           style={styles.icon}
         />
-      </RN.TouchableOpacity>
-      {isOpen && (
-        <RN.View style={styles.dropdown}>
-          <RN.FlatList
-            contentContainerStyle={styles.scrollContent}
-            data={items}
-            renderItem={renderItem}
-            keyExtractor={item => item.id}
-          />
-        </RN.View>
-      )}
+      </RN.TouchableHighlight>
+      <RN.Modal visible={isOpen} transparent onRequestClose={toggleOpen}>
+        <RN.TouchableWithoutFeedback onPress={toggleOpen}>
+          <RN.View style={RN.StyleSheet.absoluteFill}>
+            <RN.View style={styles.dropdown}>
+              {items.map((item, index) => (
+                <RN.TouchableHighlight
+                  key={index}
+                  style={styles.buttons}
+                  underlayColor={colors.lighterBlue}
+                  onPress={() => itemActionAndCloseModal(item.onPress)}
+                >
+                  <Message id={item.textId} style={styles.text} />
+                </RN.TouchableHighlight>
+              ))}
+            </RN.View>
+          </RN.View>
+        </RN.TouchableWithoutFeedback>
+      </RN.Modal>
     </>
   );
 };
 
 export default DropDown;
 
-const borderRadius = 18;
 const styles = RN.StyleSheet.create({
-  dropdown: {
-    position: 'absolute',
-    backgroundColor: colors.orange,
-    zIndex: 10,
-    right: 8,
-    top: 64,
-    width: '50%',
-  },
-  icon: {
-    tintColor: colors.blueGray,
-    height: 20,
-    width: 20,
-  },
   button: {
     position: 'absolute',
     right: 16,
-    elevation: 10,
+    height: 40,
+    width: 40,
+    borderRadius: 20,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
-  scrollContent: {
-    paddingHorizontal: 24,
-    flexGrow: 1,
+  icon: {
+    tintColor: colors.white,
+  },
+  dropdown: {
+    ...shadow(7),
+    position: 'absolute',
+    zIndex: 1,
+    right: 8,
+    top: 104,
+    borderRadius: 8,
+    paddingVertical: 16,
+    backgroundColor: colors.lightestGray,
+    width: '50%',
   },
   buttons: {
-    marginTop: 8,
-    padding: 8,
-    backgroundColor: colors.white,
-    borderWidth: 1,
-    borderColor: colors.gray,
+    padding: 16,
+    backgroundColor: colors.lightestGray,
+  },
+  text: {
+    ...fonts.largeBold,
   },
 });

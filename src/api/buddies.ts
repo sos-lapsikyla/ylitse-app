@@ -20,9 +20,9 @@ export type Buddy = {
   buddyId: string;
   name: string;
   status: 'Banned' | 'Active';
-}
+};
 
-const toBuddy = ({ id, display_name, status,}: ApiBuddy): Buddy => ({
+const toBuddy = ({ id, display_name, status }: ApiBuddy): Buddy => ({
   buddyId: id,
   name: display_name,
   status: status === 'banned' ? 'Banned' : 'Active',

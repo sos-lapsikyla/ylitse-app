@@ -1,12 +1,10 @@
 import React from 'react';
 import RN from 'react-native';
 import { useSelector } from 'react-redux';
-import * as RD from '@devexperts/remote-data-ts';
 
 import * as navigationProps from '../../../lib/navigation-props';
 
 import * as buddyState from '../../../state/reducers/buddies';
-import * as messageState from '../../../state/reducers/messages';
 
 import colors from '../../components/colors';
 import fonts from '../../components/fonts';

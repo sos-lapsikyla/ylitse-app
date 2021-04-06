@@ -1,12 +1,10 @@
 import React from 'react';
 import RN from 'react-native';
 import { useSelector } from 'react-redux';
-import * as RD from '@devexperts/remote-data-ts';
 
 import * as navigationProps from '../../../lib/navigation-props';
 
 import * as buddyState from '../../../state/reducers/buddies';
-import * as messageState from '../../../state/reducers/messages';
 
 import colors from '../../components/colors';
 import fonts from '../../components/fonts';
@@ -18,16 +16,8 @@ import TitledContainer from '../../components/TitledContainer';
 import Button from './Button';
 
 import { ChatRoute } from '../Chat';
-import DropDown from 'src/Screens/components/DropDownMenu3';
+import DropDown, { DropDownItem } from 'src/Screens/components/DropDownMenu';
 import { BannedListRoute } from './BannedList';
-
-import * as localization from '../../../localization';
-
-type Item = {
-  text: localization.MessageId;
-  action: () => void;
-  id: string;
-};
 
 export type BuddyListRoute = {
   'Main/BuddyList': {};
@@ -49,9 +39,8 @@ export default ({ navigation }: Props) => {
     navigation.navigate('Main/BuddyList/BannedList', {});
   };
 
-  const items: Item[] = [
-    { text: 'main.chat.navigation.banned', action: navigateToBanned, id: '1' },
-    { text: 'main.chat.navigation.banned', action: navigateToBanned, id: '2' },
+  const items: DropDownItem[] = [
+    { textId: 'main.chat.navigation.banned', onPress: navigateToBanned },
   ];
   return (
     <TitledContainer

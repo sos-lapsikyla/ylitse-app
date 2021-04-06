@@ -5,7 +5,7 @@ import * as set from 'fp-ts/lib/Set';
 import * as E from 'fp-ts/lib/Either';
 import * as Eq from 'fp-ts/lib/Eq';
 import { pipe } from 'fp-ts/lib/pipeable';
-import {flow } from 'fp-ts/lib/function';
+import { flow } from 'fp-ts/lib/function';
 
 import * as buddyApi from '../../api/buddies';
 
@@ -61,24 +61,29 @@ export const reducer: automaton.Reducer<State, actions.Action> = (
   }
 };
 
-const getBuddiesWithStatus = (status: buddyApi.Buddy['status']) => 
-flow(({ buddies }: types.AppState) => buddies, RD.map(
-  buddies => Object.values(buddies).filter(({status: buddyStatus}) => buddyStatus === status)
-  )
-);
+const getBuddiesWithStatus = (status: buddyApi.Buddy['status']) =>
+  flow(
+    ({ buddies }: types.AppState) => buddies,
+    RD.map(buddies =>
+      Object.values(buddies).filter(
+        ({ status: buddyStatus }) => buddyStatus === status,
+      ),
+    ),
+  );
 
-
-const getBuddies = (status: buddyApi.Buddy['status']) =>  (appState: types.AppState) => {
+const getBuddies = (status: buddyApi.Buddy['status']) => (
+  appState: types.AppState,
+) => {
   const buddies = getBuddiesWithStatus(status)(appState);
   const buddyOrder = messageState.getOrder(appState);
   const both = RD.combine(buddies, buddyOrder);
-  
-  return RD.remoteData.map(both, ([buddyList, buddyOrder]) => [...buddyList]
-      .sort(
-        (a, b) => (buddyOrder[b.buddyId] ?? 0) - (buddyOrder[a.buddyId] ?? 0),
-      )
-  )
-}
+
+  return RD.remoteData.map(both, ([buddyList, buddyOrder]) =>
+    [...buddyList].sort(
+      (a, b) => (buddyOrder[b.buddyId] || 0) - (buddyOrder[a.buddyId] || 0),
+    ),
+  );
+};
 
 export const getBannedBuddies = getBuddies('Banned');
 
