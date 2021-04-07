@@ -56,6 +56,31 @@ export const reducer: automaton.Reducer<State, actions.Action> = (
       );
     case 'buddies/completed':
       return RD.fromEither(action.payload);
+
+    case 'buddies/ban/start':
+      return automaton.loop(
+        RD.pending,
+        withToken(
+          buddyApi.banBuddy(action.payload.buddyId),
+          actions.make('buddies/ban/end'),
+        ),
+      );
+
+    case 'buddies/ban/end':
+      return pipe(
+        action.payload,
+        E.fold(
+          () => state,
+          buddy =>
+            pipe(
+              state,
+              RD.map(buddies => ({
+                ...buddies,
+                [buddy.buddyId]: buddy,
+              })),
+            ),
+        ),
+      );
     default:
       return state;
   }
