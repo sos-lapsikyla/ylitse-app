@@ -13,7 +13,7 @@ import { textShadow } from './shadow';
 
 interface Props<E, A> {
   data: RD.RemoteData<E, A>;
-  fetchData: () => void | undefined;
+  fetchData?: () => void | undefined;
   children: (value: A) => React.ReactElement;
 }
 
@@ -23,7 +23,7 @@ function RemoteData<E, A>({
   fetchData,
 }: Props<E, A>): React.ReactElement {
   React.useEffect(() => {
-    if (RD.isInitial(data)) {
+    if (RD.isInitial(data) && fetchData) {
       fetchData();
     }
   });
@@ -51,12 +51,14 @@ function RemoteData<E, A>({
               style={styles.failureText}
               id="components.remoteData.loadingFailed"
             />
-            <Button
-              onPress={fetchData}
-              messageStyle={styles.retryButtonText}
-              messageId="components.remoteData.retry"
-              style={{ backgroundColor: colors.blue }}
-            />
+            {fetchData ? (
+              <Button
+                onPress={fetchData}
+                messageStyle={styles.retryButtonText}
+                messageId="components.remoteData.retry"
+                style={{ backgroundColor: colors.blue }}
+              />
+            ) : null}
           </Card>
         </RN.View>
       ),

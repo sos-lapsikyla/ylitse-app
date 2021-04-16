@@ -16,50 +16,52 @@ import TitledContainer from '../../components/TitledContainer';
 import Button from './Button';
 
 import { ChatRoute } from '../Chat';
-import DropDown, { DropDownItem } from 'src/Screens/components/DropDownMenu';
-import { BannedListRoute } from './BannedList';
 
-export type BuddyListRoute = {
-  'Main/BuddyList': {};
+export type BannedListRoute = {
+  'Main/BuddyList/BannedList': {};
 };
 
-type Props = navigationProps.NavigationProps<
-  BuddyListRoute,
-  ChatRoute & BannedListRoute
->;
+type Props = navigationProps.NavigationProps<BannedListRoute, ChatRoute>;
 
 export default ({ navigation }: Props) => {
-  const buddies = useSelector(buddyState.getActiveBuddies);
+  const remoteBuddies = useSelector(buddyState.getBannedBuddies);
 
   const onPress = (buddyId: string) => {
     navigation.navigate('Main/Chat', { buddyId });
   };
 
-  const navigateToBanned = () => {
-    navigation.navigate('Main/BuddyList/BannedList', {});
+  const onPressBack = () => {
+    navigation.goBack();
   };
 
-  const items: DropDownItem[] = [
-    { textId: 'main.chat.navigation.banned', onPress: navigateToBanned },
-  ];
   return (
     <TitledContainer
       TitleComponent={
         <RN.View style={styles.header}>
-          <Message id="buddyList.title" style={styles.screenTitleText} />
-          <DropDown items={items} testID={'main.buddylist.menu'} />
+          <RN.TouchableOpacity
+            onPress={onPressBack}
+          >
+            <RN.Image
+              source={require('../../images/chevron-left.svg')}
+              style={styles.backButtonIcon}
+            />
+          </RN.TouchableOpacity>
+          <Message
+            id="main.chat.navigation.banned"
+            style={styles.screenTitleText}
+          />
         </RN.View>
       }
       color={colors.blue}
     >
-      <RemoteData data={buddies} fetchData={() => {}}>
-        {value => (
+      <RemoteData data={remoteBuddies}>
+        {buddies => (
           <RN.ScrollView
             style={styles.scrollView}
             contentContainerStyle={styles.scrollContent}
             testID={'main.buddyList.view'}
           >
-            {value.map(buddy => (
+            {buddies.map(buddy => (
               <Button
                 key={buddy.buddyId + '1'}
                 style={styles.button}
@@ -76,16 +78,21 @@ export default ({ navigation }: Props) => {
 };
 
 const styles = RN.StyleSheet.create({
+header: {
+    paddingVertical: 16,
+    paddingHorizontal: 16,
+    alignSelf: 'stretch',
+    justifyContent: 'space-around',
+    flexDirection: 'row'
+  },
   screenTitleText: {
-    marginTop: 16,
-    marginBottom: 16,
+    marginTop: 8,
     ...fonts.titleLarge,
     ...textShadow,
     textAlign: 'center',
     color: colors.white,
   },
   scrollView: {
-    zIndex: 1,
     marginTop: -32,
   },
   scrollContent: {
@@ -94,10 +101,9 @@ const styles = RN.StyleSheet.create({
     paddingBottom: 200,
   },
   button: { marginVertical: 16 },
-  header: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    overflow: 'visible',
+  backButtonIcon: {
+    tintColor: colors.white,
+    width: 48,
+    height: 48,
   },
 });
