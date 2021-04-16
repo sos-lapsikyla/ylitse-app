@@ -55,7 +55,7 @@ export default ({ navigation }: Props) => {
       }
       color={colors.blue}
     >
-      <RemoteData data={buddies} fetchData={() => {}}>
+      <RemoteData data={buddies}>
         {value => (
           <RN.ScrollView
             style={styles.scrollView}
