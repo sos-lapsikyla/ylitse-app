@@ -60,7 +60,7 @@ const Title: React.FC<Props> = ({ style, onPress, name, buddyId }) => {
         <RN.Text style={styles.name}>{name}</RN.Text>
         <DropDown items={dropdownItems} testID={'main.chat.menu'} tintColor={colors.black} />
         {dialogOpen &&
-        <Dialog textId={'main.chat.ban.confirmation'} onPressCancel={() => setDialogOpen(false)} onPress={handleBan} type='warning'></Dialog>
+        <Dialog textId={'main.chat.ban.confirmation'} buttonId={'main.chat.ban'} onPressCancel={() => setDialogOpen(false)} onPress={handleBan} type='warning'></Dialog>
         }
       </SafeAreaView>
     </RN.View>

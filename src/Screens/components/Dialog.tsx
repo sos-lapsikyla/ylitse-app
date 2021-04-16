@@ -10,6 +10,7 @@ import Button from 'src/Screens/components/Button';
 
 interface Props {
   textId: localization.MessageId;
+  buttonId: localization.MessageId;
   onPressCancel: () => void | undefined;
   onPress: () => void | undefined;
   type?: 'warning' | undefined;
@@ -18,6 +19,7 @@ interface Props {
 
 export const Dialog = ({
   textId,
+  buttonId,
   onPressCancel,
   onPress,
   type,
@@ -28,7 +30,7 @@ export const Dialog = ({
       : [styles.button, styles.dialog];
       
   return (
-    <RN.Modal animationType="slide" transparent={true} visible={true}>
+    <RN.Modal animationType="fade" transparent={true} visible={true}>
       <RN.View style={styles.background}>
         <RN.View style={dialogStyle}>
           <RN.View style={{ flexDirection: 'row', marginBottom: 8 }}>
