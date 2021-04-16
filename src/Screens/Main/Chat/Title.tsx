@@ -1,15 +1,19 @@
 import React from 'react';
 import RN from 'react-native';
 import { SafeAreaView } from 'react-navigation';
+import * as redux from 'redux';
 import * as ReactRedux from 'react-redux';
 
 import * as state from '../../../state';
 import * as selectors from '../../../state/selectors';
+import * as actions from '../../../state/actions';
 
 import colors from '../../components/colors';
 import { cardBorderRadius } from '../../components/Card';
 import fonts from '../../components/fonts';
 import getBuddyColor from '../../components/getBuddyColor';
+import DropDown, { DropDownItem } from 'src/Screens/components/DropDownMenu';
+import { Dialog } from 'src/Screens/components/Dialog';
 
 type StateProps = {
   name: string;
@@ -23,7 +27,20 @@ type OwnProps = {
 type Props = OwnProps & DispatchProps & StateProps;
 
 const Title: React.FC<Props> = ({ style, onPress, name, buddyId }) => {
+  const [dialogOpen, setDialogOpen] = React.useState(false)
   const color = getBuddyColor(buddyId);
+
+  const dispatch = ReactRedux.useDispatch<redux.Dispatch<actions.Action>>();
+  const banBuddy = () => {
+    dispatch({ type: 'buddies/ban/start', payload: { buddyId } });
+  };
+  const handleBan = () => {
+    banBuddy()
+    onPress()
+  }
+  const dropdownItems: DropDownItem[] = [
+    { textId: 'main.chat.ban', onPress: () => setDialogOpen(true) },
+  ];
 
   return (
     <RN.View style={[styles.blob, { backgroundColor: color }, style]}>
@@ -41,6 +58,10 @@ const Title: React.FC<Props> = ({ style, onPress, name, buddyId }) => {
           style={styles.userIcon}
         />
         <RN.Text style={styles.name}>{name}</RN.Text>
+        <DropDown items={dropdownItems} testID={'main.chat.menu'} tintColor={colors.black} />
+        {dialogOpen &&
+        <Dialog textId={'main.chat.ban.confirmation'} onPressCancel={() => setDialogOpen(false)} onPress={handleBan} type='warning'></Dialog>
+        }
       </SafeAreaView>
     </RN.View>
   );

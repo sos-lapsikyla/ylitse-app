@@ -6,6 +6,7 @@ const colors = {
   white: '#FFF',
   gray: '#8F9EAC',
   black: '#000',
+  transparentBlack: '#0002',
 
   // blues
   blue: '#00b1e6',
@@ -25,6 +26,7 @@ const colors = {
 
   // others
   danger: '#E93C66',
+  lightDanger: '#F19A9C',
   teal: '#75C9C3',
   blueGray: '#5A7C9B',
 };
