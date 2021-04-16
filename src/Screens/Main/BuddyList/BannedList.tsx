@@ -24,7 +24,7 @@ export type BannedListRoute = {
 type Props = navigationProps.NavigationProps<BannedListRoute, ChatRoute>;
 
 export default ({ navigation }: Props) => {
-  const buddies = useSelector(buddyState.getBannedBuddies);
+  const remoteBuddies = useSelector(buddyState.getBannedBuddies);
 
   const onPress = (buddyId: string) => {
     navigation.navigate('Main/Chat', { buddyId });
@@ -55,14 +55,14 @@ export default ({ navigation }: Props) => {
       }
       color={colors.blue}
     >
-      <RemoteData data={buddies}>
-        {value => (
+      <RemoteData data={remoteBuddies}>
+        {buddies => (
           <RN.ScrollView
             style={styles.scrollView}
             contentContainerStyle={styles.scrollContent}
             testID={'main.buddyList.view'}
           >
-            {value.map(buddy => (
+            {buddies.map(buddy => (
               <Button
                 key={buddy.buddyId + '1'}
                 style={styles.button}
