@@ -32,7 +32,7 @@ const DropDown: React.FC<Props> = ({ items, testID }) => {
   return (
     <>
       <RN.TouchableHighlight
-        style={styles.button}
+        style={styles.kebab}
         onPress={toggleOpen}
         underlayColor={colors.darkBlue}
         testID={testID}
@@ -49,7 +49,7 @@ const DropDown: React.FC<Props> = ({ items, testID }) => {
               {items.map((item, index) => (
                 <RN.TouchableHighlight
                   key={index}
-                  style={styles.buttons}
+                  style={styles.button}
                   underlayColor={colors.lighterBlue}
                   onPress={() => itemActionAndCloseModal(item.onPress)}
                 >
@@ -67,12 +67,12 @@ const DropDown: React.FC<Props> = ({ items, testID }) => {
 export default DropDown;
 
 const styles = RN.StyleSheet.create({
-  button: {
+  kebab: {
     position: 'absolute',
     right: 16,
     height: 40,
     width: 40,
-    borderRadius: 20,
+    borderRadius: 24,
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -83,16 +83,17 @@ const styles = RN.StyleSheet.create({
     ...shadow(7),
     position: 'absolute',
     zIndex: 1,
-    right: 8,
+    right: 16,
     top: 104,
-    borderRadius: 8,
+    borderRadius: 16,
     paddingVertical: 16,
     backgroundColor: colors.lightestGray,
-    width: '50%',
+ 
   },
-  buttons: {
+  button: {
     padding: 16,
     backgroundColor: colors.lightestGray,
+    paddingHorizontal: 32,
   },
   text: {
     ...fonts.largeBold,

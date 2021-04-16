@@ -39,7 +39,6 @@ export default ({ navigation }: Props) => {
       TitleComponent={
         <RN.View style={styles.header}>
           <RN.TouchableOpacity
-            style={styles.backButtonTouchable}
             onPress={onPressBack}
           >
             <RN.Image
@@ -79,6 +78,13 @@ export default ({ navigation }: Props) => {
 };
 
 const styles = RN.StyleSheet.create({
+header: {
+    paddingVertical: 16,
+    paddingHorizontal: 16,
+    alignSelf: 'stretch',
+    justifyContent: 'space-around',
+    flexDirection: 'row'
+  },
   screenTitleText: {
     marginTop: 8,
     ...fonts.titleLarge,
@@ -87,7 +93,6 @@ const styles = RN.StyleSheet.create({
     color: colors.white,
   },
   scrollView: {
-    zIndex: 1,
     marginTop: -32,
   },
   scrollContent: {
@@ -96,20 +101,9 @@ const styles = RN.StyleSheet.create({
     paddingBottom: 200,
   },
   button: { marginVertical: 16 },
-  header: {
-    paddingVertical: 16,
-    paddingHorizontal: 16,
-    alignSelf: 'stretch',
-    justifyContent: 'center',
-  },
   backButtonIcon: {
     tintColor: colors.white,
     width: 48,
     height: 48,
-  },
-  backButtonTouchable: {
-    position: 'absolute',
-    left: 8,
-    zIndex: 3,
   },
 });
