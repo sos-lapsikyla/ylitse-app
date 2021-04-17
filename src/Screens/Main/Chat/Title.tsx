@@ -24,6 +24,7 @@ type Props = OwnProps & DispatchProps & StateProps;
 
 const Title: React.FC<Props> = ({ style, onPress, name, buddyId }) => {
   const color = getBuddyColor(buddyId);
+
   return (
     <RN.View style={[styles.blob, { backgroundColor: color }, style]}>
       <SafeAreaView style={styles.safeArea} forceInset={{ top: 'always' }}>
