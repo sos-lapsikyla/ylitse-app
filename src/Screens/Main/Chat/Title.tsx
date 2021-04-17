@@ -1,12 +1,10 @@
 import React from 'react';
 import RN from 'react-native';
 import { SafeAreaView } from 'react-navigation';
-import * as redux from 'redux';
 import * as ReactRedux from 'react-redux';
 
 import * as state from '../../../state';
 import * as selectors from '../../../state/selectors';
-import * as actions from '../../../state/actions';
 
 import colors from '../../components/colors';
 import { cardBorderRadius } from '../../components/Card';
@@ -27,10 +25,6 @@ type Props = OwnProps & DispatchProps & StateProps;
 const Title: React.FC<Props> = ({ style, onPress, name, buddyId }) => {
   const color = getBuddyColor(buddyId);
 
-  const dispatch = ReactRedux.useDispatch<redux.Dispatch<actions.Action>>();
-  const banBuddy = () => {
-    dispatch({ type: 'buddies/ban/start', payload: { buddyId } });
-  };
   return (
     <RN.View style={[styles.blob, { backgroundColor: color }, style]}>
       <SafeAreaView style={styles.safeArea} forceInset={{ top: 'always' }}>
@@ -47,7 +41,6 @@ const Title: React.FC<Props> = ({ style, onPress, name, buddyId }) => {
           style={styles.userIcon}
         />
         <RN.Text style={styles.name}>{name}</RN.Text>
-        <RN.TouchableOpacity style={styles.button} onPress={banBuddy} />
       </SafeAreaView>
     </RN.View>
   );
@@ -78,12 +71,6 @@ const styles = RN.StyleSheet.create({
   },
   userIcon: {
     tintColor: colors.black,
-    width: 64,
-    height: 64,
-    marginRight: 16,
-  },
-  button: {
-    backgroundColor: 'magenta',
     width: 64,
     height: 64,
     marginRight: 16,
