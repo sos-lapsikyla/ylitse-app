@@ -36,9 +36,9 @@ export const messages: { [key in MessageId]: string } = {
   'date.month.11': 'November',
   'date.month.12': 'December',
 
-  'main.chat.navigation.banned': 'Banned chats',
   'main.chat.ban': 'Ban chat',
   'main.chat.ban.confirmation': 'Are you sure you want to ban this user?',
+  'main.chat.navigation.banned': 'Banned chats',
 
   'main.mentor.other': 'I can also support with:',
   'main.mentor.story': 'My story',

@@ -34,9 +34,9 @@ export const messages = {
   'date.month.11': 'marraskuuta',
   'date.month.12': 'joulukuuta',
 
-  'main.chat.navigation.banned': 'Estetyt',
   'main.chat.ban': 'Estä keskustelu',
   'main.chat.ban.confirmation': 'Haluatko varmasti estää tämän keskustelun?',
+  'main.chat.navigation.banned': 'Estetyt',
 
   'main.mentor.other': 'Pystyn auttamaan näissä:',
   'main.mentor.story': 'Tarinani',

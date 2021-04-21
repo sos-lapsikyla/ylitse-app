@@ -28,13 +28,16 @@ export const Dialog = ({
     type === 'warning'
       ? [styles.actionButtonWarning, styles.dialogWarning]
       : [styles.actionButtonNormal, styles.dialogNormal];
-      
+
   return (
     <RN.Modal animationType="fade" transparent={true} visible={true}>
       <RN.View style={styles.background}>
         <RN.View style={[dialogStyle, styles.dialog]}>
           <RN.View style={styles.infoView}>
-            <RN.Image source={require('../images/alert-circle-outline.svg')} style={styles.icon} />
+            <RN.Image
+              source={require('../images/alert-circle-outline.svg')}
+              style={styles.icon}
+            />
             <Message id={textId} style={styles.message} />
           </RN.View>
           <RN.View style={{ flexDirection: 'row' }}>
@@ -42,12 +45,12 @@ export const Dialog = ({
               onPress={onPressCancel}
               messageId={'meta.cancel'}
               style={styles.cancelButton}
-            ></Button>
+            />
             <Button
               onPress={onPress}
               messageId={buttonId}
               style={[buttonStyle, styles.button]}
-            ></Button>
+            />
           </RN.View>
         </RN.View>
       </RN.View>
@@ -69,13 +72,13 @@ const styles = RN.StyleSheet.create({
     padding: 24,
   },
   infoView: {
-    flexDirection: 'row', 
-    marginBottom: 8, 
+    flexDirection: 'row',
+    marginBottom: 8,
     marginRight: 32,
   },
-  message: { 
-    ...fonts.large, 
-    marginLeft: 8, 
+  message: {
+    ...fonts.large,
+    marginLeft: 8,
   },
   button: {
     flex: 1,
@@ -96,12 +99,11 @@ const styles = RN.StyleSheet.create({
   cancelButton: {
     backgroundColor: colors.lightGray,
     flex: 1,
-    margin: 8,    
+    margin: 8,
   },
   icon: {
     tintColor: colors.darkestBlue,
     width: 48,
     height: 48,
   },
-  
 });

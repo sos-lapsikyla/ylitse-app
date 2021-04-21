@@ -25,7 +25,7 @@ type Props = navigationProps.NavigationProps<BannedListRoute, ChatRoute>;
 
 export default ({ navigation }: Props) => {
   const remoteBuddies = useSelector(buddyState.getBannedBuddies);
-  const isBanned = true
+  const isBanned = true;
   const onPress = (buddyId: string) => {
     navigation.navigate('Main/Chat', { buddyId, isBanned });
   };
@@ -38,9 +38,7 @@ export default ({ navigation }: Props) => {
     <TitledContainer
       TitleComponent={
         <RN.View style={styles.header}>
-          <RN.TouchableOpacity
-            onPress={onPressBack}
-          >
+          <RN.TouchableOpacity onPress={onPressBack}>
             <RN.Image
               source={require('../../images/chevron-left.svg')}
               style={styles.backButtonIcon}
@@ -78,12 +76,12 @@ export default ({ navigation }: Props) => {
 };
 
 const styles = RN.StyleSheet.create({
-header: {
+  header: {
     paddingVertical: 16,
     paddingHorizontal: 16,
     alignSelf: 'stretch',
     justifyContent: 'space-around',
-    flexDirection: 'row'
+    flexDirection: 'row',
   },
   screenTitleText: {
     marginTop: 8,

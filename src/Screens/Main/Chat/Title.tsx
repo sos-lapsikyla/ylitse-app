@@ -27,8 +27,14 @@ type OwnProps = {
 };
 type Props = OwnProps & DispatchProps & StateProps;
 
-const Title: React.FC<Props> = ({ style, onPress, name, buddyId, isBanned }) => {
-  const [dialogOpen, setDialogOpen] = React.useState(false)
+const Title: React.FC<Props> = ({
+  style,
+  onPress,
+  name,
+  buddyId,
+  isBanned,
+}) => {
+  const [dialogOpen, setDialogOpen] = React.useState(false);
   const color = getBuddyColor(buddyId);
 
   const dispatch = ReactRedux.useDispatch<redux.Dispatch<actions.Action>>();
@@ -36,9 +42,9 @@ const Title: React.FC<Props> = ({ style, onPress, name, buddyId, isBanned }) => 
     dispatch({ type: 'buddies/ban/start', payload: { buddyId } });
   };
   const handleBan = () => {
-    banBuddy()
-    onPress()
-  }
+    banBuddy();
+    onPress();
+  };
   const dropdownItems: DropDownItem[] = [
     { textId: 'main.chat.ban', onPress: () => setDialogOpen(true) },
   ];
@@ -59,10 +65,22 @@ const Title: React.FC<Props> = ({ style, onPress, name, buddyId, isBanned }) => 
           style={styles.userIcon}
         />
         <RN.Text style={styles.name}>{name}</RN.Text>
-        {isBanned ?? <DropDown items={dropdownItems} testID={'main.chat.menu'} tintColor={colors.black} />}
-        {dialogOpen &&
-        <Dialog textId={'main.chat.ban.confirmation'} buttonId={'main.chat.ban'} onPressCancel={() => setDialogOpen(false)} onPress={handleBan} type='warning'></Dialog>
-        }
+        {isBanned && (
+          <DropDown
+            items={dropdownItems}
+            testID={'main.chat.menu'}
+            tintColor={colors.black}
+          />
+        )}
+        {dialogOpen && (
+          <Dialog
+            textId={'main.chat.ban.confirmation'}
+            buttonId={'main.chat.ban'}
+            onPressCancel={() => setDialogOpen(false)}
+            onPress={handleBan}
+            type="warning"
+          />
+        )}
       </SafeAreaView>
     </RN.View>
   );

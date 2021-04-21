@@ -46,7 +46,7 @@ export default ({ navigation }: Props) => {
     <TitledContainer
       TitleComponent={
         <RN.View style={styles.header}>
-          <RN.View style={{height: 40, width: 40}}></RN.View>
+          <RN.View style={{ height: 40, width: 40 }} />
           <Message id="buddyList.title" style={styles.screenTitleText} />
           <DropDown items={items} testID={'main.buddylist.menu'} />
         </RN.View>

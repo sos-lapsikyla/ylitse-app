@@ -10,7 +10,7 @@ import MessageList from './MessageList';
 import colors from '../../components/colors';
 
 export type ChatRoute = {
-  'Main/Chat': { buddyId: string, isBanned?: boolean };
+  'Main/Chat': { buddyId: string; isBanned?: boolean };
 };
 
 type Props = navigationProps.NavigationProps<ChatRoute, ChatRoute>;
@@ -24,7 +24,12 @@ const Chat = ({ navigation }: Props) => {
     RN.Platform.OS === 'ios' ? 'padding' : undefined;
   return (
     <RN.View style={styles.screen}>
-      <Title style={styles.title} onPress={goBack} buddyId={buddyId} isBanned={isBanned} />
+      <Title
+        style={styles.title}
+        onPress={goBack}
+        buddyId={buddyId}
+        isBanned={isBanned}
+      />
       <RN.KeyboardAvoidingView
         style={styles.container}
         behavior={keyboardViewBehaviour}
