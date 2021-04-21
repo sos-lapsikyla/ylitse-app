@@ -46,6 +46,7 @@ export default ({ navigation }: Props) => {
     <TitledContainer
       TitleComponent={
         <RN.View style={styles.header}>
+          <RN.View style={{height: 40, width: 40}}></RN.View>
           <Message id="buddyList.title" style={styles.screenTitleText} />
           <DropDown items={items} testID={'main.buddylist.menu'} />
         </RN.View>
@@ -97,7 +98,7 @@ const styles = RN.StyleSheet.create({
   header: {
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent: 'space-around',
     overflow: 'visible',
   },
 });

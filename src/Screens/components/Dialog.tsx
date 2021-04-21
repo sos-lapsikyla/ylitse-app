@@ -26,16 +26,16 @@ export const Dialog = ({
 }: Props) => {
   const [buttonStyle, dialogStyle] =
     type === 'warning'
-      ? [styles.buttonWarning, styles.dialogWarning]
-      : [styles.button, styles.dialog];
+      ? [styles.actionButtonWarning, styles.dialogWarning]
+      : [styles.actionButtonNormal, styles.dialogNormal];
       
   return (
     <RN.Modal animationType="fade" transparent={true} visible={true}>
       <RN.View style={styles.background}>
-        <RN.View style={dialogStyle}>
-          <RN.View style={{ flexDirection: 'row', marginBottom: 8 }}>
+        <RN.View style={[dialogStyle, styles.dialog]}>
+          <RN.View style={styles.infoView}>
             <RN.Image source={require('../images/alert-circle-outline.svg')} style={styles.icon} />
-            <Message id={textId} style={{ ...fonts.large, marginLeft: 8 }} />
+            <Message id={textId} style={styles.message} />
           </RN.View>
           <RN.View style={{ flexDirection: 'row' }}>
             <Button
@@ -45,8 +45,8 @@ export const Dialog = ({
             ></Button>
             <Button
               onPress={onPress}
-              messageId={'main.chat.ban'}
-              style={buttonStyle}
+              messageId={buttonId}
+              style={[buttonStyle, styles.button]}
             ></Button>
           </RN.View>
         </RN.View>
@@ -56,27 +56,42 @@ export const Dialog = ({
 };
 
 const styles = RN.StyleSheet.create({
+  background: {
+    backgroundColor: '#000a',
+    position: 'absolute',
+    height: '100%',
+    width: '100%',
+    justifyContent: 'center',
+  },
   dialog: {
-    backgroundColor: colors.lightBlue,
     borderRadius: 16,
     margin: 16,
     padding: 24,
   },
+  infoView: {
+    flexDirection: 'row', 
+    marginBottom: 8, 
+    marginRight: 32,
+  },
+  message: { 
+    ...fonts.large, 
+    marginLeft: 8, 
+  },
   button: {
-    backgroundColor: colors.blue,
     flex: 1,
     margin: 8,
+  },
+  dialogNormal: {
+    backgroundColor: colors.lighterBlue,
   },
   dialogWarning: {
     backgroundColor: colors.lightDanger,
-    borderRadius: 16,
-    margin: 16,
-    padding: 16,
   },
-  buttonWarning: {
+  actionButtonNormal: {
+    backgroundColor: colors.blue,
+  },
+  actionButtonWarning: {
     backgroundColor: colors.red,
-    flex: 1,
-    margin: 8,
   },
   cancelButton: {
     backgroundColor: colors.lightGray,
@@ -88,11 +103,5 @@ const styles = RN.StyleSheet.create({
     width: 48,
     height: 48,
   },
-  background: {
-    backgroundColor: '#000a',
-    position: 'absolute',
-    height: '100%',
-    width: '100%',
-    justifyContent: 'center',
-  },
+  
 });

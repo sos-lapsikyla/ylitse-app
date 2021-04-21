@@ -69,8 +69,6 @@ export default DropDown;
 
 const styles = RN.StyleSheet.create({
   kebab: {
-    position: 'absolute',
-    right: 16,
     height: 40,
     width: 40,
     borderRadius: 24,
