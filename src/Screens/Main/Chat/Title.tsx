@@ -65,7 +65,7 @@ const Title: React.FC<Props> = ({
           style={styles.userIcon}
         />
         <RN.Text style={styles.name}>{name}</RN.Text>
-        {isBanned && (
+        {!isBanned && (
           <DropDown
             items={dropdownItems}
             testID={'main.chat.menu'}
