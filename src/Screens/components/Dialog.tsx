@@ -88,7 +88,7 @@ const styles = RN.StyleSheet.create({
     backgroundColor: colors.lighterBlue,
   },
   dialogWarning: {
-    backgroundColor: colors.lightDanger,
+    backgroundColor: colors.warning,
   },
   actionButtonNormal: {
     backgroundColor: colors.blue,
