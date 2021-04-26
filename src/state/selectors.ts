@@ -48,6 +48,22 @@ export const getBuddyName = (
   );
 };
 
+export const getBuddyStatus = (
+  buddyId: string,
+  buddyState: AppState['buddies'],
+) => {
+  const look = (fa: RD.RemoteData<unknown, Record<string, { status: 'Banned' | 'Active' }>>) =>
+    RD.remoteData.map(fa, a => record.lookup(buddyId, a));
+  const buddy = getOptionM(RD.remoteData).alt(look(buddyState), () =>
+    look(buddyState),
+  );
+  return getFoldableComposition(RD.remoteData, O.option).reduce(
+    buddy,
+    '',
+    (_, { status }) => status,
+  );
+};
+
 const messageList = (messageState: AppState['messages'], buddyId: string) => {
   const messagesById = RD.remoteData.map(messageState.messages, r =>
     record.lookup(buddyId, r),

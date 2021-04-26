@@ -17,13 +17,13 @@ import { Dialog } from 'src/Screens/components/Dialog';
 
 type StateProps = {
   name: string;
+  isBanned: boolean;
 };
 type DispatchProps = {};
 type OwnProps = {
   style?: RN.StyleProp<RN.ViewStyle>;
   onPress: () => void | undefined;
   buddyId: string;
-  isBanned?: boolean;
 };
 type Props = OwnProps & DispatchProps & StateProps;
 
@@ -31,8 +31,8 @@ const Title: React.FC<Props> = ({
   style,
   onPress,
   name,
-  buddyId,
   isBanned,
+  buddyId,
 }) => {
   const [dialogOpen, setDialogOpen] = React.useState(false);
   const color = getBuddyColor(buddyId);
@@ -129,5 +129,6 @@ export default ReactRedux.connect<
   OwnProps,
   state.AppState
 >(({ mentors, buddies }, { buddyId }) => {
-  return { name: selectors.getBuddyName(buddyId, buddies, mentors) };
+  const isBanned = selectors.getBuddyStatus(buddyId, buddies) == "Banned";
+  return { name: selectors.getBuddyName(buddyId, buddies, mentors), isBanned: isBanned  };
 })(Title);

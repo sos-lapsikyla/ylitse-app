@@ -25,9 +25,8 @@ type Props = navigationProps.NavigationProps<BannedListRoute, ChatRoute>;
 
 export default ({ navigation }: Props) => {
   const remoteBuddies = useSelector(buddyState.getBannedBuddies);
-  const isBanned = true;
   const onPress = (buddyId: string) => {
-    navigation.navigate('Main/Chat', { buddyId, isBanned });
+    navigation.navigate('Main/Chat', { buddyId });
   };
 
   const onPressBack = () => {

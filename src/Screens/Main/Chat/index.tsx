@@ -10,7 +10,7 @@ import MessageList from './MessageList';
 import colors from '../../components/colors';
 
 export type ChatRoute = {
-  'Main/Chat': { buddyId: string; isBanned?: boolean };
+  'Main/Chat': { buddyId: string; };
 };
 
 type Props = navigationProps.NavigationProps<ChatRoute, ChatRoute>;
@@ -19,7 +19,6 @@ const Chat = ({ navigation }: Props) => {
     navigation.goBack();
   };
   const buddyId = navigation.getParam('buddyId');
-  const isBanned = navigation.getParam('isBanned');
   const keyboardViewBehaviour =
     RN.Platform.OS === 'ios' ? 'padding' : undefined;
   return (
@@ -28,7 +27,6 @@ const Chat = ({ navigation }: Props) => {
         style={styles.title}
         onPress={goBack}
         buddyId={buddyId}
-        isBanned={isBanned}
       />
       <RN.KeyboardAvoidingView
         style={styles.container}
