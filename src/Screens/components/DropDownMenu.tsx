@@ -35,7 +35,7 @@ const DropDown: React.FC<Props> = ({ items, testID, tintColor }) => {
       <RN.TouchableHighlight
         style={styles.kebab}
         onPress={toggleOpen}
-        underlayColor={colors.transparentBlack}
+        underlayColor={colors.faintBackground}
         testID={testID}
       >
         <RN.Image

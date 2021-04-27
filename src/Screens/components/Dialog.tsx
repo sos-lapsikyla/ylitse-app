@@ -40,7 +40,7 @@ export const Dialog = ({
             />
             <Message id={textId} style={styles.message} />
           </RN.View>
-          <RN.View style={{ flexDirection: 'row' }}>
+          <RN.View style={styles.buttonContainer}>
             <Button
               onPress={onPressCancel}
               messageId={'meta.cancel'}
@@ -60,7 +60,7 @@ export const Dialog = ({
 
 const styles = RN.StyleSheet.create({
   background: {
-    backgroundColor: '#000a',
+    backgroundColor: colors.transparentBlack,
     position: 'absolute',
     height: '100%',
     width: '100%',
@@ -80,6 +80,7 @@ const styles = RN.StyleSheet.create({
     ...fonts.large,
     marginLeft: 8,
   },
+  buttonContainer: { flexDirection: 'row' },
   button: {
     flex: 1,
     margin: 8,

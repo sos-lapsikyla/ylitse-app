@@ -17,7 +17,6 @@ import { Dialog } from 'src/Screens/components/Dialog';
 
 type StateProps = {
   name: string;
-  isBanned: boolean;
 };
 type DispatchProps = {};
 type OwnProps = {
@@ -27,16 +26,10 @@ type OwnProps = {
 };
 type Props = OwnProps & DispatchProps & StateProps;
 
-const Title: React.FC<Props> = ({
-  style,
-  onPress,
-  name,
-  isBanned,
-  buddyId,
-}) => {
+const Title: React.FC<Props> = ({ style, onPress, name, buddyId }) => {
   const [dialogOpen, setDialogOpen] = React.useState(false);
   const color = getBuddyColor(buddyId);
-
+  const isBanned = ReactRedux.useSelector(selectors.getIsBanned(buddyId));
   const dispatch = ReactRedux.useDispatch<redux.Dispatch<actions.Action>>();
   const banBuddy = () => {
     dispatch({ type: 'buddies/ban/start', payload: { buddyId } });
@@ -65,14 +58,14 @@ const Title: React.FC<Props> = ({
           style={styles.userIcon}
         />
         <RN.Text style={styles.name}>{name}</RN.Text>
-        {!isBanned && (
+        {!isBanned ? (
           <DropDown
             items={dropdownItems}
             testID={'main.chat.menu'}
             tintColor={colors.black}
           />
-        )}
-        {dialogOpen && (
+        ) : null}
+        {dialogOpen ? (
           <Dialog
             textId={'main.chat.ban.confirmation'}
             buttonId={'main.chat.ban'}
@@ -80,7 +73,7 @@ const Title: React.FC<Props> = ({
             onPress={handleBan}
             type="warning"
           />
-        )}
+        ) : null}
       </SafeAreaView>
     </RN.View>
   );
@@ -129,6 +122,7 @@ export default ReactRedux.connect<
   OwnProps,
   state.AppState
 >(({ mentors, buddies }, { buddyId }) => {
-  const isBanned = selectors.getBuddyStatus(buddyId, buddies) == "Banned";
-  return { name: selectors.getBuddyName(buddyId, buddies, mentors), isBanned: isBanned  };
+  return {
+    name: selectors.getBuddyName(buddyId, buddies, mentors),
+  };
 })(Title);

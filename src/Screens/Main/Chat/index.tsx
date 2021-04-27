@@ -10,7 +10,7 @@ import MessageList from './MessageList';
 import colors from '../../components/colors';
 
 export type ChatRoute = {
-  'Main/Chat': { buddyId: string; };
+  'Main/Chat': { buddyId: string };
 };
 
 type Props = navigationProps.NavigationProps<ChatRoute, ChatRoute>;
@@ -23,11 +23,7 @@ const Chat = ({ navigation }: Props) => {
     RN.Platform.OS === 'ios' ? 'padding' : undefined;
   return (
     <RN.View style={styles.screen}>
-      <Title
-        style={styles.title}
-        onPress={goBack}
-        buddyId={buddyId}
-      />
+      <Title style={styles.title} onPress={goBack} buddyId={buddyId} />
       <RN.KeyboardAvoidingView
         style={styles.container}
         behavior={keyboardViewBehaviour}
