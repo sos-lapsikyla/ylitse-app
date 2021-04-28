@@ -44,10 +44,15 @@ export function fetchBuddies(
   );
 }
 
-const banRequest = (buddyId: string, accessToken: authApi.AccessToken) => {
+const banRequest = (
+  buddyId: string,
+  accessToken: authApi.AccessToken,
+  status: 'Active' | 'Banned',
+) => {
+  const statusStr = status === 'Banned' ? 'banned' : 'ok';
   return http.put(
     `${config.baseUrl}/users/${accessToken.userId}/contacts/${buddyId}`,
-    { status: 'banned' },
+    { status: statusStr },
     {
       headers: authApi.authHeader(accessToken),
     },
@@ -56,7 +61,12 @@ const banRequest = (buddyId: string, accessToken: authApi.AccessToken) => {
 
 export function banBuddy(
   buddyId: string,
+  status: 'Active' | 'Banned',
 ): (accessToken: authApi.AccessToken) => TE.TaskEither<string, Buddy> {
   return accessToken =>
-    http.validateResponse(banRequest(buddyId, accessToken), buddyType, toBuddy);
+    http.validateResponse(
+      banRequest(buddyId, accessToken, status),
+      buddyType,
+      toBuddy,
+    );
 }
