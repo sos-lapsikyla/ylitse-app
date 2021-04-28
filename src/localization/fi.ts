@@ -37,6 +37,8 @@ export const messages = {
   'main.chat.ban': 'Estä keskustelu',
   'main.chat.ban.confirmation': 'Haluatko varmasti estää tämän keskustelun?',
   'main.chat.navigation.banned': 'Estetyt',
+  'main.chat.unban': 'Palauta keskustelu',
+  'main.chat.unban.confirmation': 'Haluatko palauttaa tämän keskustelun?',
 
   'main.mentor.other': 'Pystyn auttamaan näissä:',
   'main.mentor.story': 'Tarinani',
