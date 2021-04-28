@@ -14,6 +14,7 @@ import fonts from '../../components/fonts';
 import getBuddyColor from '../../components/getBuddyColor';
 import DropDown, { DropDownItem } from 'src/Screens/components/DropDownMenu';
 import { Dialog } from 'src/Screens/components/Dialog';
+import { MessageId } from '../../../localization';
 
 type StateProps = {
   name: string;
@@ -26,25 +27,41 @@ type OwnProps = {
 };
 type Props = OwnProps & DispatchProps & StateProps;
 
+type DialogProperties = {
+  dialogText: MessageId;
+  dialogButton: MessageId;
+  dialogOnPress: () => void | undefined;
+};
 const Title: React.FC<Props> = ({ style, onPress, name, buddyId }) => {
   const [dialogOpen, setDialogOpen] = React.useState(false);
   const color = getBuddyColor(buddyId);
   const isBanned = ReactRedux.useSelector(selectors.getIsBanned(buddyId));
   const dispatch = ReactRedux.useDispatch<redux.Dispatch<actions.Action>>();
-
-  const banBuddy = () => {
-    dispatch({ type: 'buddies/ban/start', payload: { buddyId } });
+  const banBuddy = (status: 'Active' | 'Banned') => {
+    dispatch({
+      type: 'buddies/changeStatus/start',
+      payload: { buddyId, status },
+    });
   };
-
-  const handleBan = () => {
-    banBuddy();
+  const handleBan = (status: 'Active' | 'Banned') => {
+    banBuddy(status);
     onPress();
   };
 
   const dropdownItems: DropDownItem[] = [
     { textId: 'main.chat.ban', onPress: () => setDialogOpen(true) },
   ];
-
+  const dialogProperties: DialogProperties = isBanned
+    ? {
+        dialogText: 'main.chat.ban.confirmation',
+        dialogButton: 'main.chat.ban',
+        dialogOnPress: () => handleBan('Active'),
+      }
+    : {
+        dialogText: 'main.chat.ban.confirmation',
+        dialogButton: 'main.chat.ban',
+        dialogOnPress: () => handleBan('Banned'),
+      };
   return (
     <RN.View style={[styles.blob, { backgroundColor: color }, style]}>
       <SafeAreaView style={styles.safeArea} forceInset={{ top: 'always' }}>
@@ -61,19 +78,17 @@ const Title: React.FC<Props> = ({ style, onPress, name, buddyId }) => {
           style={styles.userIcon}
         />
         <RN.Text style={styles.name}>{name}</RN.Text>
-        {!isBanned ? (
-          <DropDown
-            items={dropdownItems}
-            testID={'main.chat.menu'}
-            tintColor={colors.black}
-          />
-        ) : null}
+        <DropDown
+          items={dropdownItems}
+          testID={'main.chat.menu'}
+          tintColor={colors.black}
+        />
         {dialogOpen ? (
           <Dialog
-            textId={'main.chat.ban.confirmation'}
-            buttonId={'main.chat.ban'}
+            textId={dialogProperties.dialogText}
+            buttonId={dialogProperties.dialogButton}
             onPressCancel={() => setDialogOpen(false)}
-            onPress={handleBan}
+            onPress={dialogProperties.dialogOnPress}
             type="warning"
           />
         ) : null}
