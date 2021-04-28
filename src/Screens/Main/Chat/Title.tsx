@@ -31,6 +31,7 @@ type DialogProperties = {
   dialogText: MessageId;
   dialogButton: MessageId;
   dialogOnPress: () => void | undefined;
+  dialogType: 'warning' | undefined;
 };
 const Title: React.FC<Props> = ({ style, onPress, name, buddyId }) => {
   const [dialogOpen, setDialogOpen] = React.useState(false);
@@ -44,24 +45,30 @@ const Title: React.FC<Props> = ({ style, onPress, name, buddyId }) => {
     });
   };
   const handleBan = (status: 'Active' | 'Banned') => {
+    setDialogOpen(false);
     banBuddy(status);
     onPress();
   };
 
-  const dropdownItems: DropDownItem[] = [
-    { textId: 'main.chat.ban', onPress: () => setDialogOpen(true) },
-  ];
   const dialogProperties: DialogProperties = isBanned
     ? {
-        dialogText: 'main.chat.ban.confirmation',
-        dialogButton: 'main.chat.ban',
+        dialogText: 'main.chat.unban.confirmation',
+        dialogButton: 'main.chat.unban',
         dialogOnPress: () => handleBan('Active'),
+        dialogType: undefined,
       }
     : {
         dialogText: 'main.chat.ban.confirmation',
         dialogButton: 'main.chat.ban',
         dialogOnPress: () => handleBan('Banned'),
+        dialogType: 'warning',
       };
+  const dropdownItems: DropDownItem[] = [
+    {
+      textId: dialogProperties.dialogButton,
+      onPress: () => setDialogOpen(true),
+    },
+  ];
   return (
     <RN.View style={[styles.blob, { backgroundColor: color }, style]}>
       <SafeAreaView style={styles.safeArea} forceInset={{ top: 'always' }}>
@@ -89,7 +96,7 @@ const Title: React.FC<Props> = ({ style, onPress, name, buddyId }) => {
             buttonId={dialogProperties.dialogButton}
             onPressCancel={() => setDialogOpen(false)}
             onPress={dialogProperties.dialogOnPress}
-            type="warning"
+            type={dialogProperties.dialogType}
           />
         ) : null}
       </SafeAreaView>
