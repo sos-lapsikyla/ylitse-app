@@ -48,6 +48,20 @@ export const getBuddyName = (
   );
 };
 
+export const getIsBanned = (
+  buddyId: string,
+): (({ buddies: remoteBuddies }: AppState) => boolean) => ({
+  buddies: remoteBuddies,
+}: AppState): boolean => {
+  return pipe(
+    remoteBuddies,
+    RD.map(({ [buddyId]: buddy }) => {
+      return buddy ? buddy.status === 'Banned' : false;
+    }),
+    RD.getOrElse<unknown, boolean>(() => false),
+  );
+};
+
 const messageList = (messageState: AppState['messages'], buddyId: string) => {
   const messagesById = RD.remoteData.map(messageState.messages, r =>
     record.lookup(buddyId, r),

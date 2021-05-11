@@ -46,6 +46,7 @@ export default ({ navigation }: Props) => {
     <TitledContainer
       TitleComponent={
         <RN.View style={styles.header}>
+          <RN.View style={styles.spacer} />
           <Message id="buddyList.title" style={styles.screenTitleText} />
           <DropDown items={items} testID={'main.buddylist.menu'} />
         </RN.View>
@@ -76,6 +77,7 @@ export default ({ navigation }: Props) => {
 };
 
 const styles = RN.StyleSheet.create({
+  spacer: { height: 40, width: 40 },
   screenTitleText: {
     marginTop: 16,
     marginBottom: 16,
@@ -97,7 +99,7 @@ const styles = RN.StyleSheet.create({
   header: {
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent: 'space-around',
     overflow: 'visible',
   },
 });

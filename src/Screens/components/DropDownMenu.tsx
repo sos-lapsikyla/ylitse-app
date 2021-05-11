@@ -16,9 +16,10 @@ export type DropDownItem = {
 interface Props {
   items: DropDownItem[];
   testID?: string;
+  tintColor?: string; 
 }
 
-const DropDown: React.FC<Props> = ({ items, testID }) => {
+const DropDown: React.FC<Props> = ({ items, testID, tintColor }) => {
   const [isOpen, setOpen] = React.useState(false);
   const toggleOpen = () => {
     setOpen(!isOpen);
@@ -34,12 +35,12 @@ const DropDown: React.FC<Props> = ({ items, testID }) => {
       <RN.TouchableHighlight
         style={styles.kebab}
         onPress={toggleOpen}
-        underlayColor={colors.darkBlue}
+        underlayColor={colors.faintBackground}
         testID={testID}
       >
         <RN.Image
           source={require('../images/three-dot-menu.svg')}
-          style={styles.icon}
+          style={{tintColor: tintColor ?? colors.white}}
         />
       </RN.TouchableHighlight>
       <RN.Modal visible={isOpen} transparent onRequestClose={toggleOpen}>
@@ -68,8 +69,6 @@ export default DropDown;
 
 const styles = RN.StyleSheet.create({
   kebab: {
-    position: 'absolute',
-    right: 16,
     height: 40,
     width: 40,
     borderRadius: 24,
