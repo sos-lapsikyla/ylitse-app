@@ -17,9 +17,10 @@ interface Props {
   items: DropDownItem[];
   testID?: string;
   tintColor?: string; 
+  dropdownStyle: any;
 }
 
-const DropDown: React.FC<Props> = ({ items, testID, tintColor }) => {
+const DropDown: React.FC<Props> = ({ items, testID, tintColor, dropdownStyle}) => {
   const [isOpen, setOpen] = React.useState(false);
   const toggleOpen = () => {
     setOpen(!isOpen);
@@ -46,7 +47,7 @@ const DropDown: React.FC<Props> = ({ items, testID, tintColor }) => {
       <RN.Modal visible={isOpen} transparent onRequestClose={toggleOpen}>
         <RN.TouchableWithoutFeedback onPress={toggleOpen}>
           <RN.View style={RN.StyleSheet.absoluteFill}>
-            <RN.View style={styles.dropdown}>
+            <RN.View style={[styles.dropdown, dropdownStyle]}>
               {items.map((item, index) => (
                 <RN.TouchableHighlight
                   key={index}
@@ -80,10 +81,7 @@ const styles = RN.StyleSheet.create({
   },
   dropdown: {
     ...shadow(7),
-    position: 'absolute',
     zIndex: 1,
-    right: 16,
-    top: 104,
     borderRadius: 16,
     paddingVertical: 16,
     backgroundColor: colors.lightestGray,
