@@ -86,6 +86,7 @@ const Title: React.FC<Props> = ({ style, onPress, name, buddyId }) => {
         />
         <RN.Text style={styles.name}>{name}</RN.Text>
         <DropDown
+          dropdownStyle={styles.dropdown}
           items={dropdownItems}
           testID={'main.chat.menu'}
           tintColor={colors.black}
@@ -138,6 +139,11 @@ const styles = RN.StyleSheet.create({
     ...fonts.titleBold,
     flex: 1,
     flexWrap: 'wrap',
+  },
+  dropdown: {
+    position: 'absolute',
+    top: 80,
+    right: 16,
   },
 });
 
