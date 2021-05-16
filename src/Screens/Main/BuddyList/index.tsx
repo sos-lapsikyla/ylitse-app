@@ -31,12 +31,15 @@ type Props = navigationProps.NavigationProps<
 export default ({ navigation }: Props) => {
   const buddies = useSelector(buddyState.getActiveBuddies);
 
+  const [isDropdownOpen, setDropdownOpen] = React.useState<boolean>(false);
+
   const onPress = (buddyId: string) => {
     navigation.navigate('Main/Chat', { buddyId });
   };
 
   const navigateToBanned = () => {
     navigation.navigate('Main/BuddyList/BannedList', {});
+    setDropdownOpen(false);
   };
 
   const items: DropDownItem[] = [
@@ -49,7 +52,23 @@ export default ({ navigation }: Props) => {
         <RN.View style={styles.header}>
           <RN.View style={styles.spacer} />
           <Message id="buddyList.title" style={styles.screenTitleText} />
-          <DropDown items={items} testID={'main.buddylist.menu'} />
+          <RN.TouchableHighlight
+            style={styles.kebab}
+            onPress={() => setDropdownOpen(!isDropdownOpen)}
+            underlayColor={colors.faintBackground}
+          >
+            <RN.Image
+              source={require('../../images/three-dot-menu.svg')}
+              style={{ tintColor: colors.white }}
+            />
+          </RN.TouchableHighlight>
+          {isDropdownOpen ? (
+            <DropDown
+              dropdownStyle={styles.dropdown}
+              items={items}
+              testID={'main.buddylist.menu'}
+            />
+          ) : null}
         </RN.View>
       }
       color={colors.blue}
@@ -86,6 +105,18 @@ const styles = RN.StyleSheet.create({
     ...textShadow,
     textAlign: 'center',
     color: colors.white,
+  },
+  kebab: {
+    height: 40,
+    width: 40,
+    borderRadius: 24,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  dropdown: {
+    position: 'absolute',
+    top: 64,
+    right: 56,
   },
   scrollView: {
     zIndex: 1,

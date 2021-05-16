@@ -28,13 +28,14 @@ type OwnProps = {
 type Props = OwnProps & DispatchProps & StateProps;
 
 type DialogProperties = {
-  dialogText: MessageId;
-  dialogButton: MessageId;
-  dialogOnPress: () => void | undefined;
-  dialogType: 'warning' | undefined;
+  text: MessageId;
+  button: MessageId;
+  onPress: () => void | undefined;
+  type: 'warning' | undefined;
 };
 const Title: React.FC<Props> = ({ style, onPress, name, buddyId }) => {
-  const [dialogOpen, setDialogOpen] = React.useState(false);
+  const [isDropdownOpen, setDropdownOpen] = React.useState(false);
+  const [isDialogOpen, setDialogOpen] = React.useState(false);
   const color = getBuddyColor(buddyId);
   const isBanned = ReactRedux.useSelector(selectors.getIsBanned(buddyId));
   const dispatch = ReactRedux.useDispatch<redux.Dispatch<actions.Action>>();
@@ -44,28 +45,34 @@ const Title: React.FC<Props> = ({ style, onPress, name, buddyId }) => {
       payload: { buddyId, status },
     });
   };
-  const handleBan = (status: 'Active' | 'Banned') => {
+
+  const closeDropdownAndDialog = () => {
+    setDropdownOpen(false);
     setDialogOpen(false);
+  };
+
+  const handleBan = (status: 'Active' | 'Banned') => {
+    closeDropdownAndDialog();
     banBuddy(status);
     onPress();
   };
 
   const dialogProperties: DialogProperties = isBanned
     ? {
-        dialogText: 'main.chat.unban.confirmation',
-        dialogButton: 'main.chat.unban',
-        dialogOnPress: () => handleBan('Active'),
-        dialogType: undefined,
+        text: 'main.chat.unban.confirmation',
+        button: 'main.chat.unban',
+        onPress: () => handleBan('Active'),
+        type: undefined,
       }
     : {
-        dialogText: 'main.chat.ban.confirmation',
-        dialogButton: 'main.chat.ban',
-        dialogOnPress: () => handleBan('Banned'),
-        dialogType: 'warning',
+        text: 'main.chat.ban.confirmation',
+        button: 'main.chat.ban',
+        onPress: () => handleBan('Banned'),
+        type: 'warning',
       };
   const dropdownItems: DropDownItem[] = [
     {
-      textId: dialogProperties.dialogButton,
+      textId: dialogProperties.button,
       onPress: () => setDialogOpen(true),
     },
   ];
@@ -85,19 +92,31 @@ const Title: React.FC<Props> = ({ style, onPress, name, buddyId }) => {
           style={styles.userIcon}
         />
         <RN.Text style={styles.name}>{name}</RN.Text>
-        <DropDown
-          dropdownStyle={styles.dropdown}
-          items={dropdownItems}
-          testID={'main.chat.menu'}
-          tintColor={colors.black}
-        />
-        {dialogOpen ? (
+        <RN.TouchableHighlight
+          style={styles.kebab}
+          onPress={() => setDropdownOpen(!isDropdownOpen)}
+          underlayColor={colors.faintBackground}
+        >
+          <RN.Image
+            source={require('../../images/three-dot-menu.svg')}
+            style={{ tintColor: colors.black }}
+          />
+        </RN.TouchableHighlight>
+        {isDropdownOpen ? (
+          <DropDown
+            dropdownStyle={styles.dropdown}
+            items={dropdownItems}
+            testID={'main.chat.menu'}
+            tintColor={colors.black}
+          />
+        ) : null}
+        {isDialogOpen ? (
           <Dialog
-            textId={dialogProperties.dialogText}
-            buttonId={dialogProperties.dialogButton}
+            textId={dialogProperties.text}
+            buttonId={dialogProperties.button}
             onPressCancel={() => setDialogOpen(false)}
-            onPress={dialogProperties.dialogOnPress}
-            type={dialogProperties.dialogType}
+            onPress={dialogProperties.onPress}
+            type={dialogProperties.type}
           />
         ) : null}
       </SafeAreaView>
@@ -119,6 +138,13 @@ const styles = RN.StyleSheet.create({
     alignItems: 'center',
     flex: 1,
     justifyContent: 'center',
+  },
+  kebab: {
+    height: 40,
+    width: 40,
+    borderRadius: 24,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   chevronButton: {
     marginRight: 16,
@@ -142,7 +168,7 @@ const styles = RN.StyleSheet.create({
   },
   dropdown: {
     position: 'absolute',
-    top: 80,
+    top: 64,
     right: 16,
   },
 });
