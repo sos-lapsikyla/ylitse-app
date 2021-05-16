@@ -105,6 +105,7 @@ const Title: React.FC<Props> = ({ style, onPress, name, buddyId }) => {
         {isDropdownOpen ? (
           <DropDown
             dropdownStyle={styles.dropdown}
+            closeDropdown={() => setDropdownOpen(false)}
             items={dropdownItems}
             testID={'main.chat.menu'}
             tintColor={colors.black}

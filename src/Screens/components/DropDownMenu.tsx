@@ -7,7 +7,6 @@ import colors from './colors';
 import fonts from './fonts';
 import Message from './Message';
 import shadow from './shadow';
-import { TouchableOpacity } from 'react-native-gesture-handler';
 
 export type DropDownItem = {
   textId: localization.MessageId;
@@ -19,21 +18,29 @@ interface Props {
   testID?: string;
   tintColor?: string;
   dropdownStyle: any;
+  closeDropdown: () => void;
 }
 
-const DropDown: React.FC<Props> = ({ items, dropdownStyle }) => {
+const DropDown: React.FC<Props> = ({ items, dropdownStyle, closeDropdown }) => {
   return (
-    <RN.View style={[styles.dropdown, dropdownStyle]}>
-      {items.map((item, index) => (
-        <TouchableOpacity
-          key={index}
-          style={styles.button}
-          onPress={item.onPress}
-        >
-          <Message id={item.textId} style={styles.text} />
-        </TouchableOpacity>
-      ))}
-    </RN.View>
+    <RN.Modal animationType="fade" transparent={true}>
+      <RN.TouchableOpacity
+        onPressOut={closeDropdown}
+        style={RN.StyleSheet.absoluteFill}
+      >
+        <RN.View style={[styles.dropdown, dropdownStyle]}>
+          {items.map((item, index) => (
+            <RN.TouchableOpacity
+              key={index}
+              style={styles.button}
+              onPress={item.onPress}
+            >
+              <Message id={item.textId} style={styles.text} />
+            </RN.TouchableOpacity>
+          ))}
+        </RN.View>
+      </RN.TouchableOpacity>
+    </RN.Modal>
   );
 };
 

@@ -64,6 +64,7 @@ export default ({ navigation }: Props) => {
           {isDropdownOpen ? (
             <DropDown
               dropdownStyle={styles.dropdown}
+              closeDropdown={() => setDropdownOpen(false)}
               items={items}
               testID={'main.buddylist.menu'}
             />
