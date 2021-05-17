@@ -1,30 +1,36 @@
 import React from 'react';
 import RN from 'react-native';
 import { SafeAreaView } from 'react-navigation';
+
 import * as redux from 'redux';
 import * as ReactRedux from 'react-redux';
-
 import * as state from '../../../state';
 import * as selectors from '../../../state/selectors';
 import * as actions from '../../../state/actions';
+
+import useLayout from 'src/lib/use-layout';
 
 import colors from '../../components/colors';
 import { cardBorderRadius } from '../../components/Card';
 import fonts from '../../components/fonts';
 import getBuddyColor from '../../components/getBuddyColor';
-import DropDown, { DropDownItem } from 'src/Screens/components/DropDownMenu';
-import { Dialog } from 'src/Screens/components/Dialog';
+
+import DropDown, { DropDownItem } from '../../components/DropDownMenu';
+import { Dialog } from '../../components/Dialog';
 import { MessageId } from '../../../localization';
 
 type StateProps = {
   name: string;
 };
+
 type DispatchProps = {};
+
 type OwnProps = {
   style?: RN.StyleProp<RN.ViewStyle>;
   onPress: () => void | undefined;
   buddyId: string;
 };
+
 type Props = OwnProps & DispatchProps & StateProps;
 
 type DialogProperties = {
@@ -33,12 +39,20 @@ type DialogProperties = {
   onPress: () => void | undefined;
   type: 'warning' | undefined;
 };
+
 const Title: React.FC<Props> = ({ style, onPress, name, buddyId }) => {
   const [isDropdownOpen, setDropdownOpen] = React.useState(false);
+
   const [isDialogOpen, setDialogOpen] = React.useState(false);
+
+  const [{ height }, onLayout] = useLayout();
+
   const color = getBuddyColor(buddyId);
+
   const isBanned = ReactRedux.useSelector(selectors.getIsBanned(buddyId));
+
   const dispatch = ReactRedux.useDispatch<redux.Dispatch<actions.Action>>();
+
   const banBuddy = (status: 'Active' | 'Banned') => {
     dispatch({
       type: 'buddies/changeStatus/start',
@@ -77,7 +91,10 @@ const Title: React.FC<Props> = ({ style, onPress, name, buddyId }) => {
     },
   ];
   return (
-    <RN.View style={[styles.blob, { backgroundColor: color }, style]}>
+    <RN.View
+      onLayout={onLayout}
+      style={[styles.blob, { backgroundColor: color }, style]}
+    >
       <SafeAreaView style={styles.safeArea} forceInset={{ top: 'always' }}>
         {!onPress ? null : (
           <RN.TouchableOpacity style={styles.chevronButton} onPress={onPress}>
@@ -104,7 +121,7 @@ const Title: React.FC<Props> = ({ style, onPress, name, buddyId }) => {
         </RN.TouchableHighlight>
         {isDropdownOpen ? (
           <DropDown
-            dropdownStyle={styles.dropdown}
+            dropdownStyle={[styles.dropdown, { top: height - 8 }]}
             closeDropdown={() => setDropdownOpen(false)}
             items={dropdownItems}
             testID={'main.chat.menu'}
@@ -169,7 +186,6 @@ const styles = RN.StyleSheet.create({
   },
   dropdown: {
     position: 'absolute',
-    top: 64,
     right: 16,
   },
 });
