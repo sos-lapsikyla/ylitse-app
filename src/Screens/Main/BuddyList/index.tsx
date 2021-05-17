@@ -3,6 +3,7 @@ import RN from 'react-native';
 import { useSelector } from 'react-redux';
 
 import * as navigationProps from '../../../lib/navigation-props';
+import useLayout from 'src/lib/use-layout';
 
 import * as buddyState from '../../../state/reducers/buddies';
 
@@ -33,6 +34,8 @@ export default ({ navigation }: Props) => {
 
   const [isDropdownOpen, setDropdownOpen] = React.useState<boolean>(false);
 
+  const [{ height }, onLayout] = useLayout();
+
   const onPress = (buddyId: string) => {
     navigation.navigate('Main/Chat', { buddyId });
   };
@@ -48,7 +51,7 @@ export default ({ navigation }: Props) => {
   return (
     <TitledContainer
       TitleComponent={
-        <RN.View style={styles.header}>
+        <RN.View onLayout={onLayout} style={styles.header}>
           <RN.View style={styles.spacer} />
           <Message id="buddyList.title" style={styles.screenTitleText} />
           <RN.TouchableHighlight
@@ -63,7 +66,7 @@ export default ({ navigation }: Props) => {
           </RN.TouchableHighlight>
           {isDropdownOpen ? (
             <DropDown
-              dropdownStyle={styles.dropdown}
+              dropdownStyle={[styles.dropdown, { top: height - 8 }]}
               closeDropdown={() => setDropdownOpen(false)}
               items={items}
               testID={'main.buddylist.menu'}
@@ -115,8 +118,8 @@ const styles = RN.StyleSheet.create({
   },
   dropdown: {
     position: 'absolute',
-    top: 64,
-    right: 56,
+    top: 16,
+    right: 16,
   },
   scrollView: {
     zIndex: 1,
@@ -132,6 +135,6 @@ const styles = RN.StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-around',
-    overflow: 'visible',
+    position: 'relative',
   },
 });
