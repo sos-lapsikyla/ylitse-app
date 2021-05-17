@@ -1,6 +1,5 @@
 import React from 'react';
 import RN from 'react-native';
-import { SafeAreaView } from 'react-navigation';
 
 import colors from '../components/colors';
 import shadow from '../components/shadow';
@@ -8,21 +7,24 @@ import shadow from '../components/shadow';
 type Props = RN.ViewProps & {
   TitleComponent: React.ReactElement;
   color: string;
+  onTitleLayout?: RN.ViewProps['onLayout'];
 };
 
 const TitledContainer: React.FC<Props> = ({
   color,
   TitleComponent,
   onLayout,
+  onTitleLayout,
   children,
 }) => {
   return (
     <RN.View style={styles.background} onLayout={onLayout}>
-      <RN.View style={[styles.shadow, { backgroundColor: color }]}>
-        <SafeAreaView forceInset={{ top: 'always' }}>
-          {TitleComponent}
-        </SafeAreaView>
-      </RN.View>
+      <RN.SafeAreaView
+        onLayout={onTitleLayout}
+        style={[styles.shadow, { backgroundColor: color }]}
+      >
+        {TitleComponent}
+      </RN.SafeAreaView>
       {children}
     </RN.View>
   );

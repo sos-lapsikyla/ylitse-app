@@ -50,8 +50,9 @@ export default ({ navigation }: Props) => {
   ];
   return (
     <TitledContainer
+      onTitleLayout={onLayout}
       TitleComponent={
-        <RN.View onLayout={onLayout} style={styles.header}>
+        <RN.View style={styles.header}>
           <RN.View style={styles.spacer} />
           <Message id="buddyList.title" style={styles.screenTitleText} />
           <RN.TouchableHighlight
