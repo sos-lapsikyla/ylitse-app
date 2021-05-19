@@ -8,7 +8,7 @@ import * as state from '../../../state';
 import * as selectors from '../../../state/selectors';
 import * as actions from '../../../state/actions';
 
-import useLayout from 'src/lib/use-layout';
+import useLayout from '../../../lib/use-layout';
 
 import colors from '../../components/colors';
 import { cardBorderRadius } from '../../components/Card';
@@ -34,10 +34,10 @@ type OwnProps = {
 type Props = OwnProps & DispatchProps & StateProps;
 
 type DialogProperties = {
-  text: MessageId;
-  button: MessageId;
+  textId: MessageId;
+  buttonId: MessageId;
   onPress: () => void | undefined;
-  type: 'warning' | undefined;
+  type?: 'warning';
 };
 
 const Title: React.FC<Props> = ({ style, onPress, name, buddyId }) => {
@@ -53,10 +53,10 @@ const Title: React.FC<Props> = ({ style, onPress, name, buddyId }) => {
 
   const dispatch = ReactRedux.useDispatch<redux.Dispatch<actions.Action>>();
 
-  const banBuddy = (status: 'Active' | 'Banned') => {
+  const setBanStatus = (banStatus: 'Ban' | 'Unban') => {
     dispatch({
-      type: 'buddies/changeStatus/start',
-      payload: { buddyId, status },
+      type: 'buddies/changeBanStatus/start',
+      payload: { buddyId, banStatus },
     });
   };
 
@@ -65,28 +65,27 @@ const Title: React.FC<Props> = ({ style, onPress, name, buddyId }) => {
     setDialogOpen(false);
   };
 
-  const handleBan = (status: 'Active' | 'Banned') => {
+  const handleBan = (banStatus: 'Ban' | 'Unban') => {
     closeDropdownAndDialog();
-    banBuddy(status);
+    setBanStatus(banStatus);
     onPress();
   };
 
   const dialogProperties: DialogProperties = isBanned
     ? {
-        text: 'main.chat.unban.confirmation',
-        button: 'main.chat.unban',
-        onPress: () => handleBan('Active'),
-        type: undefined,
+        textId: 'main.chat.unban.confirmation',
+        buttonId: 'main.chat.unban',
+        onPress: () => handleBan('Unban'),
       }
     : {
-        text: 'main.chat.ban.confirmation',
-        button: 'main.chat.ban',
-        onPress: () => handleBan('Banned'),
+        textId: 'main.chat.ban.confirmation',
+        buttonId: 'main.chat.ban',
+        onPress: () => handleBan('Ban'),
         type: 'warning',
       };
   const dropdownItems: DropDownItem[] = [
     {
-      textId: dialogProperties.button,
+      textId: dialogProperties.buttonId,
       onPress: () => setDialogOpen(true),
     },
   ];
@@ -121,7 +120,7 @@ const Title: React.FC<Props> = ({ style, onPress, name, buddyId }) => {
         </RN.TouchableHighlight>
         {isDropdownOpen ? (
           <DropDown
-            dropdownStyle={[styles.dropdown, { top: height - 8 }]}
+            style={[styles.dropdown, { top: height - 8 }]}
             closeDropdown={() => setDropdownOpen(false)}
             items={dropdownItems}
             testID={'main.chat.menu'}
@@ -130,11 +129,8 @@ const Title: React.FC<Props> = ({ style, onPress, name, buddyId }) => {
         ) : null}
         {isDialogOpen ? (
           <Dialog
-            textId={dialogProperties.text}
-            buttonId={dialogProperties.button}
+            {...dialogProperties}
             onPressCancel={() => setDialogOpen(false)}
-            onPress={dialogProperties.onPress}
-            type={dialogProperties.type}
           />
         ) : null}
       </SafeAreaView>

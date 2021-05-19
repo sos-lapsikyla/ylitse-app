@@ -57,11 +57,11 @@ export const reducer: automaton.Reducer<State, actions.Action> = (
     case 'buddies/completed':
       return RD.fromEither(action.payload);
 
-    case 'buddies/changeStatus/start':
+    case 'buddies/changeBanStatus/start':
       return automaton.loop(
         RD.pending,
         withToken(
-          buddyApi.banBuddy(action.payload.buddyId, action.payload.status),
+          buddyApi.banBuddy(action.payload.buddyId, action.payload.banStatus),
           actions.make('buddies/changeStatus/end'),
         ),
       );
@@ -112,4 +112,4 @@ const getBuddies = (status: buddyApi.Buddy['status']) => (
 
 export const getBannedBuddies = getBuddies('Banned');
 
-export const getActiveBuddies = getBuddies('Active');
+export const getActiveBuddies = getBuddies('NotBanned');
