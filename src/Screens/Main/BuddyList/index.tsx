@@ -3,7 +3,7 @@ import RN from 'react-native';
 import { useSelector } from 'react-redux';
 
 import * as navigationProps from '../../../lib/navigation-props';
-import useLayout from 'src/lib/use-layout';
+import useLayout from '../../../lib/use-layout';
 
 import * as buddyState from '../../../state/reducers/buddies';
 
@@ -17,7 +17,7 @@ import TitledContainer from '../../components/TitledContainer';
 import Button from './Button';
 
 import { ChatRoute } from '../Chat';
-import DropDown, { DropDownItem } from 'src/Screens/components/DropDownMenu';
+import DropDown, { DropDownItem } from '../../components/DropDownMenu';
 import { BannedListRoute } from './BannedList';
 
 export type BuddyListRoute = {
@@ -68,7 +68,7 @@ export default ({ navigation }: Props) => {
           </RN.TouchableHighlight>
           {isDropdownOpen ? (
             <DropDown
-              dropdownStyle={[styles.dropdown, { top: height - 8 }]}
+              style={[styles.dropdown, { top: height - 8 }]}
               closeDropdown={() => setDropdownOpen(false)}
               items={items}
               testID={'main.buddylist.menu'}
@@ -137,6 +137,5 @@ const styles = RN.StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-around',
-    position: 'relative',
   },
 });

@@ -13,7 +13,7 @@ interface Props {
   buttonId: localization.MessageId;
   onPressCancel: () => void | undefined;
   onPress: () => void | undefined;
-  type?: 'warning' | undefined;
+  type?: 'warning';
   testID?: string;
 }
 

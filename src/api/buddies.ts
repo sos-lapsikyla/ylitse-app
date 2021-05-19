@@ -17,16 +17,19 @@ const buddyType = t.intersection([
   t.partial({ status: t.literal('banned') }),
 ]);
 
+export type BanActions = 'Ban' | 'Unban';
+export type BanStatuses = 'Banned' | 'NotBanned';
+
 export type Buddy = {
   buddyId: string;
   name: string;
-  status: 'Banned' | 'Active';
+  status: BanStatuses;
 };
 
 const toBuddy = ({ id, display_name, status }: ApiBuddy): Buddy => ({
   buddyId: id,
   name: display_name,
-  status: status === 'banned' ? 'Banned' : 'Active',
+  status: status === 'banned' ? 'Banned' : 'NotBanned',
 });
 
 export function fetchBuddies(
@@ -49,9 +52,9 @@ export function fetchBuddies(
 const banRequest = (
   buddyId: string,
   accessToken: authApi.AccessToken,
-  status: 'Active' | 'Banned',
+  status: BanActions,
 ) => {
-  const statusStr = status === 'Banned' ? 'banned' : 'ok';
+  const statusStr = status === 'Ban' ? 'banned' : 'ok';
   return http.put(
     `${config.baseUrl}/users/${accessToken.userId}/contacts/${buddyId}`,
     { status: statusStr },
@@ -63,11 +66,11 @@ const banRequest = (
 
 export function banBuddy(
   buddyId: string,
-  status: 'Active' | 'Banned',
+  banStatus: BanActions,
 ): (accessToken: authApi.AccessToken) => TE.TaskEither<string, Buddy> {
   return accessToken =>
     http.validateResponse(
-      banRequest(buddyId, accessToken, status),
+      banRequest(buddyId, accessToken, banStatus),
       buddyType,
       toBuddy,
     );

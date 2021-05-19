@@ -17,18 +17,18 @@ interface Props {
   items: DropDownItem[];
   testID?: string;
   tintColor?: string;
-  dropdownStyle: any;
+  style: any;
   closeDropdown: () => void;
 }
 
-const DropDown: React.FC<Props> = ({ items, dropdownStyle, closeDropdown }) => {
+const DropDown: React.FC<Props> = ({ items, style, closeDropdown }) => {
   return (
     <RN.Modal animationType="fade" transparent={true}>
       <RN.TouchableOpacity
         onPressOut={closeDropdown}
         style={RN.StyleSheet.absoluteFill}
       >
-        <RN.View style={[styles.dropdown, dropdownStyle]}>
+        <RN.View style={[styles.dropdown, style]}>
           {items.map((item, index) => (
             <RN.TouchableOpacity
               key={index}
