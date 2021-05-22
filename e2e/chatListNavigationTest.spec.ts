@@ -68,7 +68,7 @@ describe('Filter chats', () => {
 
     await expect(element(by.text(mentee.displayName))).toBeNotVisible();
 
-    await element(by.id('main.buddylist.menu')).tap();
+    await element(by.id('main.buddylist.kebabicon')).tap();
     await element(by.text('Banned chats')).tap();
 
     await expect(element(by.text(mentee.displayName))).toBeVisible();

@@ -83,12 +83,14 @@ const Title: React.FC<Props> = ({ style, onPress, name, buddyId }) => {
         onPress: () => handleBan('Ban'),
         type: 'warning',
       };
+
   const dropdownItems: DropDownItem[] = [
     {
       textId: dialogProperties.buttonId,
       onPress: () => setDialogOpen(true),
     },
   ];
+
   return (
     <RN.View
       onLayout={onLayout}
@@ -118,7 +120,7 @@ const Title: React.FC<Props> = ({ style, onPress, name, buddyId }) => {
             style={{ tintColor: colors.black }}
           />
         </RN.TouchableHighlight>
-        {isDropdownOpen ? (
+        {isDropdownOpen && !isDialogOpen ? (
           <DropDown
             style={[styles.dropdown, { top: height - 8 }]}
             closeDropdown={() => setDropdownOpen(false)}
