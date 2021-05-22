@@ -60,6 +60,7 @@ export default ({ navigation }: Props) => {
             style={styles.kebab}
             onPress={() => setDropdownOpen(!isDropdownOpen)}
             underlayColor={colors.faintBackground}
+            testID={'main.buddylist.kebabicon'}
           >
             <RN.Image
               source={require('../../images/three-dot-menu.svg')}
