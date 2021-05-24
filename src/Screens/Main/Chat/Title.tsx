@@ -94,6 +94,13 @@ const Title: React.FC<Props> = ({ style, onPress, name, buddyId }) => {
     },
   ];
 
+  const show =
+    isDropdownOpen && !isDialogOpen
+      ? 'ShowDropdown'
+      : isDialogOpen
+      ? 'ShowDialog'
+      : 'HideDialogs';
+
   return (
     <RN.View
       onLayout={onLayout}
@@ -123,7 +130,7 @@ const Title: React.FC<Props> = ({ style, onPress, name, buddyId }) => {
             style={{ tintColor: colors.black }}
           />
         </RN.TouchableHighlight>
-        {isDropdownOpen && !isDialogOpen ? (
+        {show === 'ShowDropdown' ? (
           <DropDown
             style={[styles.dropdown, { top: height - 8 }]}
             closeDropdown={() => setDropdownOpen(false)}
@@ -131,8 +138,7 @@ const Title: React.FC<Props> = ({ style, onPress, name, buddyId }) => {
             testID={'main.chat.menu'}
             tintColor={colors.black}
           />
-        ) : null}
-        {isDialogOpen ? (
+        ) : show === 'ShowDialog' ? (
           <Dialog
             {...dialogProperties}
             onPressCancel={() => setDialogOpen(false)}
