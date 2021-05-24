@@ -36,17 +36,15 @@ export default ({ navigation }: Props) => {
   return (
     <TitledContainer
       TitleComponent={
-        <RN.View style={styles.header}>
+        <RN.View style={styles.titleContainer}>
           <RN.TouchableOpacity onPress={onPressBack}>
             <RN.Image
               source={require('../../images/chevron-left.svg')}
               style={styles.backButtonIcon}
             />
           </RN.TouchableOpacity>
-          <Message
-            id="main.chat.navigation.banned"
-            style={styles.screenTitleText}
-          />
+          <Message id="main.chat.navigation.banned" style={styles.header} />
+          <RN.View style={styles.titleBalancer} />
         </RN.View>
       }
       color={colors.blue}
@@ -75,19 +73,24 @@ export default ({ navigation }: Props) => {
 };
 
 const styles = RN.StyleSheet.create({
-  header: {
-    paddingVertical: 16,
+  titleContainer: {
+    paddingVertical: 4,
     paddingHorizontal: 16,
-    alignSelf: 'stretch',
-    justifyContent: 'space-around',
     flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
   },
-  screenTitleText: {
+  header: {
     marginTop: 8,
+    marginBottom: 8,
     ...fonts.titleLarge,
     ...textShadow,
     textAlign: 'center',
     color: colors.white,
+    flex: 6,
+  },
+  titleBalancer: {
+    flex: 1,
   },
   scrollView: {
     marginTop: -32,
