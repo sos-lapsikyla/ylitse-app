@@ -23,7 +23,7 @@ interface Props {
 
 const DropDown: React.FC<Props> = ({ items, style, closeDropdown }) => {
   return (
-    <RN.Modal animationType="fade" transparent={true}>
+    <RN.Modal transparent={true}>
       <RN.TouchableOpacity
         onPressOut={closeDropdown}
         style={RN.StyleSheet.absoluteFill}
