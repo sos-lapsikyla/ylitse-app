@@ -35,6 +35,7 @@ type Props = OwnProps & DispatchProps & StateProps;
 
 type DialogProperties = {
   textId: MessageId;
+  itemId: MessageId;
   buttonId: MessageId;
   onPress: () => void | undefined;
   type?: 'warning';
@@ -74,19 +75,21 @@ const Title: React.FC<Props> = ({ style, onPress, name, buddyId }) => {
   const dialogProperties: DialogProperties = isBanned
     ? {
         textId: 'main.chat.unban.confirmation',
-        buttonId: 'main.chat.unban',
+        itemId: 'main.chat.unban',
+        buttonId: 'meta.ok',
         onPress: () => handleBan('Unban'),
       }
     : {
         textId: 'main.chat.ban.confirmation',
-        buttonId: 'main.chat.ban',
+        itemId: 'main.chat.ban',
+        buttonId: 'meta.ok',
         onPress: () => handleBan('Ban'),
         type: 'warning',
       };
 
   const dropdownItems: DropDownItem[] = [
     {
-      textId: dialogProperties.buttonId,
+      textId: dialogProperties.itemId,
       onPress: () => setDialogOpen(true),
     },
   ];

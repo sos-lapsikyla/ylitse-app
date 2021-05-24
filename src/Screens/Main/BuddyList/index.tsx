@@ -119,6 +119,7 @@ const styles = RN.StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
+  titleBalancer: {},
   dropdown: {
     position: 'absolute',
     top: 16,

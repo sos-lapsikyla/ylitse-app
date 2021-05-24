@@ -110,6 +110,7 @@ export const messages = {
   'meta.cancel': 'Peru',
   'meta.error': 'Virhe',
   'meta.save': 'Tallenna',
+  'meta.ok': 'OK',
 
   'onboarding.displayName.bodyText':
     '*Jos haluat pysyä nimettömänä, valitse itsellesi nimimerkki, josta et ole tunnistettavissa.',
