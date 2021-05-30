@@ -13,34 +13,26 @@ export type DropDownItem = {
   onPress: () => void;
 };
 
-interface Props {
+type Props = {
   items: DropDownItem[];
   testID?: string;
   tintColor?: string;
   style: any;
-  closeDropdown: () => void;
-}
+};
 
-const DropDown: React.FC<Props> = ({ items, style, closeDropdown }) => {
+const DropDown: React.FC<Props> = ({ items, style }) => {
   return (
-    <RN.Modal transparent={true}>
-      <RN.TouchableOpacity
-        onPressOut={closeDropdown}
-        style={RN.StyleSheet.absoluteFill}
-      >
-        <RN.View style={[styles.dropdown, style]}>
-          {items.map((item, index) => (
-            <RN.TouchableOpacity
-              key={index}
-              style={styles.button}
-              onPress={item.onPress}
-            >
-              <Message id={item.textId} style={styles.text} />
-            </RN.TouchableOpacity>
-          ))}
-        </RN.View>
-      </RN.TouchableOpacity>
-    </RN.Modal>
+    <RN.View style={[styles.dropdown, style]}>
+      {items.map((item, index) => (
+        <RN.TouchableOpacity
+          key={index}
+          style={styles.button}
+          onPress={item.onPress}
+        >
+          <Message id={item.textId} style={styles.text} />
+        </RN.TouchableOpacity>
+      ))}
+    </RN.View>
   );
 };
 

@@ -15,7 +15,7 @@
       "build": "cd android && ./gradlew assembleDebug assembleAndroidTest -DtestBuildType=debug && cd ..",
       "type": "android.emulator",
       "device": {
-        "avdName": "pixel"
+        "avdName": "Pixel_API_28_YLITSE_PLAY"
       }
     },
     "android.emu.release": {

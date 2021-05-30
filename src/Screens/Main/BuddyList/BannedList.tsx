@@ -82,8 +82,8 @@ const styles = RN.StyleSheet.create({
     justifyContent: 'space-between',
   },
   header: {
-    marginTop: 8,
-    marginBottom: 8,
+    marginTop: 24,
+    marginBottom: 24,
     ...fonts.titleLarge,
     ...textShadow,
     textAlign: 'center',
