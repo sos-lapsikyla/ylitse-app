@@ -15,6 +15,7 @@ import * as actions from '../actions';
 import * as types from '../types';
 
 import { withToken } from './accessToken';
+import { getIsBanned } from '../selectors';
 
 export type State = types.AppState['messages'];
 export type LoopState = actions.LS<State>;
@@ -90,7 +91,12 @@ export const hasUnseen: (
     getMessagesByBuddyId(buddyId)(appState),
     array.sort(ordMessage),
     array.last,
-    O.map(({ type, isSeen }) => type === 'Received' && isSeen === false),
+    O.map(
+      ({ type, isSeen }) =>
+        type === 'Received' &&
+        isSeen === false &&
+        !getIsBanned(buddyId)(appState),
+    ),
     O.fold(() => false, identity),
   );
 
