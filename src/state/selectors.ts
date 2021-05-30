@@ -31,6 +31,15 @@ export const getAC = flow(
   O.getOrElse(constant(authApi.invalidToken)),
 );
 
+export const getAccount = (state: AppState) => {
+  const account = RD.toOption(state.userAccount)
+  return pipe(
+    account,
+    O.map((account) => account),
+    O.toUndefined,
+  );
+}
+
 export const getBuddyName = (
   buddyId: string,
   buddyState: AppState['buddies'],

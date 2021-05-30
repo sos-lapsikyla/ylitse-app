@@ -5,11 +5,10 @@ import { useDispatch, useSelector } from 'react-redux';
 import { SafeAreaView } from 'react-navigation';
 import { pipe } from 'fp-ts/lib/pipeable';
 import * as RD from '@devexperts/remote-data-ts';
-import * as O from 'fp-ts/lib/Option';
 
 import * as navigationProps from '../../../lib/navigation-props';
 import * as actions from '../../../state/actions';
-import * as accountState from '../../../state/reducers/userAccount';
+import * as selector from '../../../state/selectors';
 import * as state from '../../../state/reducers/changePassword';
 
 import Message from '../../components/Message';
@@ -36,12 +35,7 @@ type Props = navigationProps.NavigationProps<
 >;
 
 export default ({ navigation }: Props) => {
-  const account = RD.toOption(useSelector(accountState.getAccount));
-  const storedUsername = pipe(
-    account,
-    O.map(({ userName }) => userName),
-    O.toUndefined,
-  );
+  const account = useSelector(selector.getAccount)
 
   const [currentPassword, setCurrentPassword] = React.useState('');
   const [newPassword, setNewPassword] = React.useState('');
@@ -96,7 +90,7 @@ export default ({ navigation }: Props) => {
             style={styles.fieldName}
             id="main.settings.account.userName"
           />
-          <RN.Text style={styles.fieldValueText}>{storedUsername}</RN.Text>
+          <RN.Text style={styles.fieldValueText}>{account?.userName}</RN.Text>
           {pipe(
             requestState,
             RD.fold(

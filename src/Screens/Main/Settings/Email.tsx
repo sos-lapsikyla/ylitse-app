@@ -5,13 +5,12 @@ import { useDispatch, useSelector } from 'react-redux';
 import { SafeAreaView } from 'react-navigation';
 import { pipe } from 'fp-ts/lib/pipeable';
 import * as RD from '@devexperts/remote-data-ts';
-import * as O from 'fp-ts/lib/Option';
 
 import * as navigationProps from '../../../lib/navigation-props';
 
 import * as changeEmailState from '../../../state/reducers/changeEmail';
-import * as accountState from '../../../state/reducers/userAccount';
 import * as actions from '../../../state/actions';
+import * as selector from '../../../state/selectors'
 
 import Message from '../../components/Message';
 import Button from '../../components/Button';
@@ -34,19 +33,9 @@ export type EmailChangeRoute = {
 type Props = navigationProps.NavigationProps<EmailChangeRoute, MentorListRoute>;
 
 export default ({ navigation }: Props) => {
-  const account = RD.toOption(useSelector(accountState.getAccount));
-  const storedEmail = pipe(
-    account,
-    O.map(({ email }) => email),
-    O.toUndefined,
-  );
-  const storedUsername = pipe(
-    account,
-    O.map(({ userName }) => userName),
-    O.toUndefined,
-  );
+  const account = useSelector(selector.getAccount)
 
-  const [email, setEmail] = React.useState(storedEmail ?? '');
+  const [email, setEmail] = React.useState(account?.email ?? '');
   const dispatch = useDispatch<redux.Dispatch<actions.Action>>();
 
   const onGoBack = () => {
@@ -54,7 +43,7 @@ export default ({ navigation }: Props) => {
   };
   const onButtonPress = () => {
     dispatch(
-      changeEmailState.changeEmail({ email, account: O.toUndefined(account) }),
+      changeEmailState.changeEmail({ email, account: account }),
     );
   };
   const requestState = useSelector(changeEmailState.select);
@@ -88,7 +77,7 @@ export default ({ navigation }: Props) => {
             style={styles.fieldName}
             id="main.settings.account.userName"
           />
-          <RN.Text style={styles.fieldValueText}>{storedUsername}</RN.Text>
+          <RN.Text style={styles.fieldValueText}>{account?.userName}</RN.Text>
           {pipe(
             requestState,
             RD.fold(
