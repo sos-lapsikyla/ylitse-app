@@ -2,6 +2,7 @@ import React from 'react';
 import RN from 'react-native';
 import { useSelector } from 'react-redux';
 
+import * as selectors from '../../../state/selectors';
 import { hasUnseen } from '../../../state/reducers/messages';
 
 import Card from '../../components/Card';
@@ -17,14 +18,15 @@ type Props = {
 const Button = ({ style, buddyId, name, onPress, ...viewProps }: Props) => {
   const onPressBuddy = () => onPress(buddyId);
   const hasNewMessages = useSelector(hasUnseen(buddyId));
+  const isBanned = useSelector(selectors.getIsBanned(buddyId));
   const color = getBuddyColor(buddyId);
-
+  const showNewMessageBall = hasNewMessages && !isBanned;
   return (
     <Card style={[styles.button, style]} {...viewProps}>
       <RN.TouchableOpacity style={styles.content} onPress={onPressBuddy}>
         <RN.Text style={styles.nameText}>{name}</RN.Text>
         <RN.View style={[styles.blob, { backgroundColor: color }]}>
-          {hasNewMessages ? <RN.View style={styles.newMessage} /> : null}
+          {showNewMessageBall ? <RN.View style={styles.newMessage} /> : null}
           <RN.Image source={require('../../images/balloon.svg')} />
         </RN.View>
       </RN.TouchableOpacity>
