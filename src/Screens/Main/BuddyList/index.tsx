@@ -8,17 +8,14 @@ import useLayout from '../../../lib/use-layout';
 import * as buddyState from '../../../state/reducers/buddies';
 
 import colors from '../../components/colors';
-import fonts from '../../components/fonts';
-import { textShadow } from '../../components/shadow';
-import Message from '../../components/Message';
 import RemoteData from '../../components/RemoteData';
-import TitledContainer from '../../components/TitledContainer';
 
 import Button from './Button';
 
 import { ChatRoute } from '../Chat';
 import DropDown, { DropDownItem } from '../../components/DropDownMenu';
 import { BannedListRoute } from './BannedList';
+import { Title } from './Title';
 
 export type BuddyListRoute = {
   'Main/BuddyList': {};
@@ -45,39 +42,25 @@ export default ({ navigation }: Props) => {
     setDropdownOpen(false);
   };
 
-  const items: DropDownItem[] = [
+  const dropdownItems: DropDownItem[] = [
     { textId: 'main.chat.navigation.banned', onPress: navigateToBanned },
   ];
   return (
-    <TitledContainer
-      onTitleLayout={onLayout}
-      TitleComponent={
-        <RN.View style={styles.header}>
-          <RN.View style={styles.spacer} />
-          <Message id="buddyList.title" style={styles.screenTitleText} />
-          <RN.TouchableHighlight
-            style={styles.kebab}
-            onPress={() => setDropdownOpen(!isDropdownOpen)}
-            underlayColor={colors.faintBackground}
-            testID={'main.buddylist.kebabicon'}
-          >
-            <RN.Image
-              source={require('../../images/three-dot-menu.svg')}
-              style={{ tintColor: colors.white }}
-            />
-          </RN.TouchableHighlight>
-          {isDropdownOpen ? (
-            <DropDown
-              style={[styles.dropdown, { top: height - 8 }]}
-              closeDropdown={() => setDropdownOpen(false)}
-              items={items}
-              testID={'main.buddylist.menu'}
-            />
-          ) : null}
-        </RN.View>
-      }
-      color={colors.blue}
+    <RN.TouchableOpacity
+      activeOpacity={1}
+      onPress={() => setDropdownOpen(false)}
+      disabled={!isDropdownOpen}
+      style={styles.screen}
     >
+      <Title openDropdown={() => setDropdownOpen(true)} onLayout={onLayout} />
+      {isDropdownOpen && (
+        <DropDown
+          style={[styles.dropdown, { top: height - 8 }]}
+          items={dropdownItems}
+          testID={'main.chat.menu'}
+          tintColor={colors.black}
+        />
+      )}
       <RemoteData data={buddies} fetchData={() => {}}>
         {value => (
           <RN.ScrollView
@@ -97,32 +80,18 @@ export default ({ navigation }: Props) => {
           </RN.ScrollView>
         )}
       </RemoteData>
-    </TitledContainer>
+    </RN.TouchableOpacity>
   );
 };
 
 const styles = RN.StyleSheet.create({
-  spacer: { height: 40, width: 40 },
-  screenTitleText: {
-    marginTop: 16,
-    marginBottom: 16,
-    ...fonts.titleLarge,
-    ...textShadow,
-    textAlign: 'center',
-    color: colors.white,
+  screen: {
+    flex: 1,
   },
-  kebab: {
-    height: 40,
-    width: 40,
-    borderRadius: 24,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  titleBalancer: {},
   dropdown: {
     position: 'absolute',
-    top: 16,
     right: 16,
+    zIndex: 2,
   },
   scrollView: {
     zIndex: 1,
@@ -134,9 +103,4 @@ const styles = RN.StyleSheet.create({
     paddingBottom: 200,
   },
   button: { marginVertical: 16 },
-  header: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-around',
-  },
 });

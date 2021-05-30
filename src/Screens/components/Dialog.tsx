@@ -8,14 +8,14 @@ import colors from './colors';
 import fonts from './fonts';
 import Button from 'src/Screens/components/Button';
 
-interface Props {
+export type DialogProps = {
   textId: localization.MessageId;
   buttonId: localization.MessageId;
   onPressCancel: () => void | undefined;
   onPress: () => void | undefined;
   type?: 'warning';
   testID?: string;
-}
+};
 
 export const Dialog = ({
   textId,
@@ -23,7 +23,7 @@ export const Dialog = ({
   onPressCancel,
   onPress,
   type,
-}: Props) => {
+}: DialogProps) => {
   const [buttonStyle, dialogStyle] =
     type === 'warning'
       ? [styles.actionButtonWarning, styles.dialogWarning]

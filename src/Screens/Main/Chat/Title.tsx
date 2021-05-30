@@ -2,22 +2,14 @@ import React from 'react';
 import RN from 'react-native';
 import { SafeAreaView } from 'react-navigation';
 
-import * as redux from 'redux';
 import * as ReactRedux from 'react-redux';
 import * as state from '../../../state';
 import * as selectors from '../../../state/selectors';
-import * as actions from '../../../state/actions';
-
-import useLayout from '../../../lib/use-layout';
 
 import colors from '../../components/colors';
 import { cardBorderRadius } from '../../components/Card';
 import fonts from '../../components/fonts';
 import getBuddyColor from '../../components/getBuddyColor';
-
-import DropDown, { DropDownItem } from '../../components/DropDownMenu';
-import { Dialog } from '../../components/Dialog';
-import { MessageId } from '../../../localization';
 
 type StateProps = {
   name: string;
@@ -29,77 +21,21 @@ type OwnProps = {
   style?: RN.StyleProp<RN.ViewStyle>;
   onPress: () => void | undefined;
   buddyId: string;
+  onLayout: (e: RN.LayoutChangeEvent) => void | undefined;
+  openDropdown: () => void | undefined;
 };
 
 type Props = OwnProps & DispatchProps & StateProps;
 
-type DialogProperties = {
-  textId: MessageId;
-  itemId: MessageId;
-  buttonId: MessageId;
-  onPress: () => void | undefined;
-  type?: 'warning';
-};
-
-const Title: React.FC<Props> = ({ style, onPress, name, buddyId }) => {
-  const [isDropdownOpen, setDropdownOpen] = React.useState(false);
-
-  const [isDialogOpen, setDialogOpen] = React.useState(false);
-
-  const [{ height }, onLayout] = useLayout();
-
+const Title: React.FC<Props> = ({
+  style,
+  onPress,
+  name,
+  buddyId,
+  onLayout,
+  openDropdown,
+}) => {
   const color = getBuddyColor(buddyId);
-
-  const isBanned = ReactRedux.useSelector(selectors.getIsBanned(buddyId));
-
-  const dispatch = ReactRedux.useDispatch<redux.Dispatch<actions.Action>>();
-
-  const setBanStatus = (banStatus: 'Ban' | 'Unban') => {
-    dispatch({
-      type: 'buddies/changeBanStatus/start',
-      payload: { buddyId, banStatus },
-    });
-  };
-
-  const closeDropdownAndDialog = () => {
-    setDropdownOpen(false);
-    setDialogOpen(false);
-  };
-
-  const handleBan = (banStatus: 'Ban' | 'Unban') => {
-    closeDropdownAndDialog();
-    setBanStatus(banStatus);
-    onPress();
-  };
-
-  const dialogProperties: DialogProperties = isBanned
-    ? {
-        textId: 'main.chat.unban.confirmation',
-        itemId: 'main.chat.unban',
-        buttonId: 'meta.ok',
-        onPress: () => handleBan('Unban'),
-      }
-    : {
-        textId: 'main.chat.ban.confirmation',
-        itemId: 'main.chat.ban',
-        buttonId: 'meta.ok',
-        onPress: () => handleBan('Ban'),
-        type: 'warning',
-      };
-
-  const dropdownItems: DropDownItem[] = [
-    {
-      textId: dialogProperties.itemId,
-      onPress: () => setDialogOpen(true),
-    },
-  ];
-
-  const show =
-    isDropdownOpen && !isDialogOpen
-      ? 'ShowDropdown'
-      : isDialogOpen
-      ? 'ShowDialog'
-      : 'HideDialogs';
 
   return (
     <RN.View
@@ -122,7 +58,7 @@ const Title: React.FC<Props> = ({ style, onPress, name, buddyId }) => {
         <RN.Text style={styles.name}>{name}</RN.Text>
         <RN.TouchableHighlight
           style={styles.kebab}
-          onPress={() => setDropdownOpen(!isDropdownOpen)}
+          onPress={openDropdown}
           underlayColor={colors.faintBackground}
         >
           <RN.Image
@@ -130,20 +66,6 @@ const Title: React.FC<Props> = ({ style, onPress, name, buddyId }) => {
             style={{ tintColor: colors.black }}
           />
         </RN.TouchableHighlight>
-        {show === 'ShowDropdown' ? (
-          <DropDown
-            style={[styles.dropdown, { top: height - 8 }]}
-            closeDropdown={() => setDropdownOpen(false)}
-            items={dropdownItems}
-            testID={'main.chat.menu'}
-            tintColor={colors.black}
-          />
-        ) : show === 'ShowDialog' ? (
-          <Dialog
-            {...dialogProperties}
-            onPressCancel={() => setDialogOpen(false)}
-          />
-        ) : null}
       </SafeAreaView>
     </RN.View>
   );
@@ -190,10 +112,6 @@ const styles = RN.StyleSheet.create({
     ...fonts.titleBold,
     flex: 1,
     flexWrap: 'wrap',
-  },
-  dropdown: {
-    position: 'absolute',
-    right: 16,
   },
 });
 
