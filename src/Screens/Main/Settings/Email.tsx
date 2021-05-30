@@ -25,6 +25,7 @@ import { MentorListRoute } from '../../Onboarding/MentorList';
 import NamedInputField from '../../components/NamedInputField';
 
 import AlertBox from './UserAccount/AlertBox';
+import EmailForm from 'src/Screens/components/EmailForm';
 
 export type EmailChangeRoute = {
   'Main/Settings/EmailChange': {};
@@ -82,31 +83,7 @@ export default ({ navigation }: Props) => {
             requestState,
             RD.fold(
               () => (
-                <>
-                  <NamedInputField
-                    style={styles.field}
-                    name="main.settings.account.email.title"
-                    value={email}
-                    onChangeText={setEmail}
-                    testID="main.settings.account.email.input"
-                  />
-                  <RN.View style={styles.buttonContainer}>
-                    <Button
-                      style={styles.cancelButton}
-                      messageStyle={styles.cancelButtonText}
-                      onPress={onGoBack}
-                      messageId="meta.cancel"
-                      testID="main.settings.account.email.cancel"
-                    />
-                    <Button
-                      style={styles.changePasswordButton}
-                      messageStyle={styles.buttonText}
-                      onPress={onButtonPress}
-                      messageId="meta.save"
-                      testID="main.settings.account.email.save"
-                    />
-                  </RN.View>
-                </>
+                <EmailForm email={email} setEmail={setEmail} onGoBack={onGoBack} onButtonPress={onButtonPress}/>
               ),
               () => <Spinner style={styles.spinner} />,
               () => (
@@ -144,9 +121,6 @@ const styles = RN.StyleSheet.create({
     color: colors.darkestBlue,
     marginBottom: 24,
   },
-  field: {
-    marginVertical: 8,
-  },
   fieldName: {
     ...fonts.regular,
     color: colors.blueGray,
@@ -159,23 +133,11 @@ const styles = RN.StyleSheet.create({
   scrollView: {
     zIndex: 1,
   },
-  cancelButtonText: {
-    ...fonts.large,
-    color: colors.darkestBlue,
-  },
-  changePasswordButton: {
-    backgroundColor: colors.blue,
-  },
   scrollContent: {
     paddingTop: 48,
     paddingHorizontal: 24,
     flexGrow: 1,
     justifyContent: 'space-between',
-  },
-  textContainer: {
-    alignSelf: 'stretch',
-    justifyContent: 'flex-end',
-    alignItems: 'center',
   },
   spinner: {
     alignSelf: 'center',
@@ -193,10 +155,4 @@ const styles = RN.StyleSheet.create({
     paddingHorizontal: 24,
     marginVertical: 24,
   },
-  buttonText: {
-    ...fonts.largeBold,
-    ...textShadow,
-    color: colors.white,
-  },
-  cancelButton: { backgroundColor: colors.gray, marginBottom: 16 },
 });
