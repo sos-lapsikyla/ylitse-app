@@ -61,7 +61,7 @@ export const getIsBanned =
       RD.map(({ [buddyId]: buddy }) => {
         return buddy ? buddy.status === 'Banned' : false;
       }),
-      RD.getOrElse<unknown, boolean>(() => false),
+      RD.getOrElse<unknown, boolean>(() => true),
     );
   };
 
