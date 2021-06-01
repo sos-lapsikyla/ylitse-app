@@ -18,14 +18,14 @@ export const Title: React.FC<Props> = ({ openDropdown, onLayout }) => {
       <RN.View style={styles.spacer} />
       <Message id="buddyList.title" style={styles.screenTitleText} />
       <RN.TouchableHighlight
-        style={styles.kebab}
+        style={styles.kebabIconHighlight}
         underlayColor={colors.faintBackground}
         testID={'main.buddylist.kebabicon'}
         onPress={openDropdown}
       >
         <RN.Image
           source={require('../../images/three-dot-menu.svg')}
-          style={{ tintColor: colors.white }}
+          style={styles.kebabIcon}
         />
       </RN.TouchableHighlight>
     </RN.SafeAreaView>
@@ -40,8 +40,8 @@ const styles = RN.StyleSheet.create({
     zIndex: 2,
     alignSelf: 'stretch',
     justifyContent: 'space-around',
-    paddingVertical: 16,
-    paddingHorizontal: 16,
+    paddingVertical: 8,
+    paddingHorizontal: 8,
     flexDirection: 'row',
     alignItems: 'center',
   },
@@ -54,11 +54,12 @@ const styles = RN.StyleSheet.create({
     textAlign: 'center',
     color: colors.white,
   },
-  kebab: {
-    height: 40,
-    width: 40,
+  kebabIconHighlight: {
+    height: 32,
+    width: 32,
     borderRadius: 24,
     justifyContent: 'center',
     alignItems: 'center',
   },
+  kebabIcon: { tintColor: colors.white },
 });

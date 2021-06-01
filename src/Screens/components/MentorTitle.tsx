@@ -53,7 +53,9 @@ const MentorTitle: React.FC<Props> = ({
         />
         <RN.View style={styles.column}>
           <RN.View style={styles.nameContainer}>
-            <RN.Text style={styles.name}>{name}</RN.Text>
+            <RN.Text style={styles.name} ellipsizeMode="tail" numberOfLines={1}>
+              {name}
+            </RN.Text>
           </RN.View>
           <RN.View style={styles.infoContainer}>
             <RN.Text style={styles.infoText}>
@@ -88,13 +90,13 @@ const styles = RN.StyleSheet.create({
   },
   chevronIcon: {
     tintColor: colors.black,
-    width: 48,
-    height: 48,
+    width: 40,
+    height: 40,
   },
   userIcon: {
     tintColor: colors.black,
-    width: 64,
-    height: 64,
+    width: 48,
+    height: 48,
   },
   column: {
     marginLeft: 16,
@@ -109,7 +111,7 @@ const styles = RN.StyleSheet.create({
   },
   name: {
     flex: 1,
-    ...fonts.titleBold,
+    ...fonts.regularBold,
   },
   infoContainer: { flexGrow: 1, flexDirection: 'row', flexWrap: 'wrap' },
   infoText: {

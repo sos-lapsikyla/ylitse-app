@@ -75,8 +75,7 @@ export default ({ navigation }: Props) => {
 
 const styles = RN.StyleSheet.create({
   titleContainer: {
-    paddingVertical: 4,
-    paddingHorizontal: 16,
+    paddingHorizontal: 8,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
