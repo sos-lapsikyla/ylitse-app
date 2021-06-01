@@ -21,7 +21,9 @@ const Button = ({ style, buddyId, name, onPress, ...viewProps }: Props) => {
   return (
     <Card style={[styles.button, style]} {...viewProps}>
       <RN.TouchableOpacity style={styles.content} onPress={onPressBuddy}>
-        <RN.Text style={styles.nameText}>{name}</RN.Text>
+        <RN.Text style={styles.nameText} ellipsizeMode="tail" numberOfLines={1}>
+          {name}
+        </RN.Text>
         <RN.View style={[styles.blob, { backgroundColor: color }]}>
           {hasNewMessages ? <RN.View style={styles.newMessage} /> : null}
           <RN.Image source={require('../../images/balloon.svg')} />
@@ -44,7 +46,7 @@ const styles = RN.StyleSheet.create({
     justifyContent: 'space-between',
   },
   nameText: {
-    ...fonts.titleBold,
+    ...fonts.regularBold,
     marginLeft: 32,
     flex: 1,
   },

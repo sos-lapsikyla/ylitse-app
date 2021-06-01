@@ -55,15 +55,17 @@ const Title: React.FC<Props> = ({
           source={require('../../images/user.svg')}
           style={styles.userIcon}
         />
-        <RN.Text style={styles.name}>{name}</RN.Text>
+        <RN.Text style={styles.name} ellipsizeMode="tail" numberOfLines={1}>
+          {name}
+        </RN.Text>
         <RN.TouchableHighlight
-          style={styles.kebab}
+          style={styles.kebabIconHighlight}
           onPress={openDropdown}
           underlayColor={colors.faintBackground}
         >
           <RN.Image
-            source={require('../../images/three-dot-menu.svg')}
-            style={{ tintColor: colors.black }}
+            source={require('../../images/three-dot-menu-chat.svg')}
+            style={styles.kebabIcon}
           />
         </RN.TouchableHighlight>
       </SafeAreaView>
@@ -86,32 +88,35 @@ const styles = RN.StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
   },
-  kebab: {
-    height: 40,
-    width: 40,
-    borderRadius: 24,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
   chevronButton: {
     marginRight: 16,
     marginLeft: 0,
   },
   chevronIcon: {
     tintColor: colors.black,
-    width: 48,
-    height: 48,
+    width: 32,
+    height: 32,
   },
   userIcon: {
     tintColor: colors.black,
-    width: 64,
-    height: 64,
-    marginRight: 16,
+    width: 32,
+    height: 32,
+    marginRight: 8,
   },
   name: {
-    ...fonts.titleBold,
+    ...fonts.regularBold,
     flex: 1,
     flexWrap: 'wrap',
+  },
+  kebabIconHighlight: {
+    width: 24,
+    height: 24,
+    borderRadius: 16,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  kebabIcon: {
+    tintColor: colors.black,
   },
 });
 
