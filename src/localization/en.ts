@@ -111,8 +111,8 @@ export const messages: { [key in MessageId]: string } = {
   'meta.blank': ' ',
   'meta.cancel': 'Cancel',
   'meta.error': 'An error occurred, please try again',
-  'meta.save': 'Save',
   'meta.ok': 'OK',
+  'meta.save': 'Save',
 
   'onboarding.displayName.bodyText':
     "*if you want to stay anonymous to our mentors, please enter a display name that can't identify you.",
