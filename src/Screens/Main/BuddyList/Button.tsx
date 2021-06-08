@@ -25,7 +25,12 @@ const Button = ({ style, buddyId, name, onPress, ...viewProps }: Props) => {
           {name}
         </RN.Text>
         <RN.View style={[styles.blob, { backgroundColor: color }]}>
-          {hasNewMessages ? <RN.View style={styles.newMessage} /> : null}
+          {hasNewMessages ? (
+            <RN.View
+              style={styles.newMessage}
+              testID={'Main.BuddyList.Button.unseenDot'}
+            />
+          ) : null}
           <RN.Image source={require('../../images/balloon.svg')} />
         </RN.View>
       </RN.TouchableOpacity>
