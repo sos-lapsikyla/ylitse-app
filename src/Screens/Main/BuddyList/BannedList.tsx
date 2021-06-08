@@ -37,7 +37,10 @@ export default ({ navigation }: Props) => {
   return (
     <TitledContainer
       TitleComponent={
-        <RN.View style={styles.titleContainer}>
+        <RN.View
+          style={styles.titleContainer}
+          testID={'main.bannedlist.back.button'}
+        >
           <RN.TouchableOpacity onPress={onPressBack}>
             <RN.Image
               source={require('../../images/chevron-left.svg')}

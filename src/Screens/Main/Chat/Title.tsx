@@ -62,6 +62,7 @@ const Title: React.FC<Props> = ({
           style={styles.kebabIconHighlight}
           onPress={openDropdown}
           underlayColor={colors.faintBackground}
+          testID={'main.chat.title.kebabicon'}
         >
           <RN.Image
             source={require('../../images/three-dot-menu-chat.svg')}
