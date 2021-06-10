@@ -21,17 +21,17 @@ export const initialState = RD.initial;
 export const coolDownDuration = 5000;
 
 const _changeEmail = ({
-  newEmailAddress,
+  email,
   account,
 }: {
-  newEmailAddress?: string;
+  email?: string;
   account?: accountApi.UserAccount;
 }) => (token: authApi.AccessToken) => {
   return pipe(
     O.fromNullable(account),
     O.map(({ role, userName, accountId }) => ({
       id: accountId,
-      email: newEmailAddress,
+      email: email,
       role,
       userName,
     })),

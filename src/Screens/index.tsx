@@ -24,6 +24,8 @@ import Logout, { LogoutRoute } from './Main/Settings/Logout';
 import DeleteAccount, {
   DeleteAccountRoute,
 } from './Main/Settings/DeleteAccount';
+import PasswordChange, { PasswordChangeRoute } from './Main/Settings/Password';
+import EmailChange, { EmailChangeRoute } from './Main/Settings/Email';
 
 type RouteName = keyof (SplashRoute &
   WelcomeRoute &
@@ -40,6 +42,8 @@ type RouteName = keyof (SplashRoute &
   BannedListRoute &
   LogoutRoute &
   DeleteAccountRoute &
+  PasswordChangeRoute &
+  EmailChangeRoute &
   SearchMentorRoute);
 type Screen =
   | typeof Splash
@@ -57,6 +61,8 @@ type Screen =
   | typeof BannedList
   | typeof Logout
   | typeof DeleteAccount
+  | typeof PasswordChange
+  | typeof EmailChange
   | typeof SearchMentor;
 
 export type Route = keyof typeof routes;
@@ -107,6 +113,12 @@ const routes: {
   },
   'Main/Settings/DeleteAccount': {
     screen: DeleteAccount,
+  },
+  'Main/Settings/PasswordChange': {
+    screen: PasswordChange,
+  },
+  'Main/Settings/EmailChange': {
+    screen: EmailChange,
   },
   'Main/SearchMentor': {
     screen: SearchMentor,
