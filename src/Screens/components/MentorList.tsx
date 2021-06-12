@@ -31,13 +31,13 @@ export default ({ onPress, testID }: Props) => {
   };
 
   const filterSameIdAndSelectedSkills = (
-    a: mentorApi.Mentor,
-    selectedSkills: string[],
+    mentor: mentorApi.Mentor,
+    skills: string[],
   ) => {
-    return selectedSkills.length > 0
-      ? a.buddyId !== userId &&
-          a.skills.filter(e => selectedSkills.includes(e)).length > 0
-      : a.buddyId !== userId;
+    return skills.length > 0
+      ? mentor.buddyId !== userId &&
+          mentor.skills.filter(e => skills.includes(e)).length > 0
+      : mentor.buddyId !== userId;
   };
 
   const mentorList = RD.remoteData.map(useSelector(mentorState.get), mentors =>
