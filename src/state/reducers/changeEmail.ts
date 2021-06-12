@@ -39,7 +39,6 @@ const _changeEmail = ({
     TE.chain(accountWithNewEmail =>
       accountApi.putAccount(token, accountWithNewEmail),
     ),
-    TE.map(({ email }) => ({ email })),
   );
 };
 
