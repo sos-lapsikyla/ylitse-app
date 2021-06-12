@@ -98,21 +98,20 @@ export type NewPassword = {
   newPassword: string;
 };
 
-export const changePassword = ({
-  currentPassword,
-  newPassword,
-}: NewPassword) => (token: AccessToken) =>
-  http.validateResponse(
-    http.put(
-      `${config.baseUrl}/accounts/${token.accountId}/password`,
-      {
-        current_password: currentPassword,
-        new_password: newPassword,
-      },
-      {
-        headers: authHeader(token),
-      },
-    ),
-    t.any,
-    _ => true as const,
-  );
+export const changePassword =
+  ({ currentPassword, newPassword }: NewPassword) =>
+  (token: AccessToken) =>
+    http.validateResponse(
+      http.put(
+        `${config.baseUrl}/accounts/${token.accountId}/password`,
+        {
+          current_password: currentPassword,
+          new_password: newPassword,
+        },
+        {
+          headers: authHeader(token),
+        },
+      ),
+      t.any,
+      _ => true as const,
+    );

@@ -21,11 +21,8 @@ export type SignUpRoute = {
 
 type Props = navigationProps.NavigationProps<SignUpRoute, DisplayNameRoute>;
 const SignUp = ({ navigation }: Props) => {
-  const [
-    credentialsCheck,
-    checkCredentials,
-    resetCredentialsCheck,
-  ] = useRemoteData(accountApi.checkCredentials);
+  const [credentialsCheck, checkCredentials, resetCredentialsCheck] =
+    useRemoteData(accountApi.checkCredentials);
 
   React.useEffect(() => {
     if (RD.isSuccess(credentialsCheck)) {

@@ -22,10 +22,11 @@ function shadow(value?: number): RN.ViewStyle {
     width: 0,
     height: interpolate(shadowRadius, shadowRadiusRange, [1, 12]),
   };
-  const shadowOpacity = interpolate(shadowRadius, shadowRadiusRange, [
-    0.18,
-    0.58,
-  ]);
+  const shadowOpacity = interpolate(
+    shadowRadius,
+    shadowRadiusRange,
+    [0.18, 0.58],
+  );
 
   return {
     shadowColor: '#000',

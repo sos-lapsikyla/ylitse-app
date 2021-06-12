@@ -86,24 +86,27 @@ export default ({ onPress, testID }: Props) => {
 
 const mentorCardBottomMargin = 16;
 
-const renderMentorCard = (
-  maxHeight: number,
-  screenWidth: number,
-  onPress?: (mentor: mentorApi.Mentor) => void | undefined,
-) => ({ item }: { item: mentorApi.Mentor }) => (
-  <MentorCard
-    style={[
-      styles.card,
-      {
-        maxHeight: maxHeight - mentorCardBottomMargin,
-        width: screenWidth * 0.85,
-        marginRight: (0.15 / 4) * screenWidth,
-      },
-    ]}
-    mentor={item}
-    onPress={onPress}
-  />
-);
+const renderMentorCard =
+  (
+    maxHeight: number,
+    screenWidth: number,
+    onPress?: (mentor: mentorApi.Mentor) => void | undefined,
+  ) =>
+  ({ item }: { item: mentorApi.Mentor }) =>
+    (
+      <MentorCard
+        style={[
+          styles.card,
+          {
+            maxHeight: maxHeight - mentorCardBottomMargin,
+            width: screenWidth * 0.85,
+            marginRight: (0.15 / 4) * screenWidth,
+          },
+        ]}
+        mentor={item}
+        onPress={onPress}
+      />
+    );
 
 const styles = RN.StyleSheet.create({
   mentorListContainer: {

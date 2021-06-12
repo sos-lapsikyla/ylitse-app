@@ -42,30 +42,28 @@ const exitReducer: automaton.Reducer<AppState, actions.Action> = (
   }
 };
 
-export const rootReducer: automaton.Reducer<
-  AppState,
-  actions.Action
-> = automaton.reducerReducers(
-  exitReducer,
-  automaton.combineReducers({
-    storage: storage.reducer,
-    accessToken: accessToken.reducer,
-    login: login.reducer,
-    createUser: createUser.reducer,
-    userAccount: userAccount.reducer,
-    changePassword: changePassword.reducer,
-    changeEmail: changeEmail.reducer,
-    notifications: notifications.reducer,
-    deleteAccount: deleteAccount.reducer,
+export const rootReducer: automaton.Reducer<AppState, actions.Action> =
+  automaton.reducerReducers(
+    exitReducer,
+    automaton.combineReducers({
+      storage: storage.reducer,
+      accessToken: accessToken.reducer,
+      login: login.reducer,
+      createUser: createUser.reducer,
+      userAccount: userAccount.reducer,
+      changePassword: changePassword.reducer,
+      changeEmail: changeEmail.reducer,
+      notifications: notifications.reducer,
+      deleteAccount: deleteAccount.reducer,
 
-    mentors: mentors.reducer,
-    skillFilter: mentors.skillReducer,
-    buddies: buddies.reducer,
-    messages: messages.reducer,
-    newMessage: newMessage.reducer,
-    markMessageSeen: markSeen.reducer,
-  }),
-);
+      mentors: mentors.reducer,
+      skillFilter: mentors.skillReducer,
+      buddies: buddies.reducer,
+      messages: messages.reducer,
+      newMessage: newMessage.reducer,
+      markMessageSeen: markSeen.reducer,
+    }),
+  );
 
 export const initialState: AppState = {
   storage: storage.initialState,

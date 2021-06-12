@@ -106,9 +106,7 @@ export type Action = {
 
 export function make<T extends ActionType, P extends RegularActions[T]>(
   type: T,
-): (
-  payload: P,
-) => {
+): (payload: P) => {
   type: T;
   payload: P;
 } {

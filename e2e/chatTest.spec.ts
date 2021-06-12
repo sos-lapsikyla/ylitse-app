@@ -51,9 +51,7 @@ describe('Chat', () => {
     await signIn(mentee);
 
     await element(by.id('tabs.chats')).tap();
-    await element(by.text(mentor.displayName))
-      .atIndex(0)
-      .tap();
+    await element(by.text(mentor.displayName)).atIndex(0).tap();
 
     await expect(element(by.text(message_from_mentee))).toBeVisible();
     await expect(element(by.text(message_from_mentor))).toBeVisible();

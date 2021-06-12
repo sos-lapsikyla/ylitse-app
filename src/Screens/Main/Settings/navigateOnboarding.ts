@@ -8,7 +8,7 @@ const routeName: keyof MentorListRoute = 'Onboarding/MentorList';
 
 const navigateOnboarding = <
   A extends navigationProps.RouteDeclaration<string, string, unknown>,
-  B extends MentorListRoute
+  B extends MentorListRoute,
 >(
   navigation: navigationProps.NavigationProps<A, B>['navigation'],
 ) => {

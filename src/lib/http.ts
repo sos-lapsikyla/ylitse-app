@@ -9,7 +9,10 @@ export const isUnauthorized = (u: unknown) => u === unauthorizedRequest;
 
 export const request = (url: string, options: RequestInit) =>
   pipe(
-    TE.tryCatch(() => fetch(url, options), () => 'Connection failure.'),
+    TE.tryCatch(
+      () => fetch(url, options),
+      () => 'Connection failure.',
+    ),
     TE.chain(response =>
       response.ok
         ? TE.right(response)
@@ -38,24 +41,25 @@ export const put = (url: string, body: any, options?: RequestInit) =>
   });
 
 const getJson = (response: Response) =>
-  pipe(TE.tryCatch(() => response.json(), () => 'Failed to get json.'));
-
-const decode = <A, B>(model: t.Type<A, B, unknown>) => (u: unknown) =>
   pipe(
-    u,
-    model.decode,
-    E.mapLeft(() => 'Failed to decode JSON.'),
-    TE.fromEither,
+    TE.tryCatch(
+      () => response.json(),
+      () => 'Failed to get json.',
+    ),
   );
+
+const decode =
+  <A, B>(model: t.Type<A, B, unknown>) =>
+  (u: unknown) =>
+    pipe(
+      u,
+      model.decode,
+      E.mapLeft(() => 'Failed to decode JSON.'),
+      TE.fromEither,
+    );
 
 export const validateResponse = <A, B, C>(
   task: TE.TaskEither<string, Response>,
   model: t.Type<A, B, unknown>,
   fromModel: (a: A) => C,
-) =>
-  pipe(
-    task,
-    TE.chain(getJson),
-    TE.chain(decode(model)),
-    TE.map(fromModel),
-  );
+) => pipe(task, TE.chain(getJson), TE.chain(decode(model)), TE.map(fromModel));

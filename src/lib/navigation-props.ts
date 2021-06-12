@@ -10,7 +10,7 @@ export type RouteDeclaration<Names extends string, K extends string, V> = {
 
 interface NavigationScreenProp<
   MyRoute extends RouteDeclaration<string, string, unknown>,
-  NextRoute extends RouteDeclaration<string, string, unknown>
+  NextRoute extends RouteDeclaration<string, string, unknown>,
 > extends ReactNavigation.NavigationScreenProp<unknown> {
   navigate<N extends keyof NextRoute>(options: {
     routeName: N;
@@ -35,7 +35,7 @@ interface NavigationScreenProp<
 
 export interface NavigationProps<
   MyRoute extends RouteDeclaration<string, string, unknown>,
-  NextRoute extends RouteDeclaration<string, string, unknown>
+  NextRoute extends RouteDeclaration<string, string, unknown>,
 > {
   navigation: NavigationScreenProp<MyRoute, NextRoute>;
 }

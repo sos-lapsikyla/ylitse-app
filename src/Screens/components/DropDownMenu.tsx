@@ -16,7 +16,7 @@ export type DropDownItem = {
 interface Props {
   items: DropDownItem[];
   testID?: string;
-  tintColor?: string; 
+  tintColor?: string;
 }
 
 const DropDown: React.FC<Props> = ({ items, testID, tintColor }) => {
@@ -40,7 +40,7 @@ const DropDown: React.FC<Props> = ({ items, testID, tintColor }) => {
       >
         <RN.Image
           source={require('../images/three-dot-menu.svg')}
-          style={{tintColor: tintColor ?? colors.white}}
+          style={{ tintColor: tintColor ?? colors.white }}
         />
       </RN.TouchableHighlight>
       <RN.Modal visible={isOpen} transparent onRequestClose={toggleOpen}>
@@ -87,7 +87,6 @@ const styles = RN.StyleSheet.create({
     borderRadius: 16,
     paddingVertical: 16,
     backgroundColor: colors.lightestGray,
- 
   },
   button: {
     padding: 16,
