@@ -48,6 +48,11 @@ module.exports = {
     'react/destructuring-assignment': ['off'],
     'react-hooks/rules-of-hooks': 'error',
     'react-hooks/exhaustive-deps': ['off'],
-    'import/no-unresolved': [2, { commonjs: true }]
+    'import/no-unresolved': [2, { commonjs: true }],
+    // TypeScript-Eslint handles shadowing
+    // eslint cannot differentiate between types and values
+    // they live in diffrent namespaces.
+    'no-shadow': ['off'],
+    '@typescript-eslint/no-shadow': ['error']
   },
 };
