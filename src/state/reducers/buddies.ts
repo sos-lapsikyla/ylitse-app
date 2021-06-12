@@ -99,9 +99,10 @@ const getBuddiesWithStatus = (status: buddyApi.Buddy['status']) =>
 const getBuddies = (status: buddyApi.Buddy['status']) => (
   appState: types.AppState,
 ) => {
-  const buddies = getBuddiesWithStatus(status)(appState);
-  const buddyOrder = messageState.getOrder(appState);
-  const both = RD.combine(buddies, buddyOrder);
+  const remoteBuddies = getBuddiesWithStatus(status)(appState);
+  const remoteBuddyOrder = messageState.getOrder(appState);
+
+  const both = RD.combine(remoteBuddies, remoteBuddyOrder);
 
   return RD.remoteData.map(both, ([buddyList, buddyOrder]) =>
     [...buddyList].sort(
