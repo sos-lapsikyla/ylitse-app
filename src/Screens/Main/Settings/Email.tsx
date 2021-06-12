@@ -13,8 +13,6 @@ import * as actions from '../../../state/actions';
 import * as selector from '../../../state/selectors'
 
 import Message from '../../components/Message';
-import Button from '../../components/Button';
-import { textShadow } from '../../components/shadow';
 import ScreenTitle from '../../components/ScreenTitle';
 import colors from '../../components/colors';
 import fonts from '../../components/fonts';
@@ -22,7 +20,6 @@ import CreatedBySosBanner from '../../components/CreatedBySosBanner';
 import Spinner from '../../components/Spinner';
 
 import { MentorListRoute } from '../../Onboarding/MentorList';
-import NamedInputField from '../../components/NamedInputField';
 
 import AlertBox from './UserAccount/AlertBox';
 import EmailForm from 'src/Screens/components/EmailForm';
