@@ -31,14 +31,11 @@ export const getAC = flow(
   O.getOrElse(constant(authApi.invalidToken)),
 );
 
-export const getAccount = (state: AppState) => {
-  const account = RD.toOption(state.userAccount)
-  return pipe(
-    account,
-    O.map((account) => account),
+export const getAccount = (state: AppState) =>
+  pipe(
+    RD.toOption(state.userAccount),
     O.toUndefined,
   );
-}
 
 export const getBuddyName = (
   buddyId: string,
