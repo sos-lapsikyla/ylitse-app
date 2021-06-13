@@ -7,6 +7,7 @@
     "ios": "react-native run-ios",
     "start": "react-native start",
     "test": "npm run lint && jest",
+    "unittest": "jest",
     "eslint:check": "eslint --print-config ./src/index.ts | eslint-config-prettier-check",
     "eslint:fix": "npm run eslint:check && eslint --fix '{src,e2e}/**/*.{ts,tsx}'",
     "eslint": "npm run eslint:check && eslint '{src,e2e}/**/*.{ts,tsx}'",
