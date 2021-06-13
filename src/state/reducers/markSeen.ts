@@ -17,10 +17,13 @@ export const reducer: automaton.Reducer<State, actions.Action> = (
     case 'messages/markSeen':
       const message = action.payload.message;
       const id = message.messageId;
+
       if (id in state || message.isSeen || message.type === 'Sent') {
         return state;
       }
+
       const markSeenTask = api.markSeen(action.payload.message);
+
       return automaton.loop(
         { ...state, [id]: true },
         withToken(markSeenTask, () => ({

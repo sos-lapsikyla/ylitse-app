@@ -7,6 +7,7 @@ import * as http from '../lib/http';
 import * as config from './config';
 
 type ApiLoginToken = t.TypeOf<typeof tokenType>;
+
 const tokenType = t.strict({
   scopes: t.intersection([
     t.strict({

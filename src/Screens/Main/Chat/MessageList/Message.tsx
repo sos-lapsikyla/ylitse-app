@@ -35,6 +35,7 @@ const Message = ({ value: message }: MessageProps) => {
   const hours = addZero(date.getHours());
   const minutes = addZero(date.getMinutes());
   const timeText = `${hours}:${minutes}`;
+
   return (
     <RN.View style={[bubbleStyle, styles.bubble]}>
       <RN.View>

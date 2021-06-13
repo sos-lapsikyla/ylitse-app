@@ -18,6 +18,7 @@ interface Props<E> {
 
 function ErrorMessage<E>({ style, data, getMessageId, testID }: Props<E>) {
   const opacity = React.useRef(new RN.Animated.Value(0)).current;
+
   const defaultConfig = {
     animation: {
       useNativeDriver: true,
@@ -27,6 +28,7 @@ function ErrorMessage<E>({ style, data, getMessageId, testID }: Props<E>) {
     },
     messageId: localization.blank,
   };
+
   const { animation, messageId } = pipe(
     data,
     RD.fold(
@@ -47,6 +49,7 @@ function ErrorMessage<E>({ style, data, getMessageId, testID }: Props<E>) {
   React.useEffect(() => {
     RN.Animated.timing(opacity, animation).start();
   }, [RD.isFailure(data)]);
+
   return (
     <AnimatedMessage
       style={[styles.message, { opacity }, style]}

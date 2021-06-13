@@ -20,6 +20,7 @@ type Props = {
 
 export default ({ navigateToDeleteAccount, navigateToLogout }: Props) => {
   const isMentor = useSelector(tokenState.isMentor);
+
   return (
     <Card style={styles.card}>
       <Message

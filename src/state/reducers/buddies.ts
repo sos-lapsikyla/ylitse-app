@@ -33,6 +33,7 @@ export const reducer: automaton.Reducer<State, actions.Action> = (
             const requiredBuddies = set.fromArray(Eq.eqString)(
               record.keys(messages),
             );
+
             const hasAllBuddies = pipe(
               state,
               RD.map(record.keys),
@@ -42,6 +43,7 @@ export const reducer: automaton.Reducer<State, actions.Action> = (
               ),
               RD.getOrElse(() => false),
             );
+
             return hasAllBuddies
               ? state
               : automaton.loop(

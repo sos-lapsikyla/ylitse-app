@@ -36,12 +36,15 @@ const SignIn = (props: Props) => {
       navigateMain(props.navigation);
     }
   }, [props.accessToken]);
+
   const goBack = () => {
     props.navigation.goBack();
   };
+
   const onLogin = (credentials: authApi.Credentials) => {
     props.login(credentials);
   };
+
   // React.useEffect(() => {
   //   props.login({ userName: 'test', password: 'test' });
   // }, []);

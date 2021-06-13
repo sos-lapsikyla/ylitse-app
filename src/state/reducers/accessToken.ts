@@ -67,6 +67,7 @@ export const reducer: automaton.Reducer<State, actions.Action> = (
     case 'token/doRequest/init': {
       const index = state.index + 1;
       const token = O.toUndefined(state.currentToken);
+
       if (!token || RD.isPending(state.nextToken)) {
         return {
           ...state,
@@ -74,12 +75,14 @@ export const reducer: automaton.Reducer<State, actions.Action> = (
           deferredTasks: [...state.deferredTasks, action.payload],
         };
       }
+
       const nextState = {
         ...state,
         index,
         tasks: { ...state.tasks, [index]: action.payload },
       };
       const task = action.payload.task(token);
+
       const nextCmd = cmd(
         T.task.map(task, result =>
           actions.make('token/doRequest/completed')({
@@ -88,17 +91,21 @@ export const reducer: automaton.Reducer<State, actions.Action> = (
           }),
         ),
       );
+
       return automaton.loop(nextState, nextCmd);
     }
     case 'token/doRequest/completed': {
       const index = action.payload.index;
       const taskAndTasks = pipe(state.tasks, record.pop(index), O.toNullable);
+
       if (!taskAndTasks) {
         return state;
       }
+
       const [task, tasks] = taskAndTasks;
 
       const result = action.payload.result;
+
       if (pipe(result, O.getLeft, O.toNullable, http.isUnauthorized)) {
         return automaton.loop(
           {
@@ -109,18 +116,22 @@ export const reducer: automaton.Reducer<State, actions.Action> = (
           actions.make('token/refresh/start')(undefined),
         );
       }
+
       const nextState = {
         ...state,
         tasks,
       };
       const nextAction = task.action(result);
+
       return automaton.loop(nextState, nextAction);
     }
     case 'token/refresh/start': {
       const token = O.toNullable(state.currentToken);
+
       if (RD.isPending(state.nextToken) || !token) {
         return state;
       }
+
       return automaton.loop(
         {
           ...state,
@@ -143,6 +154,7 @@ export const reducer: automaton.Reducer<State, actions.Action> = (
             const nextActions = state.deferredTasks.map(t =>
               cmd(T.task.map(t.task(token), result => t.action(result))),
             );
+
             return automaton.loop(
               {
                 ...state,
@@ -157,5 +169,6 @@ export const reducer: automaton.Reducer<State, actions.Action> = (
       );
     }
   }
+
   return state;
 };

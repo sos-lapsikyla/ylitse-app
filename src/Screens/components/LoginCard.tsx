@@ -38,17 +38,22 @@ const LoginCard = ({
     userName: '',
     password: '',
   });
+
   const onChangeCredentials = (newCredentials: authApi.Credentials) => {
     if (onChange) {
       onChange(credentials);
     }
+
     setCredentials(newCredentials);
   };
+
   const onUserNameChange = (userName: string) =>
     onChangeCredentials({ ...credentials, userName });
+
   const onPasswordChange = (password: string) =>
     onChangeCredentials({ ...credentials, password });
   const isEmptyFields = !credentials.password || !credentials.userName;
+
   return (
     <Card {...viewProps}>
       <Message style={styles.title} id={titleMessageId} />

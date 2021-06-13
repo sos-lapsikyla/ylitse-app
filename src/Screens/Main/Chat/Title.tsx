@@ -31,13 +31,16 @@ const Title: React.FC<Props> = ({ style, onPress, name, buddyId }) => {
   const color = getBuddyColor(buddyId);
   const isBanned = ReactRedux.useSelector(selectors.getIsBanned(buddyId));
   const dispatch = ReactRedux.useDispatch<redux.Dispatch<actions.Action>>();
+
   const banBuddy = () => {
     dispatch({ type: 'buddies/ban/start', payload: { buddyId } });
   };
+
   const handleBan = () => {
     banBuddy();
     onPress();
   };
+
   const dropdownItems: DropDownItem[] = [
     { textId: 'main.chat.ban', onPress: () => setDialogOpen(true) },
   ];

@@ -14,9 +14,11 @@ export default function (): [
     width: 0,
     height: 0,
   });
+
   const onLayout = (event: RN.LayoutChangeEvent) => {
     const { width, height } = event.nativeEvent.layout;
     setLayout({ width, height });
   };
+
   return [layout, onLayout];
 }

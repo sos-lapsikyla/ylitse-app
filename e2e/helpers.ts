@@ -109,6 +109,7 @@ export async function APIAccessToken(login_name: string, password: string) {
     body: JSON.stringify({ login_name: login_name, password: password }),
   });
   const tokens: any = await loginResponse.json();
+
   return tokens.tokens.access_token;
 }
 
@@ -119,11 +120,13 @@ export async function APIUsers(access_token: string) {
   const headers = {
     Authorization: `Bearer ${access_token}`,
   };
+
   const usersResponse = await fetch(`${API_URL}/users`, {
     method: 'GET',
     headers: headers,
   });
   const users: any = await usersResponse.json();
+
   return users.resources;
 }
 
@@ -141,6 +144,7 @@ export async function APIDeleteAccounts() {
     if (user.role === 'admin') {
       continue;
     }
+
     await fetch(`${API_URL}/accounts/${user.account_id}`, {
       method: 'DELETE',
       headers: headers,
@@ -164,6 +168,7 @@ export async function APISignUpMentee(mentee: any) {
     }),
   });
   const access_token = await APIAccessToken(mentee.loginName, mentee.password);
+
   const headers = {
     Authorization: `Bearer ${access_token}`,
   };
@@ -191,6 +196,7 @@ export async function APISignUpMentee(mentee: any) {
  */
 export async function APISignUpMentor(mentor: any) {
   const admin_access_token = await APIAdminAccessToken();
+
   const admin_headers = {
     Authorization: `Bearer ${admin_access_token}`,
   };
@@ -208,6 +214,7 @@ export async function APISignUpMentor(mentor: any) {
     }),
   });
   const access_token = await APIAccessToken(mentor.loginName, mentor.password);
+
   const headers = {
     Authorization: `Bearer ${access_token}`,
   };
@@ -257,11 +264,13 @@ export async function APIBan(sender: any, reciever: any) {
   let sender_info = info.find(
     (o: any) => o.display_name === sender.displayName,
   );
+
   let reciever_info = info.find(
     (o: any) => o.display_name === reciever.displayName,
   );
 
   const access_token = await APIAccessToken(sender.loginName, sender.password);
+
   const headers = {
     Authorization: `Bearer ${access_token}`,
   };

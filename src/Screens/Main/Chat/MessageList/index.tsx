@@ -43,6 +43,7 @@ export function toRenderable(messages: messageApi.Message[]): Renderable[] {
   return messages
     .reduce((acc: Renderable[], m) => {
       const last = acc[acc.length - 1];
+
       const next = {
         type: 'Message' as const,
         value: m,
@@ -50,16 +51,20 @@ export function toRenderable(messages: messageApi.Message[]): Renderable[] {
       };
       const date = getDate(next.value.sentTime);
       const nextDate = { type: 'Date' as const, value: date, id: date };
+
       if (
         !!last &&
         last.type === 'Message' &&
         getDate(last.value.sentTime) === date
       ) {
         acc.push(next);
+
         return acc;
       }
+
       acc.push(nextDate);
       acc.push(next);
+
       return acc;
     }, [])
     .reverse();
@@ -77,6 +82,7 @@ export default ({ buddyId }: Props) => {
   const messageList = useSelector(getMessagesByBuddyId(buddyId));
   messageList.sort(({ sentTime: A }, { sentTime: B }) => A - B);
   const messages = toRenderable(messageList);
+
   return (
     <RN.FlatList
       contentContainerStyle={styles.scrollContent}

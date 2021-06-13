@@ -12,6 +12,7 @@ import * as authApi from './auth';
 import * as config from './config';
 
 type ApiMessage = t.TypeOf<typeof messageType>;
+
 const messageType = t.interface({
   content: t.string,
   recipient_id: t.string,
@@ -24,6 +25,7 @@ const messageType = t.interface({
 export const markSeen = (message: Message) => (token: authApi.AccessToken) => {
   const url = `${config.baseUrl}/users/${token.userId}/messages/${message.messageId}`;
   const seenMessage = messageType.encode(toApiMessage(token.userId, message));
+
   return http.validateResponse(
     http.put(url, seenMessage, {
       headers: authApi.authHeader(token),
@@ -60,6 +62,7 @@ export type Message = {
 const toMessage: (a: string) => (b: ApiMessage) => Message =
   userId => apiMessage => {
     const isSent = userId === apiMessage.sender_id;
+
     return {
       type: isSent ? 'Sent' : 'Received',
       buddyId: isSent ? apiMessage.recipient_id : apiMessage.sender_id,
@@ -102,12 +105,14 @@ export const sendMessage =
   (params: SendMessageParams) =>
   (accessToken: authApi.AccessToken): TE.TaskEither<string, undefined> => {
     const url = `${config.baseUrl}/users/${accessToken.userId}/messages`;
+
     const message = {
       sender_id: accessToken.userId,
       recipient_id: params.buddyId,
       content: params.text,
       opened: false,
     };
+
     return pipe(
       http.post(url, message, {
         headers: authApi.authHeader(accessToken),

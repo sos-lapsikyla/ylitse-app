@@ -25,12 +25,15 @@ export default ({ navigation }: Props) => {
   const navigateSignUp = () => {
     navigation.navigate('Onboarding/SignUp', {});
   };
+
   const navigateSignIn = () => {
     navigation.navigate('Onboarding/SignIn', {});
   };
+
   const goBack = () => {
     navigation.goBack();
   };
+
   return (
     <OnboardingBackground testID="onboarding.sign.view">
       <Card style={styles.card}>

@@ -11,6 +11,7 @@ import * as config from './config';
 import * as authApi from './auth';
 
 type ApiUser = t.TypeOf<typeof userType>;
+
 const userType = t.strict({
   display_name: t.string,
   role: t.union([t.literal('mentee'), t.literal('mentor'), t.literal('admin')]),
@@ -133,6 +134,7 @@ export function createUser(
   user: User,
 ): TE.TaskEither<string, authApi.AccessToken> {
   const { userName, password } = user;
+
   return pipe(
     user,
     postAccount,
@@ -170,10 +172,15 @@ export function checkCredentials({
       userName,
       errorMessageId,
     });
+
   if (userName.length < 3) return fail('onboarding.signUp.error.userNameShort');
+
   if (userName.length > 30) return fail('onboarding.signUp.error.userNameLong');
+
   if (password.length < 5) return fail('onboarding.signUp.error.passwordShort');
+
   if (password.length > 30) return fail('onboarding.signUp.error.passwordLong');
+
   return pipe(
     isUserNameFree(userName),
     TE.fold(

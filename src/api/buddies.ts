@@ -8,6 +8,7 @@ import * as config from './config';
 import * as authApi from './auth';
 
 type ApiBuddy = t.TypeOf<typeof buddyType>;
+
 const buddyType = t.intersection([
   t.strict({
     display_name: t.string,
@@ -39,6 +40,7 @@ export function fetchBuddies(
     ({ resources }) =>
       resources.reduce((acc, apiBuddy) => {
         const buddy = toBuddy(apiBuddy);
+
         return { ...acc, [buddy.buddyId]: buddy };
       }, {}),
   );

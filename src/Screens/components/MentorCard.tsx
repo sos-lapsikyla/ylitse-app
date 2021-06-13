@@ -20,6 +20,7 @@ interface Props {
 
 const MentorCard: React.FC<Props> = ({ onPress, style, mentor }) => {
   const color = getBuddyColor(mentor.buddyId);
+
   return (
     <Card style={[styles.card, style]}>
       <MentorTitle mentor={mentor} />

@@ -17,6 +17,7 @@ const Link = ({ style, linkName, url }: Props) => {
   const onPress = () => {
     RN.Linking.openURL(url);
   };
+
   return (
     <RN.TouchableOpacity style={[styles.touchable, style]} onPress={onPress}>
       <Message style={styles.linkText} id={linkName} />

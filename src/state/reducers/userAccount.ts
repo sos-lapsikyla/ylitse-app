@@ -24,6 +24,7 @@ export const reducer: automaton.Reducer<
       if (RD.isPending(state)) {
         return state;
       }
+
       return automaton.loop(
         RD.pending,
         withToken(

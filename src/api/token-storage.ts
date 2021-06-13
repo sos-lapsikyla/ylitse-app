@@ -11,6 +11,7 @@ import * as auth from './auth';
 const key = 'LOGIN';
 
 type StorableToken = t.TypeOf<typeof storableTokenType>;
+
 const storableTokenType = t.strict({
   scopes: t.strict({
     accountId: t.string,

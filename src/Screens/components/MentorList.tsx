@@ -26,6 +26,7 @@ export default ({ onPress, testID }: Props) => {
   const selectedSkills = useSelector(mentorState.getSelectedSkills);
 
   const dispatch = useDispatch<redux.Dispatch<actions.Action>>();
+
   const fetchMentors = () => {
     dispatch({ type: 'mentors/start', payload: undefined });
   };

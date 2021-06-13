@@ -41,9 +41,11 @@ export const getBuddyName = (
 ) => {
   const look = (fa: RD.RemoteData<unknown, Record<string, { name: string }>>) =>
     RD.remoteData.map(fa, a => record.lookup(buddyId, a));
+
   const buddy = getOptionM(RD.remoteData).alt(look(buddyState), () =>
     look(mentorState),
   );
+
   return getFoldableComposition(RD.remoteData, O.option).reduce(
     buddy,
     '',
@@ -67,6 +69,7 @@ const messageList = (messageState: AppState['messages'], buddyId: string) => {
   const messagesById = RD.remoteData.map(messageState.messages, r =>
     record.lookup(buddyId, r),
   );
+
   return getFoldableComposition(RD.remoteData, O.option).reduce<
     string,
     Record<string, messageApi.Message>,

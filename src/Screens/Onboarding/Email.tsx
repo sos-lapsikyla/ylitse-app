@@ -28,6 +28,7 @@ const Email = ({ navigation }: Props) => {
   const goBack = () => {
     navigation.goBack();
   };
+
   const navigateNext = () => {
     navigation.navigate('Onboarding/PrivacyPolicy', {
       user: {
@@ -36,6 +37,7 @@ const Email = ({ navigation }: Props) => {
       },
     });
   };
+
   return (
     <OnboardingBackground testID="onboarding.email.view">
       <Card style={styles.card}>

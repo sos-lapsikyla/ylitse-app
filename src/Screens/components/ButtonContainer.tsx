@@ -26,6 +26,7 @@ const ButtonContainer: React.FC<Props> = ({
 };
 
 const borderRadius = 18;
+
 const styles = RN.StyleSheet.create({
   container: {
     minHeight: 40,

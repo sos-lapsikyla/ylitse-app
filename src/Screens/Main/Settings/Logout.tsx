@@ -26,13 +26,16 @@ type Props = navigationProps.NavigationProps<LogoutRoute, MentorListRoute>;
 
 export default ({ navigation }: Props) => {
   const dispatch = useDispatch<redux.Dispatch<actions.Action>>();
+
   const onLogout = () => {
     dispatch(actions.make('logout/logout')(undefined));
     navigateOnboarding(navigation);
   };
+
   const onGoBack = () => {
     navigation.goBack();
   };
+
   return (
     <RN.View style={styles.screen}>
       <ScreenTitle id="main.settings.logout.title" onBack={onGoBack} />

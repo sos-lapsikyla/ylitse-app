@@ -6,6 +6,7 @@ type Props = {
 
 const ImmediatelyNavigateBack = ({ goBack }: Props) => {
   React.useEffect(goBack, []);
+
   return null;
 };
 

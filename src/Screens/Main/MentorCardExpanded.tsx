@@ -39,12 +39,15 @@ type Props = OwnProps;
 const MentorCardExpanded = ({ navigation }: Props) => {
   const mentor = navigation.getParam('mentor');
   const color = getBuddyColor(mentor.buddyId);
+
   const goBack = () => {
     navigation.goBack();
   };
+
   const navigateToChat = () => {
     navigation.navigate('Main/Chat', { buddyId: mentor.buddyId });
   };
+
   return (
     <RN.View style={styles.container}>
       <MentorTitle

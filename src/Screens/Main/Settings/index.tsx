@@ -30,15 +30,19 @@ const Settings = ({ navigation }: Props) => {
   const onNavigateToLogout = () => {
     navigation.navigate('Main/Settings/Logout', {});
   };
+
   const onNavigateToDeleteAccount = () => {
     navigation.navigate('Main/Settings/DeleteAccount', {});
   };
+
   const onNavigateToPasswordChange = () => {
     navigation.navigate('Main/Settings/PasswordChange', {});
   };
+
   const onNavigateToEmailChange = () => {
     navigation.navigate('Main/Settings/EmailChange', {});
   };
+
   return (
     <TitledContainer
       TitleComponent={

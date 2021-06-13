@@ -29,13 +29,16 @@ type Props = navigationProps.NavigationProps<
 
 export default ({ navigation }: Props) => {
   const dispatch = useDispatch<redux.Dispatch<actions.Action>>();
+
   const onDeleteAccount = () => {
     dispatch(actions.make('deleteAccount/start')(undefined));
     navigateOnboarding(navigation);
   };
+
   const onGoBack = () => {
     navigation.goBack();
   };
+
   return (
     <RN.View style={styles.screen}>
       <ScreenTitle

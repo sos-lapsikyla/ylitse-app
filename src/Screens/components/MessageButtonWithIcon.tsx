@@ -37,6 +37,7 @@ const FilterButton: React.FC<Props> = ({
 export default FilterButton;
 
 const borderRadius = 18;
+
 const styles = RN.StyleSheet.create({
   icon: {
     tintColor: colors.blueGray,

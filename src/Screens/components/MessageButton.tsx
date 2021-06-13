@@ -29,6 +29,7 @@ export default ({ onPress, style, messageId, messageStyle, testID }: Props) => {
 };
 
 const borderRadius = 18;
+
 const styles = RN.StyleSheet.create({
   container: {
     minHeight: 40,

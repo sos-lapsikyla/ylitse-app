@@ -23,7 +23,9 @@ export const taskRunner =
   (action: redux.Action | Cmd) => {
     if (isCmd(action)) {
       const { task } = action;
+
       return task().then(resultAction => dispatch(resultAction));
     }
+
     return next(action);
   };

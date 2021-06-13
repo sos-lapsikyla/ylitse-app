@@ -75,6 +75,7 @@ describe('Skill filter', () => {
         continue;
       }
     }
+
     const expectedMentors = {
       [accountFixtures.mentors[0].displayName]: true,
       [accountFixtures.mentors[1].displayName]: true,

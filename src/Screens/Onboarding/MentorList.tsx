@@ -25,6 +25,7 @@ const MentorList = (props: Props) => {
   const navigateNext = () => {
     props.navigation.navigate('Onboarding/Sign', {});
   };
+
   return (
     <Background>
       <SafeAreaView

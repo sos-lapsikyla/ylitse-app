@@ -37,9 +37,11 @@ export const reducer: automaton.Reducer<State, actions.Action> = (
     case 'storage/readToken/end': {
       const nextState = { ...state, readToken: RD.fromEither(action.payload) };
       const token = O.toNullable(O.fromEither(action.payload));
+
       if (!token) {
         return nextState;
       }
+
       return automaton.loop(nextState, actions.make('token/Acquired')(token));
     }
     case 'storage/writeToken/start': {

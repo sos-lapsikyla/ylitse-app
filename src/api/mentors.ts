@@ -7,6 +7,7 @@ import * as http from '../lib/http';
 import * as config from './config';
 
 type ApiMentor = t.TypeOf<typeof mentorType>;
+
 const mentorType = t.strict({
   user_id: t.string,
   birth_year: t.number,
@@ -19,6 +20,7 @@ const mentorType = t.strict({
 const mentorListType = t.strict({ resources: t.array(mentorType) });
 
 export type Mentor = ReturnType<typeof toMentor>;
+
 const toMentor = ({
   birth_year,
   display_name,
@@ -32,9 +34,11 @@ const toMentor = ({
 });
 
 export type Mentors = Record<string, Mentor>;
+
 const fromMentorList = ({ resources }: t.TypeOf<typeof mentorListType>) =>
   resources.reduce((acc: Mentors, apiMentor) => {
     const mentor = toMentor(apiMentor);
+
     return { ...acc, [mentor.buddyId]: mentor };
   }, {});
 
@@ -53,12 +57,15 @@ export function compareLang(a: Mentor, b: Mentor) {
 
   const lang = 'Italian';
   const hasLang = ({ languages }: Mentor) => languages.includes(lang);
+
   if (hasLang(a) && !hasLang(b)) {
     return -1;
   }
+
   if (!hasLang(a) && hasLang(b)) {
     return 1;
   }
+
   return 0;
 }
 
