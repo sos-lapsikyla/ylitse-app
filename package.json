@@ -8,7 +8,7 @@
     "start": "react-native start",
     "test": "npm run lint && jest",
     "unittest": "jest",
-    "eslint:check": "eslint --print-/src/App.tsx",
+    "eslint:check": "eslint-config-prettier src/App.tsx",
     "eslint": "npm run eslint:check && eslint '{src,e2e}/**/*.{ts,tsx}'",
     "eslint:fix": "npm run eslint:check && eslint --fix '{src,e2e}/**/*.{ts,tsx}'",
     "prettier": "prettier --list-different '{src,e2e}/**/*.{ts,tsx}'",
