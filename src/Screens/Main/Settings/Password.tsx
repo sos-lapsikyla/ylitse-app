@@ -33,7 +33,7 @@ type Props = navigationProps.NavigationProps<
 >;
 
 export default ({ navigation }: Props) => {
-  const account = useSelector(selector.getAccount)
+  const account = useSelector(selector.getAccount);
 
   const [currentPassword, setCurrentPassword] = React.useState('');
   const [newPassword, setNewPassword] = React.useState('');

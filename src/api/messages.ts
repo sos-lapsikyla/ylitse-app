@@ -57,19 +57,18 @@ export type Message = {
   isSeen: boolean;
 };
 
-const toMessage: (
-  a: string,
-) => (b: ApiMessage) => Message = userId => apiMessage => {
-  const isSent = userId === apiMessage.sender_id;
-  return {
-    type: isSent ? 'Sent' : 'Received',
-    buddyId: isSent ? apiMessage.recipient_id : apiMessage.sender_id,
-    isSeen: apiMessage.opened,
-    content: apiMessage.content,
-    sentTime: apiMessage.created,
-    messageId: apiMessage.id,
+const toMessage: (a: string) => (b: ApiMessage) => Message =
+  userId => apiMessage => {
+    const isSent = userId === apiMessage.sender_id;
+    return {
+      type: isSent ? 'Sent' : 'Received',
+      buddyId: isSent ? apiMessage.recipient_id : apiMessage.sender_id,
+      isSeen: apiMessage.opened,
+      content: apiMessage.content,
+      sentTime: apiMessage.created,
+      messageId: apiMessage.id,
+    };
   };
-};
 
 export type MessageMapping = Record<string, Record<string, Message>>;
 export function fetchMessages(
@@ -99,23 +98,23 @@ export type SendMessageParams = {
   text: string;
 };
 
-export const sendMessage = (params: SendMessageParams) => (
-  accessToken: authApi.AccessToken,
-): TE.TaskEither<string, undefined> => {
-  const url = `${config.baseUrl}/users/${accessToken.userId}/messages`;
-  const message = {
-    sender_id: accessToken.userId,
-    recipient_id: params.buddyId,
-    content: params.text,
-    opened: false,
+export const sendMessage =
+  (params: SendMessageParams) =>
+  (accessToken: authApi.AccessToken): TE.TaskEither<string, undefined> => {
+    const url = `${config.baseUrl}/users/${accessToken.userId}/messages`;
+    const message = {
+      sender_id: accessToken.userId,
+      recipient_id: params.buddyId,
+      content: params.text,
+      opened: false,
+    };
+    return pipe(
+      http.post(url, message, {
+        headers: authApi.authHeader(accessToken),
+      }),
+      TE.map(_ => undefined),
+    );
   };
-  return pipe(
-    http.post(url, message, {
-      headers: authApi.authHeader(accessToken),
-    }),
-    TE.map(_ => undefined),
-  );
-};
 
 type buddyId = string;
 type messageId = string;

@@ -39,10 +39,7 @@ export const reducer = (state: State, action: actions.Action) => {
           token =>
             automaton.loop(
               RD.success(token),
-              pipe(
-                token,
-                actions.make('token/Acquired'),
-              ),
+              pipe(token, actions.make('token/Acquired')),
             ),
         ),
       );

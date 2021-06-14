@@ -10,7 +10,7 @@ let isLocked = false;
 
 const navigateMain = <
   A extends navigationProps.RouteDeclaration<string, string, unknown>,
-  B extends TabsRoute
+  B extends TabsRoute,
 >(
   navigation: navigationProps.NavigationProps<A, B>['navigation'],
 ) => {

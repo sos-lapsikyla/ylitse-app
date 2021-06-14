@@ -28,10 +28,7 @@ export const reducer: automaton.Reducer<State, actions.Action> = (
     case 'mentors/start':
       return automaton.loop(RD.pending, cmd(fetchMentors));
     case 'mentors/end':
-      return pipe(
-        action.payload,
-        RD.fromEither,
-      );
+      return pipe(action.payload, RD.fromEither);
     default:
       return state;
   }

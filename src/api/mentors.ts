@@ -38,15 +38,13 @@ const fromMentorList = ({ resources }: t.TypeOf<typeof mentorListType>) =>
     return { ...acc, [mentor.buddyId]: mentor };
   }, {});
 
-export const fetchMentors: () => TE.TaskEither<
-  string,
-  Record<string, Mentor>
-> = () =>
-  http.validateResponse(
-    http.get(`${config.baseUrl}/mentors`),
-    mentorListType,
-    fromMentorList,
-  );
+export const fetchMentors: () => TE.TaskEither<string, Record<string, Mentor>> =
+  () =>
+    http.validateResponse(
+      http.get(`${config.baseUrl}/mentors`),
+      mentorListType,
+      fromMentorList,
+    );
 
 export function compareLang(a: Mentor, b: Mentor) {
   if (isFinnishPhone) {
@@ -72,9 +70,7 @@ const compareIds = (userId: string | undefined, a: Mentor, b: Mentor) => {
   return Math.abs(x - z) - Math.abs(x - y);
 };
 
-export const compare = (userId: string | undefined) => (
-  a: Mentor,
-  b: Mentor,
-) => {
-  return compareLang(a, b) || compareIds(userId, a, b);
-};
+export const compare =
+  (userId: string | undefined) => (a: Mentor, b: Mentor) => {
+    return compareLang(a, b) || compareIds(userId, a, b);
+  };

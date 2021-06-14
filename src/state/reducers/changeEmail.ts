@@ -20,28 +20,23 @@ export const resetChangeEmail = actions.make('changeEmail/reset')(undefined);
 export const initialState = RD.initial;
 export const coolDownDuration = 5000;
 
-const _changeEmail = ({
-  email,
-  account,
-}: {
-  email?: string;
-  account?: accountApi.UserAccount;
-}) => (token: authApi.AccessToken) => {
-  return pipe(
-    O.fromNullable(account),
-    O.map(({ role, userName, accountId }) => ({
-      id: accountId,
-      email: email,
-      role,
-      userName,
-    })),
-    TE.fromOption(() => 'Bad stuff'),
-    TE.chain(accountWithNewEmail =>
-      accountApi.putAccount(token, accountWithNewEmail),
-    ),
-    TE.map(({ email }) => ({ email })),
-  );
-};
+const _changeEmail =
+  ({ email, account }: { email?: string; account?: accountApi.UserAccount }) =>
+  (token: authApi.AccessToken) => {
+    return pipe(
+      O.fromNullable(account),
+      O.map(({ role, userName, accountId }) => ({
+        id: accountId,
+        email: email,
+        role,
+        userName,
+      })),
+      TE.fromOption(() => 'Bad stuff'),
+      TE.chain(accountWithNewEmail =>
+        accountApi.putAccount(token, accountWithNewEmail),
+      ),
+    );
+  };
 
 export const reducer: automaton.Reducer<
   AppState['changeEmail'],
@@ -62,12 +57,7 @@ export const reducer: automaton.Reducer<
     case 'changeEmail/completed':
       return automaton.loop(
         RD.fromEither(action.payload),
-        cmd(
-          pipe(
-            T.of(resetChangeEmail),
-            T.delay(coolDownDuration),
-          ),
-        ),
+        cmd(pipe(T.of(resetChangeEmail), T.delay(coolDownDuration))),
       );
     case 'changeEmail/reset':
       if (RD.isPending(state)) {

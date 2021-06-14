@@ -10,11 +10,9 @@ import * as navigationProps from '../../../lib/navigation-props';
 
 import * as changeEmailState from '../../../state/reducers/changeEmail';
 import * as actions from '../../../state/actions';
-import * as selector from '../../../state/selectors'
+import * as selector from '../../../state/selectors';
 
 import Message from '../../components/Message';
-import Button from '../../components/Button';
-import { textShadow } from '../../components/shadow';
 import ScreenTitle from '../../components/ScreenTitle';
 import colors from '../../components/colors';
 import fonts from '../../components/fonts';
@@ -22,7 +20,6 @@ import CreatedBySosBanner from '../../components/CreatedBySosBanner';
 import Spinner from '../../components/Spinner';
 
 import { MentorListRoute } from '../../Onboarding/MentorList';
-import NamedInputField from '../../components/NamedInputField';
 
 import AlertBox from './UserAccount/AlertBox';
 import EmailForm from 'src/Screens/components/EmailForm';
@@ -34,7 +31,7 @@ export type EmailChangeRoute = {
 type Props = navigationProps.NavigationProps<EmailChangeRoute, MentorListRoute>;
 
 export default ({ navigation }: Props) => {
-  const account = useSelector(selector.getAccount)
+  const account = useSelector(selector.getAccount);
 
   const [email, setEmail] = React.useState(account?.email ?? '');
   const dispatch = useDispatch<redux.Dispatch<actions.Action>>();
@@ -43,9 +40,7 @@ export default ({ navigation }: Props) => {
     navigation.goBack();
   };
   const onButtonPress = () => {
-    dispatch(
-      changeEmailState.changeEmail({ email, account: account }),
-    );
+    dispatch(changeEmailState.changeEmail({ email, account: account }));
   };
   const requestState = useSelector(changeEmailState.select);
 
@@ -83,7 +78,12 @@ export default ({ navigation }: Props) => {
             requestState,
             RD.fold(
               () => (
-                <EmailForm email={email} setEmail={setEmail} onGoBack={onGoBack} onButtonPress={onButtonPress}/>
+                <EmailForm
+                  email={email}
+                  setEmail={setEmail}
+                  onGoBack={onGoBack}
+                  onButtonPress={onButtonPress}
+                />
               ),
               () => <Spinner style={styles.spinner} />,
               () => (

@@ -87,8 +87,8 @@ type RegularActions = {
 };
 
 // TODO name plz.
-type TE2E<T> = T extends TE.TaskEither<infer E, infer A>
-  ? E.Either<E, A>
+type TE2E<T> = T extends TE.TaskEither<infer Left, infer Right>
+  ? E.Either<Left, Right>
   : never;
 
 // TODO: handle curried case, Exists under the name "FinalReturn" in
@@ -106,9 +106,7 @@ export type Action = {
 
 export function make<T extends ActionType, P extends RegularActions[T]>(
   type: T,
-): (
-  payload: P,
-) => {
+): (payload: P) => {
   type: T;
   payload: P;
 } {

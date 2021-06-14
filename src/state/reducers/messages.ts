@@ -53,10 +53,7 @@ export const reducer: automaton.Reducer<State, actions.Action> = (
       };
 
       const nextCmd = withToken(
-        flow(
-          messageApi.fetchMessages,
-          T.delay(config.messageFetchDelay),
-        ),
+        flow(messageApi.fetchMessages, T.delay(config.messageFetchDelay)),
         actions.make('messages/get/completed'),
       );
       return automaton.loop(nextState, nextCmd);
@@ -69,15 +66,14 @@ export const reducer: automaton.Reducer<State, actions.Action> = (
 const getMessages = ({ messages: { messages } }: types.AppState) =>
   RD.toOption(messages);
 
-export const getMessagesByBuddyId = (buddyId: string) => (
-  appState: types.AppState,
-) =>
-  pipe(
-    getMessages(appState),
-    O.chain(r => record.lookup(buddyId, r)),
-    O.map(r => Object.values(r)),
-    O.fold(() => [], identity),
-  );
+export const getMessagesByBuddyId =
+  (buddyId: string) => (appState: types.AppState) =>
+    pipe(
+      getMessages(appState),
+      O.chain(r => record.lookup(buddyId, r)),
+      O.map(r => Object.values(r)),
+      O.fold(() => [], identity),
+    );
 
 export const ordMessage: ord.Ord<messageApi.Message> = ord.fromCompare((a, b) =>
   ord.ordNumber.compare(a.sentTime, b.sentTime),

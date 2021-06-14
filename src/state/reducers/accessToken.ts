@@ -92,25 +92,14 @@ export const reducer: automaton.Reducer<State, actions.Action> = (
     }
     case 'token/doRequest/completed': {
       const index = action.payload.index;
-      const taskAndTasks = pipe(
-        state.tasks,
-        record.pop(index),
-        O.toNullable,
-      );
+      const taskAndTasks = pipe(state.tasks, record.pop(index), O.toNullable);
       if (!taskAndTasks) {
         return state;
       }
       const [task, tasks] = taskAndTasks;
 
       const result = action.payload.result;
-      if (
-        pipe(
-          result,
-          O.getLeft,
-          O.toNullable,
-          http.isUnauthorized,
-        )
-      ) {
+      if (pipe(result, O.getLeft, O.toNullable, http.isUnauthorized)) {
         return automaton.loop(
           {
             ...state,

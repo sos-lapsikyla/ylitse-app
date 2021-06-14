@@ -18,8 +18,10 @@ export type State = AppState['newMessage'];
 
 type NewMessage = AppState['newMessage'][string];
 type get = (buddyId: string) => (appState: AppState) => O.Option<NewMessage>;
-const get: get = buddyId => ({ newMessage }) =>
-  record.lookup(buddyId, newMessage);
+const get: get =
+  buddyId =>
+  ({ newMessage }) =>
+    record.lookup(buddyId, newMessage);
 
 type getText = (buddyId: string) => (appState: AppState) => string;
 export const getText: getText = buddyId =>
@@ -107,7 +109,10 @@ export const reducer = (state: State, action: actions.Action) => {
       const buddyId = action.payload.buddyId;
       const isLoading = pipe(
         record.lookup(buddyId, state),
-        O.fold(() => false, ({ sendRequest }) => RD.isPending(sendRequest)),
+        O.fold(
+          () => false,
+          ({ sendRequest }) => RD.isPending(sendRequest),
+        ),
       );
 
       if (isLoading) {

@@ -6,7 +6,7 @@ interface Layout {
   height: number;
 }
 
-export default function(): [
+export default function (): [
   Layout,
   (event: RN.LayoutChangeEvent) => void | undefined,
 ] {

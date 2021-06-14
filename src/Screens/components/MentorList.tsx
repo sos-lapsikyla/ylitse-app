@@ -31,13 +31,13 @@ export default ({ onPress, testID }: Props) => {
   };
 
   const filterSameIdAndSelectedSkills = (
-    a: mentorApi.Mentor,
-    selectedSkills: string[],
+    mentor: mentorApi.Mentor,
+    skills: string[],
   ) => {
-    return selectedSkills.length > 0
-      ? a.buddyId !== userId &&
-          a.skills.filter(e => selectedSkills.includes(e)).length > 0
-      : a.buddyId !== userId;
+    return skills.length > 0
+      ? mentor.buddyId !== userId &&
+          mentor.skills.filter(e => skills.includes(e)).length > 0
+      : mentor.buddyId !== userId;
   };
 
   const mentorList = RD.remoteData.map(useSelector(mentorState.get), mentors =>
@@ -86,24 +86,27 @@ export default ({ onPress, testID }: Props) => {
 
 const mentorCardBottomMargin = 16;
 
-const renderMentorCard = (
-  maxHeight: number,
-  screenWidth: number,
-  onPress?: (mentor: mentorApi.Mentor) => void | undefined,
-) => ({ item }: { item: mentorApi.Mentor }) => (
-  <MentorCard
-    style={[
-      styles.card,
-      {
-        maxHeight: maxHeight - mentorCardBottomMargin,
-        width: screenWidth * 0.85,
-        marginRight: (0.15 / 4) * screenWidth,
-      },
-    ]}
-    mentor={item}
-    onPress={onPress}
-  />
-);
+const renderMentorCard =
+  (
+    maxHeight: number,
+    screenWidth: number,
+    onPress?: (mentor: mentorApi.Mentor) => void | undefined,
+  ) =>
+  ({ item }: { item: mentorApi.Mentor }) =>
+    (
+      <MentorCard
+        style={[
+          styles.card,
+          {
+            maxHeight: maxHeight - mentorCardBottomMargin,
+            width: screenWidth * 0.85,
+            marginRight: (0.15 / 4) * screenWidth,
+          },
+        ]}
+        mentor={item}
+        onPress={onPress}
+      />
+    );
 
 const styles = RN.StyleSheet.create({
   mentorListContainer: {
