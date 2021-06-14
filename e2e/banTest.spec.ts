@@ -47,9 +47,7 @@ describe('Filter chats', () => {
     ).toBeVisible();
 
     // mentor bans the mentee
-    await element(by.text(mentee.displayName))
-      .atIndex(0)
-      .tap();
+    await element(by.text(mentee.displayName)).atIndex(0).tap();
     await element(by.id('main.chat.title.kebabicon')).tap();
     await element(by.text('Ban chat')).tap();
     await element(by.text('OK')).tap();
@@ -82,9 +80,7 @@ describe('Filter chats', () => {
     ).toBeNotVisible();
 
     // but new msg should still be there
-    await element(by.text(mentee.displayName))
-      .atIndex(0)
-      .tap();
+    await element(by.text(mentee.displayName)).atIndex(0).tap();
     await expect(element(by.text('Notice me Senpai!'))).toBeVisible();
     await forceLogout();
   });
