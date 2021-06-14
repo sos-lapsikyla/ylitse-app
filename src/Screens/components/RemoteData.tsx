@@ -27,6 +27,7 @@ function RemoteData<E, A>({
       fetchData();
     }
   });
+
   return pipe(
     data,
     RD.fold(

@@ -44,6 +44,7 @@ export const reducer: automaton.Reducer<State, actions.Action> = (
       if (!state.polling) {
         return state;
       }
+
       const nextState = {
         ...state,
         messages: RD.remoteData.alt(
@@ -56,6 +57,7 @@ export const reducer: automaton.Reducer<State, actions.Action> = (
         flow(messageApi.fetchMessages, T.delay(config.messageFetchDelay)),
         actions.make('messages/get/completed'),
       );
+
       return automaton.loop(nextState, nextCmd);
     }
     default:
@@ -121,6 +123,7 @@ export const getOrder: (
     record.map(messagesById => {
       const messages = Object.values(messagesById).sort(ordMessage.compare);
       const last = messages[messages.length - 1];
+
       return last.sentTime;
     }),
   ),

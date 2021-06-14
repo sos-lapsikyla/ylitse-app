@@ -14,13 +14,16 @@ export type ChatRoute = {
 };
 
 type Props = navigationProps.NavigationProps<ChatRoute, ChatRoute>;
+
 const Chat = ({ navigation }: Props) => {
   const goBack = () => {
     navigation.goBack();
   };
   const buddyId = navigation.getParam('buddyId');
+
   const keyboardViewBehaviour =
     RN.Platform.OS === 'ios' ? 'padding' : undefined;
+
   return (
     <RN.View style={styles.screen}>
       <Title style={styles.title} onPress={goBack} buddyId={buddyId} />

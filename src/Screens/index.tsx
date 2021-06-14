@@ -66,6 +66,7 @@ type Screen =
   | typeof SearchMentor;
 
 export type Route = keyof typeof routes;
+
 const routes: {
   [name in RouteName]: { screen: Screen };
 } = {
@@ -126,10 +127,12 @@ const routes: {
 };
 
 const initialRouteName: RouteName = 'Splash';
+
 const config = {
   initialRouteName,
   headerMode: 'none' as const,
 };
+
 const StackNavigator = reactNavigationStack.createStackNavigator(
   routes,
   config,

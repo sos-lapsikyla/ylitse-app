@@ -42,6 +42,7 @@ export default ({ navigation }: Props) => {
   const items: DropDownItem[] = [
     { textId: 'main.chat.navigation.banned', onPress: navigateToBanned },
   ];
+
   return (
     <TitledContainer
       TitleComponent={

@@ -18,6 +18,7 @@ export type State = AppState['newMessage'];
 
 type NewMessage = AppState['newMessage'][string];
 type get = (buddyId: string) => (appState: AppState) => O.Option<NewMessage>;
+
 const get: get =
   buddyId =>
   ({ newMessage }) =>
@@ -48,10 +49,12 @@ export const reducer = (state: State, action: actions.Action) => {
         array.map(buddyId => ({ buddyId })),
         array.map(actions.make('newMessage/store/read/start')),
       );
+
       return loop(state, ...actionList);
     }
     case 'newMessage/store/read/start': {
       const { buddyId } = action.payload;
+
       const nextAction = cmd(
         pipe(
           messageApi.readMessage(buddyId),
@@ -60,53 +63,65 @@ export const reducer = (state: State, action: actions.Action) => {
           ),
         ),
       );
+
       return loop(state, nextAction);
     }
     case 'newMessage/store/read/end': {
       const { buddyId, text } = action.payload;
+
       const next: NewMessage = {
         sendRequest: RD.initial,
         text,
       };
+
       return record.insertAt(buddyId, next)(state);
     }
     case 'newMessage/store/write/start': {
       const { buddyId, text } = action.payload;
       const prev = getPrev(buddyId, state);
+
       if (text === prev.text || RD.isPending(prev.sendRequest)) {
         return state;
       }
+
       const next: NewMessage = {
         sendRequest: RD.initial,
         text,
       };
 
       const nextState = record.insertAt(buddyId, next)(state);
+
       const nextAction = cmd(
         T.delay(250)(
           T.of(actions.make('newMessage/store/write/end')(action.payload)),
         ),
       );
+
       return loop(nextState, nextAction);
     }
     case 'newMessage/store/write/end': {
       const { buddyId, text } = action.payload;
       const prev = getPrev(buddyId, state);
+
       if (prev.text !== text) {
         return state;
       }
+
       const next: NewMessage = { ...prev };
       const nextState = record.insertAt(buddyId, next)(state);
+
       const nextAction = cmd(
         pipe(
           messageApi.storeMessage(action.payload),
           T.map(_ => actions.none),
         ),
       );
+
       return loop(nextState, nextAction);
     }
     case 'newMessage/send/start': {
       const buddyId = action.payload.buddyId;
+
       const isLoading = pipe(
         record.lookup(buddyId, state),
         O.fold(
@@ -126,6 +141,7 @@ export const reducer = (state: State, action: actions.Action) => {
           text: '',
         },
       };
+
       const nextAction = withToken(
         token =>
           T.task.map(
@@ -134,6 +150,7 @@ export const reducer = (state: State, action: actions.Action) => {
           ),
         actions.make('newMessage/send/end'),
       );
+
       return loop(nextState, nextAction);
     }
     case 'newMessage/send/end': {
@@ -144,9 +161,11 @@ export const reducer = (state: State, action: actions.Action) => {
         text: '',
         sendRequest: RD.fromEither(response),
       };
+
       const nextAction = cmd(
         T.of(actions.make('newMessage/store/write/end')({ buddyId, text: '' })),
       );
+
       return loop(
         {
           ...state,

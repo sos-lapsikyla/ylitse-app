@@ -38,6 +38,7 @@ export default ({ navigation }: Props) => {
 
   const allSkills = useSelector(mentorState.getSkillList);
   const selectedSkills = useSelector(mentorState.getSelectedSkills);
+
   const skillsToShow = allSkills.filter(skill =>
     skill.toLowerCase().includes(skillSearch.toLowerCase()),
   );

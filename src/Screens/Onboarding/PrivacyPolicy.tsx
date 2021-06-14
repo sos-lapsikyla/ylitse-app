@@ -52,13 +52,16 @@ const PrivacyPolicy = ({
     }
   }, [accessToken]);
   const [isAgreed, setAgreed] = React.useState(false);
+
   const goBack = () => {
     navigation.goBack();
   };
+
   const onNextPress = () => {
     const user = navigation.getParam('user');
     createUser(user);
   };
+
   return (
     <OnboardingBackground testID="onboarding.privacyPolicy.view">
       <Card style={styles.card}>

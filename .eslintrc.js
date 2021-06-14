@@ -53,6 +53,19 @@ module.exports = {
     // eslint cannot differentiate between types and values
     // they live in diffrent namespaces.
     'no-shadow': ['off'],
-    '@typescript-eslint/no-shadow': ['error']
+    '@typescript-eslint/no-shadow': ['error'],
+    'padding-line-between-statements': [
+      'error',
+      { 'blankLine': 'always', 'prev': '*', 'next': 'function' },
+      { 'blankLine': 'always', 'prev': 'function', 'next': '*' },
+      { 'blankLine': 'always', 'prev': '*', 'next': 'return' },
+      { 'blankLine': 'always', 'prev': '*', 'next': 'if' },
+      { 'blankLine': 'always', 'prev': 'if', 'next': '*' },
+      {
+        'blankLine': 'always',
+        'prev': '*',
+        'next': ['multiline-const', 'multiline-let']
+      }
+    ],
   },
 };

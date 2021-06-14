@@ -12,6 +12,7 @@ type Props = {
 
 const MentorStory = ({ style, story, showAll }: Props) => {
   const numberOfLines = showAll ? undefined : 5;
+
   return (
     <RN.View style={[styles.container, style]}>
       <RN.Text style={styles.story} numberOfLines={numberOfLines}>

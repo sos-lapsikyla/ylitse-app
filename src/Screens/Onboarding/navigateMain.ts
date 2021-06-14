@@ -17,6 +17,7 @@ const navigateMain = <
   if (isLocked) {
     return;
   }
+
   const resetAction = reactNavigation.StackActions.reset({
     index: 0,
     actions: [

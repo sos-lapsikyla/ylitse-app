@@ -31,6 +31,7 @@ const MentorTitle: React.FC<Props> = ({
 }) => {
   const Wrapper = safeArea ? SafeAreaWrapper : React.Fragment;
   const color = getBuddyColor(buddyId);
+
   return (
     <RN.View style={[styles.blob, { backgroundColor: color }, style]}>
       <Wrapper>

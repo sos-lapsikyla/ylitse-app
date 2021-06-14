@@ -17,6 +17,7 @@ type Props = {
 
 export default (props: Props) => {
   const opacity = React.useRef(new RN.Animated.Value(0)).current;
+
   const fade = () =>
     RN.Animated.sequence([
       RN.Animated.timing(opacity, {
@@ -39,6 +40,7 @@ export default (props: Props) => {
       }),
     ]).start();
   React.useEffect(fade, []);
+
   return (
     <RN.Animated.View style={[styles.container, props.style, { opacity }]}>
       <RN.Image

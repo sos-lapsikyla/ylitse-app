@@ -8,6 +8,7 @@ export const unixTimeFromDateString = new t.Type<number, string, unknown>(
   (u, c) =>
     either.chain(t.string.validate(u, c), s => {
       const n = new Date(s).getTime();
+
       return isNaN(n) ? t.failure(u, c) : t.success(n);
     }),
   a => new Date(a).toISOString(),

@@ -10,5 +10,6 @@ export default (str: string) => {
   const num = Math.floor(
     str.charCodeAt(0) * str.charCodeAt(1) + str.charCodeAt(2) / 11,
   );
+
   return mapping[num % 3];
 };

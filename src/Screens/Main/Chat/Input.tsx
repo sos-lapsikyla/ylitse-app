@@ -20,6 +20,7 @@ type Props = {
 
 export default ({ buddyId }: Props) => {
   const dispatch = useDispatch<redux.Dispatch<actions.Action>>();
+
   const sendMessage = (payload: messageApi.SendMessageParams) => {
     dispatch({ type: 'newMessage/send/start', payload });
   };
@@ -36,6 +37,7 @@ export default ({ buddyId }: Props) => {
   const onSend = () => {
     sendMessage({ buddyId, text: messageContent });
   };
+
   return (
     <SafeAreaView style={styles.container} forceInset={{ bottom: 'always' }}>
       <RN.View style={styles.inputContainer}>

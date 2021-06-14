@@ -39,6 +39,7 @@ export default ({ navigation }: Props) => {
   const onGoBack = () => {
     navigation.goBack();
   };
+
   const onButtonPress = () => {
     dispatch(changeEmailState.changeEmail({ email, account: account }));
   };
@@ -48,6 +49,7 @@ export default ({ navigation }: Props) => {
     if (RD.isSuccess(requestState)) {
       setEmail(requestState.value.email ?? '');
       const timeout = setTimeout(onGoBack, changeEmailState.coolDownDuration);
+
       return () => clearTimeout(timeout);
     }
   }, [requestState]);

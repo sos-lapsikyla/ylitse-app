@@ -5,6 +5,7 @@ import colors from './colors';
 
 export default ({ style, ...props }: Omit<RN.ImageProps, 'source'>) => {
   const spinState = React.useRef(new RN.Animated.Value(0)).current;
+
   const spin = () =>
     RN.Animated.loop(
       RN.Animated.timing(spinState, {
@@ -15,6 +16,7 @@ export default ({ style, ...props }: Omit<RN.ImageProps, 'source'>) => {
       }),
     ).start();
   React.useEffect(spin, []);
+
   return (
     <RN.Animated.Image
       {...props}

@@ -24,6 +24,7 @@ export const reducer: automaton.Reducer<
       if (!remoteData.isInitial(state)) {
         return state;
       }
+
       return automaton.loop(
         remoteData.pending,
         withToken(
@@ -46,6 +47,7 @@ export const reducer: automaton.Reducer<
       if (remoteData.isPending(state)) {
         return state;
       }
+
       return remoteData.initial;
     default:
       return state;

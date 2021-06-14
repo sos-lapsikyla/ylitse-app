@@ -11,6 +11,7 @@ export type MessageId = fi.MessageId;
 type Language = 'fi' | 'en';
 
 const lang: Language = isFinnishPhone ? 'fi' : 'en';
+
 const messages = {
   fi: fi.messages,
   en: en.messages,

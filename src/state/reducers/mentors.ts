@@ -59,12 +59,14 @@ export function getActiveFilters({
   skillFilter,
 }: types.AppState): ActiveFilters {
   const amount = skillFilter.length;
+
   if (amount === 0) {
     return {
       kind: 'NoFilters',
       message: localization.trans('main.mentorsTitleAndSearchButton'),
     };
   }
+
   return {
     kind: 'FiltersActive',
     message: `${localization.trans(
@@ -75,6 +77,7 @@ export function getActiveFilters({
 
 export const getSkillList = (state: types.AppState) => {
   const remoteDataMentorList = get(state);
+
   return pipe(
     remoteDataMentorList,
     RD.getOrElse<unknown, mentorsApi.Mentor[]>(() => []),

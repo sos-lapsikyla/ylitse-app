@@ -47,6 +47,7 @@ export const reducer: automaton.Reducer<
       if (!RD.isInitial(state)) {
         return state;
       }
+
       return automaton.loop(
         RD.pending,
         withToken(
@@ -63,6 +64,7 @@ export const reducer: automaton.Reducer<
       if (RD.isPending(state)) {
         return state;
       }
+
       return RD.initial;
     default:
       return state;

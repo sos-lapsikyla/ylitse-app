@@ -21,6 +21,7 @@ function useRemoteData<Args extends any[], Err, Value>(
   const [request, setRequest] = React.useState<RequestState<Args>>({
     type: 'idle',
   });
+
   const [state, setState] = React.useState<RD.RemoteData<Err, Value>>(
     RD.initial,
   );
@@ -30,6 +31,7 @@ function useRemoteData<Args extends any[], Err, Value>(
       setState(RD.pending);
       (async () => {
         const newState = await apiCall(...request.args)();
+
         if (request.type === 'waiting') {
           setState(RD.fromEither(newState));
           setRequest({ type: 'idle' });
@@ -37,6 +39,7 @@ function useRemoteData<Args extends any[], Err, Value>(
       })();
     }
   }, [request.type]);
+
   return [
     state,
     (...args: Args) => {

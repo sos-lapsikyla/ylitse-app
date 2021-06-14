@@ -26,6 +26,7 @@ export default ({ openPasswordForm, openEmailForm }: Props) => {
   };
   const userAccount = useSelector(userAccountState.getAccount);
   const dispatch = useDispatch<redux.Dispatch<actions.Action>>();
+
   const fetchUserAccount = () => {
     dispatch({ type: 'userAccount/get/start', payload: undefined });
   };
@@ -33,6 +34,7 @@ export default ({ openPasswordForm, openEmailForm }: Props) => {
   const data = RD.remoteData.map(userAccount, account =>
     tuple(account, account.userName !== account.displayName),
   );
+
   return (
     <>
       <Message style={styles.accountSettingsText} id="main.settings.title" />

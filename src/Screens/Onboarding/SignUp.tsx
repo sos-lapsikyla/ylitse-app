@@ -20,6 +20,7 @@ export type SignUpRoute = {
 };
 
 type Props = navigationProps.NavigationProps<SignUpRoute, DisplayNameRoute>;
+
 const SignUp = ({ navigation }: Props) => {
   const [credentialsCheck, checkCredentials, resetCredentialsCheck] =
     useRemoteData(accountApi.checkCredentials);
@@ -36,9 +37,11 @@ const SignUp = ({ navigation }: Props) => {
   const goBack = () => {
     navigation.goBack();
   };
+
   const onSignUp = (credentials: authApi.Credentials) => {
     checkCredentials(credentials);
   };
+
   const getErrorMessageId: () => localization.MessageId = () =>
     pipe(
       credentialsCheck,
@@ -49,6 +52,7 @@ const SignUp = ({ navigation }: Props) => {
         () => localization.blank,
       ),
     );
+
   return (
     <OnboardingBackground testID={'onboarding.signUp.view'}>
       <LoginCard

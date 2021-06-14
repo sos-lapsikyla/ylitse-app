@@ -27,6 +27,7 @@ const TitledContainer: React.FC<Props> = ({
     </RN.View>
   );
 };
+
 const styles = RN.StyleSheet.create({
   background: {
     flex: 1,

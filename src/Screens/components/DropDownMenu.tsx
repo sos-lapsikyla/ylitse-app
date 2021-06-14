@@ -21,6 +21,7 @@ interface Props {
 
 const DropDown: React.FC<Props> = ({ items, testID, tintColor }) => {
   const [isOpen, setOpen] = React.useState(false);
+
   const toggleOpen = () => {
     setOpen(!isOpen);
   };

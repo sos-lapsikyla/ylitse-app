@@ -24,14 +24,17 @@ type Props = navigationProps.NavigationProps<DisplayNameRoute, EmailRoute>;
 const DisplayName = ({ navigation }: Props) => {
   const { userName, password } = navigation.getParam('credentials');
   const [displayName, setDisplayName] = React.useState(userName);
+
   const goBack = () => {
     navigation.goBack();
   };
+
   const navigateToEmailScreen = () => {
     navigation.navigate('Onboarding/Email', {
       user: { userName, password, displayName },
     });
   };
+
   return (
     <OnboardingBackground testID="onboarding.displayName.view">
       <Card style={styles.card}>
