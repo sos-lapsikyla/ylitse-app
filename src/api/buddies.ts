@@ -55,6 +55,7 @@ const banRequest = (
   status: BanActions,
 ) => {
   const statusStr = status === 'Ban' ? 'banned' : 'ok';
+
   return http.put(
     `${config.baseUrl}/users/${accessToken.userId}/contacts/${buddyId}`,
     { status: statusStr },

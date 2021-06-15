@@ -18,6 +18,7 @@ const Button = ({ style, buddyId, name, onPress, ...viewProps }: Props) => {
   const onPressBuddy = () => onPress(buddyId);
   const hasNewMessages = useSelector(hasUnseen(buddyId));
   const color = getBuddyColor(buddyId);
+
   return (
     <Card style={[styles.button, style]} {...viewProps}>
       <RN.TouchableOpacity style={styles.content} onPress={onPressBuddy}>

@@ -30,6 +30,7 @@ const Chat = ({ navigation }: Props) => {
   };
 
   type DialogState = { dialogOpen: boolean; dropdownOpen: boolean };
+
   const [dialogState, setDialogState] = React.useState<DialogState>({
     dialogOpen: false,
     dropdownOpen: false,
