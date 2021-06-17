@@ -35,7 +35,7 @@ describe('changePassword', () => {
 
     await scrollUpTo(
       'main.settings.account.password.current',
-      'main.settings.index.view',
+      'main.settings.password.view',
     );
 
     await waitAndTypeText(
@@ -53,7 +53,7 @@ describe('changePassword', () => {
 
     await scrollDownAndTap(
       'main.settings.account.password.save',
-      'main.settings.index.view',
+      'main.settings.password.view',
     );
 
     await forceLogout();
