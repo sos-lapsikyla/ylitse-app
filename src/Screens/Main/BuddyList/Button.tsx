@@ -29,7 +29,7 @@ const Button = ({ style, buddyId, name, onPress, ...viewProps }: Props) => {
           {hasNewMessages ? (
             <RN.View
               style={styles.newMessage}
-              testID={'Main.BuddyList.Button.unseenDot'}
+              testID={'main.buddyList.button.unseenDot'}
             />
           ) : null}
           <RN.Image source={require('../../images/balloon.svg')} />
