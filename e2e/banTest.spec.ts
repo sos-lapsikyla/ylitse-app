@@ -40,10 +40,10 @@ describe('Filter chats', () => {
     await signIn(mentor);
 
     // not banned yet, should show new message indicator
-    await expect(element(by.id('Main.Tabs.unseenDot'))).toBeVisible();
+    await expect(element(by.id('main.tabs.unseenDot'))).toBeVisible();
     await element(by.id('tabs.chats')).tap();
     await expect(
-      element(by.id('Main.BuddyList.Button.unseenDot')),
+      element(by.id('main.buddyList.button.unseenDot')),
     ).toBeVisible();
 
     // mentor bans the mentee
@@ -71,12 +71,12 @@ describe('Filter chats', () => {
 
     // mentor should not see new message indicator
     await signIn(mentor);
-    await expect(element(by.id('Main.Tabs.unseenDot'))).toBeNotVisible();
+    await expect(element(by.id('main.tabs.unseenDot'))).toBeNotVisible();
     await element(by.id('tabs.chats')).tap();
     await element(by.id('main.buddylist.kebabicon')).tap();
     await element(by.text('Banned')).tap();
     await expect(
-      element(by.id('Main.BuddyList.Button.unseenDot')),
+      element(by.id('main.buddyList.button.unseenDot')),
     ).toBeNotVisible();
 
     // but new msg should still be there
