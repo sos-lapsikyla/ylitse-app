@@ -1,52 +1,47 @@
 import React from 'react';
 import RN from 'react-native';
 import { SafeAreaView } from 'react-navigation';
-import * as redux from 'redux';
-import * as ReactRedux from 'react-redux';
 
+import * as ReactRedux from 'react-redux';
 import * as state from '../../../state';
 import * as selectors from '../../../state/selectors';
-import * as actions from '../../../state/actions';
 
 import colors from '../../components/colors';
 import { cardBorderRadius } from '../../components/Card';
 import fonts from '../../components/fonts';
 import getBuddyColor from '../../components/getBuddyColor';
-import DropDown, { DropDownItem } from 'src/Screens/components/DropDownMenu';
-import { Dialog } from 'src/Screens/components/Dialog';
 
 type StateProps = {
   name: string;
 };
+
 type DispatchProps = {};
+
 type OwnProps = {
   style?: RN.StyleProp<RN.ViewStyle>;
   onPress: () => void | undefined;
   buddyId: string;
+  onLayout: (e: RN.LayoutChangeEvent) => void | undefined;
+  openDropdown: () => void | undefined;
 };
+
 type Props = OwnProps & DispatchProps & StateProps;
 
-const Title: React.FC<Props> = ({ style, onPress, name, buddyId }) => {
-  const [dialogOpen, setDialogOpen] = React.useState(false);
+const Title: React.FC<Props> = ({
+  style,
+  onPress,
+  name,
+  buddyId,
+  onLayout,
+  openDropdown,
+}) => {
   const color = getBuddyColor(buddyId);
-  const isBanned = ReactRedux.useSelector(selectors.getIsBanned(buddyId));
-  const dispatch = ReactRedux.useDispatch<redux.Dispatch<actions.Action>>();
-
-  const banBuddy = () => {
-    dispatch({ type: 'buddies/ban/start', payload: { buddyId } });
-  };
-
-  const handleBan = () => {
-    banBuddy();
-    onPress();
-  };
-
-  const dropdownItems: DropDownItem[] = [
-    { textId: 'main.chat.ban', onPress: () => setDialogOpen(true) },
-  ];
 
   return (
-    <RN.View style={[styles.blob, { backgroundColor: color }, style]}>
+    <RN.View
+      onLayout={onLayout}
+      style={[styles.blob, { backgroundColor: color }, style]}
+    >
       <SafeAreaView style={styles.safeArea} forceInset={{ top: 'always' }}>
         {!onPress ? null : (
           <RN.TouchableOpacity style={styles.chevronButton} onPress={onPress}>
@@ -60,23 +55,20 @@ const Title: React.FC<Props> = ({ style, onPress, name, buddyId }) => {
           source={require('../../images/user.svg')}
           style={styles.userIcon}
         />
-        <RN.Text style={styles.name}>{name}</RN.Text>
-        {!isBanned ? (
-          <DropDown
-            items={dropdownItems}
-            testID={'main.chat.menu'}
-            tintColor={colors.black}
+        <RN.Text style={styles.name} ellipsizeMode="tail" numberOfLines={1}>
+          {name}
+        </RN.Text>
+        <RN.TouchableHighlight
+          style={styles.kebabIconHighlight}
+          onPress={openDropdown}
+          underlayColor={colors.faintBackground}
+          testID={'main.chat.title.kebabicon'}
+        >
+          <RN.Image
+            source={require('../../images/three-dot-menu-chat.svg')}
+            style={styles.kebabIcon}
           />
-        ) : null}
-        {dialogOpen ? (
-          <Dialog
-            textId={'main.chat.ban.confirmation'}
-            buttonId={'main.chat.ban'}
-            onPressCancel={() => setDialogOpen(false)}
-            onPress={handleBan}
-            type="warning"
-          />
-        ) : null}
+        </RN.TouchableHighlight>
       </SafeAreaView>
     </RN.View>
   );
@@ -103,19 +95,29 @@ const styles = RN.StyleSheet.create({
   },
   chevronIcon: {
     tintColor: colors.black,
-    width: 48,
-    height: 48,
+    width: 32,
+    height: 32,
   },
   userIcon: {
     tintColor: colors.black,
-    width: 64,
-    height: 64,
-    marginRight: 16,
+    width: 32,
+    height: 32,
+    marginRight: 8,
   },
   name: {
-    ...fonts.titleBold,
+    ...fonts.regularBold,
     flex: 1,
     flexWrap: 'wrap',
+  },
+  kebabIconHighlight: {
+    width: 24,
+    height: 24,
+    borderRadius: 16,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  kebabIcon: {
+    tintColor: colors.black,
   },
 });
 

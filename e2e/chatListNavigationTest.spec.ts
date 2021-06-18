@@ -44,7 +44,7 @@ describe('Filter chats', () => {
     await forceLogout();
   });
 
-  it('for banned succesfully', async () => {
+  it('can move to banned chats view', async () => {
     const mentor = accountFixtures.mentors[1];
     await APISignUpMentor(mentor);
     const mentee = accountFixtures.mentees[0];
@@ -68,8 +68,8 @@ describe('Filter chats', () => {
 
     await expect(element(by.text(mentee.displayName))).toBeNotVisible();
 
-    await element(by.id('main.buddylist.menu')).tap();
-    await element(by.text('Banned chats')).tap();
+    await element(by.id('main.buddylist.kebabicon')).tap();
+    await element(by.text('Banned')).tap();
 
     await expect(element(by.text(mentee.displayName))).toBeVisible();
   });

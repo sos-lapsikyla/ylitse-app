@@ -62,8 +62,11 @@ type RegularActions = {
   'messages/markSeen/end': undefined;
 
   'buddies/completed': Result<typeof buddyApi.fetchBuddies>;
-  'buddies/ban/start': { buddyId: string };
-  'buddies/ban/end': E.Either<string, buddyApi.Buddy>;
+  'buddies/changeBanStatus/start': {
+    buddyId: string;
+    banStatus: 'Ban' | 'Unban';
+  };
+  'buddies/changeStatus/end': E.Either<string, buddyApi.Buddy>;
 
   'newMessage/send/start': messageApi.SendMessageParams;
   'newMessage/send/end': {

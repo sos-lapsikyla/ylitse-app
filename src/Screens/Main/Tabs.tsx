@@ -103,7 +103,9 @@ const TabBar = ({
 const UnseenDot = () => {
   const isUnseen = reactRedux.useSelector(isAnyMessageUnseen);
 
-  return isUnseen ? <RN.View style={unseenDotStyles.dot} /> : null;
+  return isUnseen ? (
+    <RN.View style={unseenDotStyles.dot} testID={'main.tabs.unseenDot'} />
+  ) : null;
 };
 
 const unseenDotStyles = RN.StyleSheet.create({

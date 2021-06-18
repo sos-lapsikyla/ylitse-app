@@ -38,7 +38,9 @@ export const messages: { [key in MessageId]: string } = {
 
   'main.chat.ban': 'Ban chat',
   'main.chat.ban.confirmation': 'Are you sure you want to ban this user?',
-  'main.chat.navigation.banned': 'Banned chats',
+  'main.chat.navigation.banned': 'Banned',
+  'main.chat.unban': 'Restore chat',
+  'main.chat.unban.confirmation': 'Are you sure you want to restore this user?',
 
   'main.mentor.other': 'I can also support with:',
   'main.mentor.story': 'My story',
@@ -109,6 +111,7 @@ export const messages: { [key in MessageId]: string } = {
   'meta.blank': ' ',
   'meta.cancel': 'Cancel',
   'meta.error': 'An error occurred, please try again',
+  'meta.ok': 'OK',
   'meta.save': 'Save',
 
   'onboarding.displayName.bodyText':

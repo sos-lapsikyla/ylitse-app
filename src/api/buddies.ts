@@ -17,16 +17,19 @@ const buddyType = t.intersection([
   t.partial({ status: t.literal('banned') }),
 ]);
 
+export type BanActions = 'Ban' | 'Unban';
+export type BanStatuses = 'Banned' | 'NotBanned';
+
 export type Buddy = {
   buddyId: string;
   name: string;
-  status: 'Banned' | 'Active';
+  status: BanStatuses;
 };
 
 const toBuddy = ({ id, display_name, status }: ApiBuddy): Buddy => ({
   buddyId: id,
   name: display_name,
-  status: status === 'banned' ? 'Banned' : 'Active',
+  status: status === 'banned' ? 'Banned' : 'NotBanned',
 });
 
 export function fetchBuddies(
@@ -46,10 +49,16 @@ export function fetchBuddies(
   );
 }
 
-const banRequest = (buddyId: string, accessToken: authApi.AccessToken) => {
+const banRequest = (
+  buddyId: string,
+  accessToken: authApi.AccessToken,
+  status: BanActions,
+) => {
+  const statusStr = status === 'Ban' ? 'banned' : 'ok';
+
   return http.put(
     `${config.baseUrl}/users/${accessToken.userId}/contacts/${buddyId}`,
-    { status: 'banned' },
+    { status: statusStr },
     {
       headers: authApi.authHeader(accessToken),
     },
@@ -58,7 +67,12 @@ const banRequest = (buddyId: string, accessToken: authApi.AccessToken) => {
 
 export function banBuddy(
   buddyId: string,
+  banStatus: BanActions,
 ): (accessToken: authApi.AccessToken) => TE.TaskEither<string, Buddy> {
   return accessToken =>
-    http.validateResponse(banRequest(buddyId, accessToken), buddyType, toBuddy);
+    http.validateResponse(
+      banRequest(buddyId, accessToken, banStatus),
+      buddyType,
+      toBuddy,
+    );
 }

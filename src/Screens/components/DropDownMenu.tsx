@@ -13,78 +13,34 @@ export type DropDownItem = {
   onPress: () => void;
 };
 
-interface Props {
+type Props = {
   items: DropDownItem[];
   testID?: string;
   tintColor?: string;
-}
+  style: any;
+};
 
-const DropDown: React.FC<Props> = ({ items, testID, tintColor }) => {
-  const [isOpen, setOpen] = React.useState(false);
-
-  const toggleOpen = () => {
-    setOpen(!isOpen);
-  };
-
-  const itemActionAndCloseModal = (action: () => void) => {
-    action();
-    toggleOpen();
-  };
-
+const DropDown: React.FC<Props> = ({ items, style }) => {
   return (
-    <>
-      <RN.TouchableHighlight
-        style={styles.kebab}
-        onPress={toggleOpen}
-        underlayColor={colors.faintBackground}
-        testID={testID}
-      >
-        <RN.Image
-          source={require('../images/three-dot-menu.svg')}
-          style={{ tintColor: tintColor ?? colors.white }}
-        />
-      </RN.TouchableHighlight>
-      <RN.Modal visible={isOpen} transparent onRequestClose={toggleOpen}>
-        <RN.TouchableWithoutFeedback onPress={toggleOpen}>
-          <RN.View style={RN.StyleSheet.absoluteFill}>
-            <RN.View style={styles.dropdown}>
-              {items.map((item, index) => (
-                <RN.TouchableHighlight
-                  key={index}
-                  style={styles.button}
-                  underlayColor={colors.lighterBlue}
-                  onPress={() => itemActionAndCloseModal(item.onPress)}
-                >
-                  <Message id={item.textId} style={styles.text} />
-                </RN.TouchableHighlight>
-              ))}
-            </RN.View>
-          </RN.View>
-        </RN.TouchableWithoutFeedback>
-      </RN.Modal>
-    </>
+    <RN.View style={[styles.dropdown, style]}>
+      {items.map((item, index) => (
+        <RN.TouchableOpacity
+          key={index}
+          style={styles.button}
+          onPress={item.onPress}
+        >
+          <Message id={item.textId} style={styles.text} />
+        </RN.TouchableOpacity>
+      ))}
+    </RN.View>
   );
 };
 
 export default DropDown;
 
 const styles = RN.StyleSheet.create({
-  kebab: {
-    height: 40,
-    width: 40,
-    borderRadius: 24,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  icon: {
-    tintColor: colors.white,
-  },
   dropdown: {
     ...shadow(7),
-    position: 'absolute',
-    zIndex: 1,
-    right: 16,
-    top: 104,
     borderRadius: 16,
     paddingVertical: 16,
     backgroundColor: colors.lightestGray,
