@@ -45,10 +45,19 @@ export default ({ navigation }: Props) => {
   };
   const requestState = useSelector(changeEmailState.select);
 
+  const goBackAndResetEmailChangeState = () => {
+    dispatch(changeEmailState.resetChangeEmail);
+    onGoBack();
+  };
+
   React.useEffect(() => {
     if (RD.isSuccess(requestState)) {
       setEmail(requestState.value.email ?? '');
-      const timeout = setTimeout(onGoBack, changeEmailState.coolDownDuration);
+
+      const timeout = setTimeout(
+        goBackAndResetEmailChangeState,
+        changeEmailState.coolDownDuration,
+      );
 
       return () => clearTimeout(timeout);
     }
