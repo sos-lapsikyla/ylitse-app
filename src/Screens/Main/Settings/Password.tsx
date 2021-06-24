@@ -46,36 +46,31 @@ export default ({ navigation }: Props) => {
     repeatedNewPassword.length > 0 &&
     newPassword === repeatedNewPassword;
 
+  const onButtonPress = () => {
+    dispatch(state.changePassword({ currentPassword, newPassword }));
+  };
+
   const onGoBack = () => {
     navigation.goBack();
   };
 
-  const goBackAndResetPasswordChangeState = () => {
+  const resetAndGoBack = () => {
+    setCurrentPassword('');
+    setNewPassword('');
+    setRepeatedNewPassword('');
     dispatch(state.reset);
     onGoBack();
   };
 
-  const onButtonPress = () => {
-    dispatch(state.changePassword({ currentPassword, newPassword }));
-  };
   const requestState = useSelector(state.select);
 
   React.useEffect(() => {
-    if (RD.isSuccess(requestState)) {
-      setCurrentPassword('');
-      setNewPassword('');
-      setRepeatedNewPassword('');
+    if (!RD.isPending(requestState) && !RD.isInitial(requestState)) {
+      const callBack = RD.isSuccess(requestState)
+        ? resetAndGoBack
+        : dispatch(state.reset);
 
-      const timeout = setTimeout(
-        goBackAndResetPasswordChangeState,
-        state.coolDownDuration,
-      );
-
-      return () => clearTimeout(timeout);
-    }
-
-    if (RD.isFailure(requestState)) {
-      const timeout = setTimeout(dispatch(state.reset), state.coolDownDuration);
+      const timeout = setTimeout(callBack, state.coolDownDuration);
 
       return () => clearTimeout(timeout);
     }

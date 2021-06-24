@@ -45,28 +45,19 @@ export default ({ navigation }: Props) => {
   };
   const requestState = useSelector(changeEmailState.select);
 
-  const goBackAndResetEmailChangeState = () => {
+  const resetAndGoBack = (value: string | undefined) => {
+    setEmail(value ?? '');
     dispatch(changeEmailState.resetChangeEmail);
     onGoBack();
   };
 
   React.useEffect(() => {
-    if (RD.isSuccess(requestState)) {
-      setEmail(requestState.value.email ?? '');
+    if (!RD.isPending(requestState) && !RD.isInitial(requestState)) {
+      const callBack = RD.isSuccess(requestState)
+        ? resetAndGoBack(requestState.value?.email)
+        : dispatch(changeEmailState.resetChangeEmail);
 
-      const timeout = setTimeout(
-        goBackAndResetEmailChangeState,
-        changeEmailState.coolDownDuration,
-      );
-
-      return () => clearTimeout(timeout);
-    }
-
-    if (RD.isFailure(requestState)) {
-      const timeout = setTimeout(
-        dispatch(changeEmailState.resetChangeEmail),
-        changeEmailState.coolDownDuration,
-      );
+      const timeout = setTimeout(callBack, changeEmailState.coolDownDuration);
 
       return () => clearTimeout(timeout);
     }
