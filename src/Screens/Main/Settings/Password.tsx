@@ -50,6 +50,11 @@ export default ({ navigation }: Props) => {
     navigation.goBack();
   };
 
+  const goBackAndResetPasswordChangeState = () => {
+    dispatch(state.reset);
+    onGoBack();
+  };
+
   const onButtonPress = () => {
     dispatch(state.changePassword({ currentPassword, newPassword }));
   };
@@ -60,7 +65,10 @@ export default ({ navigation }: Props) => {
       setCurrentPassword('');
       setNewPassword('');
       setRepeatedNewPassword('');
-      const timeout = setTimeout(onGoBack, state.coolDownDuration);
+      const timeout = setTimeout(
+        goBackAndResetPasswordChangeState,
+        state.coolDownDuration,
+      );
 
       return () => clearTimeout(timeout);
     }
