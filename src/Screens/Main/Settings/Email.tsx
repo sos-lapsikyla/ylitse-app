@@ -48,7 +48,11 @@ export default ({ navigation }: Props) => {
   React.useEffect(() => {
     if (RD.isSuccess(requestState)) {
       setEmail(requestState.value.email ?? '');
-      const timeout = setTimeout(onGoBack, changeEmailState.coolDownDuration);
+
+      const timeout = setTimeout(
+        onGoBack,
+        changeEmailState.coolDownDuration - 1000,
+      );
 
       return () => clearTimeout(timeout);
     }
