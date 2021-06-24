@@ -31,7 +31,6 @@ describe('changeEmail', () => {
     await waitAndTypeText('main.settings.account.email.input', newEmail + '\n');
     await expect(element(by.text('Invalid email address'))).toBeNotVisible();
     await element(by.id('main.settings.account.email.save')).tap();
-    await element(by.id('main.settings.account.email.cancel')).tap();
     await expect(element(by.text(newEmail))).toBeVisible();
   });
 
