@@ -49,7 +49,9 @@ export default MentorsTitleAndSearchButton;
 
 const styles = RN.StyleSheet.create({
   container: {
+    paddingHorizontal: 32,
     flexDirection: 'row',
+    justifyContent: 'space-between',
   },
   filterButton: {
     backgroundColor: colors.darkestBlue,

@@ -55,7 +55,6 @@ const MentorList = (props: Props) => {
 const styles = RN.StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: 'center',
   },
   title: {
     marginTop: 24,
