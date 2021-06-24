@@ -61,6 +61,15 @@ export default ({ navigation }: Props) => {
 
       return () => clearTimeout(timeout);
     }
+
+    if (RD.isFailure(requestState)) {
+      const timeout = setTimeout(
+        dispatch(changeEmailState.resetChangeEmail),
+        changeEmailState.coolDownDuration,
+      );
+
+      return () => clearTimeout(timeout);
+    }
   }, [requestState]);
 
   return (

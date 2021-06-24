@@ -65,10 +65,17 @@ export default ({ navigation }: Props) => {
       setCurrentPassword('');
       setNewPassword('');
       setRepeatedNewPassword('');
+
       const timeout = setTimeout(
         goBackAndResetPasswordChangeState,
         state.coolDownDuration,
       );
+
+      return () => clearTimeout(timeout);
+    }
+
+    if (RD.isFailure(requestState)) {
+      const timeout = setTimeout(dispatch(state.reset), state.coolDownDuration);
 
       return () => clearTimeout(timeout);
     }
