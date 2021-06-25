@@ -30,6 +30,7 @@ export const reducer: automaton.Reducer<
           actions.make('changePassword/completed'),
         ),
       );
+
     case 'changePassword/completed':
       return remoteData.fromEither(action.payload);
 
@@ -39,6 +40,7 @@ export const reducer: automaton.Reducer<
       }
 
       return remoteData.initial;
+
     default:
       return state;
   }

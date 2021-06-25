@@ -63,6 +63,7 @@ export const reducer: automaton.Reducer<
       }
 
       return RD.initial;
+
     default:
       return state;
   }
