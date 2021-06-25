@@ -64,8 +64,11 @@ export default ({ navigation }: Props) => {
 
   const requestState = useSelector(state.select);
 
+  const changeIsResolved =
+    RD.isSuccess(requestState) || RD.isFailure(requestState);
+
   React.useEffect(() => {
-    if (!RD.isPending(requestState) && !RD.isInitial(requestState)) {
+    if (changeIsResolved) {
       const callBack = RD.isSuccess(requestState)
         ? resetAndGoBack
         : dispatch(state.reset);
