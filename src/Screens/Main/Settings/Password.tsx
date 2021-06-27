@@ -21,6 +21,7 @@ import Spinner from '../../components/Spinner';
 import { MentorListRoute } from '../../Onboarding/MentorList';
 
 import AlertBox from './UserAccount/AlertBox';
+import AlertDialog from './UserAccount/AlertDialog';
 import PasswordForm from 'src/Screens/components/PasswordForm';
 
 export type PasswordChangeRoute = {
@@ -59,18 +60,16 @@ export default ({ navigation }: Props) => {
     onGoBack();
   };
 
+  const tryAgain = () => {
+    dispatch(state.reset);
+    dispatch(state.changePassword({ currentPassword, newPassword }));
+  };
+
   const requestState = useSelector(state.select);
 
-  const isRequestResolved =
-    RD.isSuccess(requestState) || RD.isFailure(requestState);
-
   React.useEffect(() => {
-    if (isRequestResolved) {
-      const callBack = RD.isSuccess(requestState)
-        ? resetAndGoBack
-        : dispatch(state.reset);
-
-      const timeout = setTimeout(callBack, state.coolDownDuration);
+    if (RD.isSuccess(requestState)) {
+      const timeout = setTimeout(resetAndGoBack, state.coolDownDuration);
 
       return () => clearTimeout(timeout);
     }
@@ -119,11 +118,11 @@ export default ({ navigation }: Props) => {
               ),
               () => <Spinner style={styles.spinner} />,
               () => (
-                <AlertBox
+                <AlertDialog
                   imageStyle={styles.failBox}
                   imageSource={require('../../images/alert-circle.svg')}
-                  duration={state.coolDownDuration}
                   messageId="main.settings.account.password.failure"
+                  tryAgainCallback={tryAgain}
                 />
               ),
               () => (

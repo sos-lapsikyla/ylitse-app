@@ -22,6 +22,7 @@ import Spinner from '../../components/Spinner';
 import { MentorListRoute } from '../../Onboarding/MentorList';
 
 import AlertBox from './UserAccount/AlertBox';
+import AlertDialog from './UserAccount/AlertDialog';
 import EmailForm from 'src/Screens/components/EmailForm';
 
 export type EmailChangeRoute = {
@@ -43,6 +44,12 @@ export default ({ navigation }: Props) => {
   const onButtonPress = () => {
     dispatch(changeEmailState.changeEmail({ email, account: account }));
   };
+
+  const tryAgain = () => {
+    dispatch(changeEmailState.resetChangeEmail);
+    dispatch(changeEmailState.changeEmail({ email, account: account }));
+  };
+
   const requestState = useSelector(changeEmailState.select);
 
   const resetAndGoBack = () => {
@@ -50,16 +57,12 @@ export default ({ navigation }: Props) => {
     onGoBack();
   };
 
-  const isRequestResolved =
-    RD.isSuccess(requestState) || RD.isFailure(requestState);
-
   React.useEffect(() => {
-    if (isRequestResolved) {
-      const callBack = RD.isSuccess(requestState)
-        ? resetAndGoBack
-        : dispatch(changeEmailState.resetChangeEmail);
-
-      const timeout = setTimeout(callBack, changeEmailState.coolDownDuration);
+    if (RD.isSuccess(requestState)) {
+      const timeout = setTimeout(
+        resetAndGoBack,
+        changeEmailState.coolDownDuration,
+      );
 
       return () => clearTimeout(timeout);
     }
@@ -100,11 +103,11 @@ export default ({ navigation }: Props) => {
               ),
               () => <Spinner style={styles.spinner} />,
               () => (
-                <AlertBox
+                <AlertDialog
                   imageStyle={styles.failBox}
                   imageSource={require('../../images/alert-circle.svg')}
-                  duration={changeEmailState.coolDownDuration}
                   messageId="main.settings.account.email.fail"
+                  tryAgainCallback={tryAgain}
                 />
               ),
               () => (
