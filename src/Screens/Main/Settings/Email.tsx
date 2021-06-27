@@ -45,19 +45,18 @@ export default ({ navigation }: Props) => {
   };
   const requestState = useSelector(changeEmailState.select);
 
-  const resetAndGoBack = (value: string | undefined) => {
-    setEmail(value ?? '');
+  const resetAndGoBack = () => {
     dispatch(changeEmailState.resetChangeEmail);
     onGoBack();
   };
 
-  const changeIsResolved =
+  const isRequestResolved =
     RD.isSuccess(requestState) || RD.isFailure(requestState);
 
   React.useEffect(() => {
-    if (changeIsResolved) {
+    if (isRequestResolved) {
       const callBack = RD.isSuccess(requestState)
-        ? () => resetAndGoBack(requestState.value?.email)
+        ? resetAndGoBack
         : dispatch(changeEmailState.resetChangeEmail);
 
       const timeout = setTimeout(callBack, changeEmailState.coolDownDuration);

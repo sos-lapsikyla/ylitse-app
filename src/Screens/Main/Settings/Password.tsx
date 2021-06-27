@@ -55,20 +55,17 @@ export default ({ navigation }: Props) => {
   };
 
   const resetAndGoBack = () => {
-    setCurrentPassword('');
-    setNewPassword('');
-    setRepeatedNewPassword('');
     dispatch(state.reset);
     onGoBack();
   };
 
   const requestState = useSelector(state.select);
 
-  const changeIsResolved =
+  const isRequestResolved =
     RD.isSuccess(requestState) || RD.isFailure(requestState);
 
   React.useEffect(() => {
-    if (changeIsResolved) {
+    if (isRequestResolved) {
       const callBack = RD.isSuccess(requestState)
         ? resetAndGoBack
         : dispatch(state.reset);
