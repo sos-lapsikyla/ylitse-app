@@ -122,7 +122,7 @@ export default ({ navigation }: Props) => {
                   imageStyle={styles.failBox}
                   imageSource={require('../../images/alert-circle.svg')}
                   messageId="main.settings.account.password.failure"
-                  tryAgainCallback={tryAgain}
+                  onPress={tryAgain}
                 />
               ),
               () => (
