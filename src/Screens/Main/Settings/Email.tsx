@@ -107,7 +107,7 @@ export default ({ navigation }: Props) => {
                   imageStyle={styles.failBox}
                   imageSource={require('../../images/alert-circle.svg')}
                   messageId="main.settings.account.email.fail"
-                  tryAgainCallback={tryAgain}
+                  onPress={tryAgain}
                 />
               ),
               () => (

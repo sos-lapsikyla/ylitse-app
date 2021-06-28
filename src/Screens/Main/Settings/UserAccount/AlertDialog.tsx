@@ -14,7 +14,7 @@ type Props = {
   style?: RN.StyleProp<RN.ViewStyle>;
   imageStyle?: RN.StyleProp<RN.ImageStyle>;
   messageId: localization.MessageId;
-  tryAgainCallback: () => void;
+  onPress: () => void;
 };
 
 export default (props: Props) => {
@@ -26,7 +26,7 @@ export default (props: Props) => {
       />
       <Message id={props.messageId} style={styles.text} />
       <Button
-        onPress={props.tryAgainCallback}
+        onPress={props.onPress}
         messageStyle={styles.retryButtonText}
         messageId="components.remoteData.retry"
         style={{ backgroundColor: colors.blue }}
