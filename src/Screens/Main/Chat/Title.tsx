@@ -63,6 +63,7 @@ const Title: React.FC<Props> = ({
           onPress={openDropdown}
           underlayColor={colors.faintBackground}
           testID={'main.chat.title.kebabicon'}
+          hitSlop={{ top: 30, bottom: 30, right: 30, left: 30 }}
         >
           <RN.Image
             source={require('../../images/three-dot-menu-chat.svg')}
