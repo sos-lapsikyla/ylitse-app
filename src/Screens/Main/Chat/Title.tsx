@@ -63,6 +63,7 @@ const Title: React.FC<Props> = ({
           onPress={openDropdown}
           underlayColor={colors.faintBackground}
           testID={'main.chat.title.kebabicon'}
+          hitSlop={{ top: 30, bottom: 30, left: 30, right: 30 }}
         >
           <RN.Image
             source={require('../../images/three-dot-menu-chat.svg')}
@@ -110,8 +111,9 @@ const styles = RN.StyleSheet.create({
     flexWrap: 'wrap',
   },
   kebabIconHighlight: {
-    width: 24,
-    height: 24,
+    padding: 16,
+    width: 32,
+    height: 32,
     borderRadius: 16,
     justifyContent: 'center',
     alignItems: 'center',
