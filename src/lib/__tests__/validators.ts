@@ -6,7 +6,7 @@ import { describe, expect, it } from '@jest/globals';
 
 describe('unixTimeFromDateString', () => {
   it('decodes js date iso string', () => {
-    const s = '2020-01-16T10:29:32.350430';
+    const s = '2020-01-16T10:29:32.350430+00:00';
     expect(validators.unixTimeFromDateString.decode(s)).toEqual(
       right(new Date(s).getTime()),
     );
