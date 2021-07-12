@@ -60,14 +60,6 @@ export const reducer: automaton.Reducer<State, actions.Action> = (
     case 'buddies/completed':
       return RD.fromEither(action.payload);
 
-    case 'buddies/changeBanStatus/start':
-      return automaton.loop(
-        state,
-        withToken(
-          buddyApi.banBuddy(action.payload.buddyId, action.payload.banStatus),
-          actions.make('buddies/changeStatus/end'),
-        ),
-      );
 
     case 'buddies/changeBanStatusBatch/start':
       return automaton.loop(
@@ -81,13 +73,7 @@ export const reducer: automaton.Reducer<State, actions.Action> = (
         ),
       );
 
-    case 'buddies/changeBanStatusBatch/end':
-      return automaton.loop(
-        RD.pending,
-        withToken(buddyApi.fetchBuddies, actions.make('buddies/completed')),
-      );
-
-    case 'buddies/changeStatus/end':
+    case 'buddies/changeBanStatus/end':
       return pipe(
         action.payload,
         E.fold(
