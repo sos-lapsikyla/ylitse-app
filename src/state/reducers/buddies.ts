@@ -16,6 +16,7 @@ export type State = types.AppState['buddies'];
 
 import { withToken } from './accessToken';
 import * as messageState from './messages';
+import * as banBuddyRequestState from './banBuddyRequest';
 
 export const initialState = RD.initial;
 
@@ -110,7 +111,15 @@ const getBuddiesWithStatus = (status: buddyApi.Buddy['status']) =>
 const getBuddies =
   (status: buddyApi.Buddy['status']) => (appState: types.AppState) => {
     const remoteBuddies = getBuddiesWithStatus(status)(appState);
+
     const remoteBuddyOrder = messageState.getOrder(appState);
+
+    const banBuddyRequest =
+      banBuddyRequestState.selectBanBuddyRequest(appState);
+
+    if (RD.isPending(banBuddyRequest)) {
+      return RD.pending;
+    }
 
     const both = RD.combine(remoteBuddies, remoteBuddyOrder);
 
