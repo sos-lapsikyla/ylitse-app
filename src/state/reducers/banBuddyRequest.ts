@@ -42,3 +42,6 @@ export const reducer: automaton.Reducer<State, actions.Action> = (
     }
   }
 };
+
+export const selectBanBuddyRequest = ({ banBuddyRequest: state }: AppState) =>
+  state;
