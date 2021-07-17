@@ -16,6 +16,7 @@ export type State = types.AppState['buddies'];
 
 import { withToken } from './accessToken';
 import * as messageState from './messages';
+import * as banBuddyRequestState from './banBuddyRequest';
 
 export const initialState = RD.initial;
 
@@ -56,19 +57,11 @@ export const reducer: automaton.Reducer<State, actions.Action> = (
           },
         ),
       );
+
     case 'buddies/completed':
       return RD.fromEither(action.payload);
 
-    case 'buddies/changeBanStatus/start':
-      return automaton.loop(
-        RD.pending,
-        withToken(
-          buddyApi.banBuddy(action.payload.buddyId, action.payload.banStatus),
-          actions.make('buddies/changeStatus/end'),
-        ),
-      );
-
-    case 'buddies/changeStatus/end':
+    case 'buddies/changeBanStatus/end':
       return pipe(
         action.payload,
         E.fold(
@@ -83,6 +76,7 @@ export const reducer: automaton.Reducer<State, actions.Action> = (
             ),
         ),
       );
+
     default:
       return state;
   }
@@ -101,7 +95,15 @@ const getBuddiesWithStatus = (status: buddyApi.Buddy['status']) =>
 const getBuddies =
   (status: buddyApi.Buddy['status']) => (appState: types.AppState) => {
     const remoteBuddies = getBuddiesWithStatus(status)(appState);
+
     const remoteBuddyOrder = messageState.getOrder(appState);
+
+    const banBuddyRequest =
+      banBuddyRequestState.selectBanBuddyRequest(appState);
+
+    if (RD.isPending(banBuddyRequest)) {
+      return RD.pending;
+    }
 
     const both = RD.combine(remoteBuddies, remoteBuddyOrder);
 
