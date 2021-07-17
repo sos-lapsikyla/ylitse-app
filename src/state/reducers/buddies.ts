@@ -60,6 +60,7 @@ export const reducer: automaton.Reducer<State, actions.Action> = (
     case 'buddies/completed':
       return RD.fromEither(action.payload);
 
+<<<<<<< HEAD
 
     case 'buddies/changeBanStatusBatch/start':
       return automaton.loop(
@@ -73,6 +74,8 @@ export const reducer: automaton.Reducer<State, actions.Action> = (
         ),
       );
 
+=======
+>>>>>>> New reducer for banRequest
     case 'buddies/changeBanStatus/end':
       return pipe(
         action.payload,
