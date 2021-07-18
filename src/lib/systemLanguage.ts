@@ -6,4 +6,14 @@ const deviceLanguage =
       RN.NativeModules.SettingsManager.settings.AppleLanguages[0] // iOS 13
     : RN.NativeModules.I18nManager.localeIdentifier;
 
-export default deviceLanguage.toLowerCase().includes('fi');
+type Language = 'fi' | 'en' | 'ar';
+let lang: Language = 'en';
+let localeIdentifier = deviceLanguage.toLowerCase();
+
+if (localeIdentifier.startsWith('fi')) {
+  lang = 'fi';
+} else if (localeIdentifier.startsWith('ar')) {
+  lang = 'ar';
+}
+
+export default lang;
