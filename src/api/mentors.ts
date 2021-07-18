@@ -1,7 +1,7 @@
 import * as t from 'io-ts';
 import * as TE from 'fp-ts/lib/TaskEither';
 
-import isFinnishPhone from '../lib/isFinnishPhone';
+import systemLanguage from '../lib/systemLanguage';
 import * as http from '../lib/http';
 
 import * as config from './config';
@@ -51,7 +51,7 @@ export const fetchMentors: () => TE.TaskEither<string, Record<string, Mentor>> =
     );
 
 export function compareLang(a: Mentor, b: Mentor) {
-  if (isFinnishPhone) {
+  if (systemLanguage === 'fi') {
     return 0;
   }
 
