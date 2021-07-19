@@ -130,7 +130,7 @@ export const messages: { [key in MessageId]: string } = {
 
   'onboarding.email.bodyText':
     'Entering your email address will help you retrieve your password later, in case you lose it. We will not use it for anything else.',
-  'onboarding.email.inputTitle': '(optional)',
+  'onboarding.email.inputTitle': 'Email (optional)',
   'onboarding.email.nextButton': 'Continue',
   'onboarding.email.title': 'Email',
 
