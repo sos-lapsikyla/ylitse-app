@@ -39,7 +39,6 @@ export default (props: Props) => {
           id="main.settings.account.email.invalid"
         />
       )}
-      <Message style={styles.text} id="main.settings.account.email.optional" />
       <RN.View style={styles.buttonContainer}>
         <Button
           style={styles.cancelButton}
@@ -62,12 +61,6 @@ export default (props: Props) => {
 };
 
 const styles = RN.StyleSheet.create({
-  text: {
-    color: colors.darkestBlue,
-    textAlign: 'center',
-    fontSize: 20,
-    fontWeight: 'bold',
-  },
   error: {
     color: colors.red,
     textAlign: 'center',
