@@ -67,6 +67,7 @@ export const messages: { [key in MessageId]: string } = {
   'main.settings.account.email.change': 'Change email',
   'main.settings.account.email.fail': 'Changing email failed!',
   'main.settings.account.email.fieldTitle': 'Email',
+  'main.settings.account.email.invalid': 'Invalid email address',
   'main.settings.account.email.missing': 'no email',
   'main.settings.account.email.success': 'Changing email succeeded!',
   'main.settings.account.email.title': 'Email',
@@ -127,8 +128,8 @@ export const messages: { [key in MessageId]: string } = {
   'onboarding.displayName.title': 'Almost ready',
 
   'onboarding.email.bodyText':
-    '* Entering your email address will help you retrieve your password later, in case you lose it. We will not use it for anything else.',
-  'onboarding.email.inputTitle': 'Email*',
+    'Entering your email address will help you retrieve your password later, in case you lose it. We will not use it for anything else.',
+  'onboarding.email.inputTitle': 'Email (optional)',
   'onboarding.email.nextButton': 'Continue',
   'onboarding.email.title': 'Email',
 

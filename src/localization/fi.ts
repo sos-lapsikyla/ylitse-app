@@ -65,6 +65,7 @@ export const messages = {
   'main.settings.account.email.change': 'Muuta sähköposti',
   'main.settings.account.email.fail': 'Sähköpostin muutos epäonnistui!',
   'main.settings.account.email.fieldTitle': 'Sähköposti',
+  'main.settings.account.email.invalid': 'Virheellinen sähköpostiosoite',
   'main.settings.account.email.missing': 'ei sähköpostia',
   'main.settings.account.email.success': 'Sähköpostin muutos onnistui!',
   'main.settings.account.email.title': 'Sähköposti',
@@ -125,8 +126,8 @@ export const messages = {
   'onboarding.displayName.title': 'Melkein valmista',
 
   'onboarding.email.bodyText':
-    '* Sähköpostiosoitteen tallentaminen mahdollistaa salasanan palauttamisen. Sähköpostiosoitetta ei käytetä muihin tarkoituksiin, eikä sitä luovuteta kolmansille osapuolille.',
-  'onboarding.email.inputTitle': 'Sähköpostiosoite (vapaaehtoinen)*',
+    'Sähköpostiosoitteen tallentaminen mahdollistaa salasanan palauttamisen. Sähköpostiosoitetta ei käytetä muihin tarkoituksiin, eikä sitä luovuteta kolmansille osapuolille.',
+  'onboarding.email.inputTitle': 'Sähköpostiosoite (vapaaehtoinen)',
   'onboarding.email.nextButton': 'Jatka',
   'onboarding.email.title': 'Sähköpostiosoite',
 
