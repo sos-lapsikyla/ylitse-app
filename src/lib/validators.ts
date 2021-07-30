@@ -17,7 +17,9 @@ export const unixTimeFromDateString = new t.Type<number, string, unknown>(
 const isValidEmail = (value: string): boolean => {
   if (value === '') {
     return true;
-  } else if (value.length > 320) {
+  }
+
+  if (value.length > 320) {
     return false;
   }
 
