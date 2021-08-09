@@ -37,6 +37,28 @@ export const reducer: automaton.Reducer<State, actions.Action> = (
       );
     }
 
+    case 'buddies/changeBanStatusBatch/start':
+      return automaton.loop(
+        RD.pending,
+        withToken(
+          buddyApi.banBuddies(
+            action.payload.buddyIds,
+            action.payload.banStatus,
+          ),
+          actions.make('buddies/changeBanStatusBatch/end'),
+        ),
+      );
+
+    case 'buddies/changeBanStatusBatch/end': {
+      return pipe(
+        action.payload,
+        E.fold(
+          fail => automaton.loop<State, actions.Action>(RD.failure(fail)),
+          _ => automaton.loop(RD.success(undefined)),
+        ),
+      );
+    }
+
     default: {
       return state;
     }

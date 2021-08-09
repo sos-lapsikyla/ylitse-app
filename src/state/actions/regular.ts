@@ -82,7 +82,7 @@ type RegularActions = {
     banStatus: buddyApi.BanActions;
   };
   'buddies/changeBanStatusBatch/end': E.Either<string, buddyApi.Buddies>;
-  'buddies/changeStatus/end': E.Either<string, buddyApi.Buddy>;
+  'buddies/changeBanStatus/end': E.Either<string, buddyApi.Buddy>;
 
   'newMessage/send/start': messageApi.SendMessageParams;
   'newMessage/send/end': {
