@@ -14,7 +14,13 @@ const buddyType = t.intersection([
     display_name: t.string,
     id: t.string,
   }),
-  t.partial({ status: t.literal('banned') }),
+  t.partial({
+    status: t.union([
+      t.literal('banned'),
+      t.literal('deleted'),
+      t.literal('ok'),
+    ]),
+  }),
 ]);
 
 const buddiesType = t.strict({ resources: t.array(buddyType) });
@@ -25,6 +31,9 @@ export type BanStatusStrings = 'banned' | 'ok' | 'deleted';
 
 type MappedStatuses = {
   [Action in BanActions]: BanStatusStrings;
+};
+type MappedStatusesFromApi = {
+  [K in BanStatusStrings]: BanStatuses;
 };
 
 export type Buddy = {
@@ -40,11 +49,16 @@ const mappedStatuses: MappedStatuses = {
   Unban: 'ok',
   Delete: 'deleted',
 };
+const mappedFromApi: MappedStatusesFromApi = {
+  banned: 'Banned',
+  deleted: 'Deleted',
+  ok: 'NotBanned',
+};
 
 const toBuddy = ({ id, display_name, status }: ApiBuddy): Buddy => ({
   buddyId: id,
   name: display_name,
-  status: status === 'banned' ? 'Banned' : 'NotBanned',
+  status: status ? mappedFromApi[status] : 'NotBanned',
 });
 
 const toBuddies = ({ resources }: t.TypeOf<typeof buddiesType>) =>
