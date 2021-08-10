@@ -111,9 +111,6 @@ export const getMentor =
     const mentor = getMentorById(id)(appState);
 
     if (RD.isSuccess(mentor)) {
-      console.log(mentor);
-      console.log(mentor.value);
-
       return mentor.value;
     }
   };
