@@ -9,6 +9,7 @@ import * as localization from '../localization';
 
 import * as config from './config';
 import * as authApi from './auth';
+import * as mentorApi from './mentors';
 
 type ApiUser = t.TypeOf<typeof userType>;
 
@@ -207,3 +208,24 @@ export const deleteAccount = (token: authApi.AccessToken) =>
     method: 'DELETE',
     headers: authApi.authHeader(token),
   });
+
+const vacationRequest = (
+  mentor: mentorApi.Mentor,
+  token: authApi.AccessToken,
+) => {
+  const newMentor: mentorApi.Mentor = {
+    ...mentor,
+    isVacationing: !mentor.isVacationing,
+  };
+
+  return http.put(`${config.baseUrl}/users/${token.userId}`, newMentor, {
+    headers: authApi.authHeader(token),
+  });
+};
+
+export function changeVacationStatus(
+  mentor: mentorApi.Mentor,
+): (token: authApi.AccessToken) => TE.TaskEither<string, ApiUser> {
+  return token =>
+    http.validateResponse(vacationRequest(mentor, token), userType, identity);
+}

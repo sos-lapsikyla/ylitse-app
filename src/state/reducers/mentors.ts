@@ -1,10 +1,12 @@
 import * as automaton from 'redux-automaton';
 import * as RD from '@devexperts/remote-data-ts';
 import * as T from 'fp-ts/lib/Task';
+import { flow } from 'fp-ts/lib/function';
 import { pipe } from 'fp-ts/lib/pipeable';
 
 import * as localization from '../../localization';
 
+import * as accountApi from '../../api/account';
 import * as mentorsApi from '../../api/mentors';
 
 import { cmd } from '../middleware';
@@ -87,6 +89,34 @@ export const getSkillList = (state: types.AppState) => {
     .filter((item, index, self) => self.indexOf(item) === index) // remove duplicates
     .sort();
 };
+
+export const getVacationingMentors = () =>
+  flow(
+    ({ mentors }: types.AppState) => mentors,
+    RD.map(mentors =>
+      Object.values(mentors).filter(mentor => mentor.isVacationing === true),
+    ),
+  );
+
+const getMentorById = (id: accountApi.UserAccount['userId']) =>
+  flow(
+    ({ mentors }: types.AppState) => mentors,
+    RD.map(mentors =>
+      Object.values(mentors).find(mentor => mentor.buddyId === id),
+    ),
+  );
+
+export const getMentor =
+  (id: accountApi.UserAccount['userId']) => (appState: types.AppState) => {
+    const mentor = getMentorById(id)(appState);
+
+    if (RD.isSuccess(mentor)) {
+      console.log(mentor);
+      console.log(mentor.value);
+
+      return mentor.value;
+    }
+  };
 
 export const get = ({ mentors }: types.AppState) =>
   RD.remoteData.map(mentors, mentorRecord => Object.values(mentorRecord));

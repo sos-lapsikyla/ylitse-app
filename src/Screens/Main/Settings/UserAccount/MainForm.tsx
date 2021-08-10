@@ -12,6 +12,7 @@ import * as actions from '../../../../state/actions';
 import RemoteData from '../../../components/RemoteData';
 import Button from '../../../components/Button';
 import Message from '../../../components/Message';
+import ToggleSwitch from '../../../components/ToggleSwitch';
 import colors from '../../../components/colors';
 import fonts from '../../../components/fonts';
 
@@ -29,6 +30,16 @@ export default ({ openPasswordForm, openEmailForm }: Props) => {
 
   const fetchUserAccount = () => {
     dispatch({ type: 'userAccount/get/start', payload: undefined });
+  };
+
+  const changeVacationStatus = () => {
+    if (RD.isSuccess(data) && data.value?.length) {
+      const user = data.value[0];
+      dispatch({
+        type: 'mentors/changeVacationStatus/start',
+        payload: { user },
+      });
+    }
   };
 
   const data = RD.remoteData.map(userAccount, account =>
@@ -113,6 +124,25 @@ export default ({ openPasswordForm, openEmailForm }: Props) => {
                   onPress={openProfile}
                   messageId="main.settings.account.profile.button"
                 />
+                <Message
+                  style={styles.fieldName}
+                  id="main.settings.account.vacation.title"
+                />
+                <ToggleSwitch
+                  messageOn="main.settings.account.vacation.on"
+                  messageOff="main.settings.account.vacation.off"
+                  toggleSwitch={changeVacationStatus}
+                />
+                <Message
+                  style={styles.fieldName}
+                  id="main.settings.account.status.title"
+                />
+                <RN.Text
+                  style={styles.fieldValueText}
+                  testID="main.settings.account.status.message"
+                >
+                  {'placeholder status message'}
+                </RN.Text>
               </>
             ) : null}
           </>

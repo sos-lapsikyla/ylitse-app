@@ -81,8 +81,14 @@ export const messages = {
   'main.settings.account.profile.button': 'Muokkaa profiilia',
   'main.settings.account.profile.title': 'Profiili',
 
+  'main.settings.account.status.title': 'Oma tila',
+
   'main.settings.account.title': 'Asetukset',
   'main.settings.account.userName': 'Käyttäjätunnus',
+
+  'main.settings.account.vacation.off': 'Pois',
+  'main.settings.account.vacation.on': 'Päällä',
+  'main.settings.account.vacation.title': 'Poissaolotila',
 
   'main.settings.deleteAccount.cancel': 'Peruuta',
   'main.settings.deleteAccount.deleteAccount': 'Poista tili',

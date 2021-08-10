@@ -16,6 +16,8 @@ const mentorType = t.strict({
   region: t.string,
   skills: t.array(t.string),
   languages: t.array(t.string),
+  is_vacationing: t.boolean,
+  status_message: t.string,
 });
 const mentorListType = t.strict({ resources: t.array(mentorType) });
 
@@ -25,12 +27,16 @@ const toMentor = ({
   birth_year,
   display_name,
   user_id,
+  is_vacationing,
+  status_message,
   ...props
 }: ApiMentor) => ({
   ...props,
   buddyId: user_id,
   age: new Date().getFullYear() - birth_year,
   name: display_name,
+  isVacationing: is_vacationing,
+  statusMessage: status_message,
 });
 
 export type Mentors = Record<string, Mentor>;
