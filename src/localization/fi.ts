@@ -84,6 +84,10 @@ export const messages = {
   'main.settings.account.title': 'Asetukset',
   'main.settings.account.userName': 'Käyttäjätunnus',
 
+  'main.settings.account.vacation.off': 'Pois',
+  'main.settings.account.vacation.on': 'Päällä',
+  'main.settings.account.vacation.title': 'Poissaolotila',
+
   'main.settings.deleteAccount.cancel': 'Peruuta',
   'main.settings.deleteAccount.deleteAccount': 'Poista tili',
   'main.settings.deleteAccount.text1':
