@@ -78,7 +78,31 @@ export const reducer: automaton.Reducer<State, actions.Action> = (
       );
 
     case 'buddies/changeBanStatusBatch/end':
-      console.log(action.payload);
+      if (E.isRight(action.payload)) {
+        const items = action.payload.right;
+
+        const deletedIds = Object.keys(items).filter(
+          key => items[key].status === 'Deleted',
+        );
+
+        if (RD.isSuccess(state)) {
+          const filteredIds = Object.keys(state.value).filter(
+            buddyId => !deletedIds.includes(buddyId),
+          );
+
+          const newState = filteredIds.reduce<Record<string, buddyApi.Buddy>>(
+            (acc, curr) => {
+              return { ...acc, [curr]: state.value[curr] };
+            },
+            {},
+          );
+
+          return RD.success(newState);
+        }
+
+        return state;
+      }
+
       return state;
 
     default:

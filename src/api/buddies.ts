@@ -49,6 +49,7 @@ const mappedStatuses: MappedStatuses = {
   Unban: 'ok',
   Delete: 'deleted',
 };
+
 const mappedFromApi: MappedStatusesFromApi = {
   banned: 'Banned',
   deleted: 'Deleted',
