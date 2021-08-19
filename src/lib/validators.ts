@@ -28,11 +28,33 @@ const isValidEmail = (value: string): boolean => {
   );
 };
 
+export const isValidName = (value: string): boolean => {
+  if (value === '') {
+    return false;
+  }
+
+  if (value.length > 35) {
+    return false;
+  }
+
+  return /^[\u00C0-\u017FA-zA-Z'0-9-_]{3,35}$/.test(value);
+};
+
 export const ValidEmail = new t.Type<string, string, unknown>(
   'ValidEmail',
   (input: unknown): input is string => typeof input === 'string',
   (input, context) =>
     typeof input === 'string' && isValidEmail(input)
+      ? t.success(input)
+      : t.failure(input, context),
+  t.identity,
+);
+
+export const ValidName = new t.Type<string, string, unknown>(
+  'ValidName',
+  (input: unknown): input is string => typeof input === 'string',
+  (input, context) =>
+    typeof input === 'string' && isValidName(input)
       ? t.success(input)
       : t.failure(input, context),
   t.identity,

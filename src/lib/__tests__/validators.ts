@@ -59,3 +59,37 @@ describe('validateEmail', () => {
     });
   });
 });
+
+describe('Validate The valid displayName to be true', () => {
+  [
+    'Ähtö',
+    'Aki',
+    'Äteritsiputeritsipuolilautatsijänkä',
+    'Veera',
+    'Ivan',
+    'eppu',
+    'feelix',
+    'pyry',
+  ].forEach(validName => {
+    it(`decodes valid displayName ${validName}`, () => {
+      expect(isRight(validators.ValidName.decode(validName))).toEqual(true);
+    });
+  });
+});
+
+describe('Validate The invalid displayName to be true', () => {
+  [
+    'Ähtö@',
+    'Aki©',
+    'Äteritsiputeritsipuolilautatsijänkädsadasd',
+    'Veera..',
+    'Ivan)',
+    'eppu=',
+    'feelix!"',
+    'pyry!"#',
+  ].forEach(invalidName => {
+    it(`decodes valid displayName ${invalidName}`, () => {
+      expect(isLeft(validators.ValidName.decode(invalidName))).toEqual(true);
+    });
+  });
+});
