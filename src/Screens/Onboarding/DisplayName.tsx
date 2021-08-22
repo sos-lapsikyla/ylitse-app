@@ -1,9 +1,12 @@
 import React from 'react';
 import RN from 'react-native';
 
+import { isRight } from 'fp-ts/lib/Either';
+
 import * as authApi from '../../api/auth';
 
 import * as navigationProps from '../../lib/navigation-props';
+import { ValidName } from '../../lib/validators';
 
 import OnboardingBackground from '../components/OnboardingBackground';
 import Card from '../components/Card';
@@ -34,9 +37,8 @@ const DisplayName = ({ navigation }: Props) => {
       user: { userName, password, displayName },
     });
   };
-
-  const isValidDisplayName =
-    displayName.length >= 2 && displayName.length <= 100;
+  const nameParsingResult = ValidName.decode(displayName);
+  const isValidDisplayName = isRight(nameParsingResult);
 
   return (
     <OnboardingBackground testID="onboarding.displayName.view">
