@@ -6,7 +6,6 @@ import { pipe } from 'fp-ts/lib/pipeable';
 
 import * as localization from '../../localization';
 
-import * as accountApi from '../../api/account';
 import * as mentorsApi from '../../api/mentors';
 
 import { cmd } from '../middleware';
@@ -90,30 +89,14 @@ export const getSkillList = (state: types.AppState) => {
     .sort();
 };
 
-export const getVacationingMentors = () =>
+export const getMentorByUserId = (userId: string) =>
   flow(
     ({ mentors }: types.AppState) => mentors,
     RD.map(mentors =>
-      Object.values(mentors).filter(mentor => mentor.isVacationing === true),
+      Object.values(mentors).find(mentor => mentor.buddyId === userId),
     ),
+    RD.getOrElse<unknown, undefined | mentorsApi.Mentor>(() => undefined),
   );
-
-const getMentorById = (id: accountApi.UserAccount['userId']) =>
-  flow(
-    ({ mentors }: types.AppState) => mentors,
-    RD.map(mentors =>
-      Object.values(mentors).find(mentor => mentor.buddyId === id),
-    ),
-  );
-
-export const getMentor =
-  (id: accountApi.UserAccount['userId']) => (appState: types.AppState) => {
-    const mentor = getMentorById(id)(appState);
-
-    if (RD.isSuccess(mentor)) {
-      return mentor.value;
-    }
-  };
 
 export const get = ({ mentors }: types.AppState) =>
   RD.remoteData.map(mentors, mentorRecord => Object.values(mentorRecord));

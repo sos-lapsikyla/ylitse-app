@@ -5,8 +5,6 @@ import { pipe } from 'fp-ts/lib/pipeable';
 
 import * as accountApi from '../../api/account';
 
-//import * as mentorState from '../reducers/mentors';
-
 import * as actions from '../actions';
 
 import { AppState } from '../types';
@@ -45,19 +43,6 @@ export const reducer: automaton.Reducer<
             RD.remoteData.map(state, account => ({ ...account, email })),
         ),
       );
-    /*case 'mentors/changeVacationStatus/start':
-      const mentor = mentorState.getMentor(action.payload.user.userId);
-
-      return automaton.loop(
-        RD.pending,
-        withToken(
-          accountApi.changeVacationStatus(mentor),
-          actions.make('mentors/changeVacationStatus/end'),
-        ),
-      );
-    case 'mentors/changeVacationStatus/end':
-      return RD.fromEither(action.payload);
-    */
     default:
       return state;
   }

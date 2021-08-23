@@ -21,10 +21,9 @@ type RegularActions = {
 
   'mentors/start': undefined;
   'mentors/end': Result<typeof mentorApi.fetchMentors>;
-  'mentors/changeVacationStatus/start': { user: accountApi.UserAccount };
-  'mentors/changeVacationStatus/end': Result<
-    typeof accountApi.changeVacationStatus
-  >;
+
+  'mentor/changeVacationStatus/start': { mentor: mentorApi.Mentor };
+  'mentor/changeVacationStatus/end': E.Either<string, mentorApi.Mentor>;
 
   'skillFilter/toggled': { skillName: string };
   'skillFilter/reset': undefined;

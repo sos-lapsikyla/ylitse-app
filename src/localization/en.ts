@@ -83,8 +83,6 @@ export const messages: { [key in MessageId]: string } = {
   'main.settings.account.profile.button': 'Edit Profile',
   'main.settings.account.profile.title': 'Profile',
 
-  'main.settings.account.status.title': 'Status',
-
   'main.settings.account.title': 'Account settings',
   'main.settings.account.userName': 'Username',
 

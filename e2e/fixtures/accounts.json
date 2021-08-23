@@ -19,6 +19,7 @@
         {
             "loginName": "mentor1",
             "displayName": "mentor1_nick",
+            "is_vacationing": true,
             "password": "mentormentor",
             "email": "mentor1@mentor.mentor",
             "birthYear": 1980,

@@ -81,8 +81,6 @@ export const messages = {
   'main.settings.account.profile.button': 'Muokkaa profiilia',
   'main.settings.account.profile.title': 'Profiili',
 
-  'main.settings.account.status.title': 'Oma tila',
-
   'main.settings.account.title': 'Asetukset',
   'main.settings.account.userName': 'Käyttäjätunnus',
 

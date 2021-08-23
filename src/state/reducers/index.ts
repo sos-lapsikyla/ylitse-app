@@ -13,6 +13,7 @@ import * as createUser from './createUser';
 import * as buddies from './buddies';
 import * as messages from './messages';
 import * as newMessage from './newMessage';
+import * as mentor from './mentor';
 import * as mentors from './mentors';
 import * as markSeen from './markSeen';
 import * as userAccount from './userAccount';
@@ -55,7 +56,7 @@ export const rootReducer: automaton.Reducer<AppState, actions.Action> =
       changeEmail: changeEmail.reducer,
       notifications: notifications.reducer,
       deleteAccount: deleteAccount.reducer,
-
+      mentor: mentor.reducer,
       mentors: mentors.reducer,
       skillFilter: mentors.skillReducer,
       buddies: buddies.reducer,
@@ -75,7 +76,7 @@ export const initialState: AppState = {
   changeEmail: changeEmail.initialState,
   notifications: notifications.initialState,
   deleteAccount: deleteAccount.initialState,
-
+  mentor: mentor.initialState,
   mentors: mentors.initialState,
   skillFilter: [],
   buddies: buddies.initialState,

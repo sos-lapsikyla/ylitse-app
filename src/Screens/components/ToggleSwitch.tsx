@@ -8,19 +8,23 @@ import colors from './colors';
 import fonts from './fonts';
 
 interface Props {
+  initialValue: boolean | undefined;
   messageOn: localization.MessageId;
   messageOff: localization.MessageId;
   messageStyle?: RN.StyleProp<RN.TextStyle>;
   toggleSwitch: () => void | undefined;
+  testID?: string;
 }
 
 const ToggleSwitch = ({
+  initialValue,
   messageOn,
   messageOff,
   messageStyle,
   toggleSwitch,
+  testID,
 }: Props) => {
-  const [isEnabled, setIsEnabled] = useState(false);
+  const [isEnabled, setIsEnabled] = useState(initialValue);
 
   const onPress = () => {
     setIsEnabled(previousState => !previousState);
@@ -38,6 +42,7 @@ const ToggleSwitch = ({
       <Message
         style={[styles.message, messageStyle]}
         id={isEnabled ? messageOn : messageOff}
+        testID={testID}
       />
     </RN.View>
   );
