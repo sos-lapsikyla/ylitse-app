@@ -26,17 +26,13 @@ export default ({ userId }: Props) => {
     RN.Linking.openURL(config.loginUrl);
   };
 
-  const changeVacationStatus = (): boolean => {
+  const changeVacationStatus = () => {
     if (typeof mentor !== 'undefined') {
       dispatch({
         type: 'mentor/changeVacationStatus/start',
         payload: { mentor },
       });
-
-      return true;
     }
-
-    return false;
   };
 
   return (
@@ -56,7 +52,7 @@ export default ({ userId }: Props) => {
         id="main.settings.account.vacation.title"
       />
       <ToggleSwitch
-        initialValue={mentor?.is_vacationing}
+        value={mentor?.is_vacationing}
         messageOn="main.settings.account.vacation.on"
         messageOff="main.settings.account.vacation.off"
         toggleSwitch={changeVacationStatus}
