@@ -100,3 +100,5 @@ export const getMentorByUserId = (userId: string) =>
 
 export const get = ({ mentors }: types.AppState) =>
   RD.remoteData.map(mentors, mentorRecord => Object.values(mentorRecord));
+
+export const select = ({ mentors: state }: types.AppState) => state;

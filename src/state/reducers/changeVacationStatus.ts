@@ -8,16 +8,14 @@ import * as mentorsApi from '../../api/mentors';
 import * as actions from '../actions';
 
 import { withToken } from './accessToken';
-import * as types from '../types';
-
-export type State = types.AppState['changeVacationStatus'];
+import { AppState } from '../types';
 
 export const initialState = RD.initial;
 
-export const reducer: automaton.Reducer<State, actions.Action> = (
-  state = initialState,
-  action,
-) => {
+export const reducer: automaton.Reducer<
+  AppState['changeVacationStatus'],
+  actions.Action
+> = (state = initialState, action) => {
   switch (action.type) {
     case 'mentor/changeVacationStatus/start':
       return automaton.loop(
@@ -41,3 +39,5 @@ export const reducer: automaton.Reducer<State, actions.Action> = (
       return state;
   }
 };
+
+export const select = ({ changeVacationStatus: state }: AppState) => state;

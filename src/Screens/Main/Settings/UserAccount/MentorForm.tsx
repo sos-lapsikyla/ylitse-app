@@ -2,6 +2,7 @@ import React from 'react';
 import RN from 'react-native';
 import * as redux from 'redux';
 import { useDispatch, useSelector } from 'react-redux';
+import * as selector from '../../../../state/selectors';
 
 import * as config from '../../../../api/config';
 import * as actions from '../../../../state/actions';
@@ -10,6 +11,7 @@ import * as mentorState from '../../../../state/reducers/mentors';
 import Button from '../../../components/Button';
 import Message from '../../../components/Message';
 import ToggleSwitch from '../../../components/ToggleSwitch';
+import Spinner from '../../../components/Spinner';
 import colors from '../../../components/colors';
 import fonts from '../../../components/fonts';
 
@@ -21,6 +23,8 @@ export default ({ userId }: Props) => {
   const mentor = useSelector(mentorState.getMentorByUserId(userId));
 
   const dispatch = useDispatch<redux.Dispatch<actions.Action>>();
+
+  const isLoading = useSelector(selector.getIsChangeVacationStatusLoading);
 
   const openProfile = () => {
     RN.Linking.openURL(config.loginUrl);
@@ -51,14 +55,18 @@ export default ({ userId }: Props) => {
         style={styles.fieldName}
         id="main.settings.account.vacation.title"
       />
-      <ToggleSwitch
-        value={mentor?.is_vacationing}
-        messageOn="main.settings.account.vacation.on"
-        messageOff="main.settings.account.vacation.off"
-        toggleSwitch={changeVacationStatus}
-        testID="main.settings.
-        account.vacation.switch"
-      />
+      {isLoading ? (
+        <Spinner />
+      ) : (
+        <ToggleSwitch
+          value={mentor?.is_vacationing}
+          messageOn="main.settings.account.vacation.on"
+          messageOff="main.settings.account.vacation.off"
+          toggleSwitch={changeVacationStatus}
+          testID="main.settings.
+          account.vacation.switch"
+        />
+      )}
     </>
   );
 };
