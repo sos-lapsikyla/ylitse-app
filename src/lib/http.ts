@@ -69,3 +69,5 @@ export const validateResponse = <A, B, C>(
   model: t.Type<A, B, unknown>,
   fromModel: (a: A) => C,
 ) => pipe(task, TE.chain(getJson), TE.chain(decode(model)), TE.map(fromModel));
+
+export const response = (task: TE.TaskEither<string, Response>) => pipe(task);

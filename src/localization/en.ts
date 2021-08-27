@@ -86,6 +86,10 @@ export const messages: { [key in MessageId]: string } = {
   'main.settings.account.title': 'Account settings',
   'main.settings.account.userName': 'Username',
 
+  'main.settings.account.vacation.off': 'Off',
+  'main.settings.account.vacation.on': 'On',
+  'main.settings.account.vacation.title': 'Vacation mode',
+
   'main.settings.deleteAccount.cancel': 'Cancel',
   'main.settings.deleteAccount.deleteAccount': 'Delete account',
   'main.settings.deleteAccount.text1':

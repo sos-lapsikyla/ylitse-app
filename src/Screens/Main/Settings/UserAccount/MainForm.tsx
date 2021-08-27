@@ -5,7 +5,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import * as RD from '@devexperts/remote-data-ts';
 import { tuple } from 'fp-ts/lib/function';
 
-import * as config from '../../../../api/config';
 import * as userAccountState from '../../../../state/reducers/userAccount';
 import * as actions from '../../../../state/actions';
 
@@ -14,6 +13,7 @@ import Button from '../../../components/Button';
 import Message from '../../../components/Message';
 import colors from '../../../components/colors';
 import fonts from '../../../components/fonts';
+import MentorForm from './MentorForm';
 
 type Props = {
   openPasswordForm: () => void;
@@ -21,9 +21,6 @@ type Props = {
 };
 
 export default ({ openPasswordForm, openEmailForm }: Props) => {
-  const openProfile = () => {
-    RN.Linking.openURL(config.loginUrl);
-  };
   const userAccount = useSelector(userAccountState.getAccount);
   const dispatch = useDispatch<redux.Dispatch<actions.Action>>();
 
@@ -39,7 +36,7 @@ export default ({ openPasswordForm, openEmailForm }: Props) => {
     <>
       <Message style={styles.accountSettingsText} id="main.settings.title" />
       <RemoteData data={data} fetchData={fetchUserAccount}>
-        {([{ userName, displayName, email, role }, hasBoth]) => (
+        {([{ userId, userName, displayName, email, role }, hasBoth]) => (
           <>
             <Message
               style={styles.fieldName}
@@ -101,20 +98,7 @@ export default ({ openPasswordForm, openEmailForm }: Props) => {
               messageId="main.settings.account.password.button"
               testID="main.settings.account.password.button"
             />
-            {role === 'mentor' ? (
-              <>
-                <Message
-                  style={styles.fieldName}
-                  id="main.settings.account.profile.title"
-                />
-                <Button
-                  style={styles.changePasswordButton}
-                  messageStyle={styles.buttonText}
-                  onPress={openProfile}
-                  messageId="main.settings.account.profile.button"
-                />
-              </>
-            ) : null}
+            {role === 'mentor' ? <MentorForm userId={userId} /> : null}
           </>
         )}
       </RemoteData>

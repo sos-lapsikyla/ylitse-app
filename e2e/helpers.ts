@@ -250,6 +250,8 @@ export async function APISignUpMentor(mentor: any) {
       skills: mentor.skills,
       story: mentor.story,
       communication_channels: mentor.communication_channels,
+      is_vacationing: mentor.is_vacationing,
+      status_message: mentor.status_message,
       account_id: myuser.account.id,
       user_id: myuser.user.id,
       id: myuser.mentor.id,

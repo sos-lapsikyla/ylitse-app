@@ -1,6 +1,7 @@
 import * as automaton from 'redux-automaton';
 import * as RD from '@devexperts/remote-data-ts';
 import * as T from 'fp-ts/lib/Task';
+import { flow } from 'fp-ts/lib/function';
 import { pipe } from 'fp-ts/lib/pipeable';
 
 import * as localization from '../../localization';
@@ -88,5 +89,16 @@ export const getSkillList = (state: types.AppState) => {
     .sort();
 };
 
+export const getMentorByUserId = (userId: string) =>
+  flow(
+    ({ mentors }: types.AppState) => mentors,
+    RD.map(mentors =>
+      Object.values(mentors).find(mentor => mentor.buddyId === userId),
+    ),
+    RD.getOrElse<unknown, undefined | mentorsApi.Mentor>(() => undefined),
+  );
+
 export const get = ({ mentors }: types.AppState) =>
   RD.remoteData.map(mentors, mentorRecord => Object.values(mentorRecord));
+
+export const select = ({ mentors: state }: types.AppState) => state;
