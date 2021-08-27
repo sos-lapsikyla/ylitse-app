@@ -8,7 +8,7 @@ import colors from './colors';
 import fonts from './fonts';
 
 interface Props {
-  value: boolean | undefined;
+  value: boolean;
   messageOn: localization.MessageId;
   messageOff: localization.MessageId;
   toggleSwitch: () => void;

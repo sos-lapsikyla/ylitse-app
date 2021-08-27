@@ -59,7 +59,7 @@ export default ({ userId }: Props) => {
         <Spinner />
       ) : (
         <ToggleSwitch
-          value={mentor?.is_vacationing}
+          value={mentor?.is_vacationing ?? false}
           messageOn="main.settings.account.vacation.on"
           messageOff="main.settings.account.vacation.off"
           toggleSwitch={changeVacationStatus}
