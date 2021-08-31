@@ -20,8 +20,8 @@ export default (props: Props) => {
         style={styles.field}
         value={props.statusMessage}
         onChangeText={props.setStatusMessage}
-        numberOfLines={2}
-        maxLength={50}
+        maxLength={30}
+        multiline={false}
         testID="main.settings.account.status.input"
       />
       <Button

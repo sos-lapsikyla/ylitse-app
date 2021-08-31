@@ -11,8 +11,9 @@ export interface Props extends RN.TextInputProps {
 const InputField = ({
   style,
   inputStyle,
-  numberOfLines,
   maxLength,
+  multiline,
+  numberOfLines,
   ...textInputProps
 }: Props) => {
   return (
@@ -21,7 +22,7 @@ const InputField = ({
         <RN.TextInput
           style={[inputStyle, styles.inputText]}
           maxLength={maxLength}
-          multiline={true}
+          multiline={multiline}
           numberOfLines={numberOfLines}
           editable={true}
           {...textInputProps}
@@ -33,7 +34,7 @@ const InputField = ({
 
 const styles = RN.StyleSheet.create({
   inputText: {
-    ...fonts.largeBold,
+    ...fonts.regularBold,
     color: colors.darkestBlue,
     backgroundColor: colors.lightestGray,
     alignSelf: 'stretch',
