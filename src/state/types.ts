@@ -32,6 +32,7 @@ export type AppState = {
   changePassword: RemoteAction;
   changeEmail: RemoteData<{ email?: string }>;
   changeVacationStatus: RemoteAction;
+  changeStatusMessage: RemoteAction;
   userAccount: RemoteData<accountApi.UserAccount>;
 
   deleteAccount: RemoteAction;

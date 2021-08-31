@@ -2,11 +2,14 @@ import React from 'react';
 import RN from 'react-native';
 import * as redux from 'redux';
 import { useDispatch, useSelector } from 'react-redux';
+import { pipe } from 'fp-ts/lib/pipeable';
+import * as RD from '@devexperts/remote-data-ts';
 import * as selector from '../../../../state/selectors';
 
 import * as config from '../../../../api/config';
 import * as actions from '../../../../state/actions';
 import * as mentorState from '../../../../state/reducers/mentors';
+import * as changeStatusMessageState from '../../../../state/reducers/changeStatusMessage';
 
 import Button from '../../../components/Button';
 import Message from '../../../components/Message';
@@ -15,6 +18,9 @@ import Spinner from '../../../components/Spinner';
 import colors from '../../../components/colors';
 import fonts from '../../../components/fonts';
 
+import AlertBox from './AlertBox';
+import StatusMessageForm from 'src/Screens/components/StatusMessageForm';
+
 type Props = {
   userId: string;
 };
@@ -22,9 +28,15 @@ type Props = {
 export default ({ userId }: Props) => {
   const mentor = useSelector(mentorState.getMentorByUserId(userId));
 
+  const [statusMessage, setStatusMessage] = React.useState(
+    mentor?.status_message ?? '',
+  );
+
   const dispatch = useDispatch<redux.Dispatch<actions.Action>>();
 
   const isLoading = useSelector(selector.getIsChangeVacationStatusLoading);
+
+  const requestState = useSelector(selector.getStatusMessage);
 
   const openProfile = () => {
     RN.Linking.openURL(config.loginUrl);
@@ -38,6 +50,33 @@ export default ({ userId }: Props) => {
       });
     }
   };
+
+  const changeStatusMessage = () => {
+    if (typeof mentor !== 'undefined') {
+      dispatch({
+        type: 'mentor/changeStatusMessage/start',
+        payload: { statusMessage, mentor },
+      });
+    }
+  };
+
+  const resetStatusMessage = () => {
+    dispatch({
+      type: 'mentor/changeStatusMessage/reset',
+      payload: undefined,
+    });
+  };
+
+  React.useEffect(() => {
+    if (RD.isSuccess(requestState)) {
+      const timeout = setTimeout(
+        resetStatusMessage,
+        changeStatusMessageState.coolDownDuration,
+      );
+
+      return () => clearTimeout(timeout);
+    }
+  }, [requestState]);
 
   return (
     <>
@@ -67,6 +106,40 @@ export default ({ userId }: Props) => {
           account.vacation.switch"
         />
       )}
+      <Message
+        style={styles.fieldName}
+        id="main.settings.account.status.title"
+        testID="main.settings.account.status.title"
+      />
+      {pipe(
+        requestState,
+        RD.fold(
+          () => (
+            <StatusMessageForm
+              statusMessage={statusMessage}
+              setStatusMessage={setStatusMessage}
+              onButtonPress={changeStatusMessage}
+            />
+          ),
+          () => <Spinner />,
+          () => (
+            <AlertBox
+              imageStyle={styles.failBox}
+              imageSource={require('../../../images/alert-circle.svg')}
+              duration={changeStatusMessageState.coolDownDuration}
+              messageId="main.settings.account.status.fail"
+            />
+          ),
+          () => (
+            <AlertBox
+              imageStyle={styles.successBox}
+              imageSource={require('../../../images/checkmark-circle-outline.svg')}
+              duration={changeStatusMessageState.coolDownDuration}
+              messageId="main.settings.account.status.success"
+            />
+          ),
+        ),
+      )}
     </>
   );
 };
@@ -86,5 +159,11 @@ const styles = RN.StyleSheet.create({
     ...fonts.regularBold,
     // ...textShadow,
     color: colors.white,
+  },
+  failBox: {
+    tintColor: colors.danger,
+  },
+  successBox: {
+    tintColor: colors.darkBlue,
   },
 });

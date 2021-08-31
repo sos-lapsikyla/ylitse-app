@@ -26,6 +26,13 @@ type RegularActions = {
   'mentor/changeVacationStatus/start': { mentor: mentorApi.Mentor };
   'mentor/changeVacationStatus/end': E.Either<string, Response>;
 
+  'mentor/changeStatusMessage/start': {
+    statusMessage: string;
+    mentor: mentorApi.Mentor;
+  };
+  'mentor/changeStatusMessage/completed': E.Either<string, Response>;
+  'mentor/changeStatusMessage/reset': undefined;
+
   'skillFilter/toggled': { skillName: string };
   'skillFilter/reset': undefined;
 

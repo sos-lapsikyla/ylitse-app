@@ -19,6 +19,7 @@ import * as userAccount from './userAccount';
 import * as changePassword from './changePassword';
 import * as changeEmail from './changeEmail';
 import * as changeVacationStatus from './changeVacationStatus';
+import * as changeStatusMessage from './changeStatusMessage';
 import * as notifications from './notifications';
 import * as deleteAccount from './deleteAccount';
 
@@ -55,6 +56,7 @@ export const rootReducer: automaton.Reducer<AppState, actions.Action> =
       changePassword: changePassword.reducer,
       changeEmail: changeEmail.reducer,
       changeVacationStatus: changeVacationStatus.reducer,
+      changeStatusMessage: changeStatusMessage.reducer,
       notifications: notifications.reducer,
       deleteAccount: deleteAccount.reducer,
       mentors: mentors.reducer,
@@ -75,6 +77,7 @@ export const initialState: AppState = {
   changePassword: changePassword.initialState,
   changeEmail: changeEmail.initialState,
   changeVacationStatus: changeVacationStatus.initialState,
+  changeStatusMessage: changeStatusMessage.initialState,
   notifications: notifications.initialState,
   deleteAccount: deleteAccount.initialState,
   mentors: mentors.initialState,
