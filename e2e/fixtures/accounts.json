@@ -59,6 +59,8 @@
             "communication_channels": ["phone", "email"],
             "gender": "other",
             "region": "Tampesteri",
+            "is_vacationing": true,
+            "status_message": "Gone gardening",
             "role": "mentor"
         }
     ]
