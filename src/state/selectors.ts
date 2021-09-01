@@ -112,7 +112,7 @@ export const getIsChangeVacationStatusLoading = (appState: AppState) => {
   return RD.isPending(mentorState) || RD.isPending(changeVacationStatusState);
 };
 
-export const getStatusMessage = (appState: AppState) => {
+export const getStatusMessageChangeState = (appState: AppState) => {
   const mentorState = selectMentors(appState);
   const changeStatusMessageState = selectStatusMessage(appState);
 

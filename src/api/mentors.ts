@@ -89,9 +89,14 @@ export const compare =
     return compareLang(a, b) || compareIds(userId, a, b);
   };
 
+type VacationStatusParams = {
+  is_vacationing: boolean;
+  status_message: string;
+};
+
 const vacationStatusRequest = (
   mentorId: string,
-  data: any,
+  data: VacationStatusParams,
   token: authApi.AccessToken,
 ) => {
   return http.patch(`${config.baseUrl}/mentors/${mentorId}`, data, {

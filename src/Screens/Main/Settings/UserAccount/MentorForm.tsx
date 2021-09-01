@@ -35,9 +35,11 @@ export default ({ userId }: Props) => {
 
   const dispatch = useDispatch<redux.Dispatch<actions.Action>>();
 
-  const isLoading = useSelector(selector.getIsChangeVacationStatusLoading);
+  const isVacationStatusLoading = useSelector(
+    selector.getIsChangeVacationStatusLoading,
+  );
 
-  const requestState = useSelector(selector.getStatusMessage);
+  const statusMessageState = useSelector(selector.getStatusMessageChangeState);
 
   const openProfile = () => {
     RN.Linking.openURL(config.loginUrl);
@@ -69,7 +71,7 @@ export default ({ userId }: Props) => {
   };
 
   React.useEffect(() => {
-    if (RD.isSuccess(requestState)) {
+    if (RD.isSuccess(statusMessageState)) {
       const timeout = setTimeout(
         resetStatusMessage,
         changeStatusMessageState.coolDownDuration,
@@ -77,7 +79,7 @@ export default ({ userId }: Props) => {
 
       return () => clearTimeout(timeout);
     }
-  }, [requestState]);
+  }, [statusMessageState]);
 
   React.useEffect(() => {
     setStatusMessage(mentor?.status_message ?? '');
@@ -99,7 +101,7 @@ export default ({ userId }: Props) => {
         style={styles.fieldName}
         id="main.settings.account.vacation.title"
       />
-      {isLoading ? (
+      {isVacationStatusLoading ? (
         <Spinner />
       ) : (
         <ToggleSwitch
@@ -117,7 +119,7 @@ export default ({ userId }: Props) => {
         testID="main.settings.account.status.title"
       />
       {pipe(
-        requestState,
+        statusMessageState,
         RD.fold(
           () => (
             <StatusMessageForm
