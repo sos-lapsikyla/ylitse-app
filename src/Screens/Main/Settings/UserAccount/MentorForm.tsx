@@ -19,6 +19,7 @@ import colors from '../../../components/colors';
 import fonts from '../../../components/fonts';
 
 import AlertBox from './AlertBox';
+import AlertDialog from './AlertDialog';
 import StatusMessageForm from 'src/Screens/components/StatusMessageForm';
 
 type Props = {
@@ -78,6 +79,10 @@ export default ({ userId }: Props) => {
     }
   }, [requestState]);
 
+  React.useEffect(() => {
+    setStatusMessage(mentor?.status_message ?? '');
+  }, [mentor?.status_message]);
+
   return (
     <>
       <Message
@@ -123,11 +128,12 @@ export default ({ userId }: Props) => {
           ),
           () => <Spinner />,
           () => (
-            <AlertBox
+            <AlertDialog
               imageStyle={styles.failBox}
               imageSource={require('../../../images/alert-circle.svg')}
-              duration={changeStatusMessageState.coolDownDuration}
               messageId="main.settings.account.status.fail"
+              onOkPress={resetStatusMessage}
+              onRetryPress={changeStatusMessage}
             />
           ),
           () => (

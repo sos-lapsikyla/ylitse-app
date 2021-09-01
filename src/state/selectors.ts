@@ -116,5 +116,9 @@ export const getStatusMessage = (appState: AppState) => {
   const mentorState = selectMentors(appState);
   const changeStatusMessageState = selectStatusMessage(appState);
 
-  return RD.combine(mentorState, changeStatusMessageState);
+  if (RD.isPending(mentorState)) {
+    return mentorState;
+  }
+
+  return changeStatusMessageState;
 };
