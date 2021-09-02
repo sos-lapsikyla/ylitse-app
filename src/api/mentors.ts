@@ -89,13 +89,17 @@ export const compare =
     return compareLang(a, b) || compareIds(userId, a, b);
   };
 
-const vacationRequest = (mentor: Mentor, token: authApi.AccessToken) => {
-  const data = {
-    is_vacationing: !mentor.is_vacationing,
-    status_message: mentor.status_message,
-  };
+type VacationStatusParams = {
+  is_vacationing: boolean;
+  status_message: string;
+};
 
-  return http.patch(`${config.baseUrl}/mentors/${mentor.mentorId}`, data, {
+const vacationStatusRequest = (
+  mentorId: string,
+  data: VacationStatusParams,
+  token: authApi.AccessToken,
+) => {
+  return http.patch(`${config.baseUrl}/mentors/${mentorId}`, data, {
     headers: authApi.authHeader(token),
   });
 };
@@ -103,5 +107,27 @@ const vacationRequest = (mentor: Mentor, token: authApi.AccessToken) => {
 export function changeVacationStatus(
   mentor: Mentor,
 ): (token: authApi.AccessToken) => TE.TaskEither<string, Response> {
-  return token => http.response(vacationRequest(mentor, token));
+  const data = {
+    is_vacationing: !mentor.is_vacationing,
+    status_message: mentor.status_message,
+  };
+
+  return token =>
+    http.response(vacationStatusRequest(mentor.mentorId, data, token));
+}
+
+export function changeStatusMessage({
+  statusMessage,
+  mentor,
+}: {
+  statusMessage: string;
+  mentor: Mentor;
+}): (token: authApi.AccessToken) => TE.TaskEither<string, Response> {
+  const data = {
+    is_vacationing: mentor.is_vacationing,
+    status_message: statusMessage,
+  };
+
+  return token =>
+    http.response(vacationStatusRequest(mentor.mentorId, data, token));
 }

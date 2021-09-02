@@ -19,7 +19,6 @@
         {
             "loginName": "mentor1",
             "displayName": "mentor1_nick",
-            "is_vacationing": true,
             "password": "mentormentor",
             "email": "mentor1@mentor.mentor",
             "birthYear": 1980,
@@ -60,6 +59,8 @@
             "communication_channels": ["phone", "email"],
             "gender": "other",
             "region": "Tampesteri",
+            "is_vacationing": true,
+            "status_message": "Gone gardening",
             "role": "mentor"
         }
     ]
