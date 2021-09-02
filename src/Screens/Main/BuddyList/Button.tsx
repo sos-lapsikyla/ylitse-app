@@ -3,6 +3,7 @@ import RN from 'react-native';
 import { useSelector } from 'react-redux';
 
 import { hasUnseen } from '../../../state/reducers/messages';
+import { getMentorByUserId } from '../../../state/reducers/mentors';
 
 import Card from '../../components/Card';
 import fonts from '../../components/fonts';
@@ -18,6 +19,7 @@ const Button = ({ style, buddyId, name, onPress, ...viewProps }: Props) => {
   const onPressBuddy = () => onPress(buddyId);
   const hasNewMessages = useSelector(hasUnseen(buddyId));
   const color = getBuddyColor(buddyId);
+  const mentor = useSelector(getMentorByUserId(buddyId));
 
   return (
     <Card style={[styles.button, style]} {...viewProps}>
@@ -32,7 +34,14 @@ const Button = ({ style, buddyId, name, onPress, ...viewProps }: Props) => {
               testID={'main.buddyList.button.unseenDot'}
             />
           ) : null}
-          <RN.Image source={require('../../images/balloon.svg')} />
+          {mentor?.is_vacationing ? (
+            <RN.Image
+              source={require('../../images/umbrella-beach.svg')}
+              style={styles.vacationIcon}
+            />
+          ) : (
+            <RN.Image source={require('../../images/balloon.svg')} />
+          )}
         </RN.View>
       </RN.TouchableOpacity>
     </Card>
@@ -73,6 +82,10 @@ const styles = RN.StyleSheet.create({
     top: 16,
     right: 16,
     backgroundColor: 'yellow',
+  },
+  vacationIcon: {
+    width: 48,
+    height: 48,
   },
 });
 

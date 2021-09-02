@@ -12,6 +12,40 @@ import {
 
 const accountFixtures = require('./fixtures/accounts.json');
 
+describe('Show status message', () => {
+  beforeEach(async () => {
+    await APIDeleteAccounts();
+    await device.reloadReactNative();
+  });
+
+  it('for a mentor successfully', async () => {
+    const mentor1 = accountFixtures.mentors[0];
+    await APISignUpMentor(mentor1);
+    const mentor2 = accountFixtures.mentors[2];
+    await APISignUpMentor(mentor2);
+
+    await scrollDownAndTap(
+      'onboarding.welcome.button',
+      'onboarding.welcome.view',
+    );
+
+    // Show status message in mentor list...
+    await expect(element(by.id('components.mentorList'))).toBeVisible();
+
+    // for active mentor
+    await expect(element(by.text(mentor1.displayName))).toBeVisible();
+    await expect(element(by.text(mentor1.status_message))).toBeVisible();
+
+    await element(by.id('components.mentorList')).swipe('left', 'slow');
+
+    // for vacationing mentor
+    await expect(element(by.text(mentor2.displayName))).toBeVisible();
+    await expect(element(by.text(mentor2.status_message))).toBeVisible();
+
+    await forceLogout();
+  });
+});
+
 describe('Change status message', () => {
   beforeEach(async () => {
     await APIDeleteAccounts();

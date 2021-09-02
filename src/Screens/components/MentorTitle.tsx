@@ -15,6 +15,7 @@ type Props = {
   mentor: mentorApi.Mentor;
   onPress?: () => void | undefined;
   safeArea?: boolean;
+  withStatus?: boolean;
 };
 
 const SafeAreaWrapper: React.FC<{}> = ({ children }) => (
@@ -26,8 +27,9 @@ const SafeAreaWrapper: React.FC<{}> = ({ children }) => (
 const MentorTitle: React.FC<Props> = ({
   onPress,
   style,
-  mentor: { age, name, region, buddyId },
+  mentor: { age, name, region, buddyId, is_vacationing, status_message },
   safeArea,
+  withStatus,
 }) => {
   const Wrapper = safeArea ? SafeAreaWrapper : React.Fragment;
   const color = getBuddyColor(buddyId);
@@ -48,7 +50,11 @@ const MentorTitle: React.FC<Props> = ({
           </RN.TouchableOpacity>
         )}
         <RN.Image
-          source={require('../images/user.svg')}
+          source={
+            is_vacationing
+              ? require('../images/umbrella-beach.svg')
+              : require('../images/user.svg')
+          }
           style={styles.userIcon}
         />
         <RN.View style={styles.column}>
@@ -65,6 +71,17 @@ const MentorTitle: React.FC<Props> = ({
               <RN.Text>{region}</RN.Text>
             </RN.Text>
           </RN.View>
+          {withStatus ? (
+            <RN.View style={styles.nameContainer}>
+              <RN.Text
+                style={styles.status}
+                ellipsizeMode="tail"
+                numberOfLines={1}
+              >
+                {status_message}
+              </RN.Text>
+            </RN.View>
+          ) : null}
         </RN.View>
       </Wrapper>
     </RN.View>
@@ -95,6 +112,7 @@ const styles = RN.StyleSheet.create({
   },
   userIcon: {
     tintColor: colors.black,
+    marginBottom: 16,
     width: 48,
     height: 48,
   },
@@ -112,6 +130,10 @@ const styles = RN.StyleSheet.create({
   name: {
     flex: 1,
     ...fonts.regularBold,
+  },
+  status: {
+    flex: 1,
+    ...fonts.smallBold,
   },
   infoContainer: { flexGrow: 1, flexDirection: 'row', flexWrap: 'wrap' },
   infoText: {

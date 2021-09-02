@@ -55,6 +55,7 @@ const MentorCardExpanded = ({ navigation }: Props) => {
         mentor={mentor}
         onPress={goBack}
         safeArea={true}
+        withStatus={false}
       />
       <RN.ScrollView
         contentContainerStyle={styles.scrollContent}
@@ -69,6 +70,13 @@ const MentorCardExpanded = ({ navigation }: Props) => {
             ) : null,
           )}
         </RN.View>
+        <Message
+          id={'main.settings.account.status.title'}
+          style={styles.subtitle}
+        />
+        <RN.View style={styles.statusContainer}>
+          <RN.Text style={styles.status}>{mentor.status_message}</RN.Text>
+        </RN.View>
         <Message id={'main.mentor.story'} style={styles.subtitle} />
         <MentorStory style={styles.story} story={mentor.story} showAll={true} />
         <Skills style={styles.skills} color={color} skills={mentor.skills} />
@@ -77,6 +85,7 @@ const MentorCardExpanded = ({ navigation }: Props) => {
             style={styles.button}
             onPress={navigateToChat}
             messageId="main.mentorCardExpanded.button"
+            disabled={mentor.is_vacationing}
           />
         </SafeAreaView>
       </RN.ScrollView>
@@ -119,6 +128,17 @@ const styles = RN.StyleSheet.create({
   },
   story: {
     marginTop: 16,
+  },
+  statusContainer: {
+    alignSelf: 'stretch',
+    marginTop: 8,
+    marginBottom: 16,
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+  },
+  status: {
+    ...fonts.regular,
+    color: colors.darkestBlue,
   },
   skills: {
     marginTop: 24,
