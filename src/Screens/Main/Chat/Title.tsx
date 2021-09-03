@@ -1,10 +1,12 @@
 import React from 'react';
 import RN from 'react-native';
 import { SafeAreaView } from 'react-navigation';
+import { useSelector } from 'react-redux';
 
 import * as ReactRedux from 'react-redux';
 import * as state from '../../../state';
 import * as selectors from '../../../state/selectors';
+import { getMentorByUserId } from '../../../state/reducers/mentors';
 
 import colors from '../../components/colors';
 import { cardBorderRadius } from '../../components/Card';
@@ -36,6 +38,7 @@ const Title: React.FC<Props> = ({
   openDropdown,
 }) => {
   const color = getBuddyColor(buddyId);
+  const mentor = useSelector(getMentorByUserId(buddyId));
 
   return (
     <RN.View
@@ -52,12 +55,31 @@ const Title: React.FC<Props> = ({
           </RN.TouchableOpacity>
         )}
         <RN.Image
-          source={require('../../images/user.svg')}
+          source={
+            mentor?.is_vacationing
+              ? require('../../images/umbrella-beach.svg')
+              : require('../../images/user.svg')
+          }
           style={styles.userIcon}
         />
-        <RN.Text style={styles.name} ellipsizeMode="tail" numberOfLines={1}>
-          {name}
-        </RN.Text>
+        {mentor?.status_message ? (
+          <RN.View style={styles.container}>
+            <RN.Text style={styles.name} ellipsizeMode="tail" numberOfLines={1}>
+              {name}
+            </RN.Text>
+            <RN.Text
+              style={styles.status}
+              ellipsizeMode="tail"
+              numberOfLines={1}
+            >
+              {mentor?.status_message}
+            </RN.Text>
+          </RN.View>
+        ) : (
+          <RN.Text style={styles.name} ellipsizeMode="tail" numberOfLines={1}>
+            {name}
+          </RN.Text>
+        )}
         <RN.TouchableHighlight
           style={styles.kebabIconHighlight}
           onPress={openDropdown}
@@ -77,12 +99,17 @@ const Title: React.FC<Props> = ({
 
 const styles = RN.StyleSheet.create({
   blob: {
+    minHeight: 80,
     borderBottomRightRadius: cardBorderRadius,
     borderBottomLeftRadius: cardBorderRadius,
     paddingVertical: 16,
     paddingHorizontal: 16,
     flexDirection: 'row',
     alignItems: 'center',
+  },
+  container: {
+    flex: 1,
+    justifyContent: 'flex-start',
   },
   safeArea: {
     flexDirection: 'row',
@@ -101,12 +128,17 @@ const styles = RN.StyleSheet.create({
   },
   userIcon: {
     tintColor: colors.black,
-    width: 32,
-    height: 32,
+    width: 40,
+    height: 40,
     marginRight: 8,
   },
   name: {
     ...fonts.regularBold,
+    flex: 1,
+    flexWrap: 'wrap',
+  },
+  status: {
+    ...fonts.smallBold,
     flex: 1,
     flexWrap: 'wrap',
   },

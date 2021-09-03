@@ -29,6 +29,7 @@
             "communication_channels": ["phone", "email"],
             "gender": "other",
             "region": "Tampesteri",
+            "status_message": "On vacation 1.9.-20.9.",
             "role": "mentor"
         },
         {

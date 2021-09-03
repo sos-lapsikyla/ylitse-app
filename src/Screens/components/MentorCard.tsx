@@ -23,7 +23,7 @@ const MentorCard: React.FC<Props> = ({ onPress, style, mentor }) => {
 
   return (
     <Card style={[styles.card, style]}>
-      <MentorTitle mentor={mentor} />
+      <MentorTitle mentor={mentor} withStatus={true} />
       <RN.Image
         style={styles.topGradient}
         source={require('../images/gradient.svg')}
