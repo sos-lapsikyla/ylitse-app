@@ -95,7 +95,6 @@ export const reducer: automaton.Reducer<State, actions.Action> = (
           },
           {},
         );
-        console.log('newState', newState);
 
         return RD.success(newState);
       }
