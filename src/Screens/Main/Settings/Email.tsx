@@ -41,15 +41,13 @@ export default ({ navigation }: Props) => {
     navigation.goBack();
   };
 
-  const onButtonPress = () => {
-    dispatch(changeEmailState.changeEmail({ email, account: account }));
+  const changeEmail = () => {
+    dispatch(changeEmailState.changeEmail({ email, account }));
   };
 
-  const tryAgain = () => {
+  const resetChangeEmail = () => {
     dispatch(changeEmailState.resetChangeEmail);
-    dispatch(changeEmailState.changeEmail({ email, account: account }));
   };
-
   const requestState = useSelector(changeEmailState.select);
 
   const resetAndGoBack = () => {
@@ -98,16 +96,21 @@ export default ({ navigation }: Props) => {
                   email={email}
                   setEmail={setEmail}
                   onGoBack={onGoBack}
-                  onButtonPress={onButtonPress}
+                  onButtonPress={changeEmail}
                 />
               ),
-              () => <Spinner style={styles.spinner} />,
+              () => (
+                <RN.View style={styles.spinnerContainer}>
+                  <Spinner style={styles.spinner} />
+                </RN.View>
+              ),
               () => (
                 <AlertDialog
                   imageStyle={styles.failBox}
                   imageSource={require('../../images/alert-circle.svg')}
                   messageId="main.settings.account.email.fail"
-                  onPress={tryAgain}
+                  onRetryPress={changeEmail}
+                  onOkPress={resetChangeEmail}
                 />
               ),
               () => (
@@ -155,6 +158,7 @@ const styles = RN.StyleSheet.create({
     flexGrow: 1,
     justifyContent: 'space-between',
   },
+  spinnerContainer: { flexGrow: 1 },
   spinner: {
     alignSelf: 'center',
   },

@@ -42,10 +42,6 @@ export const reducer: automaton.Reducer<
 > = (state = initialState, action) => {
   switch (action.type) {
     case 'changeEmail/start':
-      if (!RD.isInitial(state)) {
-        return state;
-      }
-
       return automaton.loop(
         RD.pending,
         withToken(

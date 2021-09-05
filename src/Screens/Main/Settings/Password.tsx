@@ -47,7 +47,7 @@ export default ({ navigation }: Props) => {
     repeatedNewPassword.length > 0 &&
     newPassword === repeatedNewPassword;
 
-  const onButtonPress = () => {
+  const changePassword = () => {
     dispatch(state.changePassword({ currentPassword, newPassword }));
   };
 
@@ -60,9 +60,8 @@ export default ({ navigation }: Props) => {
     onGoBack();
   };
 
-  const tryAgain = () => {
+  const reset = () => {
     dispatch(state.reset);
-    dispatch(state.changePassword({ currentPassword, newPassword }));
   };
 
   const requestState = useSelector(state.select);
@@ -112,7 +111,7 @@ export default ({ navigation }: Props) => {
                   repeatedNewPassword={repeatedNewPassword}
                   setRepeatedNewPassword={setRepeatedNewPassword}
                   onGoBack={onGoBack}
-                  onButtonPress={onButtonPress}
+                  onButtonPress={changePassword}
                   isOkay={isOkay}
                 />
               ),
@@ -122,7 +121,8 @@ export default ({ navigation }: Props) => {
                   imageStyle={styles.failBox}
                   imageSource={require('../../images/alert-circle.svg')}
                   messageId="main.settings.account.password.failure"
-                  onPress={tryAgain}
+                  onOkPress={reset}
+                  onRetryPress={changePassword}
                 />
               ),
               () => (
