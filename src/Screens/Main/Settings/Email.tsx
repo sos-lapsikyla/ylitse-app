@@ -22,6 +22,7 @@ import Spinner from '../../components/Spinner';
 import { MentorListRoute } from '../../Onboarding/MentorList';
 
 import AlertBox from './UserAccount/AlertBox';
+import AlertDialog from './UserAccount/AlertDialog';
 import EmailForm from 'src/Screens/components/EmailForm';
 
 export type EmailChangeRoute = {
@@ -40,15 +41,26 @@ export default ({ navigation }: Props) => {
     navigation.goBack();
   };
 
-  const onButtonPress = () => {
-    dispatch(changeEmailState.changeEmail({ email, account: account }));
+  const changeEmail = () => {
+    dispatch(changeEmailState.changeEmail({ email, account }));
+  };
+
+  const resetChangeEmail = () => {
+    dispatch(changeEmailState.resetChangeEmail);
   };
   const requestState = useSelector(changeEmailState.select);
 
+  const resetAndGoBack = () => {
+    dispatch(changeEmailState.resetChangeEmail);
+    onGoBack();
+  };
+
   React.useEffect(() => {
     if (RD.isSuccess(requestState)) {
-      setEmail(requestState.value.email ?? '');
-      const timeout = setTimeout(onGoBack, changeEmailState.coolDownDuration);
+      const timeout = setTimeout(
+        resetAndGoBack,
+        changeEmailState.coolDownDuration,
+      );
 
       return () => clearTimeout(timeout);
     }
@@ -84,16 +96,21 @@ export default ({ navigation }: Props) => {
                   email={email}
                   setEmail={setEmail}
                   onGoBack={onGoBack}
-                  onButtonPress={onButtonPress}
+                  onButtonPress={changeEmail}
                 />
               ),
-              () => <Spinner style={styles.spinner} />,
               () => (
-                <AlertBox
+                <RN.View style={styles.spinnerContainer}>
+                  <Spinner style={styles.spinner} />
+                </RN.View>
+              ),
+              () => (
+                <AlertDialog
                   imageStyle={styles.failBox}
                   imageSource={require('../../images/alert-circle.svg')}
-                  duration={changeEmailState.coolDownDuration}
                   messageId="main.settings.account.email.fail"
+                  onRetryPress={changeEmail}
+                  onOkPress={resetChangeEmail}
                 />
               ),
               () => (
@@ -141,6 +158,7 @@ const styles = RN.StyleSheet.create({
     flexGrow: 1,
     justifyContent: 'space-between',
   },
+  spinnerContainer: { flexGrow: 1 },
   spinner: {
     alignSelf: 'center',
   },

@@ -65,7 +65,6 @@ const styles = RN.StyleSheet.create({
     marginBottom: 40,
   },
   buttonContainer: {
-    flex: 1,
     flexDirection: 'row',
     alignSelf: 'stretch',
     justifyContent: 'space-between',
