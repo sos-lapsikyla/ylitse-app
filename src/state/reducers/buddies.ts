@@ -91,7 +91,9 @@ export const reducer: automaton.Reducer<State, actions.Action> = (
 
         const newState = filteredIds.reduce<Record<string, buddyApi.Buddy>>(
           (acc, curr) => {
-            return { ...acc, [curr]: responseBuddies[curr] };
+            const updatedBuddy = responseBuddies[curr] ?? state.value[curr];
+
+            return { ...acc, [curr]: updatedBuddy };
           },
           {},
         );
