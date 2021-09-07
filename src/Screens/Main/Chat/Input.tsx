@@ -12,6 +12,7 @@ import * as actions from '../../../state/actions';
 import fonts from '../../components/fonts';
 import colors from '../../components/colors';
 import getBuddyColor from '../../components/getBuddyColor';
+import Spinner from 'src/Screens/components/Spinner';
 
 type Props = {
   buddyId: string;
@@ -25,9 +26,11 @@ export default ({ buddyId }: Props) => {
     dispatch({ type: 'newMessage/send/start', payload });
   };
 
-  const color = getBuddyColor(buddyId);
+  const { isPending, disableSending, messageContent } = useSelector(
+    newMessageState.getMessage(buddyId),
+  );
 
-  const messageContent = useSelector(newMessageState.getText(buddyId));
+  const sendButtonColor = getBuddyColor(buddyId);
 
   const storeMessage = (text: string) => {
     const payload = { text, buddyId };
@@ -42,7 +45,7 @@ export default ({ buddyId }: Props) => {
     <SafeAreaView style={styles.container} forceInset={{ bottom: 'always' }}>
       <RN.View style={styles.inputContainer}>
         <RN.TextInput
-          style={styles.inputText}
+          style={[styles.inputText]}
           onChangeText={storeMessage}
           value={messageContent}
           multiline={true}
@@ -52,14 +55,18 @@ export default ({ buddyId }: Props) => {
       </RN.View>
       <RN.TouchableOpacity
         onPress={onSend}
-        disabled={messageContent === ''}
-        style={[styles.send, { backgroundColor: color }]}
+        disabled={disableSending}
+        style={[styles.send, { backgroundColor: sendButtonColor }]}
         testID={'main.chat.input.button'}
       >
-        <RN.Image
-          source={require('../../images/send.svg')}
-          style={styles.sendIcon}
-        />
+        {isPending ? (
+          <Spinner />
+        ) : (
+          <RN.Image
+            source={require('../../images/send.svg')}
+            style={styles.sendIcon}
+          />
+        )}
       </RN.TouchableOpacity>
     </SafeAreaView>
   );

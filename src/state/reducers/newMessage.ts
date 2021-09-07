@@ -24,12 +24,25 @@ const get: get =
   ({ newMessage }) =>
     record.lookup(buddyId, newMessage);
 
-type getText = (buddyId: string) => (appState: AppState) => string;
-export const getText: getText = buddyId =>
+type NewMessageState = {
+  isPending: boolean;
+  messageContent: string;
+  disableSending: boolean;
+};
+type getMessage = (buddyId: string) => (appState: AppState) => NewMessageState;
+export const getMessage: getMessage = (buddyId: string) =>
   flow(
     get(buddyId),
-    O.map(({ text }) => text),
-    O.getOrElse(() => ''),
+    O.map(({ text, sendRequest }) => ({
+      isPending: RD.isPending(sendRequest),
+      messageContent: text,
+      disableSending: text === '' || RD.isPending(sendRequest),
+    })),
+    O.getOrElse<NewMessageState>(() => ({
+      isPending: false,
+      messageContent: '',
+      disableSending: false,
+    })),
   );
 
 const getPrev = (buddyId: string, state: State) =>
