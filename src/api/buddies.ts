@@ -25,41 +25,33 @@ const buddyType = t.intersection([
 
 const buddiesType = t.strict({ resources: t.array(buddyType) });
 
-export type BanActions = 'Ban' | 'Unban' | 'Delete';
-export type BanStatuses = 'Banned' | 'NotBanned' | 'Deleted';
-export type BanStatusStrings = 'banned' | 'ok' | 'deleted';
-
-type MappedStatuses = {
-  [Action in BanActions]: BanStatusStrings;
-};
-type MappedStatusesFromApi = {
-  [K in BanStatusStrings]: BanStatuses;
-};
+export type BanAction = 'Ban' | 'Unban' | 'Delete';
+export type BanStatus = 'Banned' | 'NotBanned' | 'Deleted';
 
 export type Buddy = {
   buddyId: string;
   name: string;
-  status: BanStatuses;
+  status: BanStatus;
 };
 
 export type Buddies = Record<string, Buddy>;
 
-const mappedStatuses: MappedStatuses = {
+const toApiBanStatus = {
   Ban: 'banned',
   Unban: 'ok',
   Delete: 'deleted',
 };
 
-const mappedFromApi: MappedStatusesFromApi = {
-  banned: 'Banned',
-  deleted: 'Deleted',
-  ok: 'NotBanned',
+const toBanStatus = {
+  banned: 'Banned' as BanStatus,
+  deleted: 'Deleted' as BanStatus,
+  ok: 'NotBanned' as BanStatus,
 };
 
-const toBuddy = ({ id, display_name, status }: ApiBuddy): Buddy => ({
+const toBuddy = ({ id, display_name, status = 'ok' }: ApiBuddy): Buddy => ({
   buddyId: id,
   name: display_name,
-  status: status ? mappedFromApi[status] : 'NotBanned',
+  status: toBanStatus[status],
 });
 
 const toBuddies = ({ resources }: t.TypeOf<typeof buddiesType>) =>
@@ -89,11 +81,11 @@ export function fetchBuddies(
 const banRequest = (
   buddyId: string,
   accessToken: authApi.AccessToken,
-  status: BanActions,
+  status: BanAction,
 ) => {
   return http.put(
     `${config.baseUrl}/users/${accessToken.userId}/contacts/${buddyId}`,
-    { status: mappedStatuses[status] },
+    { status: toApiBanStatus[status] },
     {
       headers: authApi.authHeader(accessToken),
     },
@@ -103,12 +95,12 @@ const banRequest = (
 const batchBanRequest = (
   buddyIds: string[],
   accessToken: authApi.AccessToken,
-  status: BanActions,
+  status: BanAction,
 ) => {
   const buddies = buddyIds.map(buddyId => {
     return {
       id: buddyId,
-      status: mappedStatuses[status],
+      status: toApiBanStatus[status],
     };
   });
 
@@ -123,7 +115,7 @@ const batchBanRequest = (
 
 export function banBuddy(
   buddyId: string,
-  banStatus: BanActions,
+  banStatus: BanAction,
 ): (accessToken: authApi.AccessToken) => TE.TaskEither<string, Buddy> {
   return accessToken =>
     http.validateResponse(
@@ -135,7 +127,7 @@ export function banBuddy(
 
 export function banBuddies(
   buddyIds: string[],
-  banStatus: BanActions,
+  banStatus: BanAction,
 ): (accessToken: authApi.AccessToken) => TE.TaskEither<string, Buddies> {
   return accessToken =>
     http.validateResponse(

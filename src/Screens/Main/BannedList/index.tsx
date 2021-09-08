@@ -19,7 +19,7 @@ import { Title } from './Title';
 
 import colors from '../../components/colors';
 import RemoteData from '../../components/RemoteData';
-import { BanActions } from 'src/api/buddies';
+import { BanAction } from 'src/api/buddies';
 
 export type BannedListRoute = {
   'Main/BannedList': {};
@@ -49,7 +49,7 @@ export default ({ navigation }: Props) => {
 
   const dispatch = ReactRedux.useDispatch<redux.Dispatch<actions.Action>>();
 
-  const handleBatchBan = (banStatus: BanActions) => {
+  const handleBatchBan = (banStatus: BanAction) => {
     setDialogState({ dropdownOpen: false, dialogOpen: false });
 
     if (RD.isSuccess(remoteBuddies) && remoteBuddies.value?.length) {

@@ -16,7 +16,7 @@ import DropDown, { DropDownItem } from '../../components/DropDownMenu';
 import { Dialog, DialogProps } from '../../components/Dialog';
 
 import colors from '../../components/colors';
-import { BanActions } from 'src/api/buddies';
+import { BanAction } from 'src/api/buddies';
 
 export type ChatRoute = {
   'Main/Chat': { buddyId: string };
@@ -49,14 +49,14 @@ const Chat = ({ navigation }: Props) => {
 
   const dispatch = ReactRedux.useDispatch<redux.Dispatch<actions.Action>>();
 
-  const setBanStatus = (banStatus: BanActions) => {
+  const setBanStatus = (banStatus: BanAction) => {
     dispatch({
       type: 'buddies/changeBanStatus/start',
       payload: { buddyId, banStatus },
     });
   };
 
-  const handleBan = (banStatus: BanActions) => {
+  const handleBan = (banStatus: BanAction) => {
     setDialogState({ dropdownOpen: false, dialogOpen: false });
     goBack();
     setBanStatus(banStatus);
