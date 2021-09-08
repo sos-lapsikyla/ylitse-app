@@ -43,10 +43,10 @@ const toApiBanStatus = {
 };
 
 const toBanStatus = {
-  banned: 'Banned' as BanStatus,
-  deleted: 'Deleted' as BanStatus,
-  ok: 'NotBanned' as BanStatus,
-};
+  banned: 'Banned',
+  deleted: 'Deleted',
+  ok: 'NotBanned',
+} as const;
 
 const toBuddy = ({ id, display_name, status = 'ok' }: ApiBuddy): Buddy => ({
   buddyId: id,
