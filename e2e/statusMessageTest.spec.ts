@@ -1,5 +1,5 @@
 import { by, element, expect, device } from 'detox';
-import { describe, it, beforeEach } from '@jest/globals';
+import { describe, it, beforeEach, expect as jestExpect } from '@jest/globals';
 
 import {
   APISignUpMentor,
@@ -32,15 +32,40 @@ describe('Show status message', () => {
     // Show status message in mentor list...
     await expect(element(by.id('components.mentorList'))).toBeVisible();
 
-    // for active mentor
-    await expect(element(by.text(mentor1.displayName))).toBeVisible();
-    await expect(element(by.text(mentor1.status_message))).toBeVisible();
+    const statusMessages: Record<string, string> = {
+      [mentor1.displayName]: mentor1.status_message,
+      [mentor2.displayName]: mentor2.status_message,
+    };
+
+    const found = [];
+    for (const mentorName of Object.keys(statusMessages)) {
+      try {
+        await expect(element(by.text(mentorName))).toBeVisible();
+        await expect(
+          element(by.text(statusMessages[mentorName])),
+        ).toBeVisible();
+        found.push(mentorName);
+      } catch (error) {
+        continue;
+      }
+    }
 
     await element(by.id('components.mentorList')).swipe('left', 'slow');
 
-    // for vacationing mentor
-    await expect(element(by.text(mentor2.displayName))).toBeVisible();
-    await expect(element(by.text(mentor2.status_message))).toBeVisible();
+    for (const mentorName of Object.keys(statusMessages)) {
+      try {
+        await expect(element(by.text(mentorName))).toBeVisible();
+        await expect(
+          element(by.text(statusMessages[mentorName])),
+        ).toBeVisible();
+        found.push(mentorName);
+      } catch (error) {
+        continue;
+      }
+    }
+
+    const set = new Set(found);
+    jestExpect(set.size).toEqual(2);
 
     await forceLogout();
   });
