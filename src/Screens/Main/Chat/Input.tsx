@@ -2,7 +2,6 @@ import React from 'react';
 import RN from 'react-native';
 import * as redux from 'redux';
 import { useDispatch, useSelector } from 'react-redux';
-import { SafeAreaView } from 'react-navigation';
 
 import * as messageApi from '../../../api/messages';
 import * as newMessageState from '../../../state/reducers/newMessage';
@@ -12,6 +11,8 @@ import * as actions from '../../../state/actions';
 import fonts from '../../components/fonts';
 import colors from '../../components/colors';
 import getBuddyColor from '../../components/getBuddyColor';
+
+import { SafeAreaView } from 'react-navigation';
 import Spinner from 'src/Screens/components/Spinner';
 
 type Props = {
@@ -41,17 +42,27 @@ export default ({ buddyId }: Props) => {
     sendMessage({ buddyId, text: messageContent });
   };
 
+  const inputContainerBg = isPending ? colors.lightestGray : colors.white;
+
   return (
     <SafeAreaView style={styles.container} forceInset={{ bottom: 'always' }}>
-      <RN.View style={styles.inputContainer}>
-        <RN.TextInput
-          style={[styles.inputText]}
-          onChangeText={storeMessage}
-          value={messageContent}
-          multiline={true}
-          editable={true}
-          testID="main.chat.input.input"
-        />
+      <RN.View
+        style={[styles.inputContainer, { backgroundColor: inputContainerBg }]}
+      >
+        {isPending ? (
+          <RN.View>
+            <RN.View style={styles.inputText} />
+          </RN.View>
+        ) : (
+          <RN.TextInput
+            style={[styles.inputText]}
+            onChangeText={storeMessage}
+            value={messageContent}
+            multiline={true}
+            editable={true}
+            testID="main.chat.input.input"
+          />
+        )}
       </RN.View>
       <RN.TouchableOpacity
         onPress={onSend}
