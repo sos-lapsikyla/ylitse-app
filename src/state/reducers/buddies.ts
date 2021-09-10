@@ -16,6 +16,7 @@ export type State = types.AppState['buddies'];
 
 import { withToken } from './accessToken';
 import * as messageState from './messages';
+import * as banBuddyRequestState from './banBuddyRequest';
 
 export const initialState = RD.initial;
 
@@ -56,37 +57,11 @@ export const reducer: automaton.Reducer<State, actions.Action> = (
           },
         ),
       );
+
     case 'buddies/completed':
       return RD.fromEither(action.payload);
 
-    case 'buddies/changeBanStatus/start':
-      return automaton.loop(
-        RD.pending,
-        withToken(
-          buddyApi.banBuddy(action.payload.buddyId, action.payload.banStatus),
-          actions.make('buddies/changeStatus/end'),
-        ),
-      );
-
-    case 'buddies/changeBanStatusBatch/start':
-      return automaton.loop(
-        RD.pending,
-        withToken(
-          buddyApi.banBuddies(
-            action.payload.buddyIds,
-            action.payload.banStatus,
-          ),
-          actions.make('buddies/changeBanStatusBatch/end'),
-        ),
-      );
-
-    case 'buddies/changeBanStatusBatch/end':
-      return automaton.loop(
-        RD.pending,
-        withToken(buddyApi.fetchBuddies, actions.make('buddies/completed')),
-      );
-
-    case 'buddies/changeStatus/end':
+    case 'buddies/changeBanStatus/end':
       return pipe(
         action.payload,
         E.fold(
@@ -101,6 +76,32 @@ export const reducer: automaton.Reducer<State, actions.Action> = (
             ),
         ),
       );
+
+    case 'buddies/changeBanStatusBatch/end':
+      if (E.isRight(action.payload) && RD.isSuccess(state)) {
+        const responseBuddies = action.payload.right;
+
+        const deletedIds = Object.keys(responseBuddies).filter(
+          key => responseBuddies[key].status === 'Deleted',
+        );
+
+        const filteredIds = Object.keys(state.value).filter(
+          buddyId => !deletedIds.includes(buddyId),
+        );
+
+        const newState = filteredIds.reduce<Record<string, buddyApi.Buddy>>(
+          (acc, curr) => {
+            const updatedBuddy = responseBuddies[curr] ?? state.value[curr];
+
+            return { ...acc, [curr]: updatedBuddy };
+          },
+          {},
+        );
+
+        return RD.success(newState);
+      }
+
+      return state;
 
     default:
       return state;
@@ -120,7 +121,15 @@ const getBuddiesWithStatus = (status: buddyApi.Buddy['status']) =>
 const getBuddies =
   (status: buddyApi.Buddy['status']) => (appState: types.AppState) => {
     const remoteBuddies = getBuddiesWithStatus(status)(appState);
+
     const remoteBuddyOrder = messageState.getOrder(appState);
+
+    const banBuddyRequest =
+      banBuddyRequestState.selectBanBuddyRequest(appState);
+
+    if (RD.isPending(banBuddyRequest)) {
+      return RD.pending;
+    }
 
     const both = RD.combine(remoteBuddies, remoteBuddyOrder);
 

@@ -40,6 +40,7 @@ export type AppState = {
   mentors: RemoteData<Record<BuddyId, mentorsApi.Mentor>>;
   skillFilter: string[];
   buddies: RemoteData<Record<BuddyId, buddyApi.Buddy>>;
+  banBuddyRequest: RemoteAction;
 
   messages: {
     polling: boolean;

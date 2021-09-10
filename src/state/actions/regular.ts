@@ -75,14 +75,14 @@ type RegularActions = {
   'buddies/completed': Result<typeof buddyApi.fetchBuddies>;
   'buddies/changeBanStatus/start': {
     buddyId: string;
-    banStatus: buddyApi.BanActions;
+    banStatus: buddyApi.BanAction;
   };
   'buddies/changeBanStatusBatch/start': {
     buddyIds: string[];
-    banStatus: buddyApi.BanActions;
+    banStatus: buddyApi.BanAction;
   };
   'buddies/changeBanStatusBatch/end': E.Either<string, buddyApi.Buddies>;
-  'buddies/changeStatus/end': E.Either<string, buddyApi.Buddy>;
+  'buddies/changeBanStatus/end': E.Either<string, buddyApi.Buddy>;
 
   'newMessage/send/start': messageApi.SendMessageParams;
   'newMessage/send/end': {
