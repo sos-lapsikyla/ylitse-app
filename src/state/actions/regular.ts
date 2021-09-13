@@ -87,6 +87,7 @@ type RegularActions = {
   'newMessage/send/start': messageApi.SendMessageParams;
   'newMessage/send/end': {
     buddyId: string;
+    text: string;
     response: Result<ReturnType<typeof messageApi.sendMessage>>;
   };
 

@@ -49,20 +49,14 @@ export default ({ buddyId }: Props) => {
       <RN.View
         style={[styles.inputContainer, { backgroundColor: inputContainerBg }]}
       >
-        {isPending ? (
-          <RN.View>
-            <RN.View style={styles.inputText} />
-          </RN.View>
-        ) : (
-          <RN.TextInput
-            style={[styles.inputText]}
-            onChangeText={storeMessage}
-            value={messageContent}
-            multiline={true}
-            editable={true}
-            testID="main.chat.input.input"
-          />
-        )}
+        <RN.TextInput
+          style={[styles.inputText]}
+          onChangeText={storeMessage}
+          value={messageContent}
+          multiline={true}
+          editable={isPending ? false : true}
+          testID="main.chat.input.input"
+        />
       </RN.View>
       <RN.TouchableOpacity
         onPress={onSend}
