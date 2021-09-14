@@ -31,6 +31,8 @@ export default ({ buddyId }: Props) => {
     newMessageState.getMessage(buddyId),
   );
 
+  const [showPending, setShowPending] = React.useState(isPending);
+
   const sendButtonColor = getBuddyColor(buddyId);
 
   const storeMessage = (text: string) => {
@@ -42,7 +44,17 @@ export default ({ buddyId }: Props) => {
     sendMessage({ buddyId, text: messageContent });
   };
 
-  const inputContainerBg = isPending ? colors.lightestGray : colors.white;
+  const inputContainerBg = showPending ? colors.lightestGray : colors.white;
+
+  React.useEffect(() => {
+    if (isPending) {
+      let pendingTimeOut = setTimeout(() => setShowPending(true), 500);
+
+      return () => clearTimeout(pendingTimeOut);
+    } else {
+      setShowPending(false);
+    }
+  }, [isPending]);
 
   return (
     <SafeAreaView style={styles.container} forceInset={{ bottom: 'always' }}>
@@ -64,7 +76,7 @@ export default ({ buddyId }: Props) => {
         style={[styles.send, { backgroundColor: sendButtonColor }]}
         testID={'main.chat.input.button'}
       >
-        {isPending ? (
+        {showPending ? (
           <Spinner />
         ) : (
           <RN.Image
