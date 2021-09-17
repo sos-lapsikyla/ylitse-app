@@ -48,7 +48,7 @@ export default ({ buddyId }: Props) => {
 
   React.useEffect(() => {
     if (isPending) {
-      let pendingTimeOut = setTimeout(() => setShowPending(true), 500);
+      const pendingTimeOut = setTimeout(() => setShowPending(true), 500);
 
       return () => clearTimeout(pendingTimeOut);
     } else {
