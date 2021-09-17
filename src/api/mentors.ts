@@ -84,9 +84,15 @@ const compareIds = (userId: string | undefined, a: Mentor, b: Mentor) => {
   return Math.abs(x - z) - Math.abs(x - y);
 };
 
+const sortVacationing = (a: Mentor, b: Mentor) => {
+  return a.is_vacationing === b.is_vacationing ? 0 : a ? -1 : 1;
+};
+
 export const compare =
   (userId: string | undefined) => (a: Mentor, b: Mentor) => {
-    return compareLang(a, b) || compareIds(userId, a, b);
+    return (
+      sortVacationing(a, b) || compareLang(a, b) || compareIds(userId, a, b)
+    );
   };
 
 type VacationStatusParams = {
