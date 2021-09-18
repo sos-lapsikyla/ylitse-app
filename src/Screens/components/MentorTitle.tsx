@@ -139,7 +139,7 @@ const styles = RN.StyleSheet.create({
   },
   status: {
     flex: 1,
-    ...fonts.smallBold,
+    ...fonts.small,
   },
   infoContainer: { flexGrow: 1, flexDirection: 'row', flexWrap: 'wrap' },
   infoText: {
