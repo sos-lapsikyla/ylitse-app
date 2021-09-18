@@ -11,7 +11,7 @@ export const messages: { [key in MessageId]: string } = {
 
   'components.mentorCard.readMore': 'Read more',
   'components.mentorCard.showMore': 'Show more...',
-  'components.mentorCard.yearsAbbrev': 'y.',
+  'components.mentorCard.yearsAbbrev': ' y/o',
 
   'components.mentorSkills.other': 'I can also help with:',
   'components.mentorSkills.subject': 'Subject:',
