@@ -50,7 +50,8 @@ const MentorCardExpanded = ({ navigation }: Props) => {
   };
 
   const hasStatusMessage = mentor.status_message.length > 0;
-  console.log(mentor);
+
+  const isChatDisabled = !fromChat && mentor.is_vacationing;
 
   return (
     <RN.View style={styles.container}>
@@ -93,7 +94,7 @@ const MentorCardExpanded = ({ navigation }: Props) => {
             style={styles.button}
             onPress={fromChat ? goBack : navigateToChat}
             messageId="main.mentorCardExpanded.button"
-            disabled={mentor.is_vacationing}
+            disabled={isChatDisabled}
           />
         </SafeAreaView>
       </RN.ScrollView>

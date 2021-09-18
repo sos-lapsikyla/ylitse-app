@@ -40,7 +40,10 @@ const Chat = ({ navigation }: Props) => {
 
   const goToMentorCard = () => {
     if (mentor) {
-      navigation.navigate('Main/MentorCardExpanded', { mentor });
+      navigation.navigate('Main/MentorCardExpanded', {
+        mentor,
+        fromChat: true,
+      });
     }
   };
 

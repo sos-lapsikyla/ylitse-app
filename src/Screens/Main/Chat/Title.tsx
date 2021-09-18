@@ -107,22 +107,17 @@ const styles = RN.StyleSheet.create({
     borderBottomRightRadius: cardBorderRadius,
     borderBottomLeftRadius: cardBorderRadius,
     paddingVertical: 16,
-    paddingHorizontal: 16,
+    paddingHorizontal: 8,
     flexDirection: 'row',
     alignItems: 'center',
-  },
-  container: {
-    flex: 1,
-    justifyContent: 'flex-start',
   },
   safeArea: {
     flexDirection: 'row',
     alignItems: 'center',
     flex: 1,
-    justifyContent: 'center',
   },
   chevronButton: {
-    marginRight: 16,
+    marginRight: 8,
     marginLeft: 0,
   },
   chevronIcon: {
@@ -132,9 +127,14 @@ const styles = RN.StyleSheet.create({
   },
   userIcon: {
     tintColor: colors.black,
-    width: 40,
-    height: 40,
+    width: 32,
+    height: 32,
     marginRight: 8,
+  },
+  container: {
+    flex: 1,
+    height: 40,
+    justifyContent: 'flex-start',
   },
   name: {
     ...fonts.regularBold,
@@ -146,7 +146,7 @@ const styles = RN.StyleSheet.create({
     flexWrap: 'wrap',
   },
   status: {
-    ...fonts.smallBold,
+    ...fonts.statusTiny,
     flex: 1,
     flexWrap: 'wrap',
   },
