@@ -25,7 +25,7 @@ type OwnProps = {
   buddyId: string;
   onLayout: (e: RN.LayoutChangeEvent) => void | undefined;
   openDropdown: () => void | undefined;
-  goToMentorCard: () => void;
+  goToMentorCard: () => void | undefined;
 };
 
 type Props = OwnProps & DispatchProps & StateProps;
