@@ -84,9 +84,23 @@ const compareIds = (userId: string | undefined, a: Mentor, b: Mentor) => {
   return Math.abs(x - z) - Math.abs(x - y);
 };
 
+const sortVacationing = (a: Mentor, b: Mentor) => {
+  if (a.is_vacationing && !b.is_vacationing) {
+    return 1;
+  }
+
+  if (b.is_vacationing && !a.is_vacationing) {
+    return -1;
+  }
+
+  return 0;
+};
+
 export const compare =
   (userId: string | undefined) => (a: Mentor, b: Mentor) => {
-    return compareLang(a, b) || compareIds(userId, a, b);
+    return (
+      sortVacationing(a, b) || compareLang(a, b) || compareIds(userId, a, b)
+    );
   };
 
 type VacationStatusParams = {
