@@ -126,6 +126,7 @@ export default ({ userId }: Props) => {
               statusMessage={statusMessage}
               setStatusMessage={setStatusMessage}
               onButtonPress={changeStatusMessage}
+              maxLength={30}
             />
           ),
           () => <Spinner />,
