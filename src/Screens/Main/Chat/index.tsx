@@ -4,6 +4,7 @@ import RN from 'react-native';
 import * as redux from 'redux';
 import * as ReactRedux from 'react-redux';
 import * as selectors from '../../../state/selectors';
+import * as mentorState from '../../../state/reducers/mentors';
 import * as actions from '../../../state/actions';
 
 import * as navigationProps from '../../../lib/navigation-props';
@@ -17,16 +18,30 @@ import { Dialog, DialogProps } from '../../components/Dialog';
 
 import colors from '../../components/colors';
 import { BanAction } from 'src/api/buddies';
+import { MentorCardExpandedRoute } from '../MentorCardExpanded';
 
 export type ChatRoute = {
   'Main/Chat': { buddyId: string };
 };
 
-type Props = navigationProps.NavigationProps<ChatRoute, ChatRoute>;
+type Props = navigationProps.NavigationProps<
+  ChatRoute,
+  ChatRoute & MentorCardExpandedRoute
+>;
 
 const Chat = ({ navigation }: Props) => {
   const goBack = () => {
     navigation.goBack();
+  };
+
+  const buddyId = navigation.getParam('buddyId');
+
+  const mentor = ReactRedux.useSelector(mentorState.getMentorByUserId(buddyId));
+
+  const goToMentorCard = () => {
+    if (mentor) {
+      navigation.navigate('Main/MentorCardExpanded', { mentor });
+    }
   };
 
   type DialogState = { dialogOpen: boolean; dropdownOpen: boolean };
@@ -42,8 +57,6 @@ const Chat = ({ navigation }: Props) => {
 
   const keyboardViewBehaviour =
     RN.Platform.OS === 'ios' ? 'padding' : undefined;
-
-  const buddyId = navigation.getParam('buddyId');
 
   const isBanned = ReactRedux.useSelector(selectors.getIsBanned(buddyId));
 
@@ -124,6 +137,7 @@ const Chat = ({ navigation }: Props) => {
         buddyId={buddyId}
         onLayout={onLayout}
         openDropdown={() => setDialogs('dropdownOpen', true)}
+        goToMentorCard={goToMentorCard}
       />
       {dialogState.dropdownOpen && (
         <DropDown

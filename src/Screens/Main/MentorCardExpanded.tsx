@@ -26,7 +26,7 @@ const langMap: Record<string, RN.ImageSourcePropType> = {
 };
 
 export type MentorCardExpandedRoute = {
-  'Main/MentorCardExpanded': { mentor: mentorApi.Mentor };
+  'Main/MentorCardExpanded': { mentor: mentorApi.Mentor; fromChat: boolean };
 };
 
 type OwnProps = navigationProps.NavigationProps<
@@ -38,6 +38,7 @@ type Props = OwnProps;
 
 const MentorCardExpanded = ({ navigation }: Props) => {
   const mentor = navigation.getParam('mentor');
+  const fromChat = navigation.getParam('fromChat');
   const color = getBuddyColor(mentor.buddyId);
 
   const goBack = () => {
@@ -83,7 +84,7 @@ const MentorCardExpanded = ({ navigation }: Props) => {
         <SafeAreaView style={styles.safeArea} forceInset={{ bottom: 'always' }}>
           <Button
             style={styles.button}
-            onPress={navigateToChat}
+            onPress={fromChat ? goBack : navigateToChat}
             messageId="main.mentorCardExpanded.button"
             disabled={mentor.is_vacationing}
           />

@@ -21,7 +21,7 @@ export default (props: Props) => {
         value={props.statusMessage}
         onChangeText={props.setStatusMessage}
         maxLength={30}
-        multiline={false}
+        multiline={true}
         testID="main.settings.account.status.input"
       />
       <Button

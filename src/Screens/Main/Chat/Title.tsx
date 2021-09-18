@@ -25,6 +25,7 @@ type OwnProps = {
   buddyId: string;
   onLayout: (e: RN.LayoutChangeEvent) => void | undefined;
   openDropdown: () => void | undefined;
+  goToMentorCard: () => void;
 };
 
 type Props = OwnProps & DispatchProps & StateProps;
@@ -36,6 +37,7 @@ const Title: React.FC<Props> = ({
   buddyId,
   onLayout,
   openDropdown,
+  goToMentorCard,
 }) => {
   const color = getBuddyColor(buddyId);
   const mentor = useSelector(getMentorByUserId(buddyId));
@@ -63,7 +65,7 @@ const Title: React.FC<Props> = ({
           style={styles.userIcon}
         />
         {mentor?.status_message ? (
-          <RN.View style={styles.container}>
+          <RN.Pressable style={styles.container} onPress={goToMentorCard}>
             <RN.Text style={styles.name} ellipsizeMode="tail" numberOfLines={1}>
               {name}
             </RN.Text>
@@ -74,11 +76,13 @@ const Title: React.FC<Props> = ({
             >
               {mentor?.status_message}
             </RN.Text>
-          </RN.View>
+          </RN.Pressable>
         ) : (
-          <RN.Text style={styles.name} ellipsizeMode="tail" numberOfLines={1}>
-            {name}
-          </RN.Text>
+          <RN.Pressable onPress={goToMentorCard} style={styles.nameContainer}>
+            <RN.Text style={styles.name} ellipsizeMode="tail" numberOfLines={1}>
+              {name}
+            </RN.Text>
+          </RN.Pressable>
         )}
         <RN.TouchableHighlight
           style={styles.kebabIconHighlight}
@@ -134,6 +138,10 @@ const styles = RN.StyleSheet.create({
   },
   name: {
     ...fonts.regularBold,
+    flex: 1,
+    flexWrap: 'wrap',
+  },
+  nameContainer: {
     flex: 1,
     flexWrap: 'wrap',
   },
