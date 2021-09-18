@@ -85,7 +85,15 @@ const compareIds = (userId: string | undefined, a: Mentor, b: Mentor) => {
 };
 
 const sortVacationing = (a: Mentor, b: Mentor) => {
-  return a.is_vacationing === b.is_vacationing ? 0 : a ? -1 : 1;
+  if (a.is_vacationing && !b.is_vacationing) {
+    return 1;
+  }
+
+  if (b.is_vacationing && !a.is_vacationing) {
+    return -1;
+  }
+
+  return 0;
 };
 
 export const compare =
