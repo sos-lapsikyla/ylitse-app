@@ -49,6 +49,9 @@ const MentorCardExpanded = ({ navigation }: Props) => {
     navigation.navigate('Main/Chat', { buddyId: mentor.buddyId });
   };
 
+  const hasStatusMessage = mentor.status_message.length > 0;
+  console.log(mentor);
+
   return (
     <RN.View style={styles.container}>
       <MentorTitle
@@ -71,13 +74,17 @@ const MentorCardExpanded = ({ navigation }: Props) => {
             ) : null,
           )}
         </RN.View>
-        <Message
-          id={'main.settings.account.status.title'}
-          style={styles.subtitle}
-        />
-        <RN.View style={styles.statusContainer}>
-          <RN.Text style={styles.status}>{mentor.status_message}</RN.Text>
-        </RN.View>
+        {hasStatusMessage && (
+          <>
+            <Message
+              id={'main.settings.account.status.title'}
+              style={styles.subtitle}
+            />
+            <RN.View style={styles.statusContainer}>
+              <RN.Text style={styles.status}>{mentor.status_message}</RN.Text>
+            </RN.View>
+          </>
+        )}
         <Message id={'main.mentor.story'} style={styles.subtitle} />
         <MentorStory style={styles.story} story={mentor.story} showAll={true} />
         <Skills style={styles.skills} color={color} skills={mentor.skills} />
