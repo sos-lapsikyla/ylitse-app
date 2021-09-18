@@ -65,7 +65,7 @@ const MentorTitle: React.FC<Props> = ({
           </RN.View>
           <RN.View style={styles.infoContainer}>
             <RN.Text style={styles.infoText}>
-              <RN.Text> {age}</RN.Text>
+              <RN.Text>{age}</RN.Text>
               <Message id={'components.mentorCard.yearsAbbrev'} />
               <RN.Text>{' | '}</RN.Text>
               <RN.Text>{region}</RN.Text>
