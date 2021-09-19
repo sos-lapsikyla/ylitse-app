@@ -95,7 +95,7 @@ describe('Change status message', () => {
     await element(by.id('main.settings.account.status.input')).clearText();
     await waitAndTypeText(
       'main.settings.account.status.input',
-      newStatusMessage + '\n',
+      newStatusMessage,
     );
     await scrollDownAndTap(
       'main.settings.account.status.save',
