@@ -34,6 +34,8 @@ const MentorTitle: React.FC<Props> = ({
   const Wrapper = safeArea ? SafeAreaWrapper : React.Fragment;
   const color = getBuddyColor(buddyId);
 
+  const hasRegion = region.length > 0;
+
   return (
     <RN.View style={[styles.blob, { backgroundColor: color }, style]}>
       <Wrapper>
@@ -65,10 +67,14 @@ const MentorTitle: React.FC<Props> = ({
           </RN.View>
           <RN.View style={styles.infoContainer}>
             <RN.Text style={styles.infoText}>
-              <RN.Text> {age}</RN.Text>
+              <RN.Text>{age}</RN.Text>
               <Message id={'components.mentorCard.yearsAbbrev'} />
-              <RN.Text>{' | '}</RN.Text>
-              <RN.Text>{region}</RN.Text>
+              {hasRegion && (
+                <>
+                  <RN.Text>{' | '}</RN.Text>
+                  <RN.Text>{region}</RN.Text>
+                </>
+              )}
             </RN.Text>
           </RN.View>
           {withStatus ? (
@@ -133,7 +139,7 @@ const styles = RN.StyleSheet.create({
   },
   status: {
     flex: 1,
-    ...fonts.smallBold,
+    ...fonts.small,
   },
   infoContainer: { flexGrow: 1, flexDirection: 'row', flexWrap: 'wrap' },
   infoText: {

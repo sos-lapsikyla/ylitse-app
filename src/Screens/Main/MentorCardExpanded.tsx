@@ -26,7 +26,10 @@ const langMap: Record<string, RN.ImageSourcePropType> = {
 };
 
 export type MentorCardExpandedRoute = {
-  'Main/MentorCardExpanded': { mentor: mentorApi.Mentor };
+  'Main/MentorCardExpanded': {
+    mentor: mentorApi.Mentor;
+    didNavigateFromChat: boolean;
+  };
 };
 
 type OwnProps = navigationProps.NavigationProps<
@@ -38,6 +41,7 @@ type Props = OwnProps;
 
 const MentorCardExpanded = ({ navigation }: Props) => {
   const mentor = navigation.getParam('mentor');
+  const didNavigateFromChat = navigation.getParam('didNavigateFromChat');
   const color = getBuddyColor(mentor.buddyId);
 
   const goBack = () => {
@@ -47,6 +51,10 @@ const MentorCardExpanded = ({ navigation }: Props) => {
   const navigateToChat = () => {
     navigation.navigate('Main/Chat', { buddyId: mentor.buddyId });
   };
+
+  const hasStatusMessage = mentor.status_message.length > 0;
+
+  const isChatDisabled = !didNavigateFromChat && mentor.is_vacationing;
 
   return (
     <RN.View style={styles.container}>
@@ -70,22 +78,26 @@ const MentorCardExpanded = ({ navigation }: Props) => {
             ) : null,
           )}
         </RN.View>
-        <Message
-          id={'main.settings.account.status.title'}
-          style={styles.subtitle}
-        />
-        <RN.View style={styles.statusContainer}>
-          <RN.Text style={styles.status}>{mentor.status_message}</RN.Text>
-        </RN.View>
+        {hasStatusMessage && (
+          <>
+            <Message
+              id={'main.settings.account.status.title'}
+              style={styles.subtitle}
+            />
+            <RN.View style={styles.statusContainer}>
+              <RN.Text style={styles.status}>{mentor.status_message}</RN.Text>
+            </RN.View>
+          </>
+        )}
         <Message id={'main.mentor.story'} style={styles.subtitle} />
         <MentorStory style={styles.story} story={mentor.story} showAll={true} />
         <Skills style={styles.skills} color={color} skills={mentor.skills} />
         <SafeAreaView style={styles.safeArea} forceInset={{ bottom: 'always' }}>
           <Button
             style={styles.button}
-            onPress={navigateToChat}
+            onPress={didNavigateFromChat ? goBack : navigateToChat}
             messageId="main.mentorCardExpanded.button"
-            disabled={mentor.is_vacationing}
+            disabled={isChatDisabled}
           />
         </SafeAreaView>
       </RN.ScrollView>

@@ -28,7 +28,10 @@ type Props = OwnProps;
 
 const MentorList = (props: Props) => {
   const onPressMentor = (mentor: mentorApi.Mentor) => {
-    props.navigation.navigate('Main/MentorCardExpanded', { mentor });
+    props.navigation.navigate('Main/MentorCardExpanded', {
+      mentor,
+      didNavigateFromChat: false,
+    });
   };
 
   const onPressSearchMentor = () => {

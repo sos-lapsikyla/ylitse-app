@@ -1,4 +1,4 @@
-import { by, element, expect, device } from 'detox';
+import { by, element, expect, device, waitFor } from 'detox';
 import { describe, it, beforeEach } from '@jest/globals';
 
 import {
@@ -48,6 +48,10 @@ describe('changeEmail', () => {
     await element(by.id('main.settings.account.email.input')).clearText();
     await waitAndTypeText('main.settings.account.email.input', newEmail + '\n');
     await expect(element(by.text('Invalid email address'))).toBeVisible();
+
+    await waitFor(element(by.id('main.settings.account.email.save')))
+      .toBeVisible()
+      .withTimeout(500);
 
     await element(by.id('main.settings.account.email.save')).tap();
     await element(by.id('main.settings.account.email.cancel')).tap();

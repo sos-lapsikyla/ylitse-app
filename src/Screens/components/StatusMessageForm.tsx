@@ -11,6 +11,7 @@ type Props = {
   statusMessage: string;
   setStatusMessage: React.Dispatch<React.SetStateAction<string>>;
   onButtonPress: () => void;
+  maxLength: number;
 };
 
 export default (props: Props) => {
@@ -20,10 +21,13 @@ export default (props: Props) => {
         style={styles.field}
         value={props.statusMessage}
         onChangeText={props.setStatusMessage}
-        maxLength={30}
-        multiline={false}
+        maxLength={props.maxLength}
+        multiline={true}
         testID="main.settings.account.status.input"
       />
+      <RN.Text style={styles.maxCharactersText}>
+        {props.statusMessage.length}/{props.maxLength}
+      </RN.Text>
       <Button
         style={styles.saveButton}
         messageStyle={styles.buttonText}
@@ -44,6 +48,11 @@ const styles = RN.StyleSheet.create({
     alignSelf: 'flex-start',
     minWidth: '70%',
     backgroundColor: colors.blue,
+  },
+  maxCharactersText: {
+    alignSelf: 'flex-end',
+    color: colors.blueGray,
+    marginRight: 8,
   },
   buttonText: {
     ...fonts.largeBold,

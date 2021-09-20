@@ -9,6 +9,11 @@ const fonts = {
     fontSize: 12,
     lineHeight: 16,
   },
+  statusTiny: {
+    fontFamily: 'Nunito-Regular',
+    fontSize: 14,
+    lineHeight: 18,
+  },
   small: {
     fontFamily: 'Nunito-Regular',
     fontSize: 16,

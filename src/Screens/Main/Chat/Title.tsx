@@ -25,6 +25,7 @@ type OwnProps = {
   buddyId: string;
   onLayout: (e: RN.LayoutChangeEvent) => void | undefined;
   openDropdown: () => void | undefined;
+  goToMentorCard: () => void | undefined;
 };
 
 type Props = OwnProps & DispatchProps & StateProps;
@@ -36,6 +37,7 @@ const Title: React.FC<Props> = ({
   buddyId,
   onLayout,
   openDropdown,
+  goToMentorCard,
 }) => {
   const color = getBuddyColor(buddyId);
   const mentor = useSelector(getMentorByUserId(buddyId));
@@ -63,7 +65,7 @@ const Title: React.FC<Props> = ({
           style={styles.userIcon}
         />
         {mentor?.status_message ? (
-          <RN.View style={styles.container}>
+          <RN.Pressable style={styles.container} onPress={goToMentorCard}>
             <RN.Text style={styles.name} ellipsizeMode="tail" numberOfLines={1}>
               {name}
             </RN.Text>
@@ -74,11 +76,13 @@ const Title: React.FC<Props> = ({
             >
               {mentor?.status_message}
             </RN.Text>
-          </RN.View>
+          </RN.Pressable>
         ) : (
-          <RN.Text style={styles.name} ellipsizeMode="tail" numberOfLines={1}>
-            {name}
-          </RN.Text>
+          <RN.Pressable onPress={goToMentorCard} style={styles.nameContainer}>
+            <RN.Text style={styles.name} ellipsizeMode="tail" numberOfLines={1}>
+              {name}
+            </RN.Text>
+          </RN.Pressable>
         )}
         <RN.TouchableHighlight
           style={styles.kebabIconHighlight}
@@ -103,22 +107,17 @@ const styles = RN.StyleSheet.create({
     borderBottomRightRadius: cardBorderRadius,
     borderBottomLeftRadius: cardBorderRadius,
     paddingVertical: 16,
-    paddingHorizontal: 16,
+    paddingHorizontal: 8,
     flexDirection: 'row',
     alignItems: 'center',
-  },
-  container: {
-    flex: 1,
-    justifyContent: 'flex-start',
   },
   safeArea: {
     flexDirection: 'row',
     alignItems: 'center',
     flex: 1,
-    justifyContent: 'center',
   },
   chevronButton: {
-    marginRight: 16,
+    marginRight: 8,
     marginLeft: 0,
   },
   chevronIcon: {
@@ -128,17 +127,26 @@ const styles = RN.StyleSheet.create({
   },
   userIcon: {
     tintColor: colors.black,
-    width: 40,
-    height: 40,
+    width: 32,
+    height: 32,
     marginRight: 8,
+  },
+  container: {
+    flex: 1,
+    height: 40,
+    justifyContent: 'flex-start',
   },
   name: {
     ...fonts.regularBold,
     flex: 1,
     flexWrap: 'wrap',
   },
+  nameContainer: {
+    flex: 1,
+    flexWrap: 'wrap',
+  },
   status: {
-    ...fonts.smallBold,
+    ...fonts.statusTiny,
     flex: 1,
     flexWrap: 'wrap',
   },
