@@ -27,11 +27,9 @@ export default ({ buddyId }: Props) => {
     dispatch({ type: 'newMessage/send/start', payload });
   };
 
-  const { isPending, disableSending, messageContent } = useSelector(
+  const { isPending, isSendingDisabled, messageContent } = useSelector(
     newMessageState.getMessage(buddyId),
   );
-
-  const [showPending, setShowPending] = React.useState(isPending);
 
   const sendButtonColor = getBuddyColor(buddyId);
 
@@ -44,7 +42,7 @@ export default ({ buddyId }: Props) => {
     sendMessage({ buddyId, text: messageContent });
   };
 
-  const inputContainerBg = showPending ? colors.lightestGray : colors.white;
+  const [showPending, setShowPending] = React.useState(isPending);
 
   React.useEffect(() => {
     if (isPending) {
@@ -56,6 +54,8 @@ export default ({ buddyId }: Props) => {
     }
   }, [isPending]);
 
+  const inputContainerBg = showPending ? colors.lightestGray : colors.white;
+
   return (
     <SafeAreaView style={styles.container} forceInset={{ bottom: 'always' }}>
       <RN.View
@@ -66,13 +66,13 @@ export default ({ buddyId }: Props) => {
           onChangeText={storeMessage}
           value={messageContent}
           multiline={true}
-          editable={isPending ? false : true}
+          editable={!isPending}
           testID="main.chat.input.input"
         />
       </RN.View>
       <RN.TouchableOpacity
         onPress={onSend}
-        disabled={disableSending}
+        disabled={isSendingDisabled}
         style={[styles.send, { backgroundColor: sendButtonColor }]}
         testID={'main.chat.input.button'}
       >

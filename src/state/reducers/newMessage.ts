@@ -27,7 +27,7 @@ const get: get =
 type NewMessageState = {
   isPending: boolean;
   messageContent: string;
-  disableSending: boolean;
+  isSendingDisabled: boolean;
 };
 type getMessage = (buddyId: string) => (appState: AppState) => NewMessageState;
 export const getMessage: getMessage = (buddyId: string) =>
@@ -36,12 +36,12 @@ export const getMessage: getMessage = (buddyId: string) =>
     O.map(({ text, sendRequest }) => ({
       isPending: RD.isPending(sendRequest),
       messageContent: text,
-      disableSending: text === '' || RD.isPending(sendRequest),
+      isSendingDisabled: text === '' || RD.isPending(sendRequest),
     })),
     O.getOrElse<NewMessageState>(() => ({
       isPending: false,
       messageContent: '',
-      disableSending: false,
+      isSendingDisabled: false,
     })),
   );
 
