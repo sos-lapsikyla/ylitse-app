@@ -5,6 +5,7 @@ import * as redux from 'redux';
 import * as ReactRedux from 'react-redux';
 import * as selectors from '../../../state/selectors';
 import * as mentorState from '../../../state/reducers/mentors';
+import * as newMessageState from '../../../state/reducers/newMessage';
 import * as actions from '../../../state/actions';
 
 import * as navigationProps from '../../../lib/navigation-props';
@@ -19,6 +20,7 @@ import { Dialog, DialogProps } from '../../components/Dialog';
 import colors from '../../components/colors';
 import { BanAction } from 'src/api/buddies';
 import { MentorCardExpandedRoute } from '../MentorCardExpanded';
+import AlertBox from '../Settings/UserAccount/AlertBox';
 
 export type ChatRoute = {
   'Main/Chat': { buddyId: string };
@@ -37,6 +39,10 @@ const Chat = ({ navigation }: Props) => {
   const buddyId = navigation.getParam('buddyId');
 
   const mentor = ReactRedux.useSelector(mentorState.getMentorByUserId(buddyId));
+
+  const isMessageSendFailed = ReactRedux.useSelector(
+    newMessageState.getMessageSendFailed(buddyId),
+  );
 
   const goToMentorCard = () => {
     if (mentor) {
@@ -127,6 +133,21 @@ const Chat = ({ navigation }: Props) => {
     setDialogState({ ...dialogState, [key]: show });
   };
 
+  const resetSendMessage = () => {
+    dispatch({ type: 'newMessage/send/reset', payload: buddyId });
+  };
+
+  React.useEffect(() => {
+    if (isMessageSendFailed) {
+      const resetAlertTimeOut = setTimeout(
+        () => resetSendMessage(),
+        newMessageState.coolDownDuration,
+      );
+
+      return () => clearTimeout(resetAlertTimeOut);
+    }
+  }, [isMessageSendFailed]);
+
   return (
     <RN.TouchableOpacity
       style={styles.screen}
@@ -161,7 +182,16 @@ const Chat = ({ navigation }: Props) => {
         style={styles.container}
         behavior={keyboardViewBehaviour}
       >
-        <MessageList buddyId={buddyId} />
+        {isMessageSendFailed ? (
+          <AlertBox
+            imageStyle={styles.failBox}
+            duration={newMessageState.coolDownDuration}
+            imageSource={require('../../images/alert-circle.svg')}
+            messageId="main.chat.send.failure"
+          />
+        ) : (
+          <MessageList buddyId={buddyId} />
+        )}
         <Input style={styles.input} buddyId={buddyId} />
       </RN.KeyboardAvoidingView>
     </RN.TouchableOpacity>
@@ -185,6 +215,9 @@ const styles = RN.StyleSheet.create({
   title: {},
   input: {
     marginTop: 8,
+  },
+  failBox: {
+    tintColor: colors.danger,
   },
 });
 

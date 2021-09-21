@@ -47,6 +47,7 @@ export const messages: { [key in MessageId]: string } = {
   'main.chat.navigation.banned': 'Banned',
   'main.chat.unban': 'Restore chat',
   'main.chat.unban.confirmation': 'Are you sure you want to restore this user?',
+  'main.chat.send.failure': 'Sending message failed',
 
   'main.mentor.other': 'I can also support with:',
   'main.mentor.story': 'My story',

@@ -45,6 +45,7 @@ export const messages = {
   'main.chat.navigation.banned': 'Estetyt',
   'main.chat.unban': 'Palauta keskustelu',
   'main.chat.unban.confirmation': 'Haluatko palauttaa tämän keskustelun?',
+  'main.chat.send.failure': 'Viestin lähettäminen epäonnistui',
 
   'main.mentor.other': 'Pystyn auttamaan näissä:',
   'main.mentor.story': 'Tarinani',
