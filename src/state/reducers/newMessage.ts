@@ -45,6 +45,16 @@ export const getMessage: getMessage = (buddyId: string) =>
     })),
   );
 
+type getMessageSendFailed = (
+  buddyId: string,
+) => (appState: AppState) => boolean;
+export const getMessageSendFailed = (buddyId: string) =>
+  flow(
+    get(buddyId),
+    O.map(({ sendRequest }) => RD.isFailure(sendRequest)),
+    O.getOrElse(() => false),
+  );
+
 const getPrev = (buddyId: string, state: State) =>
   O.getOrElse<NewMessage>(() => ({
     sendRequest: RD.initial,
