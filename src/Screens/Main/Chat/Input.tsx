@@ -2,7 +2,6 @@ import React from 'react';
 import RN from 'react-native';
 import * as redux from 'redux';
 import { useDispatch, useSelector } from 'react-redux';
-import { SafeAreaView } from 'react-navigation';
 
 import * as messageApi from '../../../api/messages';
 import * as newMessageState from '../../../state/reducers/newMessage';
@@ -12,6 +11,9 @@ import * as actions from '../../../state/actions';
 import fonts from '../../components/fonts';
 import colors from '../../components/colors';
 import getBuddyColor from '../../components/getBuddyColor';
+
+import { SafeAreaView } from 'react-navigation';
+import Spinner from 'src/Screens/components/Spinner';
 
 type Props = {
   buddyId: string;
@@ -25,9 +27,11 @@ export default ({ buddyId }: Props) => {
     dispatch({ type: 'newMessage/send/start', payload });
   };
 
-  const color = getBuddyColor(buddyId);
+  const { isPending, isSendingDisabled, messageContent } = useSelector(
+    newMessageState.getMessage(buddyId),
+  );
 
-  const messageContent = useSelector(newMessageState.getText(buddyId));
+  const sendButtonColor = getBuddyColor(buddyId);
 
   const storeMessage = (text: string) => {
     const payload = { text, buddyId };
@@ -38,28 +42,48 @@ export default ({ buddyId }: Props) => {
     sendMessage({ buddyId, text: messageContent });
   };
 
+  const [showPending, setShowPending] = React.useState(isPending);
+
+  React.useEffect(() => {
+    if (isPending) {
+      const pendingTimeOut = setTimeout(() => setShowPending(true), 500);
+
+      return () => clearTimeout(pendingTimeOut);
+    } else {
+      setShowPending(false);
+    }
+  }, [isPending]);
+
+  const inputContainerBg = showPending ? colors.lightestGray : colors.white;
+
   return (
     <SafeAreaView style={styles.container} forceInset={{ bottom: 'always' }}>
-      <RN.View style={styles.inputContainer}>
+      <RN.View
+        style={[styles.inputContainer, { backgroundColor: inputContainerBg }]}
+      >
         <RN.TextInput
-          style={styles.inputText}
+          style={[styles.inputText]}
           onChangeText={storeMessage}
           value={messageContent}
           multiline={true}
-          editable={true}
+          editable={!isPending}
           testID="main.chat.input.input"
         />
       </RN.View>
       <RN.TouchableOpacity
         onPress={onSend}
-        disabled={messageContent === ''}
-        style={[styles.send, { backgroundColor: color }]}
+        disabled={isSendingDisabled}
+        style={[styles.send, { backgroundColor: sendButtonColor }]}
         testID={'main.chat.input.button'}
       >
-        <RN.Image
-          source={require('../../images/send.svg')}
-          style={styles.sendIcon}
-        />
+        {showPending ? (
+          <Spinner />
+        ) : (
+          <RN.Image
+            source={require('../../images/send.svg')}
+            style={styles.sendIcon}
+          />
+        )}
       </RN.TouchableOpacity>
     </SafeAreaView>
   );
