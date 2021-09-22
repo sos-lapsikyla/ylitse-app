@@ -3,7 +3,7 @@ import RN from 'react-native';
 
 import colors from './colors';
 
-export interface Props {
+export interface SwitchProps {
   value: boolean;
   onPress: () => void;
   isLoading: boolean;
@@ -19,7 +19,12 @@ const duration = 250;
 const getPosition = (value: boolean, isLoading: boolean) =>
   isLoading ? middlePosition : value ? rightPosition : leftPosition;
 
-const Switch: React.FC<Props> = ({ value, disabled, onPress, isLoading }) => {
+const Switch: React.FC<SwitchProps> = ({
+  value,
+  disabled,
+  onPress,
+  isLoading,
+}) => {
   const animation = React.useRef(
     new RN.Animated.Value(getPosition(value, isLoading)),
   ).current;

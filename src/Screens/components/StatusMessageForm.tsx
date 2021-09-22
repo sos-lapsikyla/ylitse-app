@@ -12,6 +12,7 @@ type Props = {
   setStatusMessage: React.Dispatch<React.SetStateAction<string>>;
   onButtonPress: () => void;
   maxLength: number;
+  disabled: boolean;
 };
 
 export default (props: Props) => {
@@ -24,6 +25,7 @@ export default (props: Props) => {
         maxLength={props.maxLength}
         multiline={true}
         testID="main.settings.account.status.input"
+        editable={!props.disabled}
       />
       <RN.Text style={styles.maxCharactersText}>
         {props.statusMessage.length}/{props.maxLength}
@@ -34,6 +36,7 @@ export default (props: Props) => {
         onPress={props.onButtonPress}
         messageId="meta.save"
         testID="main.settings.account.status.save"
+        disabled={props.disabled}
       />
     </>
   );

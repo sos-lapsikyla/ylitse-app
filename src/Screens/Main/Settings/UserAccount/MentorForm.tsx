@@ -21,6 +21,7 @@ import fonts from '../../../components/fonts';
 import AlertBox from './AlertBox';
 import AlertDialog from './AlertDialog';
 import StatusMessageForm from 'src/Screens/components/StatusMessageForm';
+import MessageSwitch from 'src/Screens/components/MessageSwitch';
 
 type Props = {
   userId: string;
@@ -101,18 +102,13 @@ export default ({ userId }: Props) => {
         style={styles.fieldName}
         id="main.settings.account.vacation.title"
       />
-      {isVacationStatusLoading ? (
-        <Spinner />
-      ) : (
-        <ToggleSwitch
-          value={mentor?.is_vacationing ?? false}
-          messageOn="main.settings.account.vacation.on"
-          messageOff="main.settings.account.vacation.off"
-          toggleSwitch={changeVacationStatus}
-          testID="main.settings.
-          account.vacation.switch"
-        />
-      )}
+      <MessageSwitch
+        messageOn="main.settings.account.vacation.on"
+        messageOff="main.settings.account.vacation.off"
+        value={mentor?.is_vacationing ?? false}
+        onPress={changeVacationStatus}
+        isLoading={isVacationStatusLoading}
+      />
       <Message
         style={styles.fieldName}
         id="main.settings.account.status.title"
@@ -127,9 +123,18 @@ export default ({ userId }: Props) => {
               setStatusMessage={setStatusMessage}
               onButtonPress={changeStatusMessage}
               maxLength={30}
+              disabled={RD.isPending(statusMessageState)}
             />
           ),
-          () => <Spinner />,
+          () => (
+            <StatusMessageForm
+              statusMessage={statusMessage}
+              setStatusMessage={setStatusMessage}
+              onButtonPress={changeStatusMessage}
+              maxLength={30}
+              disabled={RD.isPending(statusMessageState)}
+            />
+          ),
           () => (
             <AlertDialog
               imageStyle={styles.failBox}
