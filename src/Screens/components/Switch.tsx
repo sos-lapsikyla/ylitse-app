@@ -11,8 +11,8 @@ export interface Props {
   testID?: string;
 }
 
-const leftPosition = 2;
-const rightPosition = 22;
+const leftPosition = 4;
+const rightPosition = 35;
 const middlePosition = (leftPosition + rightPosition) / 2;
 const duration = 250;
 
@@ -50,7 +50,11 @@ const Switch: React.FC<Props> = ({ value, disabled, onPress, isLoading }) => {
   };
 
   const knobBorder = isLoading
-    ? { borderEndColor: colors.green, borderWidth: 4 }
+    ? {
+        borderRightColor: colors.green,
+        borderColor: colors.white,
+        borderWidth: 4,
+      }
     : {};
 
   return (
@@ -58,21 +62,17 @@ const Switch: React.FC<Props> = ({ value, disabled, onPress, isLoading }) => {
       onPress={press}
       disabled={disabled || isLoading}
     >
-      <RN.Animated.View
-        style={[
-          styles.track,
-          {
-            backgroundColor: animation.interpolate({
-              inputRange: [leftPosition, rightPosition],
-              outputRange: [colors.lightestGray, colors.blue],
-            }),
-          },
-        ]}
-      >
+      <RN.Animated.View style={[styles.track]}>
         <RN.Animated.View
           style={[
             styles.knob,
             { left: animation },
+            {
+              backgroundColor: animation.interpolate({
+                inputRange: [leftPosition, rightPosition],
+                outputRange: [colors.white, colors.blue],
+              }),
+            },
             {
               transform: [
                 {
@@ -94,20 +94,18 @@ const Switch: React.FC<Props> = ({ value, disabled, onPress, isLoading }) => {
 const styles = RN.StyleSheet.create({
   track: {
     height: 30,
-    width: 50,
+    width: 64,
     borderRadius: 15,
-    backgroundColor: colors.blue,
+    backgroundColor: colors.lightestGray,
   },
   knob: {
     position: 'absolute',
     left: 2,
-    top: 2,
-    width: 26,
-    height: 26,
+    top: 3,
+    width: 23,
+    height: 23,
     borderRadius: 13,
     backgroundColor: colors.white,
-    borderColor: colors.gray,
-    borderWidth: 2,
     zIndex: 1,
   },
 });
