@@ -13,8 +13,6 @@ import * as changeStatusMessageState from '../../../../state/reducers/changeStat
 
 import Button from '../../../components/Button';
 import Message from '../../../components/Message';
-import ToggleSwitch from '../../../components/ToggleSwitch';
-import Spinner from '../../../components/Spinner';
 import colors from '../../../components/colors';
 import fonts from '../../../components/fonts';
 
