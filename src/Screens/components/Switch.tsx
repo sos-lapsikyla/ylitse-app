@@ -5,38 +5,59 @@ import colors from './colors';
 
 export interface Props {
   value: boolean;
-  onPress?: (newValue: boolean) => void;
+  onPress: () => void;
+  isLoading: boolean;
   disabled?: boolean;
   testID?: string;
 }
 
 const leftPosition = 2;
 const rightPosition = 22;
+const middlePosition = (leftPosition + rightPosition) / 2;
 const duration = 250;
 
-const getPosition = (value: boolean) => (value ? rightPosition : leftPosition);
+const getPosition = (value: boolean, isLoading: boolean) =>
+  isLoading ? middlePosition : value ? rightPosition : leftPosition;
 
-const Switch: React.FC<Props> = ({ value, disabled, onPress: onPressProp }) => {
+const Switch: React.FC<Props> = ({ value, disabled, onPress, isLoading }) => {
   const animation = React.useRef(
-    new RN.Animated.Value(getPosition(value)),
+    new RN.Animated.Value(getPosition(value, isLoading)),
   ).current;
 
   React.useEffect(() => {
     RN.Animated.timing(animation, {
       duration,
-      toValue: getPosition(value),
+      toValue: getPosition(value, isLoading),
       useNativeDriver: false, // Colors are not supported by native driver
     }).start();
-  }, [value]);
+  }, [value, isLoading]);
 
-  const onPress = () => {
-    if (onPressProp) {
-      requestAnimationFrame(() => onPressProp(!value));
-    }
+  const spinState = React.useRef(new RN.Animated.Value(0)).current;
+
+  const spin = () =>
+    RN.Animated.loop(
+      RN.Animated.timing(spinState, {
+        toValue: 1,
+        duration: 2000,
+        useNativeDriver: false,
+        easing: RN.Easing.linear,
+      }),
+    ).start();
+  React.useEffect(spin, []);
+
+  const press = () => {
+    requestAnimationFrame(() => onPress());
   };
 
+  const knobBorder = isLoading
+    ? { borderEndColor: colors.green, borderWidth: 4 }
+    : {};
+
   return (
-    <RN.TouchableWithoutFeedback onPress={onPress} disabled={disabled}>
+    <RN.TouchableWithoutFeedback
+      onPress={press}
+      disabled={disabled || isLoading}
+    >
       <RN.Animated.View
         style={[
           styles.track,
@@ -48,7 +69,23 @@ const Switch: React.FC<Props> = ({ value, disabled, onPress: onPressProp }) => {
           },
         ]}
       >
-        <RN.Animated.View style={[styles.knob, { left: animation }]} />
+        <RN.Animated.View
+          style={[
+            styles.knob,
+            { left: animation },
+            {
+              transform: [
+                {
+                  rotate: spinState.interpolate({
+                    inputRange: [0, 1],
+                    outputRange: ['0deg', '360deg'],
+                  }),
+                },
+              ],
+            },
+            knobBorder,
+          ]}
+        />
       </RN.Animated.View>
     </RN.TouchableWithoutFeedback>
   );
