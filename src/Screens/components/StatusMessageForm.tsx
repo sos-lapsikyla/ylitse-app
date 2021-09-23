@@ -36,6 +36,7 @@ export default (props: Props) => {
         onPress={props.onButtonPress}
         messageId="meta.save"
         testID="main.settings.account.status.save"
+        disabled={props.isLoading}
       />
     </>
   );

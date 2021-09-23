@@ -59,7 +59,7 @@ const LoadingInputField = ({
             maxLength={maxLength}
             multiline={multiline}
             numberOfLines={numberOfLines}
-            editable={true}
+            editable={!isLoading}
             {...textInputProps}
           />
         )}
