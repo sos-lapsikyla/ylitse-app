@@ -20,7 +20,6 @@ import AlertBox from './AlertBox';
 import AlertDialog from './AlertDialog';
 import StatusMessageForm from 'src/Screens/components/StatusMessageForm';
 import MessageSwitch from 'src/Screens/components/MessageSwitch';
-import Spinner from 'src/Screens/components/Spinner';
 
 type Props = {
   userId: string;
@@ -122,9 +121,18 @@ export default ({ userId }: Props) => {
               setStatusMessage={setStatusMessage}
               onButtonPress={changeStatusMessage}
               maxLength={30}
+              isLoading={false}
             />
           ),
-          () => <Spinner />,
+          () => (
+            <StatusMessageForm
+              statusMessage={statusMessage}
+              setStatusMessage={setStatusMessage}
+              onButtonPress={changeStatusMessage}
+              maxLength={30}
+              isLoading={true}
+            />
+          ),
           () => (
             <AlertDialog
               imageStyle={styles.failBox}

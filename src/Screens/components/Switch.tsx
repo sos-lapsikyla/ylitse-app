@@ -67,7 +67,7 @@ const Switch: React.FC<SwitchProps> = ({
       onPress={press}
       disabled={disabled || isLoading}
     >
-      <RN.Animated.View style={[styles.track]}>
+      <RN.View style={[styles.track]}>
         <RN.Animated.View
           style={[
             styles.knob,
@@ -91,7 +91,7 @@ const Switch: React.FC<SwitchProps> = ({
             knobBorder,
           ]}
         />
-      </RN.Animated.View>
+      </RN.View>
     </RN.TouchableWithoutFeedback>
   );
 };

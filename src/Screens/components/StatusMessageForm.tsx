@@ -4,7 +4,7 @@ import RN from 'react-native';
 import Button from './Button';
 import colors from './colors';
 import fonts from './fonts';
-import InputField from './InputField';
+import LoadingInputField from './LoadingInputField';
 import { textShadow } from './shadow';
 
 type Props = {
@@ -12,17 +12,19 @@ type Props = {
   setStatusMessage: React.Dispatch<React.SetStateAction<string>>;
   onButtonPress: () => void;
   maxLength: number;
+  isLoading: boolean;
 };
 
 export default (props: Props) => {
   return (
     <>
-      <InputField
+      <LoadingInputField
         style={styles.field}
         value={props.statusMessage}
         onChangeText={props.setStatusMessage}
         maxLength={props.maxLength}
         multiline={true}
+        isLoading={props.isLoading}
         testID="main.settings.account.status.input"
       />
       <RN.Text style={styles.maxCharactersText}>
