@@ -230,7 +230,6 @@ export async function APISignUpMentor(mentor: any) {
     headers: headers,
     body: JSON.stringify({
       display_name: mentor.displayName,
-      birth_year: mentor.birthYear,
       role: mentor.role,
       account_id: myuser.account.id,
       id: myuser.user.id,
