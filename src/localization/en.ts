@@ -84,6 +84,7 @@ export const messages: { [key in MessageId]: string } = {
   'main.settings.account.profile.title': 'Profile',
 
   'main.settings.account.status.fail': 'Changing status message failed!',
+  'main.settings.account.status.save': 'Save status message',
   'main.settings.account.status.success': 'Changing status message succeeded!',
   'main.settings.account.status.title': 'Status message',
 

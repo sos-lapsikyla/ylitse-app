@@ -10,13 +10,13 @@ import * as config from '../../../../api/config';
 import * as actions from '../../../../state/actions';
 import { coolDownDuration as statusMessageStateCooldown } from '../../../../state/reducers/changeStatusMessage';
 
-import Button from '../../../components/Button';
-import Message from '../../../components/Message';
 import colors from '../../../components/colors';
 import fonts from '../../../components/fonts';
 
 import AlertBox from './AlertBox';
 import AlertDialog from './AlertDialog';
+import Button from '../../../components/Button';
+import Message from '../../../components/Message';
 import StatusMessageForm from 'src/Screens/components/StatusMessageForm';
 import MessageSwitch from 'src/Screens/components/MessageSwitch';
 

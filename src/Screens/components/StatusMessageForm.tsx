@@ -1,11 +1,12 @@
 import React from 'react';
 import RN from 'react-native';
 
-import Button from './Button';
 import colors from './colors';
 import fonts from './fonts';
-import LoadingInputField from './LoadingInputField';
 import { textShadow } from './shadow';
+
+import Button from './Button';
+import LoadingInputField from './LoadingInputField';
 
 type Props = {
   statusMessage: string;
@@ -34,7 +35,7 @@ export default (props: Props) => {
         style={styles.saveButton}
         messageStyle={styles.buttonText}
         onPress={props.onButtonPress}
-        messageId="meta.save"
+        messageId="main.settings.account.status.save"
         testID="main.settings.account.status.save"
         disabled={props.isLoading}
       />
@@ -47,7 +48,7 @@ const styles = RN.StyleSheet.create({
     marginVertical: 8,
   },
   saveButton: {
-    marginTop: 32,
+    marginTop: 16,
     alignSelf: 'flex-start',
     minWidth: '70%',
     backgroundColor: colors.blue,

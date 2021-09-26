@@ -82,6 +82,7 @@ export const messages = {
   'main.settings.account.profile.title': 'Profiili',
 
   'main.settings.account.status.fail': 'Oman tilan muutos epäonnistui!',
+  'main.settings.account.status.save': 'Tallenna oma tila',
   'main.settings.account.status.success': 'Oman tilan muutos onnistui!',
   'main.settings.account.status.title': 'Oma tila',
 
