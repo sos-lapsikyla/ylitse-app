@@ -1,4 +1,3 @@
-/* global Response */
 import * as t from 'io-ts';
 import * as TE from 'fp-ts/lib/TaskEither';
 
@@ -7,6 +6,7 @@ import * as http from '../lib/http';
 
 import * as config from './config';
 import * as authApi from './auth';
+import { UserAccount } from './account';
 
 type ApiMentor = t.TypeOf<typeof mentorType>;
 
@@ -21,6 +21,8 @@ const mentorType = t.strict({
   languages: t.array(t.string),
   is_vacationing: t.boolean,
   status_message: t.string,
+  gender: t.string,
+  communication_channels: t.array(t.string),
 });
 const mentorListType = t.strict({ resources: t.array(mentorType) });
 
@@ -38,6 +40,20 @@ const toMentor = ({
   buddyId: user_id,
   age: new Date().getFullYear() - birth_year,
   name: display_name,
+});
+
+export const toApiMentor = ({
+  mentorId,
+  buddyId,
+  age,
+  name,
+  ...props
+}: Mentor & { account_id: string }) => ({
+  ...props,
+  birth_year: new Date().getFullYear() - age,
+  display_name: name,
+  user_id: buddyId,
+  id: mentorId,
 });
 
 export type Mentors = Record<string, Mentor>;
@@ -103,45 +119,38 @@ export const compare =
     );
   };
 
-type VacationStatusParams = {
-  is_vacationing: boolean;
-  status_message: string;
-};
-
-const vacationStatusRequest = (
-  mentorId: string,
-  data: VacationStatusParams,
-  token: authApi.AccessToken,
-) => {
-  return http.patch(`${config.baseUrl}/mentors/${mentorId}`, data, {
+const updateMentor = (mentor: ApiMentor, token: authApi.AccessToken) => {
+  return http.put(`${config.baseUrl}/mentors/${mentor.id}`, mentor, {
     headers: authApi.authHeader(token),
   });
 };
 
 export function changeVacationStatus(
   mentor: Mentor,
-): (token: authApi.AccessToken) => TE.TaskEither<string, Response> {
-  const data = {
-    is_vacationing: !mentor.is_vacationing,
-    status_message: mentor.status_message,
-  };
-
+  account: UserAccount,
+): (token: authApi.AccessToken) => TE.TaskEither<string, Mentor> {
   return token =>
-    http.response(vacationStatusRequest(mentor.mentorId, data, token));
+    http.validateResponse(
+      updateMentor(
+        toApiMentor({ ...mentor, account_id: account.accountId }),
+        token,
+      ),
+      mentorType,
+      toMentor,
+    );
 }
 
-export function changeStatusMessage({
-  statusMessage,
-  mentor,
-}: {
-  statusMessage: string;
-  mentor: Mentor;
-}): (token: authApi.AccessToken) => TE.TaskEither<string, Response> {
-  const data = {
-    is_vacationing: mentor.is_vacationing,
-    status_message: statusMessage,
-  };
-
+export function changeStatusMessage(
+  mentor: Mentor,
+  account: UserAccount,
+): (token: authApi.AccessToken) => TE.TaskEither<string, Mentor> {
   return token =>
-    http.response(vacationStatusRequest(mentor.mentorId, data, token));
+    http.validateResponse(
+      updateMentor(
+        toApiMentor({ ...mentor, account_id: account.accountId }),
+        token,
+      ),
+      mentorType,
+      toMentor,
+    );
 }

@@ -1,4 +1,3 @@
-/* global Response */
 import * as E from 'fp-ts/lib/Either';
 import * as TE from 'fp-ts/lib/TaskEither';
 
@@ -23,14 +22,18 @@ type RegularActions = {
   'mentors/start': undefined;
   'mentors/end': Result<typeof mentorApi.fetchMentors>;
 
-  'mentor/changeVacationStatus/start': { mentor: mentorApi.Mentor };
-  'mentor/changeVacationStatus/end': E.Either<string, Response>;
+  'mentor/changeVacationStatus/start': {
+    mentor: mentorApi.Mentor;
+    account: accountApi.UserAccount;
+  };
+  'mentor/changeVacationStatus/end': E.Either<string, mentorApi.Mentor>;
 
   'mentor/changeStatusMessage/start': {
-    statusMessage: string;
     mentor: mentorApi.Mentor;
+    account: accountApi.UserAccount;
   };
-  'mentor/changeStatusMessage/completed': E.Either<string, Response>;
+
+  'mentor/changeStatusMessage/completed': E.Either<string, mentorApi.Mentor>;
   'mentor/changeStatusMessage/reset': undefined;
 
   'skillFilter/toggled': { skillName: string };

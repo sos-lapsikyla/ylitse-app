@@ -21,19 +21,19 @@ export const reducer: automaton.Reducer<
       return automaton.loop(
         RD.pending,
         withToken(
-          mentorsApi.changeStatusMessage(action.payload),
+          mentorsApi.changeStatusMessage(
+            action.payload.mentor,
+            action.payload.account,
+          ),
           actions.make('mentor/changeStatusMessage/completed'),
         ),
       );
 
     case 'mentor/changeStatusMessage/completed':
-      return RD.fromEither(action.payload);
+      return RD.initial;
 
     case 'mentor/changeStatusMessage/reset':
-      return automaton.loop(
-        RD.initial,
-        actions.make('mentors/start')(undefined),
-      );
+      return RD.initial;
 
     default:
       return state;

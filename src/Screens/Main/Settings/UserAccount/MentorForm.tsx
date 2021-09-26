@@ -27,6 +27,7 @@ type Props = {
 
 export default ({ userId }: Props) => {
   const mentor = useSelector(mentorState.getMentorByUserId(userId));
+  const account = useSelector(selector.getAccount);
 
   const [statusMessage, setStatusMessage] = React.useState(
     mentor?.status_message ?? '',
@@ -45,19 +46,20 @@ export default ({ userId }: Props) => {
   };
 
   const changeVacationStatus = () => {
-    if (typeof mentor !== 'undefined') {
+    if (typeof mentor !== 'undefined' && typeof account !== 'undefined') {
       dispatch({
         type: 'mentor/changeVacationStatus/start',
-        payload: { mentor },
+        payload: { mentor, account },
       });
     }
   };
 
   const changeStatusMessage = () => {
-    if (typeof mentor !== 'undefined') {
+    if (typeof mentor !== 'undefined' && typeof account !== 'undefined') {
+      const updated = { ...mentor, status_message: statusMessage };
       dispatch({
         type: 'mentor/changeStatusMessage/start',
-        payload: { statusMessage, mentor },
+        payload: { mentor: updated, account },
       });
     }
   };

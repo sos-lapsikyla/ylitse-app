@@ -1,8 +1,6 @@
 import * as automaton from 'redux-automaton';
 import * as RD from '@devexperts/remote-data-ts';
 
-import { isRight } from 'fp-ts/lib/Either';
-
 import * as mentorsApi from '../../api/mentors';
 
 import * as actions from '../actions';
@@ -21,20 +19,20 @@ export const reducer: automaton.Reducer<
       return automaton.loop(
         RD.pending,
         withToken(
-          mentorsApi.changeVacationStatus(action.payload.mentor),
+          mentorsApi.changeVacationStatus(
+            {
+              ...action.payload.mentor,
+              is_vacationing: !action.payload.mentor.is_vacationing,
+            },
+            action.payload.account,
+          ),
           actions.make('mentor/changeVacationStatus/end'),
         ),
       );
 
     case 'mentor/changeVacationStatus/end':
-      if (isRight(action.payload)) {
-        return automaton.loop(
-          RD.success(undefined),
-          actions.make('mentors/start')(undefined),
-        );
-      }
+      return RD.initial;
 
-      return RD.failure("Can't change vacation status");
     default:
       return state;
   }
