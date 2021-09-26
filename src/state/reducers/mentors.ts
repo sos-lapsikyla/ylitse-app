@@ -11,7 +11,7 @@ import * as mentorsApi from '../../api/mentors';
 import { cmd } from '../middleware';
 import * as actions from '../actions';
 import * as types from '../types';
-import { isRight } from 'fp-ts/lib/Either';
+import * as E from 'fp-ts/lib/Either';
 
 export type State = types.AppState['mentors'];
 
@@ -34,26 +34,36 @@ export const reducer: automaton.Reducer<State, actions.Action> = (
       return pipe(action.payload, RD.fromEither);
 
     case 'mentor/changeStatusMessage/completed':
-      if (isRight(action.payload) && RD.isSuccess(state)) {
-        const mentor = action.payload.right;
-        const mentors = state.value;
-        const updatedMentors = { ...mentors, [mentor.buddyId]: mentor };
-
-        return RD.success(updatedMentors);
-      }
-
-      return state;
+      return pipe(
+        action.payload,
+        E.fold(
+          () => state,
+          mentor =>
+            pipe(
+              state,
+              RD.map(mentors => ({
+                ...mentors,
+                [mentor.buddyId]: mentor,
+              })),
+            ),
+        ),
+      );
 
     case 'mentor/changeVacationStatus/end':
-      if (isRight(action.payload) && RD.isSuccess(state)) {
-        const mentor = action.payload.right;
-        const mentors = state.value;
-        const updatedMentors = { ...mentors, [mentor.buddyId]: mentor };
-
-        return RD.success(updatedMentors);
-      }
-
-      return state;
+      return pipe(
+        action.payload,
+        E.fold(
+          () => state,
+          mentor =>
+            pipe(
+              state,
+              RD.map(mentors => ({
+                ...mentors,
+                [mentor.buddyId]: mentor,
+              })),
+            ),
+        ),
+      );
 
     default:
       return state;

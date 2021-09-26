@@ -1,5 +1,7 @@
 import * as automaton from 'redux-automaton';
 import * as RD from '@devexperts/remote-data-ts';
+import { pipe } from 'fp-ts/lib/pipeable';
+import * as E from 'fp-ts/lib/Either';
 
 import * as mentorsApi from '../../api/mentors';
 
@@ -10,10 +12,12 @@ import { AppState } from '../types';
 
 export const initialState = RD.initial;
 
-export const reducer: automaton.Reducer<
-  AppState['changeVacationStatus'],
-  actions.Action
-> = (state = initialState, action) => {
+type State = AppState['changeVacationStatus'];
+
+export const reducer: automaton.Reducer<State, actions.Action> = (
+  state = initialState,
+  action,
+) => {
   switch (action.type) {
     case 'mentor/changeVacationStatus/start':
       return automaton.loop(
@@ -31,7 +35,13 @@ export const reducer: automaton.Reducer<
       );
 
     case 'mentor/changeVacationStatus/end':
-      return RD.initial;
+      return pipe(
+        action.payload,
+        E.fold(
+          fail => automaton.loop<State, actions.Action>(RD.failure(fail)),
+          _ => automaton.loop(RD.success(undefined)),
+        ),
+      );
 
     default:
       return state;
