@@ -8,8 +8,7 @@ import * as selector from '../../../../state/selectors';
 
 import * as config from '../../../../api/config';
 import * as actions from '../../../../state/actions';
-import * as mentorState from '../../../../state/reducers/mentors';
-import * as changeStatusMessageState from '../../../../state/reducers/changeStatusMessage';
+import { coolDownDuration as statusMessageStateCooldown } from '../../../../state/reducers/changeStatusMessage';
 
 import Button from '../../../components/Button';
 import Message from '../../../components/Message';
@@ -26,20 +25,14 @@ type Props = {
 };
 
 export default ({ userId }: Props) => {
-  const mentor = useSelector(mentorState.getMentorByUserId(userId));
-  const account = useSelector(selector.getAccount);
+  const { mentor, account, changeStatusMessageState, isVacationStatusLoading } =
+    useSelector(selector.getMentorFormData(userId));
 
   const [statusMessage, setStatusMessage] = React.useState(
     mentor?.status_message ?? '',
   );
 
   const dispatch = useDispatch<redux.Dispatch<actions.Action>>();
-
-  const isVacationStatusLoading = useSelector(
-    selector.getIsChangeVacationStatusLoading,
-  );
-
-  const statusMessageState = useSelector(selector.getStatusMessageChangeState);
 
   const openProfile = () => {
     RN.Linking.openURL(config.loginUrl);
@@ -72,15 +65,15 @@ export default ({ userId }: Props) => {
   };
 
   React.useEffect(() => {
-    if (RD.isSuccess(statusMessageState)) {
+    if (RD.isSuccess(changeStatusMessageState)) {
       const timeout = setTimeout(
         resetStatusMessage,
-        changeStatusMessageState.coolDownDuration,
+        statusMessageStateCooldown,
       );
 
       return () => clearTimeout(timeout);
     }
-  }, [statusMessageState]);
+  }, [changeStatusMessageState]);
 
   React.useEffect(() => {
     setStatusMessage(mentor?.status_message ?? '');
@@ -115,7 +108,7 @@ export default ({ userId }: Props) => {
         testID="main.settings.account.status.title"
       />
       {pipe(
-        statusMessageState,
+        changeStatusMessageState,
         RD.fold(
           () => (
             <StatusMessageForm
@@ -148,7 +141,7 @@ export default ({ userId }: Props) => {
             <AlertBox
               imageStyle={styles.successBox}
               imageSource={require('../../../images/checkmark-circle-outline.svg')}
-              duration={changeStatusMessageState.coolDownDuration}
+              duration={statusMessageStateCooldown}
               messageId="main.settings.account.status.success"
             />
           ),

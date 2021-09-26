@@ -17,7 +17,7 @@ import * as authApi from '../api/auth';
 
 import { AppState } from './types';
 
-import { select as selectMentors } from './reducers/mentors';
+import { getMentorByUserId } from './reducers/mentors';
 import { select as selectVacationStatus } from './reducers/changeVacationStatus';
 import { select as selectStatusMessage } from './reducers/changeStatusMessage';
 
@@ -105,20 +105,17 @@ export function getChatList(
   );
 }
 
-export const getIsChangeVacationStatusLoading = (appState: AppState) => {
-  const mentorState = selectMentors(appState);
+export const getMentorFormData = (buddyId: string) => (appState: AppState) => {
+  const mentor = getMentorByUserId(buddyId)(appState);
+  const account = getAccount(appState);
   const changeVacationStatusState = selectVacationStatus(appState);
-
-  return RD.isPending(mentorState) || RD.isPending(changeVacationStatusState);
-};
-
-export const getStatusMessageChangeState = (appState: AppState) => {
-  const mentorState = selectMentors(appState);
+  const isVacationStatusLoading = RD.isPending(changeVacationStatusState);
   const changeStatusMessageState = selectStatusMessage(appState);
 
-  if (RD.isPending(mentorState)) {
-    return mentorState;
-  }
-
-  return changeStatusMessageState;
+  return {
+    mentor,
+    account,
+    changeStatusMessageState,
+    isVacationStatusLoading,
+  };
 };
