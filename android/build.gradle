@@ -8,6 +8,7 @@ buildscript {
         targetSdkVersion = 29
         supportLibVersion = "28.0.0"
         kotlinVersion = '1.4.10'
+        ndkVersion = "20.1.5948944"
     }
     repositories {
         google()
@@ -17,13 +18,15 @@ buildscript {
     dependencies {
         // 27.9.2021 - Felix
         // From 3.5.3 to 4.1.0 because of gradle-task-fail on appcenter
-        // Also gradle-wrapper-properties distributionUrl from 6.2 => 6.5
+        // Also gradle-wrapper-properties distributionUrl from 6.2 => 6.7
 
         // AGP version and Required Gradle version
         // https://developer.android.com/studio/releases/gradle-plugin#updating-gradle
   
         // Choosing AGP version changes default NDK version
         // https://developer.android.com/studio/projects/install-ndk#default-ndk-per-agp
+
+        // Also added ndkVersion because it is in the react-native upgrade-helper from 0.63.4 -> 0.64.0
         classpath("com.android.tools.build:gradle:4.1.0")
 
         // for push notifications
