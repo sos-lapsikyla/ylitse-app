@@ -119,34 +119,19 @@ export const compare =
     );
   };
 
-const updateMentor = (mentor: ApiMentor, token: authApi.AccessToken) => {
+const putMentor = (mentor: ApiMentor, token: authApi.AccessToken) => {
   return http.put(`${config.baseUrl}/mentors/${mentor.id}`, mentor, {
     headers: authApi.authHeader(token),
   });
 };
 
-export function changeVacationStatus(
+export function updateMentor(
   mentor: Mentor,
   account: UserAccount,
 ): (token: authApi.AccessToken) => TE.TaskEither<string, Mentor> {
   return token =>
     http.validateResponse(
-      updateMentor(
-        toApiMentor({ ...mentor, account_id: account.accountId }),
-        token,
-      ),
-      mentorType,
-      toMentor,
-    );
-}
-
-export function changeStatusMessage(
-  mentor: Mentor,
-  account: UserAccount,
-): (token: authApi.AccessToken) => TE.TaskEither<string, Mentor> {
-  return token =>
-    http.validateResponse(
-      updateMentor(
+      putMentor(
         toApiMentor({ ...mentor, account_id: account.accountId }),
         token,
       ),

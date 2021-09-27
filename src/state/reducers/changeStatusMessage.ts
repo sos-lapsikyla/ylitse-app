@@ -25,7 +25,7 @@ export const reducer: automaton.Reducer<State, actions.Action> = (
       return automaton.loop(
         RD.pending,
         withToken(
-          mentorsApi.changeStatusMessage(
+          mentorsApi.updateMentor(
             action.payload.mentor,
             action.payload.account,
           ),

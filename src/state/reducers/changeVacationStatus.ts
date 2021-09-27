@@ -23,7 +23,7 @@ export const reducer: automaton.Reducer<State, actions.Action> = (
       return automaton.loop(
         RD.pending,
         withToken(
-          mentorsApi.changeVacationStatus(
+          mentorsApi.updateMentor(
             {
               ...action.payload.mentor,
               is_vacationing: !action.payload.mentor.is_vacationing,
