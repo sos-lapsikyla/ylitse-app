@@ -36,7 +36,7 @@ type RegularActions = {
 
   'skillFilter/toggled': { skillName: string };
   'skillFilter/reset': undefined;
-
+  'hideVacationing/toggle': undefined;
   'login/start': authApi.Credentials;
   'login/end': Result<typeof authApi.login>;
 
