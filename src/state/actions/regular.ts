@@ -41,6 +41,7 @@ type RegularActions = {
   'statRequest/start': statApi.Stat;
   'statRequest/end': Result<ReturnType<typeof statApi.sendStat>>;
 
+  'hideVacationing/toggle': undefined;
   'login/start': authApi.Credentials;
   'login/end': Result<typeof authApi.login>;
 

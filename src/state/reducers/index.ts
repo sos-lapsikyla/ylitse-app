@@ -25,6 +25,7 @@ import * as notifications from './notifications';
 import * as deleteAccount from './deleteAccount';
 import * as statRequest from './statRequest';
 
+import * as hideVacationing from './hideVacationing';
 import * as actions from '../actions';
 
 export type AppState = types.AppState;
@@ -69,6 +70,7 @@ export const rootReducer: automaton.Reducer<AppState, actions.Action> =
       messages: messages.reducer,
       newMessage: newMessage.reducer,
       markMessageSeen: markSeen.reducer,
+      hideVacationing: hideVacationing.hideReducer,
     }),
   );
 
@@ -92,4 +94,5 @@ export const initialState: AppState = {
   messages: messages.initialState,
   newMessage: {},
   markMessageSeen: {},
+  hideVacationing: hideVacationing.initialState,
 };

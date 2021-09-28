@@ -19,9 +19,11 @@ import { textShadow } from '../components/shadow';
 import colors from '../components/colors';
 
 import * as mentorState from '../../state/reducers/mentors';
+import * as hideVacationingState from '../../state/reducers/hideVacationing'
 import { MentorListRoute } from './MentorList';
 
 import CreatedBySosBanner from '../components/CreatedBySosBanner';
+import ToggleSwitch from '../components/ToggleSwitch';
 
 export type SearchMentorRoute = {
   'Main/SearchMentor': {};
@@ -38,6 +40,7 @@ export default ({ navigation }: Props) => {
 
   const allSkills = useSelector(mentorState.getSkillList);
   const selectedSkills = useSelector(mentorState.getSelectedSkills);
+  const isVacationingHidden = useSelector(hideVacationingState.select)
 
   const skillsToShow = allSkills.filter(skill =>
     skill.toLowerCase().includes(skillSearch.toLowerCase()),
@@ -56,6 +59,10 @@ export default ({ navigation }: Props) => {
 
   const onPressSkill = (item: string) => {
     dispatch({ type: 'skillFilter/toggled', payload: { skillName: item } });
+  };
+
+  const toggleHideVacationing = () => {
+    dispatch({ type: 'hideVacationing/toggle', payload: undefined});
   };
 
   const onPressReset = () => {
@@ -119,30 +126,42 @@ export default ({ navigation }: Props) => {
               resizeMode="stretch"
               resizeMethod="scale"
             />
+
             <RN.ScrollView
               style={{ ...styles.carouselContainer, height: skillAreaHeight }}
               showsHorizontalScrollIndicator={true}
               contentContainerStyle={styles.contentContainer}
             >
-              <RN.View style={styles.chipContainer}>
-                {skillsToShow.map(skill => {
-                  const isSelected = selectedSkills.includes(skill);
+              <RN.View>
+                <ToggleSwitch
+                  value={isVacationingHidden}
+                  messageOn="main.settings.account.vacation.on"
+                  messageOff="main.settings.account.vacation.off"
+                  toggleSwitch={toggleHideVacationing}
+                  testID="main.searchMentor.toggleVacations"
+                />
+              </RN.View>
+              <RN.View style={styles.listToggleContainer}>
+                <RN.View style={styles.chipContainer}>
+                  {skillsToShow.map(skill => {
+                    const isSelected = selectedSkills.includes(skill);
 
-                  return (
-                    <TextButton
-                      key={skill}
-                      style={
-                        isSelected
-                          ? styles.skillPillButtonSelected
-                          : styles.skillPillButton
-                      }
-                      onPress={() => onPressSkill(skill)}
-                      text={skill}
-                      textStyle={styles.skillPillButtonText}
-                      testID={`main.searchMentor.result.${skill}`}
-                    />
-                  );
-                })}
+                    return (
+                      <TextButton
+                        key={skill}
+                        style={
+                          isSelected
+                            ? styles.skillPillButtonSelected
+                            : styles.skillPillButton
+                        }
+                        onPress={() => onPressSkill(skill)}
+                        text={skill}
+                        textStyle={styles.skillPillButtonText}
+                        testID={`main.searchMentor.result.${skill}`}
+                      />
+                    );
+                  })}
+                </RN.View>
               </RN.View>
             </RN.ScrollView>
             <RN.Image
@@ -221,6 +240,9 @@ const styles = RN.StyleSheet.create({
     width: '100%',
     alignSelf: 'stretch',
     zIndex: 1,
+  },
+  listToggleContainer: {
+    flexDirection: 'column',
   },
   bottomGradient: {
     height: 40,

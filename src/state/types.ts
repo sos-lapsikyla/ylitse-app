@@ -39,6 +39,7 @@ export type AppState = {
   deleteAccount: RemoteAction;
 
   mentors: RemoteData<Record<BuddyId, mentorsApi.Mentor>>;
+  hideVacationing: boolean;
   skillFilter: string[];
   statRequest: RemoteAction;
   buddies: {
