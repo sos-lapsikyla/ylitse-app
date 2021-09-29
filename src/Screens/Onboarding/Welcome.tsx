@@ -3,6 +3,7 @@ import RN from 'react-native';
 import { SafeAreaView } from 'react-navigation';
 
 import * as navigationProps from '../../lib/navigation-props';
+import * as config from '../../api/config';
 
 import Card from '../components/Card';
 import SosBanner from '../components/CreatedBySosBanner';
@@ -50,7 +51,7 @@ export default ({ navigation }: Props) => {
           <Link
             style={styles.link}
             linkName="onboarding.welcome.apuu.link"
-            url={'https://apuu.fi/'}
+            url={config.apuuUrl}
           />
           <Message style={styles.text} id={'onboarding.welcome.text4'} />
           <MessageButton
