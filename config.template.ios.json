@@ -4,5 +4,6 @@
   "feedBackUrl": "http://localhost:3000",
   "termsUrl": "http://localhost:3000",
   "userGuideUrl": "http://localhost:3000",
+  "apuuUrl": "http://localhost:3000",
   "messageFetchDelay": 2000
 }
