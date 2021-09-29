@@ -11,6 +11,7 @@ import Message from '../components/Message';
 import MessageButton from '../components/MessageButton';
 import fonts from '../components/fonts';
 import colors from '../components/colors';
+import Link from '../components/Link';
 
 import { MentorListRoute } from './MentorList';
 
@@ -42,7 +43,16 @@ export default ({ navigation }: Props) => {
           <Message style={styles.titleText} id={'onboarding.welcome.title'} />
           <Message style={styles.text} id={'onboarding.welcome.text1'} />
           <Message style={styles.text} id={'onboarding.welcome.text2'} />
-          <Message style={styles.text} id={'onboarding.welcome.text3'} />
+          <Message
+            style={styles.textWithoutMargin}
+            id={'onboarding.welcome.text3'}
+          />
+          <Link
+            style={styles.link}
+            linkName="onboarding.welcome.apuu.link"
+            url={'https://apuu.fi/'}
+          />
+          <Message style={styles.text} id={'onboarding.welcome.text4'} />
           <MessageButton
             style={styles.button}
             messageStyle={styles.buttonText}
@@ -99,6 +109,10 @@ const styles = RN.StyleSheet.create({
     textAlign: 'center',
     marginBottom: 32,
   },
+  textWithoutMargin: {
+    ...fonts.regularBold,
+    textAlign: 'center',
+  },
   button: {
     alignSelf: 'center',
     paddingHorizontal: 40,
@@ -109,4 +123,5 @@ const styles = RN.StyleSheet.create({
     color: colors.black,
     textAlign: 'center',
   },
+  link: { alignSelf: 'center', marginBottom: 32 },
 });
