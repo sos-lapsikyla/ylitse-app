@@ -90,6 +90,7 @@ type RegularActions = {
     text: string;
     response: Result<ReturnType<typeof messageApi.sendMessage>>;
   };
+  'newMessage/send/reset': string;
 
   'newMessage/store/write/start': messageApi.SendMessageParams;
   'newMessage/store/write/end': messageApi.SendMessageParams;

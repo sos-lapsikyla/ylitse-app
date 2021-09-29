@@ -19,6 +19,8 @@ export type State = AppState['newMessage'];
 type NewMessage = AppState['newMessage'][string];
 type get = (buddyId: string) => (appState: AppState) => O.Option<NewMessage>;
 
+export const coolDownDuration = 5000;
+
 const get: get =
   buddyId =>
   ({ newMessage }) =>
@@ -43,6 +45,16 @@ export const getMessage: getMessage = (buddyId: string) =>
       messageContent: '',
       isSendingDisabled: false,
     })),
+  );
+
+type getMessageSendFailed = (
+  buddyId: string,
+) => (appState: AppState) => boolean;
+export const getMessageSendFailed: getMessageSendFailed = (buddyId: string) =>
+  flow(
+    get(buddyId),
+    O.map(({ sendRequest }) => RD.isFailure(sendRequest)),
+    O.getOrElse<boolean>(() => false),
   );
 
 const getPrev = (buddyId: string, state: State) =>
@@ -195,6 +207,19 @@ export const reducer = (state: State, action: actions.Action) => {
         nextAction,
       );
     }
+
+    case 'newMessage/send/reset': {
+      const nextState = {
+        ...state,
+        [action.payload]: {
+          ...state[action.payload],
+          sendRequest: RD.initial,
+        },
+      };
+
+      return nextState;
+    }
+
     default: {
       return state;
     }
