@@ -90,11 +90,12 @@ const Chat = ({ navigation }: Props) => {
         ? {
             textId: 'main.chat.delete.confirmation',
             onPress: () => handleBan('Delete'),
-            type: 'warning',
+            type: 'danger',
           }
         : {
             textId: 'main.chat.unban.confirmation',
             onPress: () => handleBan('Unban'),
+            type: 'restore',
           }
       : {
           textId: 'main.chat.ban.confirmation',

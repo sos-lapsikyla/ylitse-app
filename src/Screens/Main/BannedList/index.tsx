@@ -64,7 +64,7 @@ export default ({ navigation }: Props) => {
   const dialogProperties: Omit<DialogProps, 'onPressCancel' | 'buttonId'> = {
     textId: 'main.chat.deleteAll.confirmation',
     onPress: () => handleBatchBan('Delete'),
-    type: 'warning',
+    type: 'danger',
   };
 
   const dropdownItems: DropDownItem[] = [
