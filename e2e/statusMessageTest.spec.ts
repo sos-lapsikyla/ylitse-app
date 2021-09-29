@@ -100,7 +100,11 @@ describe('Change status message', () => {
     await scrollDownAndTap(
       'main.settings.account.status.save',
       'main.settings.index.view',
+      0.0,
+      0.2,
     );
+
+    await element(by.id('main.settings.account.status.save')).tap();
 
     await expect(element(by.text(newStatusMessage))).toBeVisible();
 

@@ -8,13 +8,18 @@ const API_PASS = process.env.YLITSE_API_PASS || '';
 /**
  * Scrolls view down if needed and taps the given element
  */
-export async function scrollDownAndTap(elementId: string, viewId: string) {
-  await scrollDownTo(elementId, viewId);
+export async function scrollDownAndTap(
+  elementId: string,
+  viewId: string,
+  xPosition: number = 0.1,
+  yPosition: number = 0.2,
+) {
+  await scrollDownTo(elementId, viewId, xPosition, yPosition);
 
   // App has big sticky toolbar at the bottom
   // Scroll down little bit more to be able to tap the element
   try {
-    await element(by.id(viewId)).scroll(100, 'down', 0.1, 0.2);
+    await element(by.id(viewId)).scroll(100, 'down', xPosition, yPosition);
   } catch (error) {
     // Do nothing, cannot scroll down anymore
   }
@@ -25,13 +30,18 @@ export async function scrollDownAndTap(elementId: string, viewId: string) {
 /**
  * Scrolls view down until element is found
  */
-export async function scrollDownTo(elementId: string, viewId: string) {
+export async function scrollDownTo(
+  elementId: string,
+  viewId: string,
+  xPosition: number = 0.1,
+  yPosition: number = 0.2,
+) {
   await waitFor(element(by.id(elementId)))
     .toBeVisible()
     .whileElement(by.id(viewId))
     // Needs to scroll from x=0.1, y=0.2
     // because of the big sticky toolbar
-    .scroll(200, 'down', 0.1, 0.2);
+    .scroll(200, 'down', xPosition, yPosition);
 }
 
 /**
