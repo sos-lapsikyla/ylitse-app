@@ -177,11 +177,14 @@ export const messages = {
   'onboarding.signUp.title': 'Luo tunnus',
   'onboarding.signUp.userName': 'Käyttäjätunnus',
 
+  'onboarding.welcome.apuu.link': 'Apuu-chat',
   'onboarding.welcome.button': 'Aloita',
   'onboarding.welcome.text1': 'Kiva, että otit palvelun käyttöön!',
   'onboarding.welcome.text2':
     'Voit kysyä mentoreilta mieltäsi painavista asioista luottamuksellisesti.',
-  'onboarding.welcome.text3': 'Mukavia keskusteluja!',
+  'onboarding.welcome.text3':
+    'Palvelu on tarkoitettu 15 vuotta täyttäneille. Jos olet alle 15-vuotias vieraile Apuu-chatissa.',
+  'onboarding.welcome.text4': 'Mukavia keskusteluja!',
   'onboarding.welcome.title': 'Moi!',
 
   'tabs.chats': 'Keskustelut',

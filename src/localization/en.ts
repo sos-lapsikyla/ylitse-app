@@ -179,11 +179,14 @@ export const messages: { [key in MessageId]: string } = {
   'onboarding.signUp.title': 'Sign up',
   'onboarding.signUp.userName': 'Username',
 
+  'onboarding.welcome.apuu.link': 'Apuu-chat',
   'onboarding.welcome.button': 'Start',
   'onboarding.welcome.text1': 'Cool, that you have started using the service!',
   'onboarding.welcome.text2':
     'Here you can ask confidential things from mentors.',
-  'onboarding.welcome.text3': 'We hope you will have pleasant conversations!',
+  'onboarding.welcome.text3':
+    'The service is intended for people over 15 years of age. If you are under 15, visit Apuu-chat.',
+  'onboarding.welcome.text4': 'We hope you will have pleasant conversations!',
   'onboarding.welcome.title': 'Hello!',
 
   'tabs.chats': 'Chats',
