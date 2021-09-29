@@ -10,6 +10,7 @@ tee config.json > /dev/null <<EOF
     "feedBackUrl": "$YLITSE_FEEDBACKURL",
     "termsUrl": "$YLITSE_TERMSURL",
     "userGuideUrl": "$YLITSE_USERGUIDEURL",
+    "apuuUrl": "$YLITSE_APUUURL",
     "messageFetchDelay": $YLITSE_MESSAGEFETCHDELAY
 }
 EOF
