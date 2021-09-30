@@ -17,7 +17,13 @@ const duration = 250;
 
 const getPosition = (value: boolean) => (value ? rightPosition : leftPosition);
 
-const Switch: React.FC<SwitchProps> = ({ value, disabled, onPress, style }) => {
+const Switch: React.FC<SwitchProps> = ({
+  value,
+  disabled,
+  onPress,
+  style,
+  testID,
+}) => {
   const animation = React.useRef(
     new RN.Animated.Value(getPosition(value)),
   ).current;
@@ -49,7 +55,11 @@ const Switch: React.FC<SwitchProps> = ({ value, disabled, onPress, style }) => {
   };
 
   return (
-    <RN.TouchableWithoutFeedback onPress={press} disabled={disabled}>
+    <RN.TouchableWithoutFeedback
+      onPress={press}
+      disabled={disabled}
+      testID={testID}
+    >
       <RN.View style={[styles.track, style]}>
         <RN.Animated.View
           style={[

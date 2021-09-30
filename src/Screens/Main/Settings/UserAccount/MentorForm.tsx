@@ -13,14 +13,14 @@ import * as changeStatusMessageState from '../../../../state/reducers/changeStat
 
 import Button from '../../../components/Button';
 import Message from '../../../components/Message';
-import ToggleSwitch from '../../../components/ToggleSwitch';
 import Spinner from '../../../components/Spinner';
-import colors from '../../../components/colors';
-import fonts from '../../../components/fonts';
-
 import AlertBox from './AlertBox';
 import AlertDialog from './AlertDialog';
 import StatusMessageForm from 'src/Screens/components/StatusMessageForm';
+import MessageSwitch from 'src/Screens/components/MessageSwitch';
+
+import colors from '../../../components/colors';
+import fonts from '../../../components/fonts';
 
 type Props = {
   userId: string;
@@ -104,11 +104,11 @@ export default ({ userId }: Props) => {
       {isVacationStatusLoading ? (
         <Spinner />
       ) : (
-        <ToggleSwitch
+        <MessageSwitch
           value={mentor?.is_vacationing ?? false}
           messageOn="main.settings.account.vacation.on"
           messageOff="main.settings.account.vacation.off"
-          toggleSwitch={changeVacationStatus}
+          onPress={changeVacationStatus}
           testID="main.settings.
           account.vacation.switch"
         />
