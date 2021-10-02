@@ -23,7 +23,7 @@ const MessageSwitch: React.FC<Props> = ({
   ...switchProps
 }) => {
   return (
-    <RN.View style={styles.container}>
+    <RN.View style={[styles.container, containerStyle]}>
       <Switch value={value} {...switchProps} />
       <Message style={styles.message} id={value ? messageOn : messageOff} />
     </RN.View>
@@ -35,9 +35,9 @@ const styles = RN.StyleSheet.create({
     flexDirection: 'row',
   },
   message: {
-    ...fonts.largeBold,
+    ...fonts.large,
     color: colors.darkestBlue,
-    marginLeft: 10,
+    marginLeft: 16,
   },
 });
 

@@ -105,6 +105,7 @@ export default ({ userId }: Props) => {
         <Spinner />
       ) : (
         <MessageSwitch
+          containerStyle={styles.vacationSwitch}
           value={mentor?.is_vacationing ?? false}
           messageOn="main.settings.account.vacation.on"
           messageOff="main.settings.account.vacation.off"
@@ -175,4 +176,5 @@ const styles = RN.StyleSheet.create({
   successBox: {
     tintColor: colors.darkBlue,
   },
+  vacationSwitch: { marginTop: 8 },
 });
