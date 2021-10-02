@@ -7,15 +7,18 @@ export interface SwitchProps {
   value: boolean;
   onPress: () => void;
   disabled?: boolean;
+  isLoading?: boolean;
   testID?: string;
   style?: RN.ViewStyle;
 }
 
-const leftPosition = 6;
-const rightPosition = 28;
+const leftPosition = 7;
+const rightPosition = 32;
+const middlePosition = (leftPosition + rightPosition) / 2;
 const duration = 250;
 
-const getPosition = (value: boolean) => (value ? rightPosition : leftPosition);
+const getPosition = (value: boolean, isLoading: boolean) =>
+  isLoading ? middlePosition : value ? rightPosition : leftPosition;
 
 const Switch: React.FC<SwitchProps> = ({
   value,
@@ -23,22 +26,49 @@ const Switch: React.FC<SwitchProps> = ({
   onPress,
   style,
   testID,
+  isLoading,
 }) => {
   const animation = React.useRef(
-    new RN.Animated.Value(getPosition(value)),
+    new RN.Animated.Value(getPosition(value, isLoading ?? false)),
   ).current;
 
   React.useEffect(() => {
     RN.Animated.timing(animation, {
       duration,
-      toValue: getPosition(value),
+      toValue: getPosition(value, isLoading ?? false),
       useNativeDriver: false, // Colors are not supported by native driver
     }).start();
-  }, [value]);
+  }, [value, isLoading]);
 
   const press = () => {
     requestAnimationFrame(() => onPress());
   };
+
+  const spinState = React.useRef(new RN.Animated.Value(0)).current;
+
+  const spin = () =>
+    RN.Animated.loop(
+      RN.Animated.timing(spinState, {
+        toValue: 1,
+        duration: 2000,
+        useNativeDriver: false,
+        easing: RN.Easing.linear,
+      }),
+    ).start();
+
+  React.useEffect(() => {
+    if (isLoading) {
+      spin();
+    }
+  }, [isLoading]);
+
+  const knobBorder = isLoading
+    ? {
+        borderRightColor: colors.green,
+        borderColor: colors.white,
+        borderWidth: 4,
+      }
+    : {};
 
   return (
     <RN.Pressable onPress={press} disabled={disabled} testID={testID}>
@@ -53,6 +83,17 @@ const Switch: React.FC<SwitchProps> = ({
                 outputRange: [colors.gray, colors.blue],
               }),
             },
+            {
+              transform: [
+                {
+                  rotate: spinState.interpolate({
+                    inputRange: [0, 1],
+                    outputRange: ['0deg', '360deg'],
+                  }),
+                },
+              ],
+            },
+            knobBorder,
           ]}
         />
       </RN.View>
@@ -63,7 +104,7 @@ const Switch: React.FC<SwitchProps> = ({
 const styles = RN.StyleSheet.create({
   track: {
     height: 30,
-    width: 56,
+    width: 60,
     borderRadius: 15,
     backgroundColor: colors.lightestGray,
   },

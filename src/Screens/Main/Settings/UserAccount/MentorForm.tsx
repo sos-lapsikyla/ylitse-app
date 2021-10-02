@@ -101,19 +101,16 @@ export default ({ userId }: Props) => {
         style={styles.fieldName}
         id="main.settings.account.vacation.title"
       />
-      {isVacationStatusLoading ? (
-        <Spinner />
-      ) : (
-        <MessageSwitch
-          containerStyle={styles.vacationSwitch}
-          value={mentor?.is_vacationing ?? false}
-          messageOn="main.settings.account.vacation.on"
-          messageOff="main.settings.account.vacation.off"
-          onPress={changeVacationStatus}
-          testID="main.settings.
+      <MessageSwitch
+        containerStyle={styles.vacationSwitch}
+        value={mentor?.is_vacationing ?? false}
+        isLoading={isVacationStatusLoading}
+        messageOn="main.settings.account.vacation.on"
+        messageOff="main.settings.account.vacation.off"
+        onPress={changeVacationStatus}
+        testID="main.settings.
           account.vacation.switch"
-        />
-      )}
+      />
       <Message
         style={styles.fieldName}
         id="main.settings.account.status.title"
