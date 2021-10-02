@@ -47,28 +47,42 @@ const Switch: React.FC<SwitchProps> = ({
     if (isLoading) {
       return;
     }
+
     requestAnimationFrame(() => onPress());
   };
 
-  const spinState = React.useRef(new RN.Animated.Value(0)).current;
+  const spinAnimation = React.useRef(new RN.Animated.Value(0)).current;
 
   const spin = () =>
     RN.Animated.loop(
-      RN.Animated.timing(spinState, {
+      RN.Animated.timing(spinAnimation, {
         toValue: 1,
         duration: 2000,
         useNativeDriver: false,
-        easing: RN.Easing.bounce,
+        easing: RN.Easing.linear,
       }),
     ).start();
 
+  const [showLoading, setShowLoading] = React.useState(false);
+
   React.useEffect(() => {
     if (isLoading) {
-      spin();
+      const loadingTimeOut = setTimeout(() => setShowLoading(true), 500);
+
+      return () => clearTimeout(loadingTimeOut);
+    } else {
+      setShowLoading(false);
+      spinAnimation.stopAnimation();
     }
   }, [isLoading]);
 
-  const knobBorder = isLoading
+  React.useEffect(() => {
+    if (showLoading) {
+      spin();
+    }
+  }, [showLoading]);
+
+  const knobBorder = showLoading
     ? {
         borderRightColor: colors.green,
         borderColor: 'transparent',
@@ -101,7 +115,7 @@ const Switch: React.FC<SwitchProps> = ({
             {
               transform: [
                 {
-                  rotate: spinState.interpolate({
+                  rotate: spinAnimation.interpolate({
                     inputRange: [0, 1],
                     outputRange: ['0deg', '360deg'],
                   }),
