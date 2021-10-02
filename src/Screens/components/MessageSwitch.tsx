@@ -33,7 +33,6 @@ const MessageSwitch: React.FC<Props> = ({
 const styles = RN.StyleSheet.create({
   container: {
     flexDirection: 'row',
-    backgroundColor: colors.red,
   },
   message: {
     ...fonts.largeBold,

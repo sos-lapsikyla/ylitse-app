@@ -11,8 +11,8 @@ export interface SwitchProps {
   style?: RN.ViewStyle;
 }
 
-const leftPosition = 4;
-const rightPosition = 35;
+const leftPosition = 6;
+const rightPosition = 28;
 const duration = 250;
 
 const getPosition = (value: boolean) => (value ? rightPosition : leftPosition);
@@ -50,7 +50,7 @@ const Switch: React.FC<SwitchProps> = ({
             {
               backgroundColor: animation.interpolate({
                 inputRange: [leftPosition, rightPosition],
-                outputRange: [colors.white, colors.blue],
+                outputRange: [colors.gray, colors.blue],
               }),
             },
           ]}
@@ -63,18 +63,18 @@ const Switch: React.FC<SwitchProps> = ({
 const styles = RN.StyleSheet.create({
   track: {
     height: 30,
-    width: 64,
+    width: 56,
     borderRadius: 15,
     backgroundColor: colors.lightestGray,
   },
   knob: {
     position: 'absolute',
     left: 2,
-    top: 3,
-    width: 21,
-    height: 21,
+    top: 4,
+    width: 22,
+    height: 22,
     borderRadius: 13,
-    backgroundColor: colors.gray,
+    backgroundColor: colors.white,
     zIndex: 1,
   },
 });
