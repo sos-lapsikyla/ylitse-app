@@ -36,30 +36,12 @@ const Switch: React.FC<SwitchProps> = ({
     }).start();
   }, [value]);
 
-  const spinState = React.useRef(new RN.Animated.Value(0)).current;
-
-  const spin = () =>
-    RN.Animated.loop(
-      RN.Animated.timing(spinState, {
-        toValue: 1,
-        duration: 2000,
-        useNativeDriver: false,
-        easing: RN.Easing.linear,
-      }),
-    ).start();
-
-  React.useEffect(spin, []);
-
   const press = () => {
     requestAnimationFrame(() => onPress());
   };
 
   return (
-    <RN.TouchableWithoutFeedback
-      onPress={press}
-      disabled={disabled}
-      testID={testID}
-    >
+    <RN.Pressable onPress={press} disabled={disabled} testID={testID}>
       <RN.View style={[styles.track, style]}>
         <RN.Animated.View
           style={[
@@ -74,7 +56,7 @@ const Switch: React.FC<SwitchProps> = ({
           ]}
         />
       </RN.View>
-    </RN.TouchableWithoutFeedback>
+    </RN.Pressable>
   );
 };
 
@@ -89,10 +71,10 @@ const styles = RN.StyleSheet.create({
     position: 'absolute',
     left: 2,
     top: 3,
-    width: 23,
-    height: 23,
+    width: 21,
+    height: 21,
     borderRadius: 13,
-    backgroundColor: colors.white,
+    backgroundColor: colors.gray,
     zIndex: 1,
   },
 });

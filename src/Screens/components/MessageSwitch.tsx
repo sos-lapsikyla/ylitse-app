@@ -32,16 +32,12 @@ const MessageSwitch: React.FC<Props> = ({
 
 const styles = RN.StyleSheet.create({
   container: {
-    flex: 1,
     flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'flex-start',
+    backgroundColor: colors.red,
   },
   message: {
     ...fonts.largeBold,
     color: colors.darkestBlue,
-    flexDirection: 'column',
-    textAlign: 'center',
     marginLeft: 10,
   },
 });
