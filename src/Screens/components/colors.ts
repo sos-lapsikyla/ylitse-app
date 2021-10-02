@@ -32,6 +32,8 @@ const colors = {
   lightDanger: '#F19A9C',
   teal: '#75C9C3',
   blueGray: '#5A7C9B',
+  disableGray: '#BDBDBD',
+  disableLightGray: '#E0E0E0',
 };
 
 export default colors;

@@ -12,10 +12,13 @@ export interface SwitchProps {
   style?: RN.ViewStyle;
 }
 
-const leftPosition = 7;
-const rightPosition = 32;
+const h = 28;
+const d = (2 / 3) * h;
+const trackLength = d * 2.75;
+const leftPosition = d * 0.3;
+const rightPosition = trackLength - 1.3 * d;
 const middlePosition = (leftPosition + rightPosition) / 2;
-const duration = 250;
+const duration = 400;
 
 const getPosition = (value: boolean, isLoading: boolean) =>
   isLoading ? middlePosition : value ? rightPosition : leftPosition;
@@ -41,6 +44,9 @@ const Switch: React.FC<SwitchProps> = ({
   }, [value, isLoading]);
 
   const press = () => {
+    if (isLoading) {
+      return;
+    }
     requestAnimationFrame(() => onPress());
   };
 
@@ -52,7 +58,7 @@ const Switch: React.FC<SwitchProps> = ({
         toValue: 1,
         duration: 2000,
         useNativeDriver: false,
-        easing: RN.Easing.linear,
+        easing: RN.Easing.bounce,
       }),
     ).start();
 
@@ -65,14 +71,23 @@ const Switch: React.FC<SwitchProps> = ({
   const knobBorder = isLoading
     ? {
         borderRightColor: colors.green,
-        borderColor: colors.white,
-        borderWidth: 4,
+        borderColor: 'transparent',
+        borderWidth: 0.15 * d,
       }
     : {};
 
+  const switchColors = {
+    track: disabled ? colors.disableGray : colors.lightestGray,
+    knob: disabled
+      ? [colors.disableLightGray, colors.disableLightGray]
+      : [colors.gray, colors.blue],
+  };
+
   return (
     <RN.Pressable onPress={press} disabled={disabled} testID={testID}>
-      <RN.View style={[styles.track, style]}>
+      <RN.View
+        style={[styles.track, { backgroundColor: switchColors.track }, style]}
+      >
         <RN.Animated.View
           style={[
             styles.knob,
@@ -80,7 +95,7 @@ const Switch: React.FC<SwitchProps> = ({
             {
               backgroundColor: animation.interpolate({
                 inputRange: [leftPosition, rightPosition],
-                outputRange: [colors.gray, colors.blue],
+                outputRange: switchColors.knob,
               }),
             },
             {
@@ -103,18 +118,17 @@ const Switch: React.FC<SwitchProps> = ({
 
 const styles = RN.StyleSheet.create({
   track: {
-    height: 30,
-    width: 60,
-    borderRadius: 15,
+    height: h,
+    width: trackLength,
+    borderRadius: (d * 1.5) / 2,
     backgroundColor: colors.lightestGray,
   },
   knob: {
     position: 'absolute',
-    left: 2,
-    top: 4,
-    width: 22,
-    height: 22,
-    borderRadius: 13,
+    top: d * 0.25,
+    width: d,
+    height: d,
+    borderRadius: d / 2,
     backgroundColor: colors.white,
     zIndex: 1,
   },
