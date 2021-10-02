@@ -16,6 +16,7 @@ import OnboardingBackground from '../components/OnboardingBackground';
 import Card from '../components/Card';
 import fonts from '../components/fonts';
 import Message from '../components/Message';
+import MessageSwitch from '../components/MessageSwitch';
 import colors from '../components/colors';
 import Button from '../components/Button';
 import ErrorMessage from '../components/ErrorMessage';
@@ -52,6 +53,7 @@ const PrivacyPolicy = ({
     }
   }, [accessToken]);
   const [isAgreed, setAgreed] = React.useState(false);
+  const [isOver15, setIsOver15] = React.useState(false);
 
   const goBack = () => {
     navigation.goBack();
@@ -74,6 +76,7 @@ const PrivacyPolicy = ({
           style={styles.bodyText}
           id="onboarding.privacyPolicy.bodyText2"
         />
+
         <Message
           style={styles.bodyText3}
           id="onboarding.privacyPolicy.bodyText3"
@@ -83,24 +86,38 @@ const PrivacyPolicy = ({
           linkName="onboarding.privacyPolicy.link"
           url={config.termsUrl}
         />
+
         <ErrorMessage
           style={styles.errorText}
           getMessageId={() => 'meta.error'}
           data={createUserState}
         />
-        <Button
-          onPress={() => setAgreed(true)}
-          style={styles.nextButton}
-          messageId="onboarding.privacyPolicy.agreeButton"
-          disabled={isAgreed}
-          testID="onboarding.privacyPolicy.agreeButton"
+
+        <MessageSwitch
+          style={styles.switch}
+          containerStyle={styles.toggleMargin}
+          onPress={() => setIsOver15(!isOver15)}
+          value={isOver15}
+          testID={'onboarding.age.switch'}
+          messageOn={'onboarding.age.switch'}
+          messageOff={'onboarding.age.switch'}
         />
+        <MessageSwitch
+          style={styles.switch}
+          containerStyle={styles.toggleMargin}
+          onPress={() => setAgreed(!isAgreed)}
+          value={isAgreed}
+          testID={'onboarding.privacyPolicy.switch'}
+          messageOn={'onboarding.privacyPolicy.switch'}
+          messageOff={'onboarding.privacyPolicy.switch'}
+        />
+
         <Button
           style={styles.nextButton}
           onPress={onNextPress}
           messageId="onboarding.privacyPolicy.nextButton"
           badge={require('../images/arrow.svg')}
-          disabled={!isAgreed}
+          disabled={!isAgreed || !isOver15}
           loading={RD.isPending(createUserState)}
           testID="onboarding.privacyPolicy.nextButton"
         />
@@ -132,16 +149,19 @@ const styles = RN.StyleSheet.create({
   bodyText3: {
     ...fonts.regular,
     color: colors.darkestBlue,
-    marginBottom: 40,
+    marginBottom: 5,
   },
-  link: { alignSelf: 'center' },
-  errorText: {
-    marginBottom: 16,
-  },
+
   nextButton: {
-    marginBottom: 16,
+    marginBottom: 14,
     backgroundColor: colors.blue,
   },
+  toggleMargin: {
+    marginBottom: 16,
+  },
+  link: {},
+  errorText: {},
+  switch: { marginLeft: 16 },
 });
 
 export default ReactRedux.connect<StateProps, {}, OwnProps, state.AppState>(

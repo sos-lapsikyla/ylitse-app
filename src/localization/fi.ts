@@ -128,7 +128,7 @@ export const messages = {
   'meta.error': 'Virhe',
   'meta.ok': 'OK',
   'meta.save': 'Tallenna',
-
+  'onboarding.age.switch': 'Olen yli 15-vuotias',
   'onboarding.displayName.bodyText':
     '*Jos haluat pysyä nimettömänä, valitse itsellesi nimimerkki, josta et ole tunnistettavissa.',
   'onboarding.displayName.inputTitle': 'Valitse itsellesi nimimerkki*',
@@ -153,6 +153,7 @@ export const messages = {
     'Rekisteröitymällä palvelun käyttäjäksi hyväksyt, että käsittelemme sinua koskevia tietoja. Voit lukea lisää seuraavista linkeistä:',
   'onboarding.privacyPolicy.link': 'Tietoja yksityisyydensuojasta',
   'onboarding.privacyPolicy.nextButton': 'Jatka',
+  'onboarding.privacyPolicy.switch': 'Hyväksyn tietojeni käsittelyn',
   'onboarding.privacyPolicy.title': 'Yksityisyydensuoja',
 
   'onboarding.sign.in': 'Kirjaudu',

@@ -130,7 +130,7 @@ export const messages: { [key in MessageId]: string } = {
   'meta.error': 'An error occurred, please try again',
   'meta.ok': 'OK',
   'meta.save': 'Save',
-
+  'onboarding.age.switch': 'I am over 15 years old',
   'onboarding.displayName.bodyText':
     "*if you want to stay anonymous to our mentors, please enter a display name that can't identify you.",
   'onboarding.displayName.inputTitle': 'Display name*',
@@ -155,6 +155,7 @@ export const messages: { [key in MessageId]: string } = {
     'By continuing you agree to trust us with your data. Read these for more details:',
   'onboarding.privacyPolicy.link': 'About privacy policy',
   'onboarding.privacyPolicy.nextButton': 'Continue',
+  'onboarding.privacyPolicy.switch': 'I agree to the privacy policy',
   'onboarding.privacyPolicy.title': 'Data Privacy & Security',
 
   'onboarding.sign.in': 'Sign in',

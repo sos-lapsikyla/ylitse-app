@@ -12,7 +12,8 @@ import Switch, { SwitchProps } from './Switch';
 interface Props extends SwitchProps {
   messageOn: localization.MessageId;
   messageOff: localization.MessageId;
-  containerStyle?: RN.ViewStyle;
+  containerStyle?: RN.StyleProp<RN.ViewStyle>;
+  messageStyle?: RN.StyleProp<RN.TextStyle>;
 }
 
 const MessageSwitch: React.FC<Props> = ({
@@ -20,12 +21,16 @@ const MessageSwitch: React.FC<Props> = ({
   messageOff,
   value,
   containerStyle,
+  messageStyle,
   ...switchProps
 }) => {
   return (
     <RN.View style={[styles.container, containerStyle]}>
       <Switch value={value} {...switchProps} />
-      <Message style={styles.message} id={value ? messageOn : messageOff} />
+      <Message
+        style={[styles.message, messageStyle]}
+        id={value ? messageOn : messageOff}
+      />
     </RN.View>
   );
 };
