@@ -82,10 +82,15 @@ const Switch: React.FC<SwitchProps> = ({
     }
   }, [showLoading]);
 
+  const loadingBorderColor =
+    RN.Platform.OS === 'ios' ? 'transparent' : colors.white;
+
   const knobBorder = showLoading
     ? {
         borderRightColor: colors.green,
-        borderColor: 'transparent',
+        borderLeftColor: loadingBorderColor,
+        borderTopColor: loadingBorderColor,
+        borderBottomColor: loadingBorderColor,
         borderWidth: 0.15 * d,
       }
     : {};
