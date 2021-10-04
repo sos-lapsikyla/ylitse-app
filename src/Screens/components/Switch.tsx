@@ -1,5 +1,6 @@
 import React from 'react';
 import RN from 'react-native';
+import { createMiddleColorAsHex } from 'src/lib/colorCalculator';
 
 import colors from './colors';
 
@@ -82,8 +83,22 @@ const Switch: React.FC<SwitchProps> = ({
     }
   }, [showLoading]);
 
+  type SwitchColors = {
+    track: string;
+    knob: [string, string];
+  };
+
+  const switchColors: SwitchColors = {
+    track: disabled ? colors.disableGray : colors.lightestGray,
+    knob: disabled
+      ? [colors.disableLightGray, colors.disableLightGray]
+      : [colors.gray, colors.blue],
+  };
+
   const loadingBorderColor =
-    RN.Platform.OS === 'ios' ? 'transparent' : colors.white;
+    RN.Platform.OS === 'ios'
+      ? 'transparent'
+      : createMiddleColorAsHex(switchColors.knob);
 
   const knobBorder = showLoading
     ? {
@@ -94,13 +109,6 @@ const Switch: React.FC<SwitchProps> = ({
         borderWidth: 0.15 * d,
       }
     : {};
-
-  const switchColors = {
-    track: disabled ? colors.disableGray : colors.lightestGray,
-    knob: disabled
-      ? [colors.disableLightGray, colors.disableLightGray]
-      : [colors.gray, colors.blue],
-  };
 
   return (
     <RN.Pressable onPress={press} disabled={disabled} testID={testID}>
