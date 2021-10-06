@@ -27,7 +27,8 @@ const colors = {
 
   // others
   danger: '#E93C66',
-  warning: '#F3E884',
+  yellow: '#FFDA17',
+  lighterYellow: '#FDF3A4',
   lightDanger: '#F19A9C',
   teal: '#75C9C3',
   blueGray: '#5A7C9B',

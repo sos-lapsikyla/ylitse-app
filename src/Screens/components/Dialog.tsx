@@ -13,7 +13,7 @@ export type DialogProps = {
   buttonId: localization.MessageId;
   onPressCancel: () => void | undefined;
   onPress: () => void | undefined;
-  type?: 'warning';
+  type: 'warning' | 'danger' | 'restore';
   testID?: string;
 };
 
@@ -24,15 +24,25 @@ export const Dialog = ({
   onPress,
   type,
 }: DialogProps) => {
-  const [buttonStyle, dialogStyle] =
-    type === 'warning'
-      ? [styles.actionButtonWarning, styles.dialogWarning]
-      : [styles.actionButtonNormal, styles.dialogNormal];
+  const dialogStyles = {
+    restore: {
+      button: { backgroundColor: colors.blue },
+      background: { backgroundColor: colors.lighterBlue },
+    },
+    warning: {
+      button: { backgroundColor: colors.yellow },
+      background: { backgroundColor: colors.lighterYellow },
+    },
+    danger: {
+      button: { backgroundColor: colors.danger },
+      background: { backgroundColor: colors.lightDanger },
+    },
+  };
 
   return (
     <RN.Modal animationType="fade" transparent={true} visible={true}>
       <RN.View style={styles.background}>
-        <RN.View style={[dialogStyle, styles.dialog]}>
+        <RN.View style={[dialogStyles[type].background, styles.dialog]}>
           <RN.View style={styles.infoView}>
             <RN.Image
               source={require('../images/alert-circle-outline.svg')}
@@ -49,7 +59,7 @@ export const Dialog = ({
             <Button
               onPress={onPress}
               messageId={buttonId}
-              style={[buttonStyle, styles.button]}
+              style={[dialogStyles[type].button, styles.button]}
             />
           </RN.View>
         </RN.View>
@@ -84,18 +94,6 @@ const styles = RN.StyleSheet.create({
   button: {
     flex: 1,
     margin: 8,
-  },
-  dialogNormal: {
-    backgroundColor: colors.lighterBlue,
-  },
-  dialogWarning: {
-    backgroundColor: colors.warning,
-  },
-  actionButtonNormal: {
-    backgroundColor: colors.blue,
-  },
-  actionButtonWarning: {
-    backgroundColor: colors.red,
   },
   cancelButton: {
     backgroundColor: colors.lightGray,
