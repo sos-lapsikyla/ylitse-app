@@ -1,4 +1,4 @@
-const HEX_COLOR = /^#([0-9a-f]{1,2})([0-9a-f]{1,2})([0-9a-f]{1,2})$/i;
+const HEX_COLOR = /^#([0-9a-f]{2})([0-9a-f]{2})([0-9a-f]{2})$/i;
 
 const parseToNum = (colorHex: string): RGB => {
   if (!HEX_COLOR.test(colorHex)) {
