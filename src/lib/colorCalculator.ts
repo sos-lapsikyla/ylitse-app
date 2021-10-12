@@ -20,7 +20,7 @@ const calculateAverage = (rgb1: RGB, rgb2: RGB): RGB => [
   Math.ceil((rgb1[2] + rgb2[2]) / 2),
 ];
 
-const rgbToHex = (rgb: number) => {
+const toHex = (rgb: number) => {
   const hex = rgb.toString(16);
 
   if (hex.length < 2) {
@@ -31,9 +31,9 @@ const rgbToHex = (rgb: number) => {
 };
 
 const parseToHex = (rgb: RGB): string => {
-  const r = rgbToHex(rgb[0]);
-  const g = rgbToHex(rgb[1]);
-  const b = rgbToHex(rgb[2]);
+  const r = toHex(rgb[0]);
+  const g = toHex(rgb[1]);
+  const b = toHex(rgb[2]);
 
   return `#${r}${g}${b}`;
 };
