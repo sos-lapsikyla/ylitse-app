@@ -68,7 +68,7 @@ const Switch: React.FC<SwitchProps> = ({
 
   React.useEffect(() => {
     if (isLoading) {
-      const loadingTimeOut = setTimeout(() => setShowLoading(true), 500);
+      const loadingTimeOut = setTimeout(() => setShowLoading(true), 400);
 
       return () => clearTimeout(loadingTimeOut);
     } else {
