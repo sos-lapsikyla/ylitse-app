@@ -10,6 +10,7 @@ import * as navigationProps from '../../../lib/navigation-props';
 import useLayout from '../../../lib/use-layout';
 
 import * as buddyState from '../../../state/reducers/buddies';
+import * as changeBanStatusState from '../../../state/reducers/banBuddyRequest';
 
 import Button from '../BuddyList/Button';
 import { ChatRoute } from '../Chat';
@@ -20,6 +21,7 @@ import { Title } from './Title';
 import colors from '../../components/colors';
 import RemoteData from '../../components/RemoteData';
 import { BanAction } from 'src/api/buddies';
+import AlertDialog from '../Settings/UserAccount/AlertDialog';
 
 export type BannedListRoute = {
   'Main/BannedList': {};
@@ -29,6 +31,10 @@ type Props = navigationProps.NavigationProps<BannedListRoute, ChatRoute>;
 
 export default ({ navigation }: Props) => {
   const remoteBuddies = ReactRedux.useSelector(buddyState.getBannedBuddies);
+
+  const isBanRequestFailed = ReactRedux.useSelector(
+    changeBanStatusState.selectBanRequestFailed,
+  );
 
   type DialogState = { dialogOpen: boolean; dropdownOpen: boolean };
 
@@ -105,25 +111,35 @@ export default ({ navigation }: Props) => {
           onPressCancel={() => setDialogs('dialogOpen', false)}
         />
       )}
-      <RemoteData data={remoteBuddies}>
-        {buddies => (
-          <RN.ScrollView
-            style={styles.scrollView}
-            contentContainerStyle={styles.scrollContent}
-            testID={'main.buddyList.view'}
-          >
-            {buddies.map(buddy => (
-              <Button
-                key={buddy.buddyId + '1'}
-                style={styles.button}
-                onPress={onPress}
-                name={buddy.name}
-                buddyId={buddy.buddyId}
-              />
-            ))}
-          </RN.ScrollView>
-        )}
-      </RemoteData>
+      {isBanRequestFailed ? (
+        <AlertDialog
+          imageStyle={styles.failBox}
+          imageSource={require('../../images/alert-circle.svg')}
+          messageId="main.settings.account.password.failure"
+          onOkPress={() => console.log('reset')}
+          onRetryPress={() => console.log('try again')}
+        />
+      ) : (
+        <RemoteData data={remoteBuddies}>
+          {buddies => (
+            <RN.ScrollView
+              style={styles.scrollView}
+              contentContainerStyle={styles.scrollContent}
+              testID={'main.buddyList.view'}
+            >
+              {buddies.map(buddy => (
+                <Button
+                  key={buddy.buddyId + '1'}
+                  style={styles.button}
+                  onPress={onPress}
+                  name={buddy.name}
+                  buddyId={buddy.buddyId}
+                />
+              ))}
+            </RN.ScrollView>
+          )}
+        </RemoteData>
+      )}
     </RN.TouchableOpacity>
   );
 };
@@ -147,4 +163,8 @@ const styles = RN.StyleSheet.create({
     paddingBottom: 200,
   },
   button: { marginVertical: 16 },
+  failBox: {
+    tintColor: colors.danger,
+    zIndex: 3,
+  },
 });
