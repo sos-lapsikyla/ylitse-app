@@ -115,7 +115,7 @@ export default ({ navigation }: Props) => {
         <AlertDialog
           imageStyle={styles.failBox}
           imageSource={require('../../images/alert-circle.svg')}
-          messageId="main.settings.account.password.failure"
+          messageId="main.chat.deleteAll.error"
           onOkPress={() => console.log('reset')}
           onRetryPress={() => console.log('try again')}
         />
