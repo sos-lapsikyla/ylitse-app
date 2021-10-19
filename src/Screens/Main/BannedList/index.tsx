@@ -67,6 +67,10 @@ export default ({ navigation }: Props) => {
     }
   };
 
+  const resetBanRequestState = () => {
+    dispatch({ type: 'buddies/changeBanStatus/reset', payload: undefined });
+  };
+
   const dialogProperties: Omit<DialogProps, 'onPressCancel' | 'buttonId'> = {
     textId: 'main.chat.deleteAll.confirmation',
     onPress: () => handleBatchBan('Delete'),
@@ -116,8 +120,8 @@ export default ({ navigation }: Props) => {
           imageStyle={styles.failBox}
           imageSource={require('../../images/alert-circle.svg')}
           messageId="main.chat.deleteAll.error"
-          onOkPress={() => console.log('reset')}
-          onRetryPress={() => console.log('try again')}
+          onOkPress={resetBanRequestState}
+          onRetryPress={() => handleBatchBan('Delete')}
         />
       ) : (
         <RemoteData data={remoteBuddies}>

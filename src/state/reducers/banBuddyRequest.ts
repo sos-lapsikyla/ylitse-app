@@ -59,6 +59,10 @@ export const reducer: automaton.Reducer<State, actions.Action> = (
       );
     }
 
+    case 'buddies/changeBanStatus/reset': {
+      return RD.initial;
+    }
+
     default: {
       return state;
     }
