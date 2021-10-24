@@ -2,7 +2,7 @@
 //  File.swift
 //  ylitse
 //
-//  Created by administrator on 01/12/2020.
+//  Created by Ahto Jussila on 24.10.2021.
 //
 
 import Foundation
