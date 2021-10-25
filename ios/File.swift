@@ -2,7 +2,6 @@
 //  File.swift
 //  ylitse
 //
-//  Created by Ahto Jussila on 24.10.2021.
-//
+//  Created so that xcode will build with swift turned on 
 
 import Foundation
