@@ -1,5 +1,6 @@
 import React from 'react';
 import RN from 'react-native';
+import { createMiddleColorAsHex } from 'src/lib/colorCalculator';
 
 import colors from './colors';
 
@@ -7,34 +8,55 @@ export interface SwitchProps {
   value: boolean;
   onPress: () => void;
   disabled?: boolean;
+  isLoading?: boolean;
   testID?: string;
   style?: RN.ViewStyle;
 }
 
-const leftPosition = 4;
-const rightPosition = 35;
-const duration = 250;
+const h = 28;
+const d = (2 / 3) * h;
+const trackLength = d * 2.75;
+const leftPosition = d * 0.3;
+const rightPosition = trackLength - 1.3 * d;
+const middlePosition = (leftPosition + rightPosition) / 2;
+const duration = 400;
 
-const getPosition = (value: boolean) => (value ? rightPosition : leftPosition);
+const getPosition = (value: boolean, isLoading: boolean) =>
+  isLoading ? middlePosition : value ? rightPosition : leftPosition;
 
-const Switch: React.FC<SwitchProps> = ({ value, disabled, onPress, style }) => {
+const Switch: React.FC<SwitchProps> = ({
+  value,
+  disabled,
+  onPress,
+  style,
+  testID,
+  isLoading,
+}) => {
   const animation = React.useRef(
-    new RN.Animated.Value(getPosition(value)),
+    new RN.Animated.Value(getPosition(value, isLoading ?? false)),
   ).current;
 
   React.useEffect(() => {
     RN.Animated.timing(animation, {
       duration,
-      toValue: getPosition(value),
+      toValue: getPosition(value, isLoading ?? false),
       useNativeDriver: false, // Colors are not supported by native driver
     }).start();
-  }, [value]);
+  }, [value, isLoading]);
 
-  const spinState = React.useRef(new RN.Animated.Value(0)).current;
+  const press = () => {
+    if (isLoading) {
+      return;
+    }
+
+    requestAnimationFrame(() => onPress());
+  };
+
+  const spinAnimation = React.useRef(new RN.Animated.Value(0)).current;
 
   const spin = () =>
     RN.Animated.loop(
-      RN.Animated.timing(spinState, {
+      RN.Animated.timing(spinAnimation, {
         toValue: 1,
         duration: 2000,
         useNativeDriver: false,
@@ -42,15 +64,57 @@ const Switch: React.FC<SwitchProps> = ({ value, disabled, onPress, style }) => {
       }),
     ).start();
 
-  React.useEffect(spin, []);
+  const [showLoading, setShowLoading] = React.useState(false);
 
-  const press = () => {
-    requestAnimationFrame(() => onPress());
+  React.useEffect(() => {
+    if (isLoading) {
+      const loadingTimeOut = setTimeout(() => setShowLoading(true), 400);
+
+      return () => clearTimeout(loadingTimeOut);
+    } else {
+      setShowLoading(false);
+      spinAnimation.stopAnimation();
+    }
+  }, [isLoading]);
+
+  React.useEffect(() => {
+    if (showLoading) {
+      spin();
+    }
+  }, [showLoading]);
+
+  type SwitchColors = {
+    track: string;
+    knob: [string, string];
   };
 
+  const switchColors: SwitchColors = {
+    track: disabled ? colors.disableGray : colors.lightestGray,
+    knob: disabled
+      ? [colors.disableLightGray, colors.disableLightGray]
+      : [colors.gray, colors.blue],
+  };
+
+  const loadingBorderColor =
+    RN.Platform.OS === 'ios'
+      ? 'transparent'
+      : createMiddleColorAsHex(switchColors.knob);
+
+  const knobBorder = showLoading
+    ? {
+        borderRightColor: colors.green,
+        borderLeftColor: loadingBorderColor,
+        borderTopColor: loadingBorderColor,
+        borderBottomColor: loadingBorderColor,
+        borderWidth: 0.15 * d,
+      }
+    : {};
+
   return (
-    <RN.TouchableWithoutFeedback onPress={press} disabled={disabled}>
-      <RN.View style={[styles.track, style]}>
+    <RN.Pressable onPress={press} disabled={disabled} testID={testID}>
+      <RN.View
+        style={[styles.track, { backgroundColor: switchColors.track }, style]}
+      >
         <RN.Animated.View
           style={[
             styles.knob,
@@ -58,30 +122,40 @@ const Switch: React.FC<SwitchProps> = ({ value, disabled, onPress, style }) => {
             {
               backgroundColor: animation.interpolate({
                 inputRange: [leftPosition, rightPosition],
-                outputRange: [colors.white, colors.blue],
+                outputRange: switchColors.knob,
               }),
             },
+            {
+              transform: [
+                {
+                  rotate: spinAnimation.interpolate({
+                    inputRange: [0, 1],
+                    outputRange: ['0deg', '360deg'],
+                  }),
+                },
+              ],
+            },
+            knobBorder,
           ]}
         />
       </RN.View>
-    </RN.TouchableWithoutFeedback>
+    </RN.Pressable>
   );
 };
 
 const styles = RN.StyleSheet.create({
   track: {
-    height: 30,
-    width: 64,
-    borderRadius: 15,
+    height: h,
+    width: trackLength,
+    borderRadius: (d * 1.5) / 2,
     backgroundColor: colors.lightestGray,
   },
   knob: {
     position: 'absolute',
-    left: 2,
-    top: 3,
-    width: 23,
-    height: 23,
-    borderRadius: 13,
+    top: d * 0.25,
+    width: d,
+    height: d,
+    borderRadius: d / 2,
     backgroundColor: colors.white,
     zIndex: 1,
   },

@@ -1,11 +1,12 @@
 import React from 'react';
 import RN from 'react-native';
 
-import Button from './Button';
 import colors from './colors';
 import fonts from './fonts';
-import InputField from './InputField';
 import { textShadow } from './shadow';
+
+import InputField from './InputField';
+import Button from './Button';
 
 type Props = {
   statusMessage: string;
@@ -18,7 +19,6 @@ export default (props: Props) => {
   return (
     <>
       <InputField
-        style={styles.field}
         value={props.statusMessage}
         onChangeText={props.setStatusMessage}
         maxLength={props.maxLength}
@@ -40,9 +40,6 @@ export default (props: Props) => {
 };
 
 const styles = RN.StyleSheet.create({
-  field: {
-    marginVertical: 8,
-  },
   saveButton: {
     marginTop: 32,
     alignSelf: 'flex-start',
@@ -52,7 +49,6 @@ const styles = RN.StyleSheet.create({
   maxCharactersText: {
     alignSelf: 'flex-end',
     color: colors.blueGray,
-    marginRight: 8,
   },
   buttonText: {
     ...fonts.largeBold,
