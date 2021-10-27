@@ -32,7 +32,7 @@ describe('Chat', () => {
     await element(by.text('Read more')).tap();
     await element(by.text('Chat')).tap();
 
-    await waitAndTypeText('main.chat.input.input', message_from_mentee);
+    await waitAndTypeText('main.chat.input.input', message_from_mentee, true);
     await element(by.id('main.chat.input.button')).tap();
 
     await forceLogout();
@@ -43,7 +43,7 @@ describe('Chat', () => {
 
     await element(by.text(mentee.displayName)).tap();
 
-    await waitAndTypeText('main.chat.input.input', message_from_mentor);
+    await waitAndTypeText('main.chat.input.input', message_from_mentor, true);
     await element(by.id('main.chat.input.button')).tap();
 
     await forceLogout();

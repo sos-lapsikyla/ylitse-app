@@ -30,7 +30,7 @@ describe('Filter chats', () => {
     await element(by.text('Read more')).tap();
     await element(by.text('Chat')).tap();
 
-    await waitAndTypeText('main.chat.input.input', 'Hi');
+    await waitAndTypeText('main.chat.input.input', 'Hi', true);
     await element(by.id('main.chat.input.button')).tap();
 
     await forceLogout();
@@ -55,7 +55,7 @@ describe('Filter chats', () => {
     await element(by.text('Read more')).tap();
     await element(by.text('Chat')).tap();
 
-    await waitAndTypeText('main.chat.input.input', 'Hi');
+    await waitAndTypeText('main.chat.input.input', 'Hi', true);
     await element(by.id('main.chat.input.button')).tap();
 
     await forceLogout();

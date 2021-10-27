@@ -28,7 +28,7 @@ describe('changeEmail', () => {
     await element(by.id('main.settings.account.email.change')).tap();
 
     await element(by.id('main.settings.account.email.input')).clearText();
-    await waitAndTypeText('main.settings.account.email.input', newEmail + '\n');
+    await waitAndTypeText('main.settings.account.email.input', newEmail);
     await expect(element(by.text('Invalid email address'))).toBeNotVisible();
     await element(by.id('main.settings.account.email.save')).tap();
     await expect(element(by.text(newEmail))).toBeVisible();
@@ -46,7 +46,7 @@ describe('changeEmail', () => {
     await element(by.id('main.settings.account.email.change')).tap();
 
     await element(by.id('main.settings.account.email.input')).clearText();
-    await waitAndTypeText('main.settings.account.email.input', newEmail + '\n');
+    await waitAndTypeText('main.settings.account.email.input', newEmail);
     await expect(element(by.text('Invalid email address'))).toBeVisible();
 
     await waitFor(element(by.id('main.settings.account.email.save')))

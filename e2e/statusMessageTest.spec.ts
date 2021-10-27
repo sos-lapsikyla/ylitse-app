@@ -96,6 +96,7 @@ describe('Change status message', () => {
     await waitAndTypeText(
       'main.settings.account.status.input',
       newStatusMessage,
+      true,
     );
     await scrollDownAndTap(
       'main.settings.account.status.save',

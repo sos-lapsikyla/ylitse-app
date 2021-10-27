@@ -41,7 +41,7 @@ describe('SignUp', () => {
     await element(by.id('onboarding.displayName.inputTitle')).clearText();
     await waitAndTypeText(
       'onboarding.displayName.inputTitle',
-      `${mentee.displayName}\n`,
+      `${mentee.displayName}`,
     );
     await scrollDownAndTap(
       'onboarding.displayName.nextButton',

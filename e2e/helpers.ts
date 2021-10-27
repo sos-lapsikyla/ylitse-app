@@ -59,11 +59,18 @@ export async function scrollUpTo(elementId: string, viewId: string) {
 /**
  * Waits until input is visible and then types given text
  */
-export async function waitAndTypeText(elementId: string, text: string) {
+export async function waitAndTypeText(
+  elementId: string,
+  text: string,
+  multiline: boolean = false,
+) {
   await waitFor(element(by.id(elementId)))
     .toBeVisible()
     .withTimeout(5000);
   await element(by.id(elementId)).typeText(text);
+  if (!multiline) {
+    await element(by.id(elementId)).tapReturnKey();
+  }
 }
 
 /**
@@ -80,13 +87,18 @@ export async function signIn(details: any) {
   );
   await scrollDownAndTap('onboarding.sign.in', 'onboarding.mentorlist.view');
 
-  await waitAndTypeText('onboarding.signUp.userName', `${details.loginName}\n`);
-  await waitAndTypeText('onboarding.signUp.password', `${details.password}\n`);
+  await waitAndTypeText('onboarding.signUp.userName', `${details.loginName}`);
+  await waitAndTypeText('onboarding.signUp.password', `${details.password}`);
 
   await waitFor(element(by.id('onboarding.signUp.button')))
     .toBeVisible()
     .withTimeout(5000);
-  await scrollDownAndTap('onboarding.signUp.button', 'onboarding.signUp.view');
+  await scrollDownAndTap(
+    'onboarding.signUp.button',
+    'onboarding.signUp.view',
+    0,
+    0,
+  );
 }
 
 /**
