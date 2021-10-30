@@ -44,7 +44,7 @@
     },
     "ios.sim.twelve-mini.debug": {
       "binaryPath": "ios/build/Build/Products/Debug-iphonesimulator/ylitse.app",
-      "build": "xcodebuild -workspace ios/ylitse.xcworkspace -configuration Debug -scheme ylitse -destination 'platform=iOS Simulator,name=iPhone 12 mini,OS=14.2' -derivedDataPath ios/build",
+      "build": "xcodebuild -workspace ios/ylitse.xcworkspace -configuration Debug -scheme ylitse -destination 'platform=iOS Simulator,name=iPhone 12 mini,OS=15.0' -derivedDataPath ios/build",
       "type": "ios.simulator",
       "device": {
         "type": "iPhone 12 mini"
@@ -52,7 +52,7 @@
     },
     "ios.sim.se.debug": {
       "binaryPath": "ios/build/Build/Products/Debug-iphonesimulator/ylitse.app",
-      "build": "xcodebuild -workspace ios/ylitse.xcworkspace -configuration Debug -scheme ylitse -destination 'platform=iOS Simulator,name=iPhone SE (2nd generation),OS=14.2' -derivedDataPath ios/build",
+      "build": "xcodebuild -workspace ios/ylitse.xcworkspace -configuration Debug -scheme ylitse -destination 'platform=iOS Simulator,name=iPhone SE (2nd generation),OS=15.0' -derivedDataPath ios/build",
       "type": "ios.simulator",
       "device": {
         "type": "iPhone SE (2nd generation)"

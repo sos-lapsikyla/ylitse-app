@@ -1,5 +1,5 @@
 import { by, element, expect, device, waitFor } from 'detox';
-import { describe, it, beforeEach } from '@jest/globals';
+import { describe, it, beforeEach, beforeAll } from '@jest/globals';
 
 import {
   APISignUpMentee,
@@ -12,6 +12,9 @@ import {
 const accountFixtures = require('./fixtures/accounts.json');
 
 describe('changeEmail', () => {
+  beforeAll(async () => {
+    await device.launchApp();
+  });
   beforeEach(async () => {
     await APIDeleteAccounts();
     await device.reloadReactNative();

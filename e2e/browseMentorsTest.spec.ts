@@ -1,5 +1,11 @@
 import { by, element, expect, device } from 'detox';
-import { describe, it, beforeEach, expect as jestExpect } from '@jest/globals';
+import {
+  describe,
+  it,
+  beforeEach,
+  beforeAll,
+  expect as jestExpect,
+} from '@jest/globals';
 
 import {
   APISignUpMentee,
@@ -12,6 +18,9 @@ import {
 const accountFixtures = require('./fixtures/accounts.json');
 
 describe('Browse mentors', () => {
+  beforeAll(async () => {
+    await device.launchApp();
+  });
   beforeEach(async () => {
     await APIDeleteAccounts();
     await device.reloadReactNative();
