@@ -1,5 +1,5 @@
 import { by, element, expect, device, waitFor } from 'detox';
-import { describe, it, beforeEach, beforeAll } from '@jest/globals';
+import { describe, it, beforeEach } from '@jest/globals';
 
 import {
   APISignUpMentee,

@@ -68,6 +68,7 @@ export async function waitAndTypeText(
     .toBeVisible()
     .withTimeout(5000);
   await element(by.id(elementId)).typeText(text);
+
   if (!multiline) {
     await element(by.id(elementId)).tapReturnKey();
   }
