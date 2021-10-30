@@ -12,7 +12,8 @@
     "eslint": "npm run eslint:check && eslint '{src,e2e}/**/*.{ts,tsx}'",
     "eslint:fix": "npm run eslint:check && eslint --fix '{src,e2e}/**/*.{ts,tsx}'",
     "prettier": "prettier --list-different '{src,e2e}/**/*.{ts,tsx}'",
-    "lint": "npx tsc && npm run eslint && npm run prettier"
+    "lint": "npx tsc && npm run eslint && npm run prettier",
+    "postinstall": "patch-package"
   },
   "dependencies": {
     "@devexperts/remote-data-ts": "2.0.4",
@@ -62,6 +63,7 @@
     "jest-circus": "26.6.3",
     "metro-react-native-babel-preset": "0.66.2",
     "node-fetch": "3.0.0-beta.9",
+    "patch-package": "6.4.7",
     "prettier": "2.3.1",
     "react-native-svg-asset-plugin": "0.5.0",
     "react-test-renderer": "17.0.2",
