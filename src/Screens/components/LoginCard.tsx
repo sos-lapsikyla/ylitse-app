@@ -135,6 +135,7 @@ const styles = RN.StyleSheet.create({
   badgeStyle: {
     height: 32,
     width: 32,
+    marginTop: 4,
   },
 });
 export default LoginCard;
