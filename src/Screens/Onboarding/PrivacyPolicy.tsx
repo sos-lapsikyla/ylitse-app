@@ -111,32 +111,47 @@ const PrivacyPolicy = ({
           messageOn={'onboarding.privacyPolicy.switch'}
           messageOff={'onboarding.privacyPolicy.switch'}
         />
+        <RN.View style={styles.buttonContainer}>
+          <Button
+            style={styles.backButton}
+            messageId="meta.back"
+            onPress={goBack}
+            noShadow={true}
+          />
 
-        <Button
-          style={styles.nextButton}
-          onPress={onNextPress}
-          messageId="onboarding.privacyPolicy.nextButton"
-          badge={require('../images/arrow.svg')}
-          disabled={!isAgreed || !isOver15}
-          loading={RD.isPending(createUserState)}
-          testID="onboarding.privacyPolicy.nextButton"
-        />
-        <Button messageId="meta.back" onPress={goBack} noShadow={true} />
+          <Button
+            style={
+              isAgreed && isOver15 ? styles.nextButton : styles.notValidButton
+            }
+            badgeStyle={styles.arrow}
+            onPress={onNextPress}
+            messageId="onboarding.privacyPolicy.nextButton"
+            badge={require('../images/arrow-right.svg')}
+            disabled={!isAgreed || !isOver15}
+            loading={RD.isPending(createUserState)}
+            testID="onboarding.privacyPolicy.nextButton"
+          />
+        </RN.View>
       </Card>
     </OnboardingBackground>
   );
 };
 
 const styles = RN.StyleSheet.create({
+  arrow: {
+    marginTop: 4,
+    width: 32,
+    height: 32,
+  },
   card: {
-    padding: 24,
+    padding: 32,
     alignSelf: 'stretch',
   },
   title: {
     ...fonts.titleBold,
     textAlign: 'center',
     color: colors.darkestBlue,
-    marginBottom: 40,
+    marginBottom: 32,
   },
   nickNameInput: {
     marginBottom: 24,
@@ -144,24 +159,41 @@ const styles = RN.StyleSheet.create({
   bodyText: {
     ...fonts.regular,
     color: colors.darkestBlue,
-    marginBottom: 40,
+    marginBottom: 32,
   },
   bodyText3: {
     ...fonts.regular,
     color: colors.darkestBlue,
     marginBottom: 5,
   },
-
+  buttonContainer: {
+    marginTop: 16,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-around',
+  },
+  backButton: {
+    backgroundColor: colors.lightestGray,
+  },
+  notValidButton: {
+    backgroundColor: colors.lightestGray,
+    flex: 1,
+    marginHorizontal: 20,
+    width: 32,
+    height: 32,
+  },
   nextButton: {
-    marginBottom: 14,
-    backgroundColor: colors.blue,
+    flex: 1,
+    marginHorizontal: 20,
+    width: 32,
+    height: 32,
   },
   toggleMargin: {
     marginBottom: 16,
   },
   link: {},
   errorText: {},
-  switch: { marginLeft: 16 },
+  switch: {},
 });
 
 export default ReactRedux.connect<StateProps, {}, OwnProps, state.AppState>(

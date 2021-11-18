@@ -6,7 +6,6 @@ import * as navigationProps from '../../lib/navigation-props';
 import OnboardingBackground from '../components/OnboardingBackground';
 import Card from '../components/Card';
 import MessageButton from '../components/MessageButton';
-import ButtonContainer from '../components/ButtonContainer';
 import fonts from '../components/fonts';
 import colors from '../components/colors';
 
@@ -51,9 +50,13 @@ export default ({ navigation }: Props) => {
           onPress={navigateSignIn}
           testID="onboarding.sign.in"
         />
-        <ButtonContainer style={styles.backButton} onPress={goBack}>
-          <RN.Image source={require('../images/chevron-left.svg')} />
-        </ButtonContainer>
+        <MessageButton
+          style={styles.backButton}
+          messageId="meta.back"
+          messageStyle={styles.signText}
+          onPress={goBack}
+          testID="onboarding.back"
+        />
       </Card>
     </OnboardingBackground>
   );
@@ -75,9 +78,11 @@ const styles = RN.StyleSheet.create({
   nextButton: {
     minHeight: 64,
     marginBottom: 48,
+    marginHorizontal: 32,
   },
   backButton: {
     minHeight: 64,
     backgroundColor: colors.lightestGray,
+    marginHorizontal: 32,
   },
 });

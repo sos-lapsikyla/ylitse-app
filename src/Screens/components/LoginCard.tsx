@@ -82,19 +82,21 @@ const LoginCard = ({
       />
       <RN.View style={styles.buttonContainer}>
         <Button
-          style={styles.signUpButton}
-          messageId={nextMessageId}
-          onPress={() => onPressNext(credentials)}
-          badge={require('../images/arrow.svg')}
-          loading={RD.isPending(remoteAction)}
-          disabled={isEmptyFields}
-          testID="onboarding.signUp.button"
-        />
-        <Button
           messageId="onboarding.signUp.back"
           onPress={onPressBack}
           noShadow={true}
-          style={{ backgroundColor: colors.lightestGray }}
+          style={styles.backButton}
+        />
+
+        <Button
+          style={styles.signUpButton}
+          badgeStyle={styles.badgeStyle}
+          messageId={nextMessageId}
+          onPress={() => onPressNext(credentials)}
+          badge={require('../images/arrow-right.svg')}
+          loading={RD.isPending(remoteAction)}
+          disabled={isEmptyFields}
+          testID="onboarding.signUp.button"
         />
       </RN.View>
     </Card>
@@ -106,25 +108,33 @@ const styles = RN.StyleSheet.create({
     ...fonts.titleBold,
     textAlign: 'center',
     color: colors.darkestBlue,
-    marginBottom: 40,
+    marginBottom: 10,
   },
   nickNameInput: {
-    marginBottom: 24,
+    marginBottom: 10,
   },
   passwordInput: {
-    marginBottom: 16,
+    marginBottom: 10,
   },
   errorText: {
     marginBottom: 16,
   },
   buttonContainer: {
-    justifyContent: 'space-between',
+    flexDirection: 'row',
     alignItems: 'center',
-    flexDirection: 'column',
+    justifyContent: 'space-around',
+  },
+  backButton: {
+    backgroundColor: colors.lightestGray,
+    flex: 1,
+    marginHorizontal: 20,
   },
   signUpButton: {
-    flexGrow: 1,
-    marginBottom: 16,
+    flex: 2,
+  },
+  badgeStyle: {
+    height: 32,
+    width: 32,
   },
 });
 export default LoginCard;

@@ -12,6 +12,7 @@ import Spinner from './Spinner';
 interface Props {
   onPress: () => void | undefined;
   style?: RN.StyleProp<RN.ViewStyle>;
+  badgeStyle?: RN.StyleProp<RN.ImageStyle>;
   messageId: localization.MessageId;
   messageStyle?: RN.StyleProp<RN.TextStyle>;
   badge?: RN.ImageSourcePropType;
@@ -26,6 +27,7 @@ const Button = ({
   messageStyle,
   onPress,
   style,
+  badgeStyle,
   badge,
   loading,
   disabled,
@@ -46,7 +48,7 @@ const Button = ({
     >
       <Message style={[styles.message, messageStyle]} id={messageId} />
       {!badge || loading ? null : (
-        <RN.Image style={styles.badge} source={badge} />
+        <RN.Image style={badgeStyle ?? styles.badge} source={badge} />
       )}
       {loading ? <Spinner style={styles.badge} /> : null}
     </RN.TouchableOpacity>

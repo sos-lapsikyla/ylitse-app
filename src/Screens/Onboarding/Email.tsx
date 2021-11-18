@@ -47,31 +47,36 @@ const Email = ({ navigation }: Props) => {
   return (
     <OnboardingBackground testID="onboarding.email.view">
       <Card style={styles.card}>
-        <Message style={styles.title} id="onboarding.email.title" />
-        <NamedInputField
-          autoCapitalize="none"
-          style={styles.nickNameInput}
-          name="onboarding.email.inputTitle"
-          onChangeText={setEmail}
-          autoComplete="off"
-          value={email}
-          testID="onboarding.email.inputTitle"
-        />
-        <Message style={styles.bodyText} id="onboarding.email.bodyText" />
-        <Button
-          style={styles.nextButton}
-          onPress={navigateNext}
-          messageId="onboarding.email.nextButton"
-          badge={require('../images/arrow.svg')}
-          testID="onboarding.email.nextButton"
-          disabled={!isValidEmail}
-        />
-        <Button
-          messageId="onboarding.signUp.back"
-          onPress={goBack}
-          noShadow={true}
-          style={{ backgroundColor: colors.lightestGray }}
-        />
+        <RN.View>
+          <Message style={styles.title} id="onboarding.email.title" />
+          <NamedInputField
+            autoCapitalize="none"
+            style={styles.nickNameInput}
+            name="onboarding.email.inputTitle"
+            onChangeText={setEmail}
+            autoCompleteType="off"
+            value={email}
+            testID="onboarding.email.inputTitle"
+          />
+          <Message style={styles.bodyText} id="onboarding.email.bodyText" />
+        </RN.View>
+        <RN.View style={styles.buttonContainer}>
+          <Button
+            messageId="onboarding.signUp.back"
+            onPress={goBack}
+            noShadow={true}
+            style={styles.backButton}
+          />
+          <Button
+            style={styles.nextButton}
+            badgeStyle={styles.badgeStyle}
+            onPress={navigateNext}
+            messageId="onboarding.email.nextButton"
+            badge={require('../images/arrow-right.svg')}
+            testID="onboarding.email.nextButton"
+            disabled={!isValidEmail}
+          />
+        </RN.View>
       </Card>
     </OnboardingBackground>
   );
@@ -79,24 +84,42 @@ const Email = ({ navigation }: Props) => {
 
 const styles = RN.StyleSheet.create({
   card: {
+    flex: 1,
+    flexDirection: 'column',
+    justifyContent: 'space-between',
     padding: 24,
+    marginVertical: 20,
     alignSelf: 'stretch',
   },
   title: {
     ...fonts.titleBold,
     textAlign: 'center',
     color: colors.darkestBlue,
-    marginBottom: 40,
+    marginBottom: 16,
   },
   nickNameInput: {
     marginBottom: 24,
+  },
+  buttonContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-around',
   },
   bodyText: {
     ...fonts.regular,
     color: colors.darkestBlue,
     marginBottom: 40,
   },
-  nextButton: { marginBottom: 16 },
+  nextButton: { flex: 1, width: 32, height: 32 },
+  backButton: {
+    backgroundColor: colors.lightestGray,
+    marginHorizontal: 20,
+  },
+  badgeStyle: {
+    height: 32,
+    width: 32,
+    marginTop: 4,
+  },
 });
 
 export default Email;

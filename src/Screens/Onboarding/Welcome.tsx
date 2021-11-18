@@ -104,6 +104,7 @@ const styles = RN.StyleSheet.create({
     ...fonts.largeBold,
     textAlign: 'center',
     marginBottom: 32,
+    color: '#00B1E6',
   },
   text: {
     ...fonts.regularBold,
@@ -124,5 +125,5 @@ const styles = RN.StyleSheet.create({
     color: colors.black,
     textAlign: 'center',
   },
-  link: { alignSelf: 'center', marginBottom: 32 },
+  link: { alignSelf: 'center', marginBottom: 32, fontSize: 10 },
 });
