@@ -96,6 +96,52 @@ export function fetchMessages(
   );
 }
 
+let msgs: undefined | Message[];
+
+export const createMessages = (
+  amount: number,
+  buddyId: string,
+): Array<Message> => {
+  if (msgs) {
+    return msgs;
+  }
+
+  const createMsg = (i: number) => ({
+    type: 'Sent' as const,
+    buddyId: buddyId,
+    isSeen: true,
+    content: 'lol wut',
+    sentTime: new Date().getTime(),
+    messageId: i.toString(),
+  });
+
+  msgs = [...Array(amount).keys()].map(createMsg);
+
+  return msgs;
+};
+
+export function fakeMessages(
+  _accessToken: authApi.AccessToken,
+): TE.TaskEither<string, Record<string, Record<string, Message>>> {
+  const resources = createMessages(
+    10,
+    'QP1PGhDb-2i51Og8wiGGJIAdK2C2WV8GutSuqkEGyu4',
+  );
+
+  const messages = resources.reduce(
+    (acc: Record<string, Record<string, Message>>, message: Message) => ({
+      ...acc,
+      [message.buddyId]: {
+        ...acc[message.buddyId],
+        [message.messageId]: message,
+      },
+    }),
+    {},
+  );
+
+  return TE.right(messages);
+}
+
 export type SendMessageParams = {
   buddyId: string;
   text: string;

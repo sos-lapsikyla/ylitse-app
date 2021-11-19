@@ -36,7 +36,7 @@ export const reducer: automaton.Reducer<State, actions.Action> = (
         : automaton.loop(
             { polling: true, messages: RD.pending },
             withToken(
-              messageApi.fetchMessages,
+              messageApi.fakeMessages,
               actions.make('messages/get/completed'),
             ),
           );
