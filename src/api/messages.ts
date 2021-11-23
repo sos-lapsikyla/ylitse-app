@@ -124,7 +124,7 @@ export function fakeMessages(
   _accessToken: authApi.AccessToken,
 ): TE.TaskEither<string, Record<string, Record<string, Message>>> {
   const resources = createMessages(
-    10,
+    10000,
     'QP1PGhDb-2i51Og8wiGGJIAdK2C2WV8GutSuqkEGyu4',
   );
 

@@ -1,17 +1,15 @@
 import React from 'react';
 import RN from 'react-native';
-import { useSelector } from 'react-redux';
 
 import * as localization from '../../../../localization';
 
-import { getMessagesByBuddyId } from '../../../../state/reducers/messages';
-
 import * as messageApi from '../../../../api/messages';
 
-import Message, { MessageProps } from './Message';
-import DateBubble, { DateBubbleProps } from './DateBubble';
+import { MessageProps } from './Message';
+import { DateBubbleProps } from './DateBubble';
+import { MemoizedRenderItem } from '../RenderMessage';
 
-type Props = { buddyId: string };
+type Props = { messageList: Array<messageApi.Message> };
 
 const getDate = (n: number) => {
   const date = new Date(n);
@@ -70,29 +68,26 @@ export function toRenderable(messages: messageApi.Message[]): Renderable[] {
     .reverse();
 }
 
-function renderItem({ item }: { item: Renderable }) {
-  if (item.type === 'Message') {
-    return <Message {...item} />;
-  } else {
-    return <DateBubble {...item} />;
-  }
-}
-
-export default ({ buddyId }: Props) => {
-  const messageList = useSelector(getMessagesByBuddyId(buddyId));
-  messageList.sort(({ sentTime: A }, { sentTime: B }) => A - B);
+const MessageList = ({ messageList }: Props) => {
   const messages = toRenderable(messageList);
 
   return (
     <RN.FlatList
       contentContainerStyle={styles.scrollContent}
       data={messages}
-      renderItem={renderItem}
+      renderItem={({ item }) => <MemoizedRenderItem item={item} />}
       keyExtractor={item => item.id}
       inverted={true}
     />
   );
 };
+
+const equalProps = (
+  prevProps: React.ComponentProps<typeof MessageList>,
+  nextProps: React.ComponentProps<typeof MessageList>,
+) => prevProps.messageList.length === nextProps.messageList.length;
+
+export const MemoizedMessageList = React.memo(MessageList, equalProps);
 
 const styles = RN.StyleSheet.create({
   scrollContent: {

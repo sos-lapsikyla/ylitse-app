@@ -6,6 +6,7 @@ import * as ReactRedux from 'react-redux';
 import * as selectors from '../../../state/selectors';
 import * as mentorState from '../../../state/reducers/mentors';
 import * as newMessageState from '../../../state/reducers/newMessage';
+import { getMessagesByBuddyId } from '../../../state/reducers/messages';
 import * as actions from '../../../state/actions';
 
 import * as navigationProps from '../../../lib/navigation-props';
@@ -13,7 +14,7 @@ import useLayout from '../../../lib/use-layout';
 
 import Title from './Title';
 import Input from './Input';
-import MessageList from './MessageList';
+import { MemoizedMessageList } from './MessageList';
 import DropDown, { DropDownItem } from '../../components/DropDownMenu';
 import { Dialog, DialogProps } from '../../components/Dialog';
 
@@ -37,6 +38,9 @@ const Chat = ({ navigation }: Props) => {
   };
 
   const buddyId = navigation.getParam('buddyId');
+
+  const messageList = ReactRedux.useSelector(getMessagesByBuddyId(buddyId));
+  messageList.sort(({ sentTime: A }, { sentTime: B }) => A - B);
 
   const mentor = ReactRedux.useSelector(mentorState.getMentorByUserId(buddyId));
 
@@ -191,7 +195,7 @@ const Chat = ({ navigation }: Props) => {
             messageId="main.chat.send.failure"
           />
         ) : (
-          <MessageList buddyId={buddyId} />
+          <MemoizedMessageList messageList={messageList} />
         )}
         <Input style={styles.input} buddyId={buddyId} />
       </RN.KeyboardAvoidingView>
