@@ -7,7 +7,7 @@ import * as messageApi from '../../../../api/messages';
 
 import { MessageProps } from './Message';
 import { DateBubbleProps } from './DateBubble';
-import { MemoizedRenderItem } from '../RenderMessage';
+import { MemoizedRenderItem } from './MemoizedRenderItem';
 
 type Props = { messageList: Array<messageApi.Message> };
 

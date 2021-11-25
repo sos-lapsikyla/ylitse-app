@@ -1,8 +1,8 @@
 import React, { ComponentProps } from 'react';
 
-import Message from './MessageList/Message';
-import DateBubble from './MessageList/DateBubble';
-import { Renderable } from './MessageList';
+import Message from './Message';
+import DateBubble from './DateBubble';
+import { Renderable } from '.';
 
 type Props = {
   item: Renderable;
