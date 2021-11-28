@@ -11,6 +11,8 @@ import * as validators from '../lib/validators';
 import * as authApi from './auth';
 import * as config from './config';
 
+import { amountOfBuddies } from './buddies';
+
 type ApiMessage = t.TypeOf<typeof messageType>;
 
 const messageType = t.interface({
@@ -100,22 +102,26 @@ let msgs: undefined | Message[];
 
 export const createMessages = (
   amount: number,
-  buddyId: string,
+  maxBuddies: number,
 ): Array<Message> => {
   if (msgs) {
     return msgs;
   }
 
-  const createMsg = (i: number) => ({
-    type: 'Sent' as const,
-    buddyId: buddyId,
-    isSeen: true,
-    content: 'lol wut',
-    sentTime: new Date().getTime(),
-    messageId: i.toString(),
-  });
+  const createMsg = (i: number, maxBuddies: number) => {
+    const buddyIndex = Math.floor(Math.random() * maxBuddies);
+    const buddyId = `Buddy_${buddyIndex}`;
+    return {
+      type: 'Sent' as const,
+      buddyId,
+      isSeen: false,
+      content: 'lol wut',
+      sentTime: new Date().getTime(),
+      messageId: i.toString(),
+    };
+  };
 
-  msgs = [...Array(amount).keys()].map(createMsg);
+  msgs = [...Array(amount).keys()].map(i => createMsg(i, maxBuddies));
 
   return msgs;
 };
@@ -123,10 +129,7 @@ export const createMessages = (
 export function fakeMessages(
   _accessToken: authApi.AccessToken,
 ): TE.TaskEither<string, Record<string, Record<string, Message>>> {
-  const resources = createMessages(
-    10000,
-    'QP1PGhDb-2i51Og8wiGGJIAdK2C2WV8GutSuqkEGyu4',
-  );
+  const resources = createMessages(10000, amountOfBuddies);
 
   const messages = resources.reduce(
     (acc: Record<string, Record<string, Message>>, message: Message) => ({

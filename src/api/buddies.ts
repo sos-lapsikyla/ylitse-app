@@ -61,6 +61,29 @@ const toBuddies = ({ resources }: t.TypeOf<typeof buddiesType>) =>
     return { ...acc, [buddy.buddyId]: buddy };
   }, {});
 
+const createBuddy = (id: string): Buddy => {
+  return {
+    buddyId: id,
+    name: id,
+    status: 'NotBanned',
+  };
+};
+
+export const amountOfBuddies = 3;
+
+const createBuddies = (amount: number) =>
+  [...Array(amount).keys()].reduce<Record<string, Buddy>>((acc, curr) => {
+    const buddyId = `Buddy_${curr}`;
+    return { ...acc, [buddyId]: createBuddy(buddyId) };
+  }, {});
+
+export function fakeBuddies(
+  _accessToken: authApi.AccessToken,
+): TE.TaskEither<string, Record<string, Buddy>> {
+  const buddies = createBuddies(amountOfBuddies);
+  return TE.right(buddies);
+}
+
 export function fetchBuddies(
   accessToken: authApi.AccessToken,
 ): TE.TaskEither<string, Record<string, Buddy>> {

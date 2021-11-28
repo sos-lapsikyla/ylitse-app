@@ -50,7 +50,7 @@ export const reducer: automaton.Reducer<State, actions.Action> = (
               : automaton.loop(
                   RD.pending,
                   withToken(
-                    buddyApi.fetchBuddies,
+                    buddyApi.fakeBuddies,
                     actions.make('buddies/completed'),
                   ),
                 );
