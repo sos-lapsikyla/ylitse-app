@@ -30,6 +30,7 @@ describe('validateEmail', () => {
     'email@example.com (Joe Smith)',
     'email@example',
     'email@111.222.333.44444',
+    'no,comma.allowed@example.com',
     'a',
     `${'x'.repeat(400)}@example.org`,
   ].forEach(invalidEmail => {

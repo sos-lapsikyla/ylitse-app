@@ -23,7 +23,7 @@ const isValidEmail = (value: string): boolean => {
     return false;
   }
 
-  return /^[a-zA-Z0-9!#$%&'*+\-/=?^_`.{|}~]{1,64}@[a-z0-9.-]+\.[a-z]{2,64}$/.test(
+  return /^[a-zA-Z0-9!#$%&'*+\-/=?^_`.{|}~]{1,64}@[a-z0-9.\-]+\.[a-z]{2,64}$/.test(
     value,
   );
 };
