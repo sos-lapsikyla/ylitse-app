@@ -9,7 +9,10 @@ import { MessageProps } from './Message';
 import { DateBubbleProps } from './DateBubble';
 import { MemoizedRenderItem } from './MemoizedRenderItem';
 
-type Props = { messageList: Array<messageApi.Message> };
+type Props = {
+  messageList: Array<messageApi.Message>;
+  getPreviousMessages: (previousMsgId: string) => void;
+};
 
 const getDate = (n: number) => {
   const date = new Date(n);
@@ -68,8 +71,9 @@ export function toRenderable(messages: messageApi.Message[]): Renderable[] {
     .reverse();
 }
 
-const MessageList = ({ messageList }: Props) => {
+const MessageList = ({ messageList, getPreviousMessages }: Props) => {
   const messages = toRenderable(messageList);
+  const previousItem = messageList.length > 0 ? messageList[0].messageId : '0';
 
   return (
     <RN.FlatList
@@ -78,6 +82,7 @@ const MessageList = ({ messageList }: Props) => {
       renderItem={({ item }) => <MemoizedRenderItem item={item} />}
       keyExtractor={item => item.id}
       inverted={true}
+      onEndReached={() => getPreviousMessages(previousItem)}
     />
   );
 };

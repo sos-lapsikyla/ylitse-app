@@ -74,6 +74,7 @@ export const amountOfBuddies = 3;
 const createBuddies = (amount: number) =>
   [...Array(amount).keys()].reduce<Record<string, Buddy>>((acc, curr) => {
     const buddyId = `Buddy_${curr}`;
+
     return { ...acc, [buddyId]: createBuddy(buddyId) };
   }, {});
 
@@ -81,6 +82,7 @@ export function fakeBuddies(
   _accessToken: authApi.AccessToken,
 ): TE.TaskEither<string, Record<string, Buddy>> {
   const buddies = createBuddies(amountOfBuddies);
+
   return TE.right(buddies);
 }
 

@@ -66,8 +66,8 @@ export const reducer: automaton.Reducer<State, actions.Action> = (
       );
 
     case 'buddies/completed':
-      const buddies = pipe(action.payload, RD.fromEither, RD.map(record.keys));
-      const buddyIds = RD.isSuccess(buddies) ? buddies.value : [];
+      const bds = pipe(action.payload, RD.fromEither, RD.map(record.keys));
+      const buddyIds = RD.isSuccess(bds) ? bds.value : [];
 
       return automaton.loop(
         RD.fromEither(action.payload),

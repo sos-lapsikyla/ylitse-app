@@ -42,6 +42,13 @@ const Chat = ({ navigation }: Props) => {
   const messageList = ReactRedux.useSelector(getMessagesByBuddyId(buddyId));
   messageList.sort(({ sentTime: A }, { sentTime: B }) => A - B);
 
+  const getPreviousMessages = (previousMsgId: string) => {
+    dispatch({
+      type: 'messages/getContactMessages/start',
+      payload: { buddyId, previousMsgId },
+    });
+  };
+
   const mentor = ReactRedux.useSelector(mentorState.getMentorByUserId(buddyId));
 
   const isMessageSendFailed = ReactRedux.useSelector(
@@ -195,7 +202,10 @@ const Chat = ({ navigation }: Props) => {
             messageId="main.chat.send.failure"
           />
         ) : (
-          <MemoizedMessageList messageList={messageList} />
+          <MemoizedMessageList
+            messageList={messageList}
+            getPreviousMessages={getPreviousMessages}
+          />
         )}
         <Input style={styles.input} buddyId={buddyId} />
       </RN.KeyboardAvoidingView>

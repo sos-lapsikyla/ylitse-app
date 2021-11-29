@@ -74,6 +74,15 @@ type RegularActions = {
     Record<string, Record<string, messageApi.Message>>
   >;
 
+  'messages/getContactMessages/start': {
+    buddyId: string;
+    previousMsgId: string;
+  };
+  'messages/getContactMessages/complete': E.Either<
+    string,
+    Record<string, Record<string, messageApi.Message>>
+  >;
+
   'messages/get/completed': Result<typeof messageApi.fetchMessages>;
   'messages/markSeen': { message: messageApi.Message };
   'messages/markSeen/end': undefined;

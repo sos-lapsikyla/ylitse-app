@@ -16,6 +16,7 @@ import * as types from '../types';
 
 import { withToken } from './accessToken';
 import { getIsBanned } from '../selectors';
+import { isRight } from 'fp-ts/lib/Either';
 
 export type State = types.AppState['messages'];
 export type LoopState = actions.LS<State>;
@@ -54,6 +55,41 @@ export const reducer: automaton.Reducer<State, actions.Action> = (
 
     case 'messages/getLast/completed': {
       return { ...state, messages: RD.fromEither(action.payload) };
+    }
+
+    case 'messages/getContactMessages/start': {
+      const nextAction = withToken(
+        messageApi.getFakeMessagesFromContact(action.payload),
+        response =>
+          actions.make('messages/getContactMessages/complete')(response),
+      );
+
+      return automaton.loop(state, nextAction);
+    }
+
+    case 'messages/getContactMessages/complete': {
+      if (RD.isSuccess(state.messages) && isRight(action.payload)) {
+        const newMessages = action.payload.right;
+        const keys = Object.keys(newMessages);
+
+        const nextMessages = keys.reduce(
+          (
+            acc: Record<string, Record<string, messageApi.Message>>,
+            curr: string,
+          ) => {
+            const messages = newMessages[curr]
+              ? { ...newMessages[curr], ...acc[curr] }
+              : acc[curr];
+
+            return { ...acc, [curr]: messages };
+          },
+          state.messages.value,
+        );
+
+        return { ...state, messages: RD.success(nextMessages) };
+      }
+
+      return state;
     }
 
     case 'messages/get/completed': {
