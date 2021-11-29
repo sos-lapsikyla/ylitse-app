@@ -187,6 +187,39 @@ export const fakeGetLastFromContacts = (
   return _accessToken => TE.right(messages);
 };
 
+const newMessage = (msgId: string) => {
+  const buddyIndex = Math.floor(Math.random() * amountOfBuddies);
+  const buddyId = `Buddy_${buddyIndex}`;
+  const messageId = (Number(msgId) + 1).toString();
+  const isSeen = false;
+  const content = `new ${(Math.random() + 1).toString(36).substring(7)}`;
+
+  return {
+    type: 'Sent' as const,
+    buddyId,
+    isSeen,
+    content,
+    sentTime: new Date().getTime(),
+    messageId,
+  };
+};
+
+export const getFakeNewMessages = (
+  previousMsgId: string,
+): ((
+  _accessToken: authApi.AccessToken,
+) => TE.TaskEither<string, Record<string, Record<string, Message>>>) => {
+  // variable that randomly true -> if true, then generate new messages (larger than the incoming id)
+  const willGenerateNewMessage = Math.random() > 0.5;
+  if (willGenerateNewMessage) {
+    const newMsg = newMessage(previousMsgId);
+    const msgDict = { [newMsg.buddyId]: { [newMsg.messageId]: newMsg } };
+
+    return _accessToken => TE.right(msgDict);
+  }
+  return _accessToken => TE.left('No new messages');
+};
+
 export type SendMessageParams = {
   buddyId: string;
   text: string;
@@ -235,3 +268,16 @@ export const readMessage = (buddyId: string) =>
     T.map(O.chain(O.fromNullable)),
     T.map(O.getOrElse(() => '')),
   );
+
+export const extractMostRecentId = (
+  msgs: Record<string, Record<string, Message>>,
+): string => {
+  const allMessages = Object.keys(msgs).reduce((acc, curr) => {
+    return { ...acc, ...msgs[curr] };
+  }, {});
+  const allIds = Object.keys(allMessages)
+    .map(k => Number(k))
+    .sort()
+    .reverse();
+  return allIds[0].toString() ?? '0';
+};

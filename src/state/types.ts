@@ -45,6 +45,7 @@ export type AppState = {
   messages: {
     polling: boolean;
     messages: RemoteData<messageApi.Threads>;
+    previousMsgId: string;
   };
   newMessage: Record<
     BuddyId,

@@ -83,7 +83,11 @@ type RegularActions = {
     Record<string, Record<string, messageApi.Message>>
   >;
 
-  'messages/get/completed': Result<typeof messageApi.fetchMessages>;
+  'messages/get/completed': E.Either<
+    string,
+    Record<string, Record<string, messageApi.Message>>
+  >;
+
   'messages/markSeen': { message: messageApi.Message };
   'messages/markSeen/end': undefined;
 

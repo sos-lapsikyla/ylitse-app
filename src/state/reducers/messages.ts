@@ -24,6 +24,7 @@ export type LoopState = actions.LS<State>;
 export const initialState = {
   polling: false,
   messages: RD.initial,
+  previousMsgId: '',
 };
 
 export const reducer: automaton.Reducer<State, actions.Action> = (
@@ -32,16 +33,15 @@ export const reducer: automaton.Reducer<State, actions.Action> = (
 ) => {
   switch (action.type) {
     case 'token/Acquired': {
-      return state;
-      // return !RD.isInitial(state.messages)
-      //   ? state
-      //   : automaton.loop(
-      //       { polling: true, messages: RD.pending },
-      //       withToken(
-      //         messageApi.fakeMessages,
-      //         actions.make('messages/get/completed'),
-      //       ),
-      //     );
+      return !RD.isInitial(state.messages)
+        ? state
+        : automaton.loop(
+            { ...state, polling: true, messages: RD.pending },
+            withToken(
+              messageApi.getFakeNewMessages(state.previousMsgId),
+              response => actions.make('messages/get/completed')(response),
+            ),
+          );
     }
 
     case 'messages/getLast/start': {
@@ -54,7 +54,15 @@ export const reducer: automaton.Reducer<State, actions.Action> = (
     }
 
     case 'messages/getLast/completed': {
-      return { ...state, messages: RD.fromEither(action.payload) };
+      const newRecentMessageId = isRight(action.payload)
+        ? messageApi.extractMostRecentId(action.payload.right)
+        : state.previousMsgId;
+
+      return {
+        ...state,
+        messages: RD.fromEither(action.payload),
+        previousMsgId: newRecentMessageId,
+      };
     }
 
     case 'messages/getContactMessages/start': {
@@ -97,20 +105,45 @@ export const reducer: automaton.Reducer<State, actions.Action> = (
         return state;
       }
 
-      const nextState = {
-        ...state,
-        messages: RD.remoteData.alt(
-          RD.fromEither(action.payload),
-          () => state.messages,
-        ),
-      };
-
       const nextCmd = withToken(
-        flow(messageApi.fakeMessages, T.delay(config.messageFetchDelay)),
-        actions.make('messages/get/completed'),
+        flow(
+          messageApi.getFakeNewMessages(state.previousMsgId),
+          T.delay(config.messageFetchDelay),
+        ),
+        response => actions.make('messages/get/completed')(response),
       );
 
-      return automaton.loop(nextState, nextCmd);
+      if (RD.isSuccess(state.messages) && isRight(action.payload)) {
+        const newMessages = action.payload.right;
+        const keys = Object.keys(newMessages);
+
+        const newRecentMessage = messageApi.extractMostRecentId(newMessages);
+
+        const nextMessages = keys.reduce(
+          (
+            acc: Record<string, Record<string, messageApi.Message>>,
+            curr: string,
+          ) => {
+            const messages = newMessages[curr]
+              ? { ...newMessages[curr], ...acc[curr] }
+              : acc[curr];
+
+            return { ...acc, [curr]: messages };
+          },
+          state.messages.value,
+        );
+
+        return automaton.loop(
+          {
+            ...state,
+            messages: RD.success(nextMessages),
+            previousMsgId: newRecentMessage,
+          },
+          nextCmd,
+        );
+      }
+
+      return automaton.loop(state, nextCmd);
     }
     default:
       return state;

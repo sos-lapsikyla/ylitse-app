@@ -33,37 +33,42 @@ export const reducer: automaton.Reducer<State, actions.Action> = (
     }
 
     case 'messages/get/completed':
-      return pipe(
-        action.payload,
-        E.fold(
-          () => state,
-          messages => {
-            const requiredBuddies = set.fromArray(Eq.eqString)(
-              record.keys(messages),
-            );
+      return state;
+    // return pipe(
+    //   action.payload,
+    //   E.fold(
+    //     () => state,
+    //     messages => {
+    //       const requiredBuddies = set.fromArray(Eq.eqString)(
+    //         record.keys(messages),
+    //       );
 
-            const hasAllBuddies = pipe(
-              state,
-              RD.map(record.keys),
-              RD.map(set.fromArray(Eq.eqString)),
-              RD.map(existingBuddies =>
-                set.getEq(Eq.eqString).equals(existingBuddies, requiredBuddies),
-              ),
-              RD.getOrElse(() => false),
-            );
+    //       console.log('requiredBuddies', requiredBuddies);
 
-            return hasAllBuddies
-              ? state
-              : automaton.loop(
-                  RD.pending,
-                  withToken(
-                    buddyApi.fakeBuddies,
-                    actions.make('buddies/completed'),
-                  ),
-                );
-          },
-        ),
-      );
+    //       const hasAllBuddies = pipe(
+    //         state,
+    //         RD.map(record.keys),
+    //         RD.map(set.fromArray(Eq.eqString)),
+    //         RD.map(existingBuddies =>
+    //           set.getEq(Eq.eqString).equals(existingBuddies, requiredBuddies),
+    //         ),
+    //         RD.getOrElse(() => false),
+    //       );
+
+    //       console.log('hasAllBuddies', hasAllBuddies);
+
+    //       return hasAllBuddies
+    //         ? state
+    //         : automaton.loop(
+    //             RD.pending,
+    //             withToken(
+    //               buddyApi.fakeBuddies,
+    //               actions.make('buddies/completed'),
+    //             ),
+    //           );
+    //     },
+    //   ),
+    // );
 
     case 'buddies/completed':
       const bds = pipe(action.payload, RD.fromEither, RD.map(record.keys));
