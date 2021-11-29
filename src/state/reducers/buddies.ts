@@ -32,54 +32,46 @@ export const reducer: automaton.Reducer<State, actions.Action> = (
       );
     }
 
-    case 'messages/get/completed':
-      return state;
-    // return pipe(
-    //   action.payload,
-    //   E.fold(
-    //     () => state,
-    //     messages => {
-    //       const requiredBuddies = set.fromArray(Eq.eqString)(
-    //         record.keys(messages),
-    //       );
+    case 'messages/get/completed': {
+      const newMessageBuddies = pipe(
+        action.payload,
+        E.map(record.keys),
+        E.getOrElse((): string[] => []),
+      );
 
-    //       console.log('requiredBuddies', requiredBuddies);
+      const allBuddies = pipe(
+        state,
+        RD.map(record.keys),
+        RD.getOrElse((): string[] => []),
+      );
 
-    //       const hasAllBuddies = pipe(
-    //         state,
-    //         RD.map(record.keys),
-    //         RD.map(set.fromArray(Eq.eqString)),
-    //         RD.map(existingBuddies =>
-    //           set.getEq(Eq.eqString).equals(existingBuddies, requiredBuddies),
-    //         ),
-    //         RD.getOrElse(() => false),
-    //       );
+      const stateHasNewMessageBuddies =
+        allBuddies.filter(buddy => !newMessageBuddies.includes(buddy)).length >
+        0;
 
-    //       console.log('hasAllBuddies', hasAllBuddies);
+      return stateHasNewMessageBuddies
+        ? state
+        : automaton.loop(
+            RD.pending,
+            withToken(buddyApi.fakeBuddies, actions.make('buddies/completed')),
+          );
+    }
 
-    //       return hasAllBuddies
-    //         ? state
-    //         : automaton.loop(
-    //             RD.pending,
-    //             withToken(
-    //               buddyApi.fakeBuddies,
-    //               actions.make('buddies/completed'),
-    //             ),
-    //           );
-    //     },
-    //   ),
-    // );
-
-    case 'buddies/completed':
-      const bds = pipe(action.payload, RD.fromEither, RD.map(record.keys));
-      const buddyIds = RD.isSuccess(bds) ? bds.value : [];
+    case 'buddies/completed': {
+      const buddies = pipe(
+        action.payload,
+        RD.fromEither,
+        RD.map(record.keys),
+        RD.getOrElse((): string[] => []),
+      );
 
       return automaton.loop(
         RD.fromEither(action.payload),
-        actions.make('messages/getLast/start')(buddyIds),
+        actions.make('messages/getLast/start')(buddies),
       );
+    }
 
-    case 'buddies/changeBanStatus/end':
+    case 'buddies/changeBanStatus/end': {
       return pipe(
         action.payload,
         E.fold(
@@ -94,6 +86,7 @@ export const reducer: automaton.Reducer<State, actions.Action> = (
             ),
         ),
       );
+    }
 
     case 'buddies/changeBanStatusBatch/end':
       if (E.isRight(action.payload) && RD.isSuccess(state)) {

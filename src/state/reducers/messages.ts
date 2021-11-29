@@ -39,7 +39,7 @@ export const reducer: automaton.Reducer<State, actions.Action> = (
             { ...state, polling: true, messages: RD.pending },
             withToken(
               messageApi.getFakeNewMessages(state.previousMsgId),
-              response => actions.make('messages/get/completed')(response),
+              actions.make('messages/get/completed'),
             ),
           );
     }
@@ -47,7 +47,7 @@ export const reducer: automaton.Reducer<State, actions.Action> = (
     case 'messages/getLast/start': {
       const nextAction = withToken(
         messageApi.fakeGetLastFromContacts(action.payload),
-        response => actions.make('messages/getLast/completed')(response),
+        actions.make('messages/getLast/completed'),
       );
 
       return automaton.loop(state, nextAction);
@@ -68,36 +68,35 @@ export const reducer: automaton.Reducer<State, actions.Action> = (
     case 'messages/getContactMessages/start': {
       const nextAction = withToken(
         messageApi.getFakeMessagesFromContact(action.payload),
-        response =>
-          actions.make('messages/getContactMessages/complete')(response),
+        actions.make('messages/getContactMessages/complete'),
       );
 
       return automaton.loop(state, nextAction);
     }
 
     case 'messages/getContactMessages/complete': {
-      if (RD.isSuccess(state.messages) && isRight(action.payload)) {
-        const newMessages = action.payload.right;
-        const keys = Object.keys(newMessages);
-
-        const nextMessages = keys.reduce(
-          (
-            acc: Record<string, Record<string, messageApi.Message>>,
-            curr: string,
-          ) => {
-            const messages = newMessages[curr]
-              ? { ...newMessages[curr], ...acc[curr] }
-              : acc[curr];
-
-            return { ...acc, [curr]: messages };
-          },
-          state.messages.value,
-        );
-
-        return { ...state, messages: RD.success(nextMessages) };
+      if (!(RD.isSuccess(state.messages) && isRight(action.payload))) {
+        return state;
       }
 
-      return state;
+      const newMessages = action.payload.right;
+      const buddyIds = Object.keys(newMessages);
+
+      const nextMessages = buddyIds.reduce(
+        (
+          existingMessages: Record<string, Record<string, messageApi.Message>>,
+          buddyId: string,
+        ) => {
+          const newBuddyMessages = newMessages[buddyId];
+          const oldBuddyMessages = existingMessages[buddyId];
+          const allBuddyMessages = { ...oldBuddyMessages, ...newBuddyMessages };
+
+          return { ...existingMessages, [buddyId]: allBuddyMessages };
+        },
+        state.messages.value,
+      );
+
+      return { ...state, messages: RD.success(nextMessages) };
     }
 
     case 'messages/get/completed': {
@@ -110,41 +109,42 @@ export const reducer: automaton.Reducer<State, actions.Action> = (
           messageApi.getFakeNewMessages(state.previousMsgId),
           T.delay(config.messageFetchDelay),
         ),
-        response => actions.make('messages/get/completed')(response),
+        actions.make('messages/get/completed'),
       );
 
-      if (RD.isSuccess(state.messages) && isRight(action.payload)) {
-        const newMessages = action.payload.right;
-        const keys = Object.keys(newMessages);
-
-        const newRecentMessage = messageApi.extractMostRecentId(newMessages);
-
-        const nextMessages = keys.reduce(
-          (
-            acc: Record<string, Record<string, messageApi.Message>>,
-            curr: string,
-          ) => {
-            const messages = newMessages[curr]
-              ? { ...newMessages[curr], ...acc[curr] }
-              : acc[curr];
-
-            return { ...acc, [curr]: messages };
-          },
-          state.messages.value,
-        );
-
-        return automaton.loop(
-          {
-            ...state,
-            messages: RD.success(nextMessages),
-            previousMsgId: newRecentMessage,
-          },
-          nextCmd,
-        );
+      if (!(RD.isSuccess(state.messages) && isRight(action.payload))) {
+        return automaton.loop(state, nextCmd);
       }
 
-      return automaton.loop(state, nextCmd);
+      const newMessages = action.payload.right;
+      const buddyIds = Object.keys(newMessages);
+
+      const newRecentMessage = messageApi.extractMostRecentId(newMessages);
+
+      const nextMessages = buddyIds.reduce(
+        (
+          existingMessages: Record<string, Record<string, messageApi.Message>>,
+          buddyId: string,
+        ) => {
+          const newBuddyMessages = newMessages[buddyId];
+          const oldBuddyMessages = existingMessages[buddyId];
+          const allBuddyMessages = { ...oldBuddyMessages, ...newBuddyMessages };
+
+          return { ...existingMessages, [buddyId]: allBuddyMessages };
+        },
+        state.messages.value,
+      );
+
+      return automaton.loop(
+        {
+          ...state,
+          messages: RD.success(nextMessages),
+          previousMsgId: newRecentMessage,
+        },
+        nextCmd,
+      );
     }
+
     default:
       return state;
   }
