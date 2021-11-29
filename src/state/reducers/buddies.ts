@@ -25,6 +25,13 @@ export const reducer: automaton.Reducer<State, actions.Action> = (
   action: actions.Action,
 ) => {
   switch (action.type) {
+    case 'token/Acquired': {
+      return automaton.loop(
+        RD.pending,
+        withToken(buddyApi.fakeBuddies, actions.make('buddies/completed')),
+      );
+    }
+
     case 'messages/get/completed':
       return pipe(
         action.payload,
@@ -59,7 +66,13 @@ export const reducer: automaton.Reducer<State, actions.Action> = (
       );
 
     case 'buddies/completed':
-      return RD.fromEither(action.payload);
+      const buddies = pipe(action.payload, RD.fromEither, RD.map(record.keys));
+      const buddyIds = RD.isSuccess(buddies) ? buddies.value : [];
+
+      return automaton.loop(
+        RD.fromEither(action.payload),
+        actions.make('messages/getLast/start')(buddyIds),
+      );
 
     case 'buddies/changeBanStatus/end':
       return pipe(

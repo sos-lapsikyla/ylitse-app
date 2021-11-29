@@ -31,16 +31,31 @@ export const reducer: automaton.Reducer<State, actions.Action> = (
 ) => {
   switch (action.type) {
     case 'token/Acquired': {
-      return !RD.isInitial(state.messages)
-        ? state
-        : automaton.loop(
-            { polling: true, messages: RD.pending },
-            withToken(
-              messageApi.fakeMessages,
-              actions.make('messages/get/completed'),
-            ),
-          );
+      return state;
+      // return !RD.isInitial(state.messages)
+      //   ? state
+      //   : automaton.loop(
+      //       { polling: true, messages: RD.pending },
+      //       withToken(
+      //         messageApi.fakeMessages,
+      //         actions.make('messages/get/completed'),
+      //       ),
+      //     );
     }
+
+    case 'messages/getLast/start': {
+      const nextAction = withToken(
+        messageApi.fakeGetLastFromContacts(action.payload),
+        response => actions.make('messages/getLast/completed')(response),
+      );
+
+      return automaton.loop(state, nextAction);
+    }
+
+    case 'messages/getLast/completed': {
+      return { ...state, messages: RD.fromEither(action.payload) };
+    }
+
     case 'messages/get/completed': {
       if (!state.polling) {
         return state;

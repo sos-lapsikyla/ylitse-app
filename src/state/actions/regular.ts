@@ -68,6 +68,12 @@ type RegularActions = {
 
   'token/refresh/required': (token: authApi.AccessToken) => Action;
 
+  'messages/getLast/start': Array<string>;
+  'messages/getLast/completed': E.Either<
+    string,
+    Record<string, Record<string, messageApi.Message>>
+  >;
+
   'messages/get/completed': Result<typeof messageApi.fetchMessages>;
   'messages/markSeen': { message: messageApi.Message };
   'messages/markSeen/end': undefined;

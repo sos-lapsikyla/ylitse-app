@@ -98,38 +98,36 @@ export function fetchMessages(
   );
 }
 
-let msgs: undefined | Message[];
+const amountOfLastMessages = 10;
+const amountOfTotalMessages = 10000;
 
-export const createMessages = (
-  amount: number,
-  maxBuddies: number,
-): Array<Message> => {
-  if (msgs) {
-    return msgs;
-  }
-
-  const createMsg = (i: number, maxBuddies: number) => {
-    const buddyIndex = Math.floor(Math.random() * maxBuddies);
-    const buddyId = `Buddy_${buddyIndex}`;
-    return {
-      type: 'Sent' as const,
-      buddyId,
-      isSeen: false,
-      content: 'lol wut',
-      sentTime: new Date().getTime(),
-      messageId: i.toString(),
-    };
+const createMsg = (i: number, maxBuddies: number) => {
+  const buddyIndex = Math.floor(Math.random() * maxBuddies);
+  const buddyId = `Buddy_${buddyIndex}`;
+  const messageId = i.toString();
+  const isSeen = true;
+  return {
+    type: 'Sent' as const,
+    buddyId,
+    isSeen,
+    content: (Math.random() + 1).toString(36).substring(7),
+    sentTime: new Date().getTime(),
+    messageId,
   };
-
-  msgs = [...Array(amount).keys()].map(i => createMsg(i, maxBuddies));
-
-  return msgs;
 };
+
+let msgs: Message[] | undefined = undefined;
+const createMessages = (amount: number, maxBuddies: number): Array<Message> => {
+  if (msgs) return msgs;
+  return [...Array(amount).keys()].map(i => createMsg(i, maxBuddies));
+};
+
+msgs = createMessages(amountOfTotalMessages, amountOfBuddies);
 
 export function fakeMessages(
   _accessToken: authApi.AccessToken,
 ): TE.TaskEither<string, Record<string, Record<string, Message>>> {
-  const resources = createMessages(10000, amountOfBuddies);
+  const resources = createMessages(amountOfTotalMessages, amountOfBuddies);
 
   const messages = resources.reduce(
     (acc: Record<string, Record<string, Message>>, message: Message) => ({
@@ -144,6 +142,36 @@ export function fakeMessages(
 
   return TE.right(messages);
 }
+
+export const fakeGetLastFromContacts = (
+  buddyIds: Array<string>,
+): ((
+  _accessToken: authApi.AccessToken,
+) => TE.TaskEither<string, Record<string, Record<string, Message>>>) => {
+  const resources = buddyIds
+    .map(
+      buddyId =>
+        msgs ??
+        createMessages(amountOfTotalMessages, amountOfBuddies)
+          .filter(msg => msg.buddyId === buddyId)
+          .reverse()
+          .slice(0, amountOfLastMessages),
+    )
+    .flat();
+
+  const messages = resources.reduce(
+    (acc: Record<string, Record<string, Message>>, message: Message) => ({
+      ...acc,
+      [message.buddyId]: {
+        ...acc[message.buddyId],
+        [message.messageId]: message,
+      },
+    }),
+    {},
+  );
+
+  return _accessToken => TE.right(messages);
+};
 
 export type SendMessageParams = {
   buddyId: string;
