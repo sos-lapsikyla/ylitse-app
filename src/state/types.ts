@@ -39,7 +39,10 @@ export type AppState = {
 
   mentors: RemoteData<Record<BuddyId, mentorsApi.Mentor>>;
   skillFilter: string[];
-  buddies: RemoteData<Record<BuddyId, buddyApi.Buddy>>;
+  buddies: {
+    buddies: RemoteData<Record<BuddyId, buddyApi.Buddy>>;
+    isInitialFetch: boolean;
+  };
   banBuddyRequest: RemoteAction;
 
   messages: {

@@ -80,20 +80,10 @@ export const reducer: automaton.Reducer<State, actions.Action> = (
       }
 
       const newMessages = action.payload.right;
-      const buddyIds = Object.keys(newMessages);
 
-      const nextMessages = buddyIds.reduce(
-        (
-          existingMessages: Record<string, Record<string, messageApi.Message>>,
-          buddyId: string,
-        ) => {
-          const newBuddyMessages = newMessages[buddyId];
-          const oldBuddyMessages = existingMessages[buddyId];
-          const allBuddyMessages = { ...oldBuddyMessages, ...newBuddyMessages };
-
-          return { ...existingMessages, [buddyId]: allBuddyMessages };
-        },
+      const nextMessages = messageApi.mergeMessageRecords(
         state.messages.value,
+        newMessages,
       );
 
       return { ...state, messages: RD.success(nextMessages) };
@@ -117,22 +107,11 @@ export const reducer: automaton.Reducer<State, actions.Action> = (
       }
 
       const newMessages = action.payload.right;
-      const buddyIds = Object.keys(newMessages);
-
       const newRecentMessage = messageApi.extractMostRecentId(newMessages);
 
-      const nextMessages = buddyIds.reduce(
-        (
-          existingMessages: Record<string, Record<string, messageApi.Message>>,
-          buddyId: string,
-        ) => {
-          const newBuddyMessages = newMessages[buddyId];
-          const oldBuddyMessages = existingMessages[buddyId];
-          const allBuddyMessages = { ...oldBuddyMessages, ...newBuddyMessages };
-
-          return { ...existingMessages, [buddyId]: allBuddyMessages };
-        },
+      const nextMessages = messageApi.mergeMessageRecords(
         state.messages.value,
+        newMessages,
       );
 
       return automaton.loop(

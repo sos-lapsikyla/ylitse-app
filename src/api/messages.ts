@@ -2,6 +2,8 @@ import * as t from 'io-ts';
 import * as TE from 'fp-ts/lib/TaskEither';
 import * as T from 'fp-ts/lib/Task';
 import * as O from 'fp-ts/lib/Option';
+import { getMonoid } from 'fp-ts/Record';
+import { Semigroup } from 'fp-ts/Semigroup';
 import { pipe } from 'fp-ts/lib/pipeable';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
@@ -211,12 +213,14 @@ export const getFakeNewMessages = (
 ) => TE.TaskEither<string, Record<string, Record<string, Message>>>) => {
   // variable that randomly true -> if true, then generate new messages (larger than the incoming id)
   const willGenerateNewMessage = Math.random() > 0.5;
+
   if (willGenerateNewMessage) {
     const newMsg = newMessage(previousMsgId);
     const msgDict = { [newMsg.buddyId]: { [newMsg.messageId]: newMsg } };
 
     return _accessToken => TE.right(msgDict);
   }
+
   return _accessToken => TE.left('No new messages');
 };
 
@@ -270,14 +274,30 @@ export const readMessage = (buddyId: string) =>
   );
 
 export const extractMostRecentId = (
-  msgs: Record<string, Record<string, Message>>,
+  messages: Record<string, Record<string, Message>>,
 ): string => {
-  const allMessages = Object.keys(msgs).reduce((acc, curr) => {
-    return { ...acc, ...msgs[curr] };
+  const allMessages = Object.keys(messages).reduce((acc, curr) => {
+    return { ...acc, ...messages[curr] };
   }, {});
+
   const allIds = Object.keys(allMessages)
     .map(k => Number(k))
     .sort()
     .reverse();
+
   return allIds[0].toString() ?? '0';
+};
+
+type Msgs = Record<string, Message>;
+
+const semiGroupMessage: Semigroup<Msgs> = {
+  concat: (a: Msgs, b: Msgs) => ({ ...a, ...b }),
+};
+export const mergeMessageRecords = (
+  newMessages: Record<string, Msgs>,
+  existingMessages: Record<string, Msgs>,
+) => {
+  const M = getMonoid(semiGroupMessage);
+
+  return M.concat(newMessages, existingMessages);
 };
