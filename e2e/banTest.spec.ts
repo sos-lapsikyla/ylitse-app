@@ -1,5 +1,5 @@
 import { by, element, expect, device, waitFor } from 'detox';
-import { describe, it, beforeEach } from '@jest/globals';
+import { describe, it, beforeEach, beforeAll } from '@jest/globals';
 
 import {
   APISignUpMentee,
@@ -14,6 +14,9 @@ import {
 const accountFixtures = require('./fixtures/accounts.json');
 
 describe('Filter chats', () => {
+  beforeAll(async () => {
+    await device.launchApp();
+  });
   beforeEach(async () => {
     await APIDeleteAccounts();
     await device.reloadReactNative();
@@ -31,7 +34,7 @@ describe('Filter chats', () => {
     await element(by.text('Read more')).tap();
     await element(by.text('Chat')).tap();
 
-    await waitAndTypeText('main.chat.input.input', 'Hi');
+    await waitAndTypeText('main.chat.input.input', 'Hi', true);
     await element(by.id('main.chat.input.button')).tap();
 
     await forceLogout();
@@ -65,7 +68,7 @@ describe('Filter chats', () => {
     await signIn(mentee);
     await element(by.text('Read more')).tap();
     await element(by.text('Chat')).tap();
-    await waitAndTypeText('main.chat.input.input', 'Notice me Senpai!');
+    await waitAndTypeText('main.chat.input.input', 'Notice me Senpai!', true);
     await element(by.id('main.chat.input.button')).tap();
     await forceLogout();
 
@@ -96,7 +99,7 @@ describe('Filter chats', () => {
     await element(by.text('Read more')).tap();
     await element(by.text('Chat')).tap();
 
-    await waitAndTypeText('main.chat.input.input', 'Hi');
+    await waitAndTypeText('main.chat.input.input', 'Hi', true);
     await element(by.id('main.chat.input.button')).tap();
 
     await forceLogout();
@@ -138,7 +141,7 @@ describe('Filter chats', () => {
     await element(by.text('Read more')).tap();
     await element(by.text('Chat')).tap();
 
-    await waitAndTypeText('main.chat.input.input', 'Hi');
+    await waitAndTypeText('main.chat.input.input', 'Hi', true);
     await element(by.id('main.chat.input.button')).tap();
 
     await forceLogout();
@@ -176,7 +179,7 @@ describe('Filter chats', () => {
     await signIn(mentee);
     await element(by.text('Read more')).tap();
     await element(by.text('Chat')).tap();
-    await waitAndTypeText('main.chat.input.input', 'Notice me Senpai!');
+    await waitAndTypeText('main.chat.input.input', 'Notice me Senpai!', true);
     await element(by.id('main.chat.input.button')).tap();
     await forceLogout();
 
@@ -209,7 +212,7 @@ describe('Filter chats', () => {
     await element(by.text('Read more')).tap();
     await element(by.text('Chat')).tap();
 
-    await waitAndTypeText('main.chat.input.input', 'Hi');
+    await waitAndTypeText('main.chat.input.input', 'Hi', true);
     await element(by.id('main.chat.input.button')).tap();
 
     await forceLogout();
@@ -219,7 +222,7 @@ describe('Filter chats', () => {
     await element(by.text('Read more')).tap();
     await element(by.text('Chat')).tap();
 
-    await waitAndTypeText('main.chat.input.input', 'Hi!');
+    await waitAndTypeText('main.chat.input.input', 'Hi!', true);
     await element(by.id('main.chat.input.button')).tap();
 
     await forceLogout();

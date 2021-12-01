@@ -1,5 +1,5 @@
 import { by, element, expect, device, waitFor } from 'detox';
-import { describe, it, beforeEach } from '@jest/globals';
+import { describe, it, beforeEach, beforeAll } from '@jest/globals';
 
 import {
   APISignUpMentee,
@@ -12,6 +12,9 @@ import {
 const accountFixtures = require('./fixtures/accounts.json');
 
 describe('changeEmail', () => {
+  beforeAll(async () => {
+    await device.launchApp();
+  });
   beforeEach(async () => {
     await APIDeleteAccounts();
     await device.reloadReactNative();
@@ -28,7 +31,7 @@ describe('changeEmail', () => {
     await element(by.id('main.settings.account.email.change')).tap();
 
     await element(by.id('main.settings.account.email.input')).clearText();
-    await waitAndTypeText('main.settings.account.email.input', newEmail + '\n');
+    await waitAndTypeText('main.settings.account.email.input', newEmail);
     await expect(element(by.text('Invalid email address'))).toBeNotVisible();
     await element(by.id('main.settings.account.email.save')).tap();
     await expect(element(by.text(newEmail))).toBeVisible();
@@ -46,7 +49,7 @@ describe('changeEmail', () => {
     await element(by.id('main.settings.account.email.change')).tap();
 
     await element(by.id('main.settings.account.email.input')).clearText();
-    await waitAndTypeText('main.settings.account.email.input', newEmail + '\n');
+    await waitAndTypeText('main.settings.account.email.input', newEmail);
     await expect(element(by.text('Invalid email address'))).toBeVisible();
 
     await waitFor(element(by.id('main.settings.account.email.save')))

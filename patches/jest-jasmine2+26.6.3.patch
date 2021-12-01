@@ -1,0 +1,18 @@
+# https://github.com/wix/Detox/issues/2610
+diff --git a/node_modules/jest-jasmine2/build/types.d.ts b/node_modules/jest-jasmine2/build/types.d.ts
+index 2e65dbf..1631693 100644
+--- a/node_modules/jest-jasmine2/build/types.d.ts
++++ b/node_modules/jest-jasmine2/build/types.d.ts
+@@ -72,11 +72,5 @@ export declare type Jasmine = {
+     testPath: Config.Path;
+     addMatchers: (matchers: JasmineMatchersObject) => void;
+ } & typeof expect & NodeJS.Global;
+-declare global {
+-    module NodeJS {
+-        interface Global {
+-            expect: typeof expect;
+-        }
+-    }
+-}
++
+ export {};

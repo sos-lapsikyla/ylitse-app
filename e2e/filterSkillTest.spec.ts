@@ -1,5 +1,11 @@
-import { by, element, expect, waitFor } from 'detox';
-import { describe, it, beforeEach, expect as jestExpect } from '@jest/globals';
+import { by, element, expect, waitFor, device } from 'detox';
+import {
+  describe,
+  it,
+  beforeEach,
+  beforeAll,
+  expect as jestExpect,
+} from '@jest/globals';
 
 import {
   APISignUpMentee,
@@ -13,6 +19,9 @@ import {
 const accountFixtures = require('./fixtures/accounts.json');
 
 describe('Skill filter', () => {
+  beforeAll(async () => {
+    await device.launchApp();
+  });
   beforeEach(async () => {
     await APIDeleteAccounts();
     await forceLogout();

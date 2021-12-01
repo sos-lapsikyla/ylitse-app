@@ -62,7 +62,7 @@ const LoginCard = ({
         style={styles.nickNameInput}
         name="onboarding.signUp.userName"
         onChangeText={onUserNameChange}
-        autoCompleteType="off"
+        autoComplete="off"
         testID="onboarding.signUp.userName"
       />
       <NamedInputField
@@ -71,7 +71,7 @@ const LoginCard = ({
         name="onboarding.signUp.password"
         isPasswordInput={true}
         onChangeText={onPasswordChange}
-        autoCompleteType="off"
+        autoComplete="off"
         testID="onboarding.signUp.password"
       />
       <ErrorMessage

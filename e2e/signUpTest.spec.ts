@@ -1,5 +1,5 @@
 import { by, element, expect, device } from 'detox';
-import { describe, it, beforeEach } from '@jest/globals';
+import { describe, it, beforeEach, beforeAll } from '@jest/globals';
 
 import {
   APIDeleteAccounts,
@@ -11,6 +11,9 @@ import {
 const accountFixtures = require('./fixtures/accounts.json');
 
 describe('SignUp', () => {
+  beforeAll(async () => {
+    await device.launchApp();
+  });
   beforeEach(async () => {
     await APIDeleteAccounts();
     await device.reloadReactNative();
@@ -41,7 +44,7 @@ describe('SignUp', () => {
     await element(by.id('onboarding.displayName.inputTitle')).clearText();
     await waitAndTypeText(
       'onboarding.displayName.inputTitle',
-      `${mentee.displayName}\n`,
+      `${mentee.displayName}`,
     );
     await scrollDownAndTap(
       'onboarding.displayName.nextButton',

@@ -1,5 +1,11 @@
 import { by, element, expect, device } from 'detox';
-import { describe, it, beforeEach, expect as jestExpect } from '@jest/globals';
+import {
+  describe,
+  it,
+  beforeEach,
+  beforeAll,
+  expect as jestExpect,
+} from '@jest/globals';
 
 import {
   APISignUpMentor,
@@ -13,6 +19,9 @@ import {
 const accountFixtures = require('./fixtures/accounts.json');
 
 describe('Show status message', () => {
+  beforeAll(async () => {
+    await device.launchApp();
+  });
   beforeEach(async () => {
     await APIDeleteAccounts();
     await device.reloadReactNative();
@@ -96,6 +105,7 @@ describe('Change status message', () => {
     await waitAndTypeText(
       'main.settings.account.status.input',
       newStatusMessage,
+      true,
     );
     await scrollDownAndTap(
       'main.settings.account.status.save',

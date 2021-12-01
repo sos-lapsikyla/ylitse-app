@@ -1,5 +1,5 @@
 import { by, element, device, expect } from 'detox';
-import { describe, it, beforeEach } from '@jest/globals';
+import { describe, it, beforeEach, beforeAll } from '@jest/globals';
 
 import {
   APISignUpMentee,
@@ -13,6 +13,9 @@ import {
 const accountFixtures = require('./fixtures/accounts.json');
 
 describe('Chat', () => {
+  beforeAll(async () => {
+    await device.launchApp();
+  });
   beforeEach(async () => {
     await APIDeleteAccounts();
     await device.reloadReactNative();
@@ -32,7 +35,7 @@ describe('Chat', () => {
     await element(by.text('Read more')).tap();
     await element(by.text('Chat')).tap();
 
-    await waitAndTypeText('main.chat.input.input', message_from_mentee);
+    await waitAndTypeText('main.chat.input.input', message_from_mentee, true);
     await element(by.id('main.chat.input.button')).tap();
 
     await forceLogout();
@@ -43,7 +46,7 @@ describe('Chat', () => {
 
     await element(by.text(mentee.displayName)).tap();
 
-    await waitAndTypeText('main.chat.input.input', message_from_mentor);
+    await waitAndTypeText('main.chat.input.input', message_from_mentor, true);
     await element(by.id('main.chat.input.button')).tap();
 
     await forceLogout();
