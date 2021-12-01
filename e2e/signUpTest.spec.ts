@@ -58,7 +58,12 @@ describe('SignUp', () => {
     );
 
     await scrollDownAndTap(
-      'onboarding.privacyPolicy.agreeButton',
+      'onboarding.age.switch',
+      'onboarding.privacyPolicy.view',
+    );
+
+    await scrollDownAndTap(
+      'onboarding.privacyPolicy.switch',
       'onboarding.privacyPolicy.view',
     );
 

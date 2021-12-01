@@ -128,9 +128,14 @@ const styles = RN.StyleSheet.create({
     backgroundColor: colors.lightestGray,
     flex: 1,
     marginHorizontal: 20,
+    height: 32,
+    marginTop: 4,
   },
   signUpButton: {
     flex: 2,
+    height: 32,
+    width: 32,
+    marginTop: 4,
   },
   badgeStyle: {
     height: 32,

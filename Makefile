@@ -12,7 +12,7 @@ bundler:
 	react-native start
 
 android:
-	react-native run-android
+	npx react-native run-android
 
 build-apk:
 	cd android && ./gradlew assembleRelease

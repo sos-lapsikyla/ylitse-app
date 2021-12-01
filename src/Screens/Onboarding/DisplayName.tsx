@@ -89,7 +89,7 @@ const styles = RN.StyleSheet.create({
     flex: 1,
     flexDirection: 'column',
     justifyContent: 'space-between',
-    marginVertical: 20,
+    marginVertical: 24,
     padding: 24,
     alignSelf: 'stretch',
   },

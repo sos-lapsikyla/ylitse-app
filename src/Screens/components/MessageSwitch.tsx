@@ -30,6 +30,7 @@ const MessageSwitch: React.FC<Props> = ({
       <Message
         style={[styles.message, messageStyle]}
         id={value ? messageOn : messageOff}
+        onPress={switchProps.onPress}
       />
     </RN.View>
   );

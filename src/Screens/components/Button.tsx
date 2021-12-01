@@ -34,6 +34,8 @@ const Button = ({
   noShadow,
   testID,
 }: Props) => {
+  const shouldHideBadge = !badge || loading;
+
   return (
     <RN.TouchableOpacity
       style={[
@@ -47,10 +49,10 @@ const Button = ({
       testID={testID}
     >
       <Message style={[styles.message, messageStyle]} id={messageId} />
-      {!badge || loading ? null : (
+      {shouldHideBadge ? null : (
         <RN.Image style={badgeStyle ?? styles.badge} source={badge} />
       )}
-      {loading ? <Spinner style={styles.badge} /> : null}
+      {loading ? <Spinner style={badgeStyle ?? styles.badge} /> : null}
     </RN.TouchableOpacity>
   );
 };
@@ -75,7 +77,7 @@ const styles = RN.StyleSheet.create({
   },
   badge: {
     position: 'absolute',
-    right: 16,
+    right: 22,
     width: 48,
     height: 48,
   },
