@@ -54,7 +54,7 @@ const Email = ({ navigation }: Props) => {
             style={styles.nickNameInput}
             name="onboarding.email.inputTitle"
             onChangeText={setEmail}
-            autoCompleteType="off"
+            autoComplete="off"
             value={email}
             testID="onboarding.email.inputTitle"
           />

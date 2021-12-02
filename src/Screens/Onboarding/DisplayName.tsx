@@ -50,7 +50,7 @@ const DisplayName = ({ navigation }: Props) => {
             style={styles.nickNameInput}
             name="onboarding.displayName.inputTitle"
             onChangeText={setDisplayName}
-            autoCompleteType="off"
+            autoComplete="off"
             value={displayName}
             testID="onboarding.displayName.inputTitle"
           />
