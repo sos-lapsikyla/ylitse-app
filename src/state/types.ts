@@ -6,6 +6,7 @@ import * as accountApi from '../api/account';
 import * as buddyApi from '../api/buddies';
 import * as mentorsApi from '../api/mentors';
 import * as messageApi from '../api/messages';
+import { PollingParams } from './reducers/messages';
 
 export type indexStr = string;
 export type BuddyId = string;
@@ -47,6 +48,7 @@ export type AppState = {
 
   messages: {
     polling: boolean;
+    pollingParams: Array<PollingParams>;
     messages: RemoteData<messageApi.Threads>;
     previousMsgId: string;
   };

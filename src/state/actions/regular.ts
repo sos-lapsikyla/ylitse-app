@@ -8,6 +8,7 @@ import * as mentorApi from '../../api/mentors';
 import * as authApi from '../../api/auth';
 import * as buddyApi from '../../api/buddies';
 import * as messageApi from '../../api/messages';
+import { PollingParams } from '../reducers/messages';
 
 type RegularActions = {
   'none/none': undefined;
@@ -76,13 +77,14 @@ type RegularActions = {
 
   'messages/getContactMessages/start': {
     buddyId: string;
-    previousMsgId: string;
+    messageId: string;
   };
   'messages/getContactMessages/complete': E.Either<
     string,
     Record<string, Record<string, messageApi.Message>>
   >;
 
+  'messages/setPollingParams': PollingParams;
   'messages/get/completed': E.Either<
     string,
     Record<string, Record<string, messageApi.Message>>

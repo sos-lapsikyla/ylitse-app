@@ -26,7 +26,7 @@ export const reducer: automaton.Reducer<State, actions.Action> = (
     case 'token/Acquired': {
       return automaton.loop(
         { ...state, buddies: RD.pending },
-        withToken(buddyApi.fakeBuddies, actions.make('buddies/completed')),
+        withToken(buddyApi.fetchBuddies, actions.make('buddies/completed')),
       );
     }
 
@@ -44,19 +44,19 @@ export const reducer: automaton.Reducer<State, actions.Action> = (
       );
 
       const stateHasNewMessageBuddies =
-        allBuddies.filter(buddy => !newMessageBuddies.includes(buddy)).length >
+        newMessageBuddies.filter(buddy => !allBuddies.includes(buddy)).length >
         0;
 
       return stateHasNewMessageBuddies
-        ? state
-        : automaton.loop(
+        ? automaton.loop(
             { ...state, buddies: RD.pending },
-            withToken(buddyApi.fakeBuddies, actions.make('buddies/completed')),
-          );
+            withToken(buddyApi.fetchBuddies, actions.make('buddies/completed')),
+          )
+        : state;
     }
 
     case 'buddies/completed': {
-      const buddies = pipe(
+      const buddyIds = pipe(
         action.payload,
         RD.fromEither,
         RD.map(record.keys),
@@ -71,7 +71,10 @@ export const reducer: automaton.Reducer<State, actions.Action> = (
       return state.isInitialFetch
         ? automaton.loop(
             nextState,
-            actions.make('messages/getLast/start')(buddies),
+            actions.make('messages/setPollingParams')({
+              type: 'InitialMessages',
+              buddyIds,
+            }),
           )
         : nextState;
     }

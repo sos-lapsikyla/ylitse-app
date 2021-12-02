@@ -42,10 +42,10 @@ const Chat = ({ navigation }: Props) => {
   const messageList = ReactRedux.useSelector(getMessagesByBuddyId(buddyId));
   messageList.sort(({ sentTime: A }, { sentTime: B }) => A - B);
 
-  const getPreviousMessages = (previousMsgId: string) => {
+  const getPreviousMessages = (messageId: string) => {
     dispatch({
-      type: 'messages/getContactMessages/start',
-      payload: { buddyId, previousMsgId },
+      type: 'messages/setPollingParams',
+      payload: { type: 'OlderThan', buddyId, messageId },
     });
   };
 

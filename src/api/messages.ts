@@ -14,6 +14,7 @@ import * as authApi from './auth';
 import * as config from './config';
 
 import { amountOfBuddies } from './buddies';
+import { PollingParams } from 'src/state/reducers/messages';
 
 type ApiMessage = t.TypeOf<typeof messageType>;
 
@@ -80,7 +81,7 @@ const toMessage: (a: string) => (b: ApiMessage) => Message =
 export type MessageMapping = Record<string, Record<string, Message>>;
 export function fetchMessages(
   accessToken: authApi.AccessToken,
-): TE.TaskEither<string, Record<string, Record<string, Message>>> {
+): TE.TaskEither<string, MessageMapping> {
   return http.validateResponse(
     http.get(`${config.baseUrl}/users/${accessToken.userId}/messages`, {
       headers: authApi.authHeader(accessToken),
@@ -88,7 +89,7 @@ export function fetchMessages(
     messageListType,
     ({ resources }) =>
       resources.map(toMessage(accessToken.userId)).reduce(
-        (acc: Record<string, Record<string, Message>>, message: Message) => ({
+        (acc: MessageMapping, message: Message) => ({
           ...acc,
           [message.buddyId]: {
             ...acc[message.buddyId],
@@ -99,6 +100,48 @@ export function fetchMessages(
       ),
   );
 }
+
+const reduceToMsgRecord = (acc: MessageMapping, message: Message) => ({
+  ...acc,
+  [message.buddyId]: {
+    ...acc[message.buddyId],
+    [message.messageId]: message,
+  },
+});
+
+const createFetchParams = (pollingParams: PollingParams) => {
+  if (pollingParams.type === 'New' && pollingParams.previousMsgId.length > 0) {
+    return `?from_message_id=${pollingParams.previousMsgId}&max=10&desc=false`;
+  }
+  if (pollingParams.type === 'InitialMessages') {
+    const userIds = pollingParams.buddyIds.join(',');
+    return `?contact_user_ids=${userIds}&max=1`;
+  }
+  if (pollingParams.type === 'OlderThan') {
+    return `?contact_user_ids=${pollingParams.buddyId}&from_message_id=${pollingParams.messageId}&max=10&desc=true`;
+  }
+  return '';
+};
+
+export const fetchMessagesWithParams =
+  (params: PollingParams) =>
+  (accessToken: authApi.AccessToken): TE.TaskEither<string, MessageMapping> => {
+    const fetchParams = createFetchParams(params);
+
+    return http.validateResponse(
+      http.get(
+        `${config.baseUrl}/users/${accessToken.userId}/messages${fetchParams}`,
+        {
+          headers: authApi.authHeader(accessToken),
+        },
+      ),
+      messageListType,
+      ({ resources }) =>
+        resources
+          .map(toMessage(accessToken.userId))
+          .reduce(reduceToMsgRecord, {}),
+    );
+  };
 
 const amountOfLastMessages = 10;
 const amountOfTotalMessages = 10000;
@@ -129,20 +172,9 @@ const createMessages = (amount: number, maxBuddies: number): Array<Message> => {
   return msgs;
 };
 
-const reduceToMsgRecord = (
-  acc: Record<string, Record<string, Message>>,
-  message: Message,
-) => ({
-  ...acc,
-  [message.buddyId]: {
-    ...acc[message.buddyId],
-    [message.messageId]: message,
-  },
-});
-
 export function fakeMessages(
   _accessToken: authApi.AccessToken,
-): TE.TaskEither<string, Record<string, Record<string, Message>>> {
+): TE.TaskEither<string, MessageMapping> {
   const resources = createMessages(amountOfTotalMessages, amountOfBuddies);
 
   const messages = resources.reduce(reduceToMsgRecord, {});
@@ -152,15 +184,15 @@ export function fakeMessages(
 
 export const getFakeMessagesFromContact = (data: {
   buddyId: string;
-  previousMsgId: string;
+  messageId: string;
 }): ((
   _accessToken: authApi.AccessToken,
-) => TE.TaskEither<string, Record<string, Record<string, Message>>>) => {
+) => TE.TaskEither<string, MessageMapping>) => {
   const resources = createMessages(amountOfTotalMessages, amountOfBuddies);
 
   const messages = resources
     .filter(
-      msg => msg.buddyId === data.buddyId && msg.messageId < data.previousMsgId,
+      msg => msg.buddyId === data.buddyId && msg.messageId < data.messageId,
     )
     .reverse()
     .slice(0, amountOfLastMessages)
@@ -169,14 +201,14 @@ export const getFakeMessagesFromContact = (data: {
   return _accessToken => TE.right(messages);
 };
 
-export const fakeGetLastFromContacts = (
-  buddyIds: Array<string>,
-): ((
+export const fakeGetLastFromContacts = (params: {
+  buddyIds: Array<string>;
+}): ((
   _accessToken: authApi.AccessToken,
-) => TE.TaskEither<string, Record<string, Record<string, Message>>>) => {
+) => TE.TaskEither<string, MessageMapping>) => {
   const msgList = createMessages(amountOfTotalMessages, amountOfBuddies);
 
-  const messages = buddyIds
+  const messages = params.buddyIds
     .map(buddyId =>
       msgList
         .filter(msg => msg.buddyId === buddyId)
@@ -206,16 +238,15 @@ const newMessage = (msgId: string) => {
   };
 };
 
-export const getFakeNewMessages = (
-  previousMsgId: string,
-): ((
+export const getFakeNewMessages = (params: {
+  previousMsgId: string;
+}): ((
   _accessToken: authApi.AccessToken,
 ) => TE.TaskEither<string, Record<string, Record<string, Message>>>) => {
   // variable that randomly true -> if true, then generate new messages (larger than the incoming id)
   const willGenerateNewMessage = Math.random() > 0.5;
-
   if (willGenerateNewMessage) {
-    const newMsg = newMessage(previousMsgId);
+    const newMsg = newMessage(params.previousMsgId);
     const msgDict = { [newMsg.buddyId]: { [newMsg.messageId]: newMsg } };
 
     return _accessToken => TE.right(msgDict);
@@ -273,19 +304,23 @@ export const readMessage = (buddyId: string) =>
     T.map(O.getOrElse(() => '')),
   );
 
-export const extractMostRecentId = (
-  messages: Record<string, Record<string, Message>>,
-): string => {
-  const allMessages = Object.keys(messages).reduce((acc, curr) => {
+const sortSentTime = (a: Message, b: Message) => {
+  return a.sentTime < b.sentTime ? -1 : 1;
+};
+
+export const extractMostRecentId = (messages: MessageMapping): string => {
+  const flattenedMessages = Object.keys(messages).reduce<
+    Record<string, Message>
+  >((acc, curr) => {
     return { ...acc, ...messages[curr] };
   }, {});
 
-  const allIds = Object.keys(allMessages)
-    .map(k => Number(k))
-    .sort()
+  const allMessages = Object.keys(flattenedMessages)
+    .map(k => flattenedMessages[k])
+    .sort(sortSentTime)
     .reverse();
 
-  return allIds[0].toString() ?? '0';
+  return allMessages[0]?.messageId ?? '';
 };
 
 type Msgs = Record<string, Message>;

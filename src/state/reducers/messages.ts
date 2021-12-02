@@ -20,11 +20,19 @@ import { isRight } from 'fp-ts/lib/Either';
 
 export type State = types.AppState['messages'];
 export type LoopState = actions.LS<State>;
+export type PollingParams =
+  | {
+      type: 'New';
+      previousMsgId: string;
+    }
+  | { type: 'OlderThan'; buddyId: string; messageId: string }
+  | { type: 'InitialMessages'; buddyIds: Array<string> };
 
 export const initialState = {
   polling: false,
   messages: RD.initial,
   previousMsgId: '',
+  pollingParams: [],
 };
 
 export const reducer: automaton.Reducer<State, actions.Action> = (
@@ -32,61 +40,19 @@ export const reducer: automaton.Reducer<State, actions.Action> = (
   action,
 ) => {
   switch (action.type) {
-    case 'token/Acquired': {
-      return !RD.isInitial(state.messages)
-        ? state
-        : automaton.loop(
+    case 'messages/setPollingParams': {
+      return action.payload.type === 'InitialMessages'
+        ? automaton.loop(
             { ...state, polling: true, messages: RD.pending },
             withToken(
-              messageApi.getFakeNewMessages(state.previousMsgId),
+              messageApi.fetchMessagesWithParams(action.payload),
               actions.make('messages/get/completed'),
             ),
-          );
-    }
-
-    case 'messages/getLast/start': {
-      const nextAction = withToken(
-        messageApi.fakeGetLastFromContacts(action.payload),
-        actions.make('messages/getLast/completed'),
-      );
-
-      return automaton.loop(state, nextAction);
-    }
-
-    case 'messages/getLast/completed': {
-      const newRecentMessageId = isRight(action.payload)
-        ? messageApi.extractMostRecentId(action.payload.right)
-        : state.previousMsgId;
-
-      return {
-        ...state,
-        messages: RD.fromEither(action.payload),
-        previousMsgId: newRecentMessageId,
-      };
-    }
-
-    case 'messages/getContactMessages/start': {
-      const nextAction = withToken(
-        messageApi.getFakeMessagesFromContact(action.payload),
-        actions.make('messages/getContactMessages/complete'),
-      );
-
-      return automaton.loop(state, nextAction);
-    }
-
-    case 'messages/getContactMessages/complete': {
-      if (!(RD.isSuccess(state.messages) && isRight(action.payload))) {
-        return state;
-      }
-
-      const newMessages = action.payload.right;
-
-      const nextMessages = messageApi.mergeMessageRecords(
-        state.messages.value,
-        newMessages,
-      );
-
-      return { ...state, messages: RD.success(nextMessages) };
+          )
+        : {
+            ...state,
+            pollingParams: state.pollingParams.concat(action.payload),
+          };
     }
 
     case 'messages/get/completed': {
@@ -94,31 +60,43 @@ export const reducer: automaton.Reducer<State, actions.Action> = (
         return state;
       }
 
+      const newMessages = isRight(action.payload) ? action.payload.right : {};
+
+      const nextMessages = messageApi.mergeMessageRecords(
+        RD.isSuccess(state.messages) ? state.messages.value : {},
+        newMessages,
+      );
+
+      const previousMsgId = messageApi.extractMostRecentId(nextMessages);
+
+      const pollingParams: PollingParams = state.pollingParams[0] ?? {
+        type: 'New',
+        previousMsgId,
+      };
+
       const nextCmd = withToken(
         flow(
-          messageApi.getFakeNewMessages(state.previousMsgId),
+          messageApi.fetchMessagesWithParams(pollingParams),
           T.delay(config.messageFetchDelay),
         ),
         actions.make('messages/get/completed'),
       );
 
-      if (!(RD.isSuccess(state.messages) && isRight(action.payload))) {
-        return automaton.loop(state, nextCmd);
+      const nextPollingParams = state.pollingParams.filter((_p, i) => i !== 0);
+
+      if (!isRight(action.payload)) {
+        return automaton.loop(
+          { ...state, pollingParams: nextPollingParams },
+          nextCmd,
+        );
       }
-
-      const newMessages = action.payload.right;
-      const newRecentMessage = messageApi.extractMostRecentId(newMessages);
-
-      const nextMessages = messageApi.mergeMessageRecords(
-        state.messages.value,
-        newMessages,
-      );
 
       return automaton.loop(
         {
           ...state,
           messages: RD.success(nextMessages),
-          previousMsgId: newRecentMessage,
+          previousMsgId,
+          pollingParams: nextPollingParams,
         },
         nextCmd,
       );
