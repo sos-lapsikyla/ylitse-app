@@ -69,26 +69,8 @@ type RegularActions = {
 
   'token/refresh/required': (token: authApi.AccessToken) => Action;
 
-  'messages/getLast/start': Array<string>;
-  'messages/getLast/completed': E.Either<
-    string,
-    Record<string, Record<string, messageApi.Message>>
-  >;
-
-  'messages/getContactMessages/start': {
-    buddyId: string;
-    messageId: string;
-  };
-  'messages/getContactMessages/complete': E.Either<
-    string,
-    Record<string, Record<string, messageApi.Message>>
-  >;
-
   'messages/setPollingParams': PollingParams;
-  'messages/get/completed': E.Either<
-    string,
-    Record<string, Record<string, messageApi.Message>>
-  >;
+  'messages/get/completed': E.Either<string, messageApi.MessageMapping>;
 
   'messages/markSeen': { message: messageApi.Message };
   'messages/markSeen/end': undefined;

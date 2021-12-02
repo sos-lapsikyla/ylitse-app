@@ -45,7 +45,7 @@ export const reducer: automaton.Reducer<State, actions.Action> = (
         ? automaton.loop(
             { ...state, polling: true, messages: RD.pending },
             withToken(
-              messageApi.fetchMessagesWithParams(action.payload),
+              messageApi.fetchMessages(action.payload),
               actions.make('messages/get/completed'),
             ),
           )
@@ -62,8 +62,12 @@ export const reducer: automaton.Reducer<State, actions.Action> = (
 
       const newMessages = isRight(action.payload) ? action.payload.right : {};
 
+      const currentMessages = RD.isSuccess(state.messages)
+        ? state.messages.value
+        : {};
+
       const nextMessages = messageApi.mergeMessageRecords(
-        RD.isSuccess(state.messages) ? state.messages.value : {},
+        currentMessages,
         newMessages,
       );
 
@@ -76,20 +80,13 @@ export const reducer: automaton.Reducer<State, actions.Action> = (
 
       const nextCmd = withToken(
         flow(
-          messageApi.fetchMessagesWithParams(pollingParams),
+          messageApi.fetchMessages(pollingParams),
           T.delay(config.messageFetchDelay),
         ),
         actions.make('messages/get/completed'),
       );
 
       const nextPollingParams = state.pollingParams.filter((_p, i) => i !== 0);
-
-      if (!isRight(action.payload)) {
-        return automaton.loop(
-          { ...state, pollingParams: nextPollingParams },
-          nextCmd,
-        );
-      }
 
       return automaton.loop(
         {
