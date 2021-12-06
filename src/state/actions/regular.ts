@@ -70,7 +70,7 @@ type RegularActions = {
   'token/refresh/required': (token: authApi.AccessToken) => Action;
 
   'messages/setPollingParams': PollingParams;
-  'messages/get/completed': E.Either<string, messageApi.MessageMapping>;
+  'messages/get/completed': E.Either<string, messageApi.MessageResponse>;
 
   'messages/markSeen': { message: messageApi.Message };
   'messages/markSeen/end': undefined;

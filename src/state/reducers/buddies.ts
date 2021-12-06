@@ -31,28 +31,33 @@ export const reducer: automaton.Reducer<State, actions.Action> = (
     }
 
     case 'messages/get/completed': {
-      const newMessageBuddies = pipe(
-        action.payload,
-        E.map(record.keys),
-        E.getOrElse((): string[] => []),
+      const buddies = E.isRight(action.payload)
+        ? action.payload.right.buddies
+        : {};
+
+      const newMessageBuddies = new Set(
+        Object.keys(buddies).map(buddyId => buddyId),
       );
 
-      const allBuddies = pipe(
-        state.buddies,
-        RD.map(record.keys),
-        RD.getOrElse((): string[] => []),
+      const stateBuddies = new Set(
+        pipe(
+          state.buddies,
+          RD.map(record.keys),
+          RD.getOrElse((): string[] => []),
+        ),
       );
 
-      const stateHasNewMessageBuddies =
-        newMessageBuddies.filter(buddy => !allBuddies.includes(buddy)).length >
-        0;
+      let areSetsEqual = (a: Set<string>, b: Set<string>) =>
+        a.size === b.size && [...a].every(value => b.has(value));
 
-      return stateHasNewMessageBuddies
-        ? automaton.loop(
+      const areBuddieSetsEqual = areSetsEqual(newMessageBuddies, stateBuddies);
+
+      return areBuddieSetsEqual
+        ? state
+        : automaton.loop(
             { ...state, buddies: RD.pending },
             withToken(buddyApi.fetchBuddies, actions.make('buddies/completed')),
-          )
-        : state;
+          );
     }
 
     case 'buddies/completed': {

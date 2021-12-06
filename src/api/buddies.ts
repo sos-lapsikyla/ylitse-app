@@ -9,7 +9,7 @@ import * as authApi from './auth';
 
 type ApiBuddy = t.TypeOf<typeof buddyType>;
 
-const buddyType = t.intersection([
+export const buddyType = t.intersection([
   t.strict({
     display_name: t.string,
     id: t.string,
@@ -23,7 +23,7 @@ const buddyType = t.intersection([
   }),
 ]);
 
-const buddiesType = t.strict({ resources: t.array(buddyType) });
+export const buddiesType = t.strict({ resources: t.array(buddyType) });
 
 export type BanAction = 'Ban' | 'Unban' | 'Delete';
 export type BanStatus = 'Banned' | 'NotBanned' | 'Deleted';
@@ -54,7 +54,13 @@ const toBuddy = ({ id, display_name, status = 'ok' }: ApiBuddy): Buddy => ({
   status: toBanStatus[status],
 });
 
-const toBuddies = ({ resources }: t.TypeOf<typeof buddiesType>) =>
+export const reduceToBuddiesRecord = (buddies: Buddies, apiBuddy: ApiBuddy) => {
+  const buddy = toBuddy(apiBuddy);
+
+  return { ...buddies, [buddy.buddyId]: buddy };
+};
+
+export const toBuddies = ({ resources }: t.TypeOf<typeof buddiesType>) =>
   resources.reduce((acc: Buddies, apiBuddy) => {
     const buddy = toBuddy(apiBuddy);
 

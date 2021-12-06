@@ -60,7 +60,9 @@ export const reducer: automaton.Reducer<State, actions.Action> = (
         return state;
       }
 
-      const newMessages = isRight(action.payload) ? action.payload.right : {};
+      const newMessages = isRight(action.payload)
+        ? action.payload.right.messages
+        : {};
 
       const currentMessages = RD.isSuccess(state.messages)
         ? state.messages.value

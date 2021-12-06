@@ -14,6 +14,7 @@ import * as authApi from './auth';
 import * as config from './config';
 
 import { PollingParams } from 'src/state/reducers/messages';
+import { Buddies, buddyType, reduceToBuddiesRecord } from './buddies';
 
 type ApiMessage = t.TypeOf<typeof messageType>;
 
@@ -39,7 +40,10 @@ export const markSeen = (message: Message) => (token: authApi.AccessToken) => {
   );
 };
 
-const messageListType = t.strict({ resources: t.array(messageType) });
+const messageListResponse = t.strict({
+  resources: t.array(messageType),
+  contacts: t.array(buddyType),
+});
 
 const toApiMessage: (userId: string, a: Message) => ApiMessage = (
   userId,
@@ -105,9 +109,16 @@ const createFetchParams = (pollingParams: PollingParams) => {
   return '';
 };
 
+export type MessageResponse = {
+  messages: MessageMapping;
+  buddies: Buddies;
+};
+
 export const fetchMessages =
   (params: PollingParams) =>
-  (accessToken: authApi.AccessToken): TE.TaskEither<string, MessageMapping> => {
+  (
+    accessToken: authApi.AccessToken,
+  ): TE.TaskEither<string, MessageResponse> => {
     const fetchParams = createFetchParams(params);
 
     return http.validateResponse(
@@ -117,13 +128,25 @@ export const fetchMessages =
           headers: authApi.authHeader(accessToken),
         },
       ),
-      messageListType,
-      ({ resources }) =>
-        resources
-          .map(toMessage(accessToken.userId))
-          .reduce(reduceToMsgRecord, {}),
+      messageListResponse,
+      response => mapMessageResponse(response, accessToken),
     );
   };
+
+const mapMessageResponse = (
+  response: t.TypeOf<typeof messageListResponse>,
+  accessToken: authApi.AccessToken,
+) => {
+  const messages = response.resources
+    .map(toMessage(accessToken.userId))
+    .reduce(reduceToMsgRecord, {});
+  const buddies = response.contacts.reduce(reduceToBuddiesRecord, {});
+
+  return {
+    messages,
+    buddies,
+  };
+};
 
 export type SendMessageParams = {
   buddyId: string;
