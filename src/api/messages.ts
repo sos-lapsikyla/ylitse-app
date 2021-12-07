@@ -14,7 +14,7 @@ import * as authApi from './auth';
 import * as config from './config';
 
 import { PollingParams } from 'src/state/reducers/messages';
-import { Buddies, buddyType, reduceToBuddiesRecord } from './buddies';
+import { Buddies, Buddy, buddyType, reduceToBuddiesRecord } from './buddies';
 
 type ApiMessage = t.TypeOf<typeof messageType>;
 
@@ -93,17 +93,17 @@ const reduceToMsgRecord = (acc: MessageMapping, message: Message) => ({
 
 const createFetchParams = (pollingParams: PollingParams) => {
   if (pollingParams.type === 'New' && pollingParams.previousMsgId.length > 0) {
-    return `?from_message_id=${pollingParams.previousMsgId}&max=10&desc=false`;
+    return `from_message_id=${pollingParams.previousMsgId}&desc=false&max=10`;
   }
 
   if (pollingParams.type === 'InitialMessages') {
     const userIds = pollingParams.buddyIds.join(',');
 
-    return `?contact_user_ids=${userIds}&max=1`;
+    return `contact_user_ids=${userIds}&max=1&desc=true`;
   }
 
   if (pollingParams.type === 'OlderThan') {
-    return `?contact_user_ids=${pollingParams.buddyId}&from_message_id=${pollingParams.messageId}&max=10&desc=true`;
+    return `contact_user_ids=${pollingParams.buddyId}&from_message_id=${pollingParams.messageId}&max=10&desc=true`;
   }
 
   return '';
@@ -121,9 +121,11 @@ export const fetchMessages =
   ): TE.TaskEither<string, MessageResponse> => {
     const fetchParams = createFetchParams(params);
 
+    console.log('fetchParmas', fetchParams);
+
     return http.validateResponse(
       http.get(
-        `${config.baseUrl}/users/${accessToken.userId}/messages${fetchParams}`,
+        `${config.baseUrl}/users/${accessToken.userId}/messages?${fetchParams}`,
         {
           headers: authApi.authHeader(accessToken),
         },
@@ -201,7 +203,7 @@ const sortSentTime = (a: Message, b: Message) => {
   return a.sentTime < b.sentTime ? -1 : 1;
 };
 
-export const extractMostRecentId = (messages: MessageMapping): string => {
+export const extractMostRecentId = (messages: MessageMapping) => {
   const flattenedMessages = Object.keys(messages).reduce<
     Record<string, Message>
   >((acc, curr) => {
@@ -214,6 +216,19 @@ export const extractMostRecentId = (messages: MessageMapping): string => {
     .reverse();
 
   return allMessages[0]?.messageId ?? '';
+};
+
+export const filterMessages = (
+  buddies: Record<string, Buddy>,
+  messages: MessageMapping,
+) => {
+  const buddyIds = Object.keys(buddies).map(buddyId => buddyId);
+
+  return buddyIds.reduce<MessageMapping>((acc, buddyId) => {
+    const message = messages[buddyId] ? messages[buddyId] : {};
+
+    return { ...acc, [buddyId]: message };
+  }, {});
 };
 
 type Msgs = Record<string, Message>;

@@ -101,6 +101,21 @@ export const reducer: automaton.Reducer<State, actions.Action> = (
       );
     }
 
+    case 'buddies/completed': {
+      if (!(isRight(action.payload) && RD.isSuccess(state.messages))) {
+        return state;
+      }
+
+      const messages = messageApi.filterMessages(
+        action.payload.right,
+        state.messages.value,
+      );
+
+      const previousMsgId = messageApi.extractMostRecentId(messages);
+
+      return { ...state, messages: RD.success(messages), previousMsgId };
+    }
+
     default:
       return state;
   }
