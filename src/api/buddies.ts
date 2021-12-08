@@ -6,6 +6,7 @@ import * as http from '../lib/http';
 import * as config from './config';
 
 import * as authApi from './auth';
+import { PollingParams } from 'src/state/reducers/messages';
 
 type ApiBuddy = t.TypeOf<typeof buddyType>;
 
@@ -142,3 +143,21 @@ export function banBuddies(
       toBuddies,
     );
 }
+
+export const createFetchChunks = (
+  buddyIds: Array<string>,
+): Array<PollingParams> => {
+  const chunks = buddyIds.reduce<Array<string[]>>((resultArray, item, i) => {
+    const chunkIndex = Math.floor(i / 40);
+
+    if (!resultArray[chunkIndex]) {
+      resultArray[chunkIndex] = []; // start a new chunk
+    }
+
+    resultArray[chunkIndex].push(item);
+
+    return resultArray;
+  }, []);
+
+  return chunks.map(ch => ({ type: 'InitialMessages', buddyIds: ch }));
+};

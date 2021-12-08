@@ -40,7 +40,10 @@ const Chat = ({ navigation }: Props) => {
   const buddyId = navigation.getParam('buddyId');
 
   const messageList = ReactRedux.useSelector(getMessagesByBuddyId(buddyId));
-  messageList.sort(({ sentTime: A }, { sentTime: B }) => A - B);
+
+  const sortedMessageList = React.useMemo(() => {
+    return messageList.sort(({ sentTime: A }, { sentTime: B }) => A - B);
+  }, [messageList]);
 
   const getPreviousMessages = (messageId: string) => {
     dispatch({
@@ -203,7 +206,7 @@ const Chat = ({ navigation }: Props) => {
           />
         ) : (
           <MemoizedMessageList
-            messageList={messageList}
+            messageList={sortedMessageList}
             getPreviousMessages={getPreviousMessages}
           />
         )}

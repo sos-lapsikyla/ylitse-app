@@ -99,7 +99,7 @@ const createFetchParams = (pollingParams: PollingParams) => {
   if (pollingParams.type === 'InitialMessages') {
     const userIds = pollingParams.buddyIds.join(',');
 
-    return `contact_user_ids=${userIds}&max=1&desc=true`;
+    return `contact_user_ids=${userIds}&max=10&desc=true`;
   }
 
   if (pollingParams.type === 'OlderThan') {
@@ -120,8 +120,6 @@ export const fetchMessages =
     accessToken: authApi.AccessToken,
   ): TE.TaskEither<string, MessageResponse> => {
     const fetchParams = createFetchParams(params);
-
-    console.log('fetchParmas', fetchParams);
 
     return http.validateResponse(
       http.get(

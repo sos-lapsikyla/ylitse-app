@@ -17,6 +17,7 @@ import * as types from '../types';
 import { withToken } from './accessToken';
 import { getIsBanned } from '../selectors';
 import { isRight } from 'fp-ts/lib/Either';
+import { createFetchChunks } from 'src/api/buddies';
 
 export type State = types.AppState['messages'];
 export type LoopState = actions.LS<State>;
@@ -41,18 +42,29 @@ export const reducer: automaton.Reducer<State, actions.Action> = (
 ) => {
   switch (action.type) {
     case 'messages/setPollingParams': {
-      return action.payload.type === 'InitialMessages'
-        ? automaton.loop(
-            { ...state, polling: true, messages: RD.pending },
-            withToken(
-              messageApi.fetchMessages(action.payload),
-              actions.make('messages/get/completed'),
-            ),
-          )
-        : {
+      if (action.payload.type === 'InitialMessages') {
+        const chunks = createFetchChunks(action.payload.buddyIds);
+        const currentParams = chunks[0];
+        const nextPollingParams = chunks.slice(1);
+
+        return automaton.loop(
+          {
             ...state,
-            pollingParams: state.pollingParams.concat(action.payload),
-          };
+            polling: true,
+            messages: RD.pending,
+            pollingParams: nextPollingParams,
+          },
+          withToken(
+            messageApi.fetchMessages(currentParams),
+            actions.make('messages/get/completed'),
+          ),
+        );
+      }
+
+      return {
+        ...state,
+        pollingParams: [action.payload, ...state.pollingParams],
+      };
     }
 
     case 'messages/get/completed': {
