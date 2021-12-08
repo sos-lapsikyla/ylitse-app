@@ -33,7 +33,8 @@ export const initialState = {
   polling: false,
   messages: RD.initial,
   previousMsgId: '',
-  pollingParams: [],
+  pollingQueue: [],
+  currentParams: { type: 'New' as const, previousMsgId: '' },
 };
 
 export const reducer: automaton.Reducer<State, actions.Action> = (
@@ -52,7 +53,8 @@ export const reducer: automaton.Reducer<State, actions.Action> = (
             ...state,
             polling: true,
             messages: RD.pending,
-            pollingParams: nextPollingParams,
+            pollingQueue: nextPollingParams,
+            currentParams,
           },
           withToken(
             messageApi.fetchMessages(currentParams),
@@ -63,7 +65,7 @@ export const reducer: automaton.Reducer<State, actions.Action> = (
 
       return {
         ...state,
-        pollingParams: [action.payload, ...state.pollingParams],
+        pollingQueue: [action.payload, ...state.pollingQueue],
       };
     }
 
@@ -87,7 +89,7 @@ export const reducer: automaton.Reducer<State, actions.Action> = (
 
       const previousMsgId = messageApi.extractMostRecentId(nextMessages);
 
-      const pollingParams: PollingParams = state.pollingParams[0] ?? {
+      const pollingParams: PollingParams = state.pollingQueue[0] ?? {
         type: 'New',
         previousMsgId,
       };
@@ -100,14 +102,15 @@ export const reducer: automaton.Reducer<State, actions.Action> = (
         actions.make('messages/get/completed'),
       );
 
-      const nextPollingParams = state.pollingParams.filter((_p, i) => i !== 0);
+      const nextPollingParams = state.pollingQueue.filter((_p, i) => i !== 0);
 
       return automaton.loop(
         {
           ...state,
           messages: RD.success(nextMessages),
           previousMsgId,
-          pollingParams: nextPollingParams,
+          pollingQueue: nextPollingParams,
+          currentParams: pollingParams,
         },
         nextCmd,
       );
@@ -213,3 +216,23 @@ export const getOrder: (
     }),
   ),
 );
+
+const isLoadingOlderMessages = (
+  pollingParams: PollingParams,
+  buddyId: string,
+) => pollingParams.type === 'OlderThan' && pollingParams.buddyId === buddyId;
+
+const isLoadingInitialMessages = (
+  pollingParams: PollingParams,
+  buddyId: string,
+) =>
+  pollingParams.type === 'InitialMessages' &&
+  pollingParams.buddyIds.includes(buddyId);
+
+export const isLoadingBuddyMessages =
+  (buddyId: string) => (state: types.AppState) =>
+    [state.messages.currentParams, ...state.messages.pollingQueue].some(
+      param =>
+        isLoadingOlderMessages(param, buddyId) ||
+        isLoadingInitialMessages(param, buddyId),
+    );

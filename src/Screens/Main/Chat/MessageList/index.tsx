@@ -12,7 +12,10 @@ import { MemoizedRenderItem } from './MemoizedRenderItem';
 type Props = {
   messageList: Array<messageApi.Message>;
   getPreviousMessages: (previousMsgId: string) => void;
+  isLoading: boolean;
 };
+
+type LoadingProps = { type: 'Loading'; id: string };
 
 const getDate = (n: number) => {
   const date = new Date(n);
@@ -38,10 +41,13 @@ const getDate = (n: number) => {
   return `${day}. ${months[month]} ${year} `;
 };
 
-export type Renderable = MessageProps | DateBubbleProps;
+export type Renderable = LoadingProps | MessageProps | DateBubbleProps;
 
-export function toRenderable(messages: messageApi.Message[]): Renderable[] {
-  return messages
+export function toRenderable(
+  messages: messageApi.Message[],
+  isLoading: boolean,
+): Renderable[] {
+  const messageList = messages
     .reduce((acc: Renderable[], m) => {
       const last = acc[acc.length - 1];
 
@@ -69,11 +75,27 @@ export function toRenderable(messages: messageApi.Message[]): Renderable[] {
       return acc;
     }, [])
     .reverse();
+
+  return isLoading
+    ? [...messageList, { type: 'Loading', id: 'Loading' }]
+    : messageList;
 }
 
-const MessageList = ({ messageList, getPreviousMessages }: Props) => {
-  const messages = toRenderable(messageList);
+const MessageList = ({
+  messageList,
+  getPreviousMessages,
+  isLoading,
+}: Props) => {
+  const messages = toRenderable(messageList, isLoading);
   const previousItem = messageList.length > 0 ? messageList[0].messageId : '0';
+
+  const getPreviousMessagesIfNotLoading = () => {
+    if (isLoading) {
+      return;
+    }
+
+    getPreviousMessages(previousItem);
+  };
 
   return (
     <RN.FlatList
@@ -82,7 +104,8 @@ const MessageList = ({ messageList, getPreviousMessages }: Props) => {
       renderItem={({ item }) => <MemoizedRenderItem item={item} />}
       keyExtractor={item => item.id}
       inverted={true}
-      onEndReached={() => getPreviousMessages(previousItem)}
+      onEndReachedThreshold={0}
+      onEndReached={getPreviousMessagesIfNotLoading}
     />
   );
 };
@@ -90,7 +113,9 @@ const MessageList = ({ messageList, getPreviousMessages }: Props) => {
 const equalProps = (
   prevProps: React.ComponentProps<typeof MessageList>,
   nextProps: React.ComponentProps<typeof MessageList>,
-) => prevProps.messageList.length === nextProps.messageList.length;
+) =>
+  prevProps.messageList.length === nextProps.messageList.length &&
+  prevProps.isLoading === nextProps.isLoading;
 
 export const MemoizedMessageList = React.memo(MessageList, equalProps);
 
