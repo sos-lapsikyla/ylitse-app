@@ -145,6 +145,18 @@ export const getMessagesByBuddyId =
       O.fold(() => [], identity),
     );
 
+export const getLastMessageByBuddyId =
+  (buddyId: string) => (appState: types.AppState) => {
+    const messages = pipe(
+      getMessages(appState),
+      O.chain(r => record.lookup(buddyId, r)),
+      O.map(r => Object.values(r)),
+      O.fold(() => [], identity),
+    );
+
+    return messages[messages.length - 1]?.content ?? '';
+  };
+
 export const ordMessage: ord.Ord<messageApi.Message> = ord.fromCompare((a, b) =>
   ord.ordNumber.compare(a.sentTime, b.sentTime),
 );

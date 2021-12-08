@@ -2,7 +2,10 @@ import React from 'react';
 import RN from 'react-native';
 import { useSelector } from 'react-redux';
 
-import { hasUnseen } from '../../../state/reducers/messages';
+import {
+  getLastMessageByBuddyId,
+  hasUnseen,
+} from '../../../state/reducers/messages';
 import { getMentorByUserId } from '../../../state/reducers/mentors';
 
 import Card from '../../components/Card';
@@ -20,13 +23,27 @@ const Button = ({ style, buddyId, name, onPress, ...viewProps }: Props) => {
   const hasNewMessages = useSelector(hasUnseen(buddyId));
   const color = getBuddyColor(buddyId);
   const mentor = useSelector(getMentorByUserId(buddyId));
+  const lastMessage = useSelector(getLastMessageByBuddyId(buddyId));
 
   return (
     <Card style={[styles.button, style]} {...viewProps}>
       <RN.TouchableOpacity style={styles.content} onPress={onPressBuddy}>
-        <RN.Text style={styles.nameText} ellipsizeMode="tail" numberOfLines={1}>
-          {name}
-        </RN.Text>
+        <RN.View style={styles.textContainer}>
+          <RN.Text
+            style={styles.nameText}
+            ellipsizeMode="tail"
+            numberOfLines={1}
+          >
+            {name}
+          </RN.Text>
+          <RN.Text
+            style={styles.messageText}
+            ellipsizeMode="tail"
+            numberOfLines={1}
+          >
+            {lastMessage}
+          </RN.Text>
+        </RN.View>
         <RN.View style={[styles.blob, { backgroundColor: color }]}>
           {hasNewMessages ? (
             <RN.View
@@ -60,10 +77,17 @@ const styles = RN.StyleSheet.create({
     alignSelf: 'stretch',
     justifyContent: 'space-between',
   },
+  textContainer: {
+    flex: 1,
+    flexDirection: 'column',
+  },
   nameText: {
     ...fonts.regularBold,
     marginLeft: 32,
-    flex: 1,
+  },
+  messageText: {
+    ...fonts.small,
+    marginLeft: 32,
   },
   blob: {
     borderRadius: 32,
