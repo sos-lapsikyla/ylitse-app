@@ -3,6 +3,7 @@ import * as ord from 'fp-ts/lib/Ord';
 import * as O from 'fp-ts/lib/Option';
 import * as RD from '@devexperts/remote-data-ts';
 import * as T from 'fp-ts/lib/Task';
+import * as E from 'fp-ts/lib/Either';
 import * as array from 'fp-ts/lib/Array';
 import { flow, identity } from 'fp-ts/lib/function';
 import * as record from 'fp-ts/lib/Record';
@@ -16,7 +17,6 @@ import * as types from '../types';
 
 import { withToken } from './accessToken';
 import { getIsBanned } from '../selectors';
-import { isRight } from 'fp-ts/lib/Either';
 import { createFetchChunks } from 'src/api/buddies';
 
 export type State = types.AppState['messages'];
@@ -74,25 +74,32 @@ export const reducer: automaton.Reducer<State, actions.Action> = (
         return state;
       }
 
-      const newMessages = isRight(action.payload)
-        ? action.payload.right.messages
-        : {};
+      const newMessages = pipe(
+        action.payload,
+        E.fold(
+          () => ({}),
+          ({ messages }) => messages,
+        ),
+      );
 
-      const currentMessages = RD.isSuccess(state.messages)
-        ? state.messages.value
-        : {};
+      const currentMessages = pipe(
+        state.messages,
+        RD.getOrElse(() => ({})),
+      );
 
       const nextMessages = messageApi.mergeMessageRecords(
-        currentMessages,
         newMessages,
+        currentMessages,
       );
 
       const previousMsgId = messageApi.extractMostRecentId(nextMessages);
 
-      const pollingParams: PollingParams = state.pollingQueue[0] ?? {
-        type: 'New',
+      const [pollingParams, nextPollingParams] = messageApi.getNextParams(
+        action.payload,
+        state.pollingQueue,
+        state.currentParams,
         previousMsgId,
-      };
+      );
 
       const nextCmd = withToken(
         flow(
@@ -101,8 +108,6 @@ export const reducer: automaton.Reducer<State, actions.Action> = (
         ),
         actions.make('messages/get/completed'),
       );
-
-      const nextPollingParams = state.pollingQueue.filter((_p, i) => i !== 0);
 
       return automaton.loop(
         {
@@ -117,7 +122,7 @@ export const reducer: automaton.Reducer<State, actions.Action> = (
     }
 
     case 'buddies/completed': {
-      if (!(isRight(action.payload) && RD.isSuccess(state.messages))) {
+      if (!(E.isRight(action.payload) && RD.isSuccess(state.messages))) {
         return state;
       }
 

@@ -1,6 +1,7 @@
 import * as t from 'io-ts';
 import * as TE from 'fp-ts/lib/TaskEither';
 import * as T from 'fp-ts/lib/Task';
+import * as E from 'fp-ts/lib/Either';
 import * as O from 'fp-ts/lib/Option';
 import { getMonoid } from 'fp-ts/Record';
 import { Semigroup } from 'fp-ts/Semigroup';
@@ -15,6 +16,7 @@ import * as config from './config';
 
 import { PollingParams } from 'src/state/reducers/messages';
 import { Buddies, Buddy, buddyType, reduceToBuddiesRecord } from './buddies';
+import { isLeft } from 'fp-ts/lib/Either';
 
 type ApiMessage = t.TypeOf<typeof messageType>;
 
@@ -235,10 +237,31 @@ const semiGroupMessage: Semigroup<Msgs> = {
   concat: (a: Msgs, b: Msgs) => ({ ...a, ...b }),
 };
 export const mergeMessageRecords = (
-  newMessages: Record<string, Msgs>,
-  existingMessages: Record<string, Msgs>,
+  a: Record<string, Msgs>,
+  b: Record<string, Msgs>,
 ) => {
   const M = getMonoid(semiGroupMessage);
 
-  return M.concat(newMessages, existingMessages);
+  return M.concat(a, b);
+};
+
+const retryErrors = ['Connection failure'];
+
+export const getNextParams = (
+  messageResponse: E.Either<string, MessageResponse>,
+  pollingQueue: Array<PollingParams>,
+  currentParams: PollingParams,
+  previousMsgId: string,
+): [PollingParams, Array<PollingParams>] => {
+  const normalPoll = { type: 'New', previousMsgId };
+  const next = pollingQueue[0] ?? normalPoll;
+  const rest = pollingQueue.filter((_p, i) => i !== 0);
+
+  if (isLeft(messageResponse)) {
+    return retryErrors.includes(messageResponse.left)
+      ? [currentParams, pollingQueue]
+      : [next, rest];
+  }
+
+  return [next, rest];
 };
