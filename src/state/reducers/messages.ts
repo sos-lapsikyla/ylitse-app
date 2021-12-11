@@ -45,7 +45,7 @@ export const reducer: automaton.Reducer<State, actions.Action> = (
     case 'messages/setPollingParams': {
       if (action.payload.type === 'InitialMessages') {
         const chunks = createFetchChunks(action.payload.buddyIds);
-        const currentParams = chunks[0];
+        const currentParams = chunks[0] ?? [];
         const nextPollingParams = chunks.slice(1);
 
         return automaton.loop(
