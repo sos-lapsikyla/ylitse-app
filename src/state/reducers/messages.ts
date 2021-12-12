@@ -217,7 +217,7 @@ export const getOrder: (
       const messages = Object.values(messagesById).sort(ordMessage.compare);
       const last = messages[messages.length - 1];
 
-      return last.sentTime;
+      return last?.sentTime ?? 0;
     }),
   ),
 );
