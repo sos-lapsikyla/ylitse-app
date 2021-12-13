@@ -121,6 +121,7 @@ const styles = RN.StyleSheet.create({
     alignSelf: 'center',
     paddingHorizontal: 60,
     marginBottom: 32,
+    marginTop: 12,
     backgroundColor: colors.lightBlue,
   },
   buttonText: {
