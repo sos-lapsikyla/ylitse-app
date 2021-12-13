@@ -34,9 +34,9 @@ const styles = RN.StyleSheet.create({
   },
   linkText: {
     ...fonts.largeBold,
-    color: colors.darkestBlue,
+    color: colors.blue,
     textDecorationLine: 'underline',
-    marginRight: 16,
+    marginRight: 4,
   },
 });
 

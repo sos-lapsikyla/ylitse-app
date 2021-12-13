@@ -22,7 +22,7 @@ const styles = RN.StyleSheet.create({
   },
   subTitle: {
     marginTop: -32,
-    ...fonts.title,
+    ...fonts.subTitle,
     textAlign: 'center',
     color: colors.white,
   },

@@ -185,7 +185,7 @@ export const messages = {
   'onboarding.welcome.text1': 'Kiva, että otit palvelun käyttöön!',
   'onboarding.welcome.text2':
     'Voit kysyä mentoreilta mieltäsi painavista asioista luottamuksellisesti.',
-  'onboarding.welcome.text3': `Palvelu on tarkoitettu 15 vuotta täyttäneille. Jos olet alle 15-vuotias vieraile.`,
+  'onboarding.welcome.text3': `Palvelu on tarkoitettu 15 vuotta täyttäneille. Jos olet alle 15-vuotias vieraile:`,
   'onboarding.welcome.text4': 'Mukavia keskusteluja!',
   'onboarding.welcome.title': 'Moi!',
 
