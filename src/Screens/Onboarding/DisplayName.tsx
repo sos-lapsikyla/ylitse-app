@@ -110,14 +110,29 @@ const styles = RN.StyleSheet.create({
   buttonContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'space-around',
+    justifyContent: 'space-between',
   },
-  nextButton: { flex: 1, width: 32, height: 32 },
+  nextButton: {
+    flex: 1.5,
+    height: 32,
+    width: 32,
+    marginTop: 4,
+    marginLeft: 10,
+  },
+  notValidButton: {
+    backgroundColor: colors.lightestGray,
+    flex: 1.5,
+    marginHorizontal: 4,
+    height: 32,
+    marginTop: 4,
+  },
   backButton: {
     backgroundColor: colors.lightestGray,
-    marginHorizontal: 20,
+    flex: 1,
+    marginHorizontal: 4,
+    height: 32,
+    marginTop: 4,
   },
-  notValidButton: { flex: 1, backgroundColor: colors.lightestGray },
   badgeStyle: {
     height: 32,
     width: 32,

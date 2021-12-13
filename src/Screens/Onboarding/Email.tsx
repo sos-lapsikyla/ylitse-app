@@ -110,10 +110,19 @@ const styles = RN.StyleSheet.create({
     color: colors.darkestBlue,
     marginBottom: 40,
   },
-  nextButton: { flex: 1, width: 32, height: 32 },
+  nextButton: {
+    flex: 1.5,
+    height: 32,
+    width: 32,
+    marginTop: 4,
+    marginLeft: 10,
+  },
   backButton: {
     backgroundColor: colors.lightestGray,
-    marginHorizontal: 20,
+    flex: 1,
+    marginHorizontal: 4,
+    height: 32,
+    marginTop: 4,
   },
   badgeStyle: {
     height: 32,

@@ -89,7 +89,7 @@ const LoginCard = ({
         />
 
         <Button
-          style={styles.signUpButton}
+          style={styles.nextButton}
           badgeStyle={styles.badgeStyle}
           messageId={nextMessageId}
           onPress={() => onPressNext(credentials)}
@@ -122,20 +122,21 @@ const styles = RN.StyleSheet.create({
   buttonContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'space-around',
+    justifyContent: 'space-between',
   },
   backButton: {
     backgroundColor: colors.lightestGray,
     flex: 1,
-    marginHorizontal: 20,
+    marginHorizontal: 4,
     height: 32,
     marginTop: 4,
   },
-  signUpButton: {
-    flex: 2,
+  nextButton: {
+    flex: 1.5,
     height: 32,
     width: 32,
     marginTop: 4,
+    marginLeft: 10,
   },
   badgeStyle: {
     height: 32,
