@@ -89,7 +89,7 @@ const styles = RN.StyleSheet.create({
     alignSelf: 'center',
     justifyContent: 'center',
   },
-  icon: { height: 24, width: 24, tintColor: colors.darkestBlue },
+  icon: { height: 24, width: 24, tintColor: colors.blueGray },
 });
 
 export default NamedInputField;

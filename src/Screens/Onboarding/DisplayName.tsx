@@ -112,31 +112,33 @@ const styles = RN.StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
   },
-  nextButton: {
-    flex: 1.5,
+  backButton: {
+    backgroundColor: colors.lightestGray,
+    flex: 1.2,
+    marginHorizontal: 4,
     height: 32,
-    width: 32,
     marginTop: 4,
-    marginLeft: 10,
   },
   notValidButton: {
     backgroundColor: colors.lightestGray,
-    flex: 1.5,
-    marginHorizontal: 4,
+    flex: 2,
     height: 32,
+    width: 32,
     marginTop: 4,
+    marginLeft: 18,
   },
-  backButton: {
-    backgroundColor: colors.lightestGray,
-    flex: 1,
-    marginHorizontal: 4,
+  nextButton: {
+    flex: 2,
     height: 32,
+    width: 32,
     marginTop: 4,
+    marginLeft: 18,
   },
   badgeStyle: {
     height: 32,
     width: 32,
-    marginTop: 4,
+    marginTop: 5,
+    marginLeft: 4,
   },
 });
 

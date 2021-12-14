@@ -123,7 +123,7 @@ const PrivacyPolicy = ({
             style={
               isAgreed && isOver15 ? styles.nextButton : styles.notValidButton
             }
-            badgeStyle={styles.arrow}
+            badgeStyle={styles.badgeStyle}
             onPress={onNextPress}
             messageId="onboarding.privacyPolicy.nextButton"
             badge={require('../images/arrow-right.svg')}
@@ -138,11 +138,6 @@ const PrivacyPolicy = ({
 };
 
 const styles = RN.StyleSheet.create({
-  arrow: {
-    marginTop: 4,
-    width: 32,
-    height: 32,
-  },
   card: {
     padding: 30,
     alignSelf: 'stretch',
@@ -174,25 +169,31 @@ const styles = RN.StyleSheet.create({
   },
   backButton: {
     backgroundColor: colors.lightestGray,
-    flex: 1,
+    flex: 1.2,
     marginHorizontal: 4,
     height: 32,
     marginTop: 4,
   },
   notValidButton: {
     backgroundColor: colors.lightestGray,
-    flex: 1.5,
+    flex: 2,
     height: 32,
     width: 32,
     marginTop: 4,
-    marginLeft: 10,
+    marginLeft: 18,
   },
   nextButton: {
-    flex: 1.5,
+    flex: 2,
     height: 32,
     width: 32,
     marginTop: 4,
-    marginLeft: 10,
+    marginLeft: 18,
+  },
+  badgeStyle: {
+    height: 32,
+    width: 32,
+    marginTop: 5,
+    marginLeft: 4,
   },
   toggleMargin: {
     marginBottom: 16,

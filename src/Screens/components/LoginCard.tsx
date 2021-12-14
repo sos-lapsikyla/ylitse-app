@@ -126,22 +126,23 @@ const styles = RN.StyleSheet.create({
   },
   backButton: {
     backgroundColor: colors.lightestGray,
-    flex: 1,
+    flex: 1.2,
     marginHorizontal: 4,
     height: 32,
     marginTop: 4,
   },
   nextButton: {
-    flex: 1.5,
+    flex: 2,
     height: 32,
     width: 32,
     marginTop: 4,
-    marginLeft: 10,
+    marginLeft: 18,
   },
   badgeStyle: {
     height: 32,
     width: 32,
-    marginTop: 4,
+    marginTop: 5,
+    marginLeft: 4,
   },
 });
 export default LoginCard;
