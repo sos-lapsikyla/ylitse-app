@@ -13,7 +13,7 @@ import {
 
 const accountFixtures = require('./fixtures/accounts.json');
 
-describe('Filter chats', () => {
+describe('Navigate in chat views', () => {
   beforeAll(async () => {
     await device.launchApp();
   });

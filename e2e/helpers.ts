@@ -64,13 +64,12 @@ export async function waitAndTypeText(
   text: string,
   multiline: boolean = false,
 ) {
-  await waitFor(element(by.id(elementId)))
-    .toBeVisible()
-    .withTimeout(5000);
-  await element(by.id(elementId)).typeText(text);
+  const inputField = element(by.id(elementId));
+  await waitFor(inputField).toBeVisible().withTimeout(5000);
+  await inputField.typeText(text);
 
   if (!multiline) {
-    await element(by.id(elementId)).tapReturnKey();
+    await inputField.tapReturnKey();
   }
 }
 
@@ -78,6 +77,8 @@ export async function waitAndTypeText(
  * Sign in user
  */
 export async function signIn(details: any) {
+  const signInView = element(by.id('onboarding.signIn.view'));
+
   await scrollDownAndTap(
     'onboarding.welcome.button',
     'onboarding.welcome.view',
@@ -88,12 +89,25 @@ export async function signIn(details: any) {
   );
   await scrollDownAndTap('onboarding.sign.in', 'onboarding.mentorlist.view');
 
-  await waitAndTypeText('onboarding.signUp.userName', `${details.loginName}`);
-  await waitAndTypeText('onboarding.signUp.password', `${details.password}`);
+  await waitAndTypeText(
+    'onboarding.signUp.userName',
+    `${details.loginName}`,
+    true,
+  );
+  await signInView.tap({ x: 1, y: 1 });
+
+  await waitAndTypeText(
+    'onboarding.signUp.password',
+    `${details.password}`,
+    true,
+  );
+
+  await signInView.tap({ x: 1, y: 1 });
 
   await waitFor(element(by.id('onboarding.signUp.button')))
     .toBeVisible()
     .withTimeout(5000);
+
   await scrollDownAndTap(
     'onboarding.signUp.button',
     'onboarding.signUp.view',
