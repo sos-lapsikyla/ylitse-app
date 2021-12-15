@@ -1,9 +1,7 @@
 import * as automaton from 'redux-automaton';
 import * as RD from '@devexperts/remote-data-ts';
 import * as record from 'fp-ts/lib/Record';
-import * as set from 'fp-ts/lib/Set';
 import * as E from 'fp-ts/lib/Either';
-import * as Eq from 'fp-ts/lib/Eq';
 import { pipe } from 'fp-ts/lib/pipeable';
 import { flow } from 'fp-ts/lib/function';
 
@@ -18,57 +16,82 @@ import { withToken } from './accessToken';
 import * as messageState from './messages';
 import * as banBuddyRequestState from './banBuddyRequest';
 
-export const initialState = RD.initial;
+export const initialState = { buddies: RD.initial, isInitialFetch: true };
 
 export const reducer: automaton.Reducer<State, actions.Action> = (
   state: State = initialState,
   action: actions.Action,
 ) => {
   switch (action.type) {
-    case 'messages/get/completed':
-      return pipe(
-        action.payload,
-        E.fold(
-          () => state,
-          messages => {
-            const requiredBuddies = set.fromArray(Eq.eqString)(
-              record.keys(messages),
-            );
+    case 'token/Acquired': {
+      return automaton.loop(
+        { ...state, buddies: RD.pending },
+        withToken(buddyApi.fetchBuddies, actions.make('buddies/completed')),
+      );
+    }
 
-            const hasAllBuddies = pipe(
-              state,
-              RD.map(record.keys),
-              RD.map(set.fromArray(Eq.eqString)),
-              RD.map(existingBuddies =>
-                set.getEq(Eq.eqString).equals(existingBuddies, requiredBuddies),
-              ),
-              RD.getOrElse(() => false),
-            );
+    case 'messages/get/completed': {
+      const buddies = E.isRight(action.payload)
+        ? action.payload.right.buddies
+        : {};
 
-            return hasAllBuddies
-              ? state
-              : automaton.loop(
-                  RD.pending,
-                  withToken(
-                    buddyApi.fetchBuddies,
-                    actions.make('buddies/completed'),
-                  ),
-                );
-          },
+      const newMessageBuddies = new Set(
+        Object.keys(buddies).map(buddyId => buddyId),
+      );
+
+      const stateBuddies = new Set(
+        pipe(
+          state.buddies,
+          RD.map(record.keys),
+          RD.getOrElse((): string[] => []),
         ),
       );
 
-    case 'buddies/completed':
-      return RD.fromEither(action.payload);
+      let areSetsEqual = (a: Set<string>, b: Set<string>) =>
+        a.size === b.size && [...a].every(value => b.has(value));
 
-    case 'buddies/changeBanStatus/end':
-      return pipe(
+      const areBuddieSetsEqual = areSetsEqual(newMessageBuddies, stateBuddies);
+
+      return areBuddieSetsEqual
+        ? state
+        : automaton.loop(
+            { ...state, buddies: RD.pending },
+            withToken(buddyApi.fetchBuddies, actions.make('buddies/completed')),
+          );
+    }
+
+    case 'buddies/completed': {
+      const buddyIds = pipe(
+        action.payload,
+        RD.fromEither,
+        RD.map(record.keys),
+        RD.getOrElse((): string[] => []),
+      );
+
+      const nextState = {
+        isInitialFetch: false,
+        buddies: RD.fromEither(action.payload),
+      };
+
+      return state.isInitialFetch
+        ? automaton.loop(
+            nextState,
+            actions.make('messages/setPollingParams')({
+              type: 'InitialMessages',
+              buddyIds,
+            }),
+          )
+        : nextState;
+    }
+
+    case 'buddies/changeBanStatus/end': {
+      const nextBuddies = pipe(
         action.payload,
         E.fold(
-          () => state,
+          () => state.buddies,
           buddy =>
             pipe(
-              state,
+              state.buddies,
               RD.map(buddies => ({
                 ...buddies,
                 [buddy.buddyId]: buddy,
@@ -77,28 +100,32 @@ export const reducer: automaton.Reducer<State, actions.Action> = (
         ),
       );
 
+      return { ...state, buddies: nextBuddies };
+    }
+
     case 'buddies/changeBanStatusBatch/end':
-      if (E.isRight(action.payload) && RD.isSuccess(state)) {
+      if (E.isRight(action.payload) && RD.isSuccess(state.buddies)) {
         const responseBuddies = action.payload.right;
+        const stateBuddies = state.buddies.value;
 
         const deletedIds = Object.keys(responseBuddies).filter(
           key => responseBuddies[key].status === 'Deleted',
         );
 
-        const filteredIds = Object.keys(state.value).filter(
+        const filteredIds = Object.keys(stateBuddies).filter(
           buddyId => !deletedIds.includes(buddyId),
         );
 
-        const newState = filteredIds.reduce<Record<string, buddyApi.Buddy>>(
+        const nextBuddies = filteredIds.reduce<Record<string, buddyApi.Buddy>>(
           (acc, curr) => {
-            const updatedBuddy = responseBuddies[curr] ?? state.value[curr];
+            const updatedBuddy = responseBuddies[curr] ?? stateBuddies[curr];
 
             return { ...acc, [curr]: updatedBuddy };
           },
           {},
         );
 
-        return RD.success(newState);
+        return { ...state, buddies: RD.success(nextBuddies) };
       }
 
       return state;
@@ -110,7 +137,7 @@ export const reducer: automaton.Reducer<State, actions.Action> = (
 
 const getBuddiesWithStatus = (status: buddyApi.Buddy['status']) =>
   flow(
-    ({ buddies }: types.AppState) => buddies,
+    ({ buddies }: types.AppState) => buddies.buddies,
     RD.map(buddies =>
       Object.values(buddies).filter(
         ({ status: buddyStatus }) => buddyStatus === status,

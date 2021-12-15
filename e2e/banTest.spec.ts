@@ -1,5 +1,5 @@
 import { by, element, expect, device, waitFor } from 'detox';
-import { describe, it, beforeEach, beforeAll } from '@jest/globals';
+import { describe, it, beforeEach } from '@jest/globals';
 
 import {
   APISignUpMentee,
@@ -13,12 +13,10 @@ import {
 
 const accountFixtures = require('./fixtures/accounts.json');
 
-describe('Filter chats', () => {
-  beforeAll(async () => {
-    await device.launchApp();
-  });
+describe('Banning', () => {
   beforeEach(async () => {
     await APIDeleteAccounts();
+    await device.launchApp();
     await device.reloadReactNative();
   });
 
@@ -84,7 +82,9 @@ describe('Filter chats', () => {
 
     // but new msg should still be there
     await element(by.text(mentee.displayName)).atIndex(0).tap();
-    await expect(element(by.text('Notice me Senpai!'))).toBeVisible();
+    await expect(
+      element(by.text('Notice me Senpai!')).atIndex(1),
+    ).toBeVisible();
     await forceLogout();
   });
 

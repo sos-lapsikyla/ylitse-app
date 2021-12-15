@@ -57,6 +57,8 @@ describe('Chat', () => {
     await element(by.text(mentor.displayName)).atIndex(0).tap();
 
     await expect(element(by.text(message_from_mentee))).toBeVisible();
-    await expect(element(by.text(message_from_mentor))).toBeVisible();
+    await expect(
+      element(by.text(message_from_mentor)).atIndex(1),
+    ).toBeVisible();
   });
 });

@@ -1,17 +1,21 @@
 import React from 'react';
 import RN from 'react-native';
-import { useSelector } from 'react-redux';
 
 import * as localization from '../../../../localization';
 
-import { getMessagesByBuddyId } from '../../../../state/reducers/messages';
-
 import * as messageApi from '../../../../api/messages';
 
-import Message, { MessageProps } from './Message';
-import DateBubble, { DateBubbleProps } from './DateBubble';
+import { MessageProps } from './Message';
+import { DateBubbleProps } from './DateBubble';
+import { MemoizedRenderItem } from './MemoizedRenderItem';
 
-type Props = { buddyId: string };
+type Props = {
+  messageList: Array<messageApi.Message>;
+  getPreviousMessages: (previousMsgId: string) => void;
+  isLoading: boolean;
+};
+
+type LoadingProps = { type: 'Loading'; id: string };
 
 const getDate = (n: number) => {
   const date = new Date(n);
@@ -37,10 +41,13 @@ const getDate = (n: number) => {
   return `${day}. ${months[month]} ${year} `;
 };
 
-export type Renderable = MessageProps | DateBubbleProps;
+export type Renderable = LoadingProps | MessageProps | DateBubbleProps;
 
-export function toRenderable(messages: messageApi.Message[]): Renderable[] {
-  return messages
+export function toRenderable(
+  messages: messageApi.Message[],
+  isLoading: boolean,
+): Renderable[] {
+  const messageList = messages
     .reduce((acc: Renderable[], m) => {
       const last = acc[acc.length - 1];
 
@@ -68,31 +75,49 @@ export function toRenderable(messages: messageApi.Message[]): Renderable[] {
       return acc;
     }, [])
     .reverse();
+
+  return isLoading
+    ? [...messageList, { type: 'Loading', id: 'Loading' }]
+    : messageList;
 }
 
-function renderItem({ item }: { item: Renderable }) {
-  if (item.type === 'Message') {
-    return <Message {...item} />;
-  } else {
-    return <DateBubble {...item} />;
-  }
-}
+const MessageList = ({
+  messageList,
+  getPreviousMessages,
+  isLoading,
+}: Props) => {
+  const messages = toRenderable(messageList, isLoading);
+  const previousItem = messageList.length > 0 ? messageList[0].messageId : '0';
 
-export default ({ buddyId }: Props) => {
-  const messageList = useSelector(getMessagesByBuddyId(buddyId));
-  messageList.sort(({ sentTime: A }, { sentTime: B }) => A - B);
-  const messages = toRenderable(messageList);
+  const getPreviousMessagesIfNotLoading = () => {
+    if (isLoading) {
+      return;
+    }
+
+    getPreviousMessages(previousItem);
+  };
 
   return (
     <RN.FlatList
       contentContainerStyle={styles.scrollContent}
       data={messages}
-      renderItem={renderItem}
+      renderItem={({ item }) => <MemoizedRenderItem item={item} />}
       keyExtractor={item => item.id}
       inverted={true}
+      onEndReachedThreshold={0}
+      onEndReached={getPreviousMessagesIfNotLoading}
     />
   );
 };
+
+const equalProps = (
+  prevProps: React.ComponentProps<typeof MessageList>,
+  nextProps: React.ComponentProps<typeof MessageList>,
+) =>
+  prevProps.messageList.length === nextProps.messageList.length &&
+  prevProps.isLoading === nextProps.isLoading;
+
+export const MemoizedMessageList = React.memo(MessageList, equalProps);
 
 const styles = RN.StyleSheet.create({
   scrollContent: {

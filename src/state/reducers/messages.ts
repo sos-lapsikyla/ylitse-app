@@ -3,6 +3,7 @@ import * as ord from 'fp-ts/lib/Ord';
 import * as O from 'fp-ts/lib/Option';
 import * as RD from '@devexperts/remote-data-ts';
 import * as T from 'fp-ts/lib/Task';
+import * as E from 'fp-ts/lib/Either';
 import * as array from 'fp-ts/lib/Array';
 import { flow, identity } from 'fp-ts/lib/function';
 import * as record from 'fp-ts/lib/Record';
@@ -16,13 +17,24 @@ import * as types from '../types';
 
 import { withToken } from './accessToken';
 import { getIsBanned } from '../selectors';
+import { createFetchChunks } from 'src/api/buddies';
 
 export type State = types.AppState['messages'];
 export type LoopState = actions.LS<State>;
+export type PollingParams =
+  | {
+      type: 'New';
+      previousMsgId: string;
+    }
+  | { type: 'OlderThan'; buddyId: string; messageId: string }
+  | { type: 'InitialMessages'; buddyIds: Array<string> };
 
 export const initialState = {
   polling: false,
   messages: RD.initial,
+  previousMsgId: '',
+  pollingQueue: [],
+  currentParams: { type: 'New' as const, previousMsgId: '' },
 };
 
 export const reducer: automaton.Reducer<State, actions.Action> = (
@@ -30,37 +42,100 @@ export const reducer: automaton.Reducer<State, actions.Action> = (
   action,
 ) => {
   switch (action.type) {
-    case 'token/Acquired': {
-      return !RD.isInitial(state.messages)
-        ? state
-        : automaton.loop(
-            { polling: true, messages: RD.pending },
-            withToken(
-              messageApi.fetchMessages,
-              actions.make('messages/get/completed'),
-            ),
-          );
+    case 'messages/setPollingParams': {
+      if (action.payload.type === 'InitialMessages') {
+        const chunks = createFetchChunks(action.payload.buddyIds);
+        const currentParams = chunks[0] ?? [];
+        const nextPollingParams = chunks.slice(1);
+
+        return automaton.loop(
+          {
+            ...state,
+            polling: true,
+            messages: RD.pending,
+            pollingQueue: nextPollingParams,
+            currentParams,
+          },
+          withToken(
+            messageApi.fetchMessages(currentParams),
+            actions.make('messages/get/completed'),
+          ),
+        );
+      }
+
+      return {
+        ...state,
+        pollingQueue: [action.payload, ...state.pollingQueue],
+      };
     }
+
     case 'messages/get/completed': {
       if (!state.polling) {
         return state;
       }
 
-      const nextState = {
-        ...state,
-        messages: RD.remoteData.alt(
-          RD.fromEither(action.payload),
-          () => state.messages,
+      const newMessages = pipe(
+        action.payload,
+        E.fold(
+          () => ({}),
+          ({ messages }) => messages,
         ),
-      };
+      );
+
+      const currentMessages = pipe(
+        state.messages,
+        RD.getOrElse(() => ({})),
+      );
+
+      const nextMessages = messageApi.mergeMessageRecords(
+        newMessages,
+        currentMessages,
+      );
+
+      const previousMsgId = messageApi.extractMostRecentId(nextMessages);
+
+      const [pollingParams, nextPollingParams] = messageApi.getNextParams(
+        action.payload,
+        state.pollingQueue,
+        state.currentParams,
+        previousMsgId,
+      );
 
       const nextCmd = withToken(
-        flow(messageApi.fetchMessages, T.delay(config.messageFetchDelay)),
+        flow(
+          messageApi.fetchMessages(pollingParams),
+          T.delay(config.messageFetchDelay),
+        ),
         actions.make('messages/get/completed'),
       );
 
-      return automaton.loop(nextState, nextCmd);
+      return automaton.loop(
+        {
+          ...state,
+          messages: RD.success(nextMessages),
+          previousMsgId,
+          pollingQueue: nextPollingParams,
+          currentParams: pollingParams,
+        },
+        nextCmd,
+      );
     }
+
+    case 'buddies/completed': {
+      if (!(E.isRight(action.payload) && RD.isSuccess(state.messages))) {
+        return state;
+      }
+
+      const messages = messageApi.filterMessages(
+        action.payload.right,
+        state.messages.value,
+      );
+
+      const previousMsgId = messageApi.extractMostRecentId(messages);
+
+      return { ...state, messages: RD.success(messages), previousMsgId };
+    }
+
     default:
       return state;
   }
@@ -77,6 +152,18 @@ export const getMessagesByBuddyId =
       O.map(r => Object.values(r)),
       O.fold(() => [], identity),
     );
+
+export const getLastMessageByBuddyId =
+  (buddyId: string) => (appState: types.AppState) => {
+    const messages = pipe(
+      getMessages(appState),
+      O.chain(r => record.lookup(buddyId, r)),
+      O.map(r => Object.values(r)),
+      O.fold(() => [], identity),
+    );
+
+    return messages[messages.length - 1]?.content ?? '';
+  };
 
 export const ordMessage: ord.Ord<messageApi.Message> = ord.fromCompare((a, b) =>
   ord.ordNumber.compare(a.sentTime, b.sentTime),
@@ -130,7 +217,27 @@ export const getOrder: (
       const messages = Object.values(messagesById).sort(ordMessage.compare);
       const last = messages[messages.length - 1];
 
-      return last.sentTime;
+      return last?.sentTime ?? 0;
     }),
   ),
 );
+
+const isLoadingOlderMessages = (
+  pollingParams: PollingParams,
+  buddyId: string,
+) => pollingParams.type === 'OlderThan' && pollingParams.buddyId === buddyId;
+
+const isLoadingInitialMessages = (
+  pollingParams: PollingParams,
+  buddyId: string,
+) =>
+  pollingParams.type === 'InitialMessages' &&
+  pollingParams.buddyIds.includes(buddyId);
+
+export const isLoadingBuddyMessages =
+  (buddyId: string) => (state: types.AppState) =>
+    [state.messages.currentParams, ...state.messages.pollingQueue].some(
+      param =>
+        isLoadingOlderMessages(param, buddyId) ||
+        isLoadingInitialMessages(param, buddyId),
+    );

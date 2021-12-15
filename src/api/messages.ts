@@ -1,7 +1,10 @@
 import * as t from 'io-ts';
 import * as TE from 'fp-ts/lib/TaskEither';
 import * as T from 'fp-ts/lib/Task';
+import * as E from 'fp-ts/lib/Either';
 import * as O from 'fp-ts/lib/Option';
+import { getMonoid } from 'fp-ts/Record';
+import { Semigroup } from 'fp-ts/Semigroup';
 import { pipe } from 'fp-ts/lib/pipeable';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
@@ -10,6 +13,10 @@ import * as validators from '../lib/validators';
 
 import * as authApi from './auth';
 import * as config from './config';
+
+import { PollingParams } from 'src/state/reducers/messages';
+import { Buddies, Buddy, buddyType, reduceToBuddiesRecord } from './buddies';
+import { isLeft } from 'fp-ts/lib/Either';
 
 type ApiMessage = t.TypeOf<typeof messageType>;
 
@@ -35,7 +42,10 @@ export const markSeen = (message: Message) => (token: authApi.AccessToken) => {
   );
 };
 
-const messageListType = t.strict({ resources: t.array(messageType) });
+const messageListResponse = t.strict({
+  resources: t.array(messageType),
+  contacts: t.array(buddyType),
+});
 
 const toApiMessage: (userId: string, a: Message) => ApiMessage = (
   userId,
@@ -74,27 +84,71 @@ const toMessage: (a: string) => (b: ApiMessage) => Message =
   };
 
 export type MessageMapping = Record<string, Record<string, Message>>;
-export function fetchMessages(
-  accessToken: authApi.AccessToken,
-): TE.TaskEither<string, Record<string, Record<string, Message>>> {
-  return http.validateResponse(
-    http.get(`${config.baseUrl}/users/${accessToken.userId}/messages`, {
-      headers: authApi.authHeader(accessToken),
-    }),
-    messageListType,
-    ({ resources }) =>
-      resources.map(toMessage(accessToken.userId)).reduce(
-        (acc: Record<string, Record<string, Message>>, message: Message) => ({
-          ...acc,
-          [message.buddyId]: {
-            ...acc[message.buddyId],
-            [message.messageId]: message,
-          },
-        }),
-        {},
+
+const reduceToMsgRecord = (acc: MessageMapping, message: Message) => ({
+  ...acc,
+  [message.buddyId]: {
+    ...acc[message.buddyId],
+    [message.messageId]: message,
+  },
+});
+
+const createFetchParams = (pollingParams: PollingParams) => {
+  if (pollingParams.type === 'New' && pollingParams.previousMsgId.length > 0) {
+    return `from_message_id=${pollingParams.previousMsgId}&desc=false&max=10`;
+  }
+
+  if (pollingParams.type === 'InitialMessages') {
+    const userIds = pollingParams.buddyIds.join(',');
+
+    return `contact_user_ids=${userIds}&max=10&desc=true`;
+  }
+
+  if (pollingParams.type === 'OlderThan') {
+    return `contact_user_ids=${pollingParams.buddyId}&from_message_id=${pollingParams.messageId}&max=10&desc=true`;
+  }
+
+  return '';
+};
+
+export type MessageResponse = {
+  messages: MessageMapping;
+  buddies: Buddies;
+};
+
+export const fetchMessages =
+  (params: PollingParams) =>
+  (
+    accessToken: authApi.AccessToken,
+  ): TE.TaskEither<string, MessageResponse> => {
+    const fetchParams = createFetchParams(params);
+
+    return http.validateResponse(
+      http.get(
+        `${config.baseUrl}/users/${accessToken.userId}/messages?${fetchParams}`,
+        {
+          headers: authApi.authHeader(accessToken),
+        },
       ),
-  );
-}
+      messageListResponse,
+      response => mapMessageResponse(response, accessToken),
+    );
+  };
+
+const mapMessageResponse = (
+  response: t.TypeOf<typeof messageListResponse>,
+  accessToken: authApi.AccessToken,
+) => {
+  const messages = response.resources
+    .map(toMessage(accessToken.userId))
+    .reduce(reduceToMsgRecord, {});
+  const buddies = response.contacts.reduce(reduceToBuddiesRecord, {});
+
+  return {
+    messages,
+    buddies,
+  };
+};
 
 export type SendMessageParams = {
   buddyId: string;
@@ -144,3 +198,70 @@ export const readMessage = (buddyId: string) =>
     T.map(O.chain(O.fromNullable)),
     T.map(O.getOrElse(() => '')),
   );
+
+const sortSentTime = (a: Message, b: Message) => {
+  return a.sentTime < b.sentTime ? -1 : 1;
+};
+
+export const extractMostRecentId = (messages: MessageMapping) => {
+  const flattenedMessages = Object.keys(messages).reduce<
+    Record<string, Message>
+  >((acc, curr) => {
+    return { ...acc, ...messages[curr] };
+  }, {});
+
+  const allMessages = Object.keys(flattenedMessages)
+    .map(k => flattenedMessages[k])
+    .sort(sortSentTime)
+    .reverse();
+
+  return allMessages[0]?.messageId ?? '';
+};
+
+export const filterMessages = (
+  buddies: Record<string, Buddy>,
+  messages: MessageMapping,
+) => {
+  const buddyIds = Object.keys(buddies).map(buddyId => buddyId);
+
+  return buddyIds.reduce<MessageMapping>((acc, buddyId) => {
+    const message = messages[buddyId] ? messages[buddyId] : {};
+
+    return { ...acc, [buddyId]: message };
+  }, {});
+};
+
+type Msgs = Record<string, Message>;
+
+const semiGroupMessage: Semigroup<Msgs> = {
+  concat: (a: Msgs, b: Msgs) => ({ ...a, ...b }),
+};
+export const mergeMessageRecords = (
+  a: Record<string, Msgs>,
+  b: Record<string, Msgs>,
+) => {
+  const M = getMonoid(semiGroupMessage);
+
+  return M.concat(a, b);
+};
+
+const retryErrors = ['Connection failure'];
+
+export const getNextParams = (
+  messageResponse: E.Either<string, MessageResponse>,
+  pollingQueue: Array<PollingParams>,
+  currentParams: PollingParams,
+  previousMsgId: string,
+): [PollingParams, Array<PollingParams>] => {
+  const normalPoll = { type: 'New', previousMsgId };
+  const next = pollingQueue[0] ?? normalPoll;
+  const rest = pollingQueue.filter((_p, i) => i !== 0);
+
+  if (isLeft(messageResponse)) {
+    return retryErrors.includes(messageResponse.left)
+      ? [currentParams, pollingQueue]
+      : [next, rest];
+  }
+
+  return [next, rest];
+};

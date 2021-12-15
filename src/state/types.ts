@@ -6,6 +6,7 @@ import * as accountApi from '../api/account';
 import * as buddyApi from '../api/buddies';
 import * as mentorsApi from '../api/mentors';
 import * as messageApi from '../api/messages';
+import { PollingParams } from './reducers/messages';
 
 export type indexStr = string;
 export type BuddyId = string;
@@ -39,12 +40,18 @@ export type AppState = {
 
   mentors: RemoteData<Record<BuddyId, mentorsApi.Mentor>>;
   skillFilter: string[];
-  buddies: RemoteData<Record<BuddyId, buddyApi.Buddy>>;
+  buddies: {
+    buddies: RemoteData<Record<BuddyId, buddyApi.Buddy>>;
+    isInitialFetch: boolean;
+  };
   banBuddyRequest: RemoteAction;
 
   messages: {
     polling: boolean;
+    pollingQueue: Array<PollingParams>;
     messages: RemoteData<messageApi.Threads>;
+    previousMsgId: string;
+    currentParams: PollingParams;
   };
   newMessage: Record<
     BuddyId,

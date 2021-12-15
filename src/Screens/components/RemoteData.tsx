@@ -70,6 +70,7 @@ function RemoteData<E, A>({
 
 const styles = RN.StyleSheet.create({
   container: {
+    flex: 1,
     alignSelf: 'stretch',
     justifyContent: 'center',
     alignItems: 'center',

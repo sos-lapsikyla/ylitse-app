@@ -6,6 +6,10 @@ import * as ReactRedux from 'react-redux';
 import * as selectors from '../../../state/selectors';
 import * as mentorState from '../../../state/reducers/mentors';
 import * as newMessageState from '../../../state/reducers/newMessage';
+import {
+  getMessagesByBuddyId,
+  isLoadingBuddyMessages,
+} from '../../../state/reducers/messages';
 import * as actions from '../../../state/actions';
 
 import * as navigationProps from '../../../lib/navigation-props';
@@ -13,7 +17,7 @@ import useLayout from '../../../lib/use-layout';
 
 import Title from './Title';
 import Input from './Input';
-import MessageList from './MessageList';
+import { MemoizedMessageList } from './MessageList';
 import DropDown, { DropDownItem } from '../../components/DropDownMenu';
 import { Dialog, DialogProps } from '../../components/Dialog';
 
@@ -37,6 +41,21 @@ const Chat = ({ navigation }: Props) => {
   };
 
   const buddyId = navigation.getParam('buddyId');
+
+  const messageList = ReactRedux.useSelector(getMessagesByBuddyId(buddyId));
+
+  const isLoading = ReactRedux.useSelector(isLoadingBuddyMessages(buddyId));
+
+  const sortedMessageList = React.useMemo(() => {
+    return messageList.sort(({ sentTime: A }, { sentTime: B }) => A - B);
+  }, [messageList]);
+
+  const getPreviousMessages = (messageId: string) => {
+    dispatch({
+      type: 'messages/setPollingParams',
+      payload: { type: 'OlderThan', buddyId, messageId },
+    });
+  };
 
   const mentor = ReactRedux.useSelector(mentorState.getMentorByUserId(buddyId));
 
@@ -191,7 +210,11 @@ const Chat = ({ navigation }: Props) => {
             messageId="main.chat.send.failure"
           />
         ) : (
-          <MessageList buddyId={buddyId} />
+          <MemoizedMessageList
+            messageList={sortedMessageList}
+            getPreviousMessages={getPreviousMessages}
+            isLoading={isLoading}
+          />
         )}
         <Input style={styles.input} buddyId={buddyId} />
       </RN.KeyboardAvoidingView>
@@ -220,6 +243,7 @@ const styles = RN.StyleSheet.create({
   failBox: {
     tintColor: colors.danger,
   },
+  spinnerContainer: { flex: 1, justifyContent: 'center', alignItems: 'center' },
 });
 
 export default Chat;

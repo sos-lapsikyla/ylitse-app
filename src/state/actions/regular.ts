@@ -8,6 +8,7 @@ import * as mentorApi from '../../api/mentors';
 import * as authApi from '../../api/auth';
 import * as buddyApi from '../../api/buddies';
 import * as messageApi from '../../api/messages';
+import { PollingParams } from '../reducers/messages';
 
 type RegularActions = {
   'none/none': undefined;
@@ -68,7 +69,9 @@ type RegularActions = {
 
   'token/refresh/required': (token: authApi.AccessToken) => Action;
 
-  'messages/get/completed': Result<typeof messageApi.fetchMessages>;
+  'messages/setPollingParams': PollingParams;
+  'messages/get/completed': E.Either<string, messageApi.MessageResponse>;
+
   'messages/markSeen': { message: messageApi.Message };
   'messages/markSeen/end': undefined;
 
