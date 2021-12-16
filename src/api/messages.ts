@@ -108,7 +108,7 @@ const createFetchParams = (pollingParams: PollingParams) => {
     return `contact_user_ids=${pollingParams.buddyId}&from_message_id=${pollingParams.messageId}&max=10&desc=true`;
   }
 
-  return '';
+  return 'max=10&desc=true';
 };
 
 export type MessageResponse = {
@@ -225,9 +225,7 @@ export const filterMessages = (
   const buddyIds = Object.keys(buddies).map(buddyId => buddyId);
 
   return buddyIds.reduce<MessageMapping>((acc, buddyId) => {
-    const message = messages[buddyId] ? messages[buddyId] : {};
-
-    return { ...acc, [buddyId]: message };
+    return { ...acc, [buddyId]: messages[buddyId] ?? {} };
   }, {});
 };
 

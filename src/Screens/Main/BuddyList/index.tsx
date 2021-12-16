@@ -1,6 +1,9 @@
 import React from 'react';
 import RN from 'react-native';
-import { useSelector } from 'react-redux';
+
+import * as redux from 'redux';
+import * as ReactRedux from 'react-redux';
+import * as actions from '../../../state/actions';
 
 import * as navigationProps from '../../../lib/navigation-props';
 import useLayout from '../../../lib/use-layout';
@@ -27,7 +30,7 @@ type Props = navigationProps.NavigationProps<
 >;
 
 export default ({ navigation }: Props) => {
-  const buddies = useSelector(buddyState.getActiveBuddies);
+  const buddies = ReactRedux.useSelector(buddyState.getActiveBuddies);
 
   const [isDropdownOpen, setDropdownOpen] = React.useState<boolean>(false);
 
@@ -40,6 +43,12 @@ export default ({ navigation }: Props) => {
   const navigateToBanned = () => {
     navigation.navigate('Main/BannedList', {});
     setDropdownOpen(false);
+  };
+
+  const dispatch = ReactRedux.useDispatch<redux.Dispatch<actions.Action>>();
+
+  const retryToken = () => {
+    dispatch({ type: 'storage/readToken/start', payload: undefined });
   };
 
   const dropdownItems: DropDownItem[] = [
@@ -62,7 +71,7 @@ export default ({ navigation }: Props) => {
           tintColor={colors.black}
         />
       )}
-      <RemoteData data={buddies} fetchData={() => {}}>
+      <RemoteData data={buddies} fetchData={retryToken}>
         {value => (
           <RN.ScrollView
             style={styles.scrollView}

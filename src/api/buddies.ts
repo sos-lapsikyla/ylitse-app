@@ -147,17 +147,10 @@ export function banBuddies(
 export const createFetchChunks = (
   buddyIds: Array<string>,
 ): Array<PollingParams> => {
-  const chunks = buddyIds.reduce<Array<string[]>>((resultArray, item, i) => {
-    const chunkIndex = Math.floor(i / 40);
+  const chunkSize = 40;
+  const amountOfBatches = Math.ceil(buddyIds.length / chunkSize);
 
-    if (!resultArray[chunkIndex]) {
-      resultArray[chunkIndex] = []; // start a new chunk
-    }
-
-    resultArray[chunkIndex].push(item);
-
-    return resultArray;
-  }, []);
-
-  return chunks.map(ch => ({ type: 'InitialMessages', buddyIds: ch }));
+  return [...Array(amountOfBatches).keys()]
+    .map(index => buddyIds.slice(index * chunkSize, (index + 1) * chunkSize))
+    .map(chunks => ({ type: 'InitialMessages', buddyIds: chunks }));
 };
