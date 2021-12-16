@@ -94,21 +94,23 @@ const reduceToMsgRecord = (acc: MessageMapping, message: Message) => ({
 });
 
 const createFetchParams = (pollingParams: PollingParams) => {
+  const maxMessagesAtOnce = 10;
+
   if (pollingParams.type === 'New' && pollingParams.previousMsgId.length > 0) {
-    return `from_message_id=${pollingParams.previousMsgId}&desc=false&max=10`;
+    return `from_message_id=${pollingParams.previousMsgId}&desc=false&max=${maxMessagesAtOnce}`;
   }
 
   if (pollingParams.type === 'InitialMessages') {
     const userIds = pollingParams.buddyIds.join(',');
 
-    return `contact_user_ids=${userIds}&max=10&desc=true`;
+    return `contact_user_ids=${userIds}&max=${maxMessagesAtOnce}&desc=true`;
   }
 
   if (pollingParams.type === 'OlderThan') {
-    return `contact_user_ids=${pollingParams.buddyId}&from_message_id=${pollingParams.messageId}&max=10&desc=true`;
+    return `contact_user_ids=${pollingParams.buddyId}&from_message_id=${pollingParams.messageId}&max=${maxMessagesAtOnce}&desc=true`;
   }
 
-  return 'max=10&desc=true';
+  return `max=${maxMessagesAtOnce}&desc=true`;
 };
 
 export type MessageResponse = {
