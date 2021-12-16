@@ -10,6 +10,7 @@ import * as record from 'fp-ts/lib/Record';
 import { pipe } from 'fp-ts/lib/pipeable';
 
 import * as messageApi from '../../api/messages';
+import * as buddyApi from '../../api/buddies';
 import * as config from '../../api/config';
 
 import * as actions from '../actions';
@@ -134,6 +135,29 @@ export const reducer: automaton.Reducer<State, actions.Action> = (
       const previousMsgId = messageApi.extractMostRecentId(messages);
 
       return { ...state, messages: RD.success(messages), previousMsgId };
+    }
+
+    case 'buddies/changeBanStatusBatch/end': {
+      if (!(E.isRight(action.payload) && RD.isSuccess(state.messages))) {
+        return state;
+      }
+
+      const responseBuddies = action.payload.right;
+      const messages = state.messages.value;
+
+      const notDeletedBuddies = Object.keys(responseBuddies).filter(
+        buddyId => responseBuddies[buddyId].status !== 'Deleted',
+      );
+
+      const nextBuddies = notDeletedBuddies.reduce<
+        Record<string, buddyApi.Buddy>
+      >((buddies, buddyId) => {
+        return { ...buddies, [buddyId]: responseBuddies[buddyId] };
+      }, {});
+
+      const nextMessages = messageApi.filterMessages(nextBuddies, messages);
+
+      return { ...state, messages: RD.success(nextMessages) };
     }
 
     default:

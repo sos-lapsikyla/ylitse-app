@@ -68,12 +68,17 @@ export const reducer: automaton.Reducer<State, actions.Action> = (
         RD.getOrElse((): string[] => []),
       );
 
+      const isBuddyFetchFailure = E.isLeft(action.payload);
+
+      const isInitialFetch =
+        isBuddyFetchFailure && state.isInitialFetch ? true : false;
+
       const nextState = {
-        isInitialFetch: false,
+        isInitialFetch,
         buddies: RD.fromEither(action.payload),
       };
 
-      return state.isInitialFetch
+      return state.isInitialFetch && !isBuddyFetchFailure
         ? automaton.loop(
             nextState,
             actions.make('messages/setPollingParams')({
@@ -103,7 +108,7 @@ export const reducer: automaton.Reducer<State, actions.Action> = (
       return { ...state, buddies: nextBuddies };
     }
 
-    case 'buddies/changeBanStatusBatch/end':
+    case 'buddies/changeBanStatusBatch/end': {
       if (E.isRight(action.payload) && RD.isSuccess(state.buddies)) {
         const responseBuddies = action.payload.right;
         const stateBuddies = state.buddies.value;
@@ -129,6 +134,7 @@ export const reducer: automaton.Reducer<State, actions.Action> = (
       }
 
       return state;
+    }
 
     default:
       return state;
