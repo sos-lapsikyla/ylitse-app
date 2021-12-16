@@ -7,7 +7,7 @@
       "build": "cd android && ./gradlew assembleDebug assembleAndroidTest -DtestBuildType=debug && cd ..",
       "type": "android.attached",
       "device": {
-        "name": "TODO_INSERT_DEVICE_ID_HERE"
+        "adbName": "TODO_INSERT_DEVICE_ID_HERE"
       }
     },
     "android.genymotion.debug": {
@@ -39,7 +39,8 @@
       "build": "xcodebuild -workspace ios/ylitse.xcworkspace -configuration Debug -scheme ylitse -destination 'platform=iOS Simulator,name=iPhone 11,OS=15.0' -derivedDataPath ios/build",
       "type": "ios.simulator",
       "device": {
-        "type": "iPhone 11"
+        "type": "iPhone 11",
+        "os": "iOS 15.0"
       }
     },
     "ios.sim.twelve-mini.debug": {
@@ -47,7 +48,8 @@
       "build": "xcodebuild -workspace ios/ylitse.xcworkspace -configuration Debug -scheme ylitse -destination 'platform=iOS Simulator,name=iPhone 12 mini,OS=15.0' -derivedDataPath ios/build",
       "type": "ios.simulator",
       "device": {
-        "type": "iPhone 12 mini"
+        "type": "iPhone 12 mini",
+        "os": "iOS 15.0"
       }
     },
     "ios.sim.se.debug": {
@@ -55,7 +57,8 @@
       "build": "xcodebuild -workspace ios/ylitse.xcworkspace -configuration Debug -scheme ylitse -destination 'platform=iOS Simulator,name=iPhone SE (2nd generation),OS=15.0' -derivedDataPath ios/build",
       "type": "ios.simulator",
       "device": {
-        "type": "iPhone SE (2nd generation)"
+        "type": "iPhone SE (2nd generation)",
+        "os": "iOS 15.0"
       }
     }
   }
