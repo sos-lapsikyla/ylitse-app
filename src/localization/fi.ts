@@ -42,6 +42,7 @@ export const messages = {
   'main.chat.deleteAll': 'Poista kaikki',
   'main.chat.deleteAll.confirmation':
     'Haluatko varmasti poistaa kaikki estetyt keskustelut? Tätä toimintoa ei voi kumota.',
+  'main.chat.deleteAll.error': 'Poistaminen epäonnistui',
   'main.chat.navigation.banned': 'Estetyt',
   'main.chat.send.failure': 'Viestin lähettäminen epäonnistui',
   'main.chat.unban': 'Palauta keskustelu',

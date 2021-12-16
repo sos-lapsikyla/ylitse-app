@@ -59,6 +59,10 @@ export const reducer: automaton.Reducer<State, actions.Action> = (
       );
     }
 
+    case 'buddies/changeBanStatus/reset': {
+      return RD.initial;
+    }
+
     default: {
       return state;
     }
@@ -67,3 +71,7 @@ export const reducer: automaton.Reducer<State, actions.Action> = (
 
 export const selectBanBuddyRequest = ({ banBuddyRequest: state }: AppState) =>
   state;
+
+export const selectBanRequestFailed = (state: AppState): boolean => {
+  return RD.isFailure(state.banBuddyRequest);
+};
