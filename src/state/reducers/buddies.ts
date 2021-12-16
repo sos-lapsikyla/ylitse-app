@@ -108,7 +108,7 @@ export const reducer: automaton.Reducer<State, actions.Action> = (
       return { ...state, buddies: nextBuddies };
     }
 
-    case 'buddies/changeBanStatusBatch/end':
+    case 'buddies/changeBanStatusBatch/end': {
       if (E.isRight(action.payload) && RD.isSuccess(state.buddies)) {
         const responseBuddies = action.payload.right;
         const stateBuddies = state.buddies.value;
@@ -134,6 +134,7 @@ export const reducer: automaton.Reducer<State, actions.Action> = (
       }
 
       return state;
+    }
 
     default:
       return state;
