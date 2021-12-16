@@ -82,19 +82,21 @@ const LoginCard = ({
       />
       <RN.View style={styles.buttonContainer}>
         <Button
-          style={styles.signUpButton}
-          messageId={nextMessageId}
-          onPress={() => onPressNext(credentials)}
-          badge={require('../images/arrow.svg')}
-          loading={RD.isPending(remoteAction)}
-          disabled={isEmptyFields}
-          testID="onboarding.signUp.button"
-        />
-        <Button
           messageId="onboarding.signUp.back"
           onPress={onPressBack}
           noShadow={true}
-          style={{ backgroundColor: colors.lightestGray }}
+          style={styles.backButton}
+        />
+
+        <Button
+          style={styles.nextButton}
+          badgeStyle={styles.badgeStyle}
+          messageId={nextMessageId}
+          onPress={() => onPressNext(credentials)}
+          badge={require('../images/arrow-right.svg')}
+          loading={RD.isPending(remoteAction)}
+          disabled={isEmptyFields}
+          testID="onboarding.signUp.button"
         />
       </RN.View>
     </Card>
@@ -106,25 +108,41 @@ const styles = RN.StyleSheet.create({
     ...fonts.titleBold,
     textAlign: 'center',
     color: colors.darkestBlue,
-    marginBottom: 40,
+    marginBottom: 10,
   },
   nickNameInput: {
-    marginBottom: 24,
+    marginBottom: 10,
   },
   passwordInput: {
-    marginBottom: 16,
+    marginBottom: 10,
   },
   errorText: {
     marginBottom: 16,
   },
   buttonContainer: {
-    justifyContent: 'space-between',
+    flexDirection: 'row',
     alignItems: 'center',
-    flexDirection: 'column',
+    justifyContent: 'space-between',
   },
-  signUpButton: {
-    flexGrow: 1,
-    marginBottom: 16,
+  backButton: {
+    backgroundColor: colors.lightestGray,
+    flex: 1.2,
+    marginHorizontal: 4,
+    height: 32,
+    marginTop: 4,
+  },
+  nextButton: {
+    flex: 2,
+    height: 32,
+    width: 32,
+    marginTop: 4,
+    marginLeft: 18,
+  },
+  badgeStyle: {
+    height: 32,
+    width: 32,
+    marginTop: 5,
+    marginLeft: 4,
   },
 });
 export default LoginCard;

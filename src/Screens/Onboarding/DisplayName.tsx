@@ -43,31 +43,42 @@ const DisplayName = ({ navigation }: Props) => {
   return (
     <OnboardingBackground testID="onboarding.displayName.view">
       <Card style={styles.card}>
-        <Message style={styles.title} id="onboarding.displayName.title" />
-        <NamedInputField
-          autoCapitalize="none"
-          style={styles.nickNameInput}
-          name="onboarding.displayName.inputTitle"
-          onChangeText={setDisplayName}
-          autoComplete="off"
-          value={displayName}
-          testID="onboarding.displayName.inputTitle"
-        />
-        <Message style={styles.bodyText} id="onboarding.displayName.bodyText" />
-        <Button
-          style={isValidDisplayName ? styles.nextButton : styles.notValidButton}
-          onPress={navigateToEmailScreen}
-          messageId="onboarding.displayName.nextButton"
-          badge={require('../images/arrow.svg')}
-          testID="onboarding.displayName.nextButton"
-          disabled={!isValidDisplayName}
-        />
-        <Button
-          messageId="onboarding.signUp.back"
-          onPress={goBack}
-          noShadow={true}
-          style={{ backgroundColor: colors.lightestGray }}
-        />
+        <RN.View>
+          <Message style={styles.title} id="onboarding.displayName.title" />
+          <NamedInputField
+            autoCapitalize="none"
+            style={styles.nickNameInput}
+            name="onboarding.displayName.inputTitle"
+            onChangeText={setDisplayName}
+            autoComplete="off"
+            value={displayName}
+            testID="onboarding.displayName.inputTitle"
+          />
+          <Message
+            style={styles.bodyText}
+            id="onboarding.displayName.bodyText"
+          />
+        </RN.View>
+        <RN.View style={styles.buttonContainer}>
+          <Button
+            messageId="onboarding.signUp.back"
+            onPress={goBack}
+            noShadow={true}
+            style={styles.backButton}
+          />
+
+          <Button
+            style={
+              isValidDisplayName ? styles.nextButton : styles.notValidButton
+            }
+            badgeStyle={styles.badgeStyle}
+            onPress={navigateToEmailScreen}
+            messageId="onboarding.displayName.nextButton"
+            badge={require('../images/arrow-right.svg')}
+            testID="onboarding.displayName.nextButton"
+            disabled={!isValidDisplayName}
+          />
+        </RN.View>
       </Card>
     </OnboardingBackground>
   );
@@ -75,6 +86,10 @@ const DisplayName = ({ navigation }: Props) => {
 
 const styles = RN.StyleSheet.create({
   card: {
+    flex: 1,
+    flexDirection: 'column',
+    justifyContent: 'space-between',
+    marginVertical: 24,
     padding: 24,
     alignSelf: 'stretch',
   },
@@ -82,7 +97,7 @@ const styles = RN.StyleSheet.create({
     ...fonts.titleBold,
     textAlign: 'center',
     color: colors.darkestBlue,
-    marginBottom: 40,
+    marginBottom: 16,
   },
   nickNameInput: {
     marginBottom: 24,
@@ -92,8 +107,39 @@ const styles = RN.StyleSheet.create({
     color: colors.darkestBlue,
     marginBottom: 40,
   },
-  nextButton: { marginBottom: 16 },
-  notValidButton: { marginBottom: 16, backgroundColor: colors.lightestGray },
+  buttonContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+  },
+  backButton: {
+    backgroundColor: colors.lightestGray,
+    flex: 1.2,
+    marginHorizontal: 4,
+    height: 32,
+    marginTop: 4,
+  },
+  notValidButton: {
+    backgroundColor: colors.lightestGray,
+    flex: 2,
+    height: 32,
+    width: 32,
+    marginTop: 4,
+    marginLeft: 18,
+  },
+  nextButton: {
+    flex: 2,
+    height: 32,
+    width: 32,
+    marginTop: 4,
+    marginLeft: 18,
+  },
+  badgeStyle: {
+    height: 32,
+    width: 32,
+    marginTop: 5,
+    marginLeft: 4,
+  },
 });
 
 export default DisplayName;

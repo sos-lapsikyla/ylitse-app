@@ -3,6 +3,7 @@ import RN from 'react-native';
 import { SafeAreaView } from 'react-navigation';
 
 import * as navigationProps from '../../lib/navigation-props';
+import * as config from '../../api/config';
 
 import Card from '../components/Card';
 import SosBanner from '../components/CreatedBySosBanner';
@@ -11,6 +12,7 @@ import Message from '../components/Message';
 import MessageButton from '../components/MessageButton';
 import fonts from '../components/fonts';
 import colors from '../components/colors';
+import Link from '../components/Link';
 
 import { MentorListRoute } from './MentorList';
 
@@ -42,7 +44,16 @@ export default ({ navigation }: Props) => {
           <Message style={styles.titleText} id={'onboarding.welcome.title'} />
           <Message style={styles.text} id={'onboarding.welcome.text1'} />
           <Message style={styles.text} id={'onboarding.welcome.text2'} />
-          <Message style={styles.text} id={'onboarding.welcome.text3'} />
+          <Message
+            style={styles.textWithoutMargin}
+            id={'onboarding.welcome.text3'}
+          />
+          <Link
+            style={styles.link}
+            linkName="onboarding.welcome.apuu.link"
+            url={config.apuuUrl}
+          />
+          <Message style={styles.text} id={'onboarding.welcome.text4'} />
           <MessageButton
             style={styles.button}
             messageStyle={styles.buttonText}
@@ -90,23 +101,33 @@ const styles = RN.StyleSheet.create({
   },
   titleText: {
     marginTop: 40,
-    ...fonts.largeBold,
+    ...fonts.titleLargeBold,
     textAlign: 'center',
-    marginBottom: 32,
+    marginBottom: 24,
+    color: colors.blue,
   },
   text: {
     ...fonts.regularBold,
     textAlign: 'center',
     marginBottom: 32,
+    color: colors.deepBlue,
+  },
+  textWithoutMargin: {
+    ...fonts.regularBold,
+    textAlign: 'center',
+    color: colors.deepBlue,
   },
   button: {
     alignSelf: 'center',
-    paddingHorizontal: 40,
+    paddingHorizontal: 60,
     marginBottom: 32,
+    marginTop: 12,
+    backgroundColor: colors.lightBlue,
   },
   buttonText: {
     ...fonts.largeBold,
-    color: colors.black,
+    color: colors.deepBlue,
     textAlign: 'center',
   },
+  link: { alignSelf: 'center', marginBottom: 32, fontSize: 10 },
 });

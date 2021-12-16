@@ -1,4 +1,5 @@
 /*eslint sort-keys: "error"*/
+
 export const messages = {
   'buddyList.title': 'Keskustelut',
 
@@ -128,17 +129,17 @@ export const messages = {
   'meta.error': 'Virhe',
   'meta.ok': 'OK',
   'meta.save': 'Tallenna',
-
+  'onboarding.age.switch': 'Olen yli 15-vuotias',
   'onboarding.displayName.bodyText':
     '*Jos haluat pysyä nimettömänä, valitse itsellesi nimimerkki, josta et ole tunnistettavissa.',
   'onboarding.displayName.inputTitle': 'Valitse itsellesi nimimerkki*',
-  'onboarding.displayName.nextButton': 'Jatka',
+  'onboarding.displayName.nextButton': 'Seuraava',
   'onboarding.displayName.title': 'Melkein valmista',
 
   'onboarding.email.bodyText':
     'Sähköpostiosoitteen tallentaminen mahdollistaa salasanan palauttamisen. Sähköpostiosoitetta ei käytetä muihin tarkoituksiin, eikä sitä luovuteta kolmansille osapuolille.',
   'onboarding.email.inputTitle': 'Sähköpostiosoite (vapaaehtoinen)',
-  'onboarding.email.nextButton': 'Jatka',
+  'onboarding.email.nextButton': 'Seuraava',
   'onboarding.email.title': 'Sähköpostiosoite',
 
   'onboarding.mentorlist.lowerTitle': 'Mentorit',
@@ -152,7 +153,8 @@ export const messages = {
   'onboarding.privacyPolicy.bodyText3':
     'Rekisteröitymällä palvelun käyttäjäksi hyväksyt, että käsittelemme sinua koskevia tietoja. Voit lukea lisää seuraavista linkeistä:',
   'onboarding.privacyPolicy.link': 'Tietoja yksityisyydensuojasta',
-  'onboarding.privacyPolicy.nextButton': 'Jatka',
+  'onboarding.privacyPolicy.nextButton': 'Seuraava',
+  'onboarding.privacyPolicy.switch': 'Hyväksyn tietojeni käsittelyn',
   'onboarding.privacyPolicy.title': 'Yksityisyydensuoja',
 
   'onboarding.sign.in': 'Kirjaudu',
@@ -174,15 +176,17 @@ export const messages = {
   'onboarding.signUp.existingAccount.login': 'Kirjaudu sisään',
   'onboarding.signUp.existingAccount.title': 'Minulla on jo tunnus',
   'onboarding.signUp.password': 'Salasana',
-  'onboarding.signUp.signUp': 'Luo tunnus',
-  'onboarding.signUp.title': 'Luo tunnus',
-  'onboarding.signUp.userName': 'Käyttäjätunnus',
+  'onboarding.signUp.signUp': 'Seuraava',
+  'onboarding.signUp.title': 'Rekisteröidy',
+  'onboarding.signUp.userName': 'Käyttäjänimi',
 
+  'onboarding.welcome.apuu.link': 'Apuu-chatissa',
   'onboarding.welcome.button': 'Aloita',
   'onboarding.welcome.text1': 'Kiva, että otit palvelun käyttöön!',
   'onboarding.welcome.text2':
     'Voit kysyä mentoreilta mieltäsi painavista asioista luottamuksellisesti.',
-  'onboarding.welcome.text3': 'Mukavia keskusteluja!',
+  'onboarding.welcome.text3': `Palvelu on tarkoitettu 15 vuotta täyttäneille. Jos olet alle 15-vuotias vieraile:`,
+  'onboarding.welcome.text4': 'Mukavia keskusteluja!',
   'onboarding.welcome.title': 'Moi!',
 
   'tabs.chats': 'Keskustelut',

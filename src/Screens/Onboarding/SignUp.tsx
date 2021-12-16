@@ -71,10 +71,11 @@ const SignUp = ({ navigation }: Props) => {
 
 const styles = RN.StyleSheet.create({
   card: {
-    marginVertical: 24,
-    paddingHorizontal: 24,
-    paddingTop: 64,
-    paddingBottom: 48,
+    flex: 1,
+    flexDirection: 'column',
+    justifyContent: 'space-between',
+    marginVertical: 20,
+    padding: 24,
     alignSelf: 'stretch',
     zIndex: 2,
   },

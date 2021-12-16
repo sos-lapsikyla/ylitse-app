@@ -16,13 +16,15 @@ cp config.template.ios.json config.json
 
 You can edit the config file as suited:
 
-| Parameter      | Description              |
-| -------------- | ------------------------ |
-| `baseUrl`      | Ylitse API base URL      |
-| `loginUrl`     | Ylitse service login URL |
-| `feedBackUrl`  | Feedback form URL        |
-| `termsUrl`     | Terms and conditions URL |
-| `userGuideUrl` | User's manual URL        |
+| Parameter          | Description              |
+| --------------     | ------------------------ |
+| `baseUrl`          | Ylitse API base URL      |
+| `loginUrl`         | Ylitse service login URL |
+| `feedBackUrl`      | Feedback form URL        |
+| `termsUrl`         | Terms and conditions URL |
+| `userGuideUrl`     | User's manual URL        |
+| `apuuUrl`          | Apuu-chat URL            |
+| `messageFetchDelay`| Delay between polling    |
 
 After installation run metro package bundler:
 

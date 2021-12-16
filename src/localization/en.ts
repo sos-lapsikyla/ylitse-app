@@ -130,7 +130,7 @@ export const messages: { [key in MessageId]: string } = {
   'meta.error': 'An error occurred, please try again',
   'meta.ok': 'OK',
   'meta.save': 'Save',
-
+  'onboarding.age.switch': 'I am over 15 years old',
   'onboarding.displayName.bodyText':
     "*if you want to stay anonymous to our mentors, please enter a display name that can't identify you.",
   'onboarding.displayName.inputTitle': 'Display name*',
@@ -155,6 +155,7 @@ export const messages: { [key in MessageId]: string } = {
     'By continuing you agree to trust us with your data. Read these for more details:',
   'onboarding.privacyPolicy.link': 'About privacy policy',
   'onboarding.privacyPolicy.nextButton': 'Continue',
+  'onboarding.privacyPolicy.switch': 'I agree to the privacy policy',
   'onboarding.privacyPolicy.title': 'Data Privacy & Security',
 
   'onboarding.sign.in': 'Sign in',
@@ -180,11 +181,14 @@ export const messages: { [key in MessageId]: string } = {
   'onboarding.signUp.title': 'Sign up',
   'onboarding.signUp.userName': 'Username',
 
+  'onboarding.welcome.apuu.link': 'Apuu-chat',
   'onboarding.welcome.button': 'Start',
   'onboarding.welcome.text1': 'Cool, that you have started using the service!',
   'onboarding.welcome.text2':
     'Here you can ask confidential things from mentors.',
-  'onboarding.welcome.text3': 'We hope you will have pleasant conversations!',
+  'onboarding.welcome.text3':
+    'The service is intended for people over 15 years of age. If you are under 15, visit Apuu-chat.',
+  'onboarding.welcome.text4': 'We hope you will have pleasant conversations!',
   'onboarding.welcome.title': 'Hello!',
 
   'tabs.chats': 'Chats',
