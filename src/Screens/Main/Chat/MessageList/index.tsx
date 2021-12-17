@@ -104,7 +104,7 @@ const MessageList = ({
       renderItem={({ item }) => <MemoizedRenderItem item={item} />}
       keyExtractor={item => item.id}
       inverted={true}
-      onEndReachedThreshold={0}
+      onEndReachedThreshold={0.01}
       onEndReached={getPreviousMessagesIfNotLoading}
     />
   );
