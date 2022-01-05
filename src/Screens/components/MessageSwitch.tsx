@@ -45,6 +45,7 @@ const styles = RN.StyleSheet.create({
     ...fonts.large,
     color: colors.darkestBlue,
     marginLeft: 16,
+    flexShrink: 1,
   },
 });
 
