@@ -95,6 +95,7 @@ const PrivacyPolicy = ({
 
         <MessageSwitch
           style={styles.switch}
+          messageStyle={styles.switchMessage}
           containerStyle={styles.toggleMargin}
           onPress={() => setIsOver15(!isOver15)}
           value={isOver15}
@@ -104,6 +105,7 @@ const PrivacyPolicy = ({
         />
         <MessageSwitch
           style={styles.switch}
+          messageStyle={styles.switchMessage}
           containerStyle={styles.toggleMargin}
           onPress={() => setAgreed(!isAgreed)}
           value={isAgreed}
@@ -201,6 +203,10 @@ const styles = RN.StyleSheet.create({
   link: {},
   errorText: {},
   switch: {},
+  switchMessage: {
+    ...fonts.regular,
+    flexShrink: 1,
+  },
 });
 
 export default ReactRedux.connect<StateProps, {}, OwnProps, state.AppState>(
