@@ -205,7 +205,6 @@ const styles = RN.StyleSheet.create({
   switch: {},
   switchMessage: {
     ...fonts.regular,
-    flexShrink: 1,
   },
 });
 
