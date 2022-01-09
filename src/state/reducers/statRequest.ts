@@ -1,11 +1,10 @@
 import * as automaton from 'redux-automaton';
 import * as RD from '@devexperts/remote-data-ts';
-import { pipe } from 'fp-ts/lib/pipeable';
-import * as E from 'fp-ts/lib/Either';
 
 import * as actions from '../actions';
 import { AppState } from '../types';
 import { withToken } from './accessToken';
+import * as statApi from '../../api/stat';
 
 export const initialState = RD.initial;
 
@@ -16,6 +15,20 @@ export const reducer: automaton.Reducer<State, actions.Action> = (
   action: actions.Action,
 ) => {
   switch (action.type) {
+    case 'statRequest/start': {
+      return automaton.loop(
+        state,
+        withToken(
+          statApi.sendStat(action.payload),
+          actions.make('statRequest/end'),
+        ),
+      );
+    }
+
+    case 'statRequest/end': {
+      console.log('sent stat complete', action.payload);
+      return state;
+    }
     default: {
       return state;
     }
