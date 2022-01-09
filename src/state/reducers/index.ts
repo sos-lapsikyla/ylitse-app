@@ -23,6 +23,7 @@ import * as changeVacationStatus from './changeVacationStatus';
 import * as changeStatusMessage from './changeStatusMessage';
 import * as notifications from './notifications';
 import * as deleteAccount from './deleteAccount';
+import * as statRequest from './statRequest';
 
 import * as actions from '../actions';
 
@@ -62,6 +63,7 @@ export const rootReducer: automaton.Reducer<AppState, actions.Action> =
       deleteAccount: deleteAccount.reducer,
       mentors: mentors.reducer,
       skillFilter: mentors.skillReducer,
+      statRequest: statRequest.reducer,
       buddies: buddies.reducer,
       banBuddyRequest: banBuddyRequest.reducer,
       messages: messages.reducer,
@@ -84,6 +86,7 @@ export const initialState: AppState = {
   deleteAccount: deleteAccount.initialState,
   mentors: mentors.initialState,
   skillFilter: [],
+  statRequest: statRequest.initialState,
   buddies: buddies.initialState,
   banBuddyRequest: banBuddyRequest.initialState,
   messages: messages.initialState,
