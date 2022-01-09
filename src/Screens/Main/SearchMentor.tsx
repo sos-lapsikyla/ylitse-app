@@ -50,6 +50,7 @@ export default ({ navigation }: Props) => {
         payload: { name: 'filter_skills', props: { skills: selectedSkills } },
       });
     }
+
     navigation.goBack();
   };
 
