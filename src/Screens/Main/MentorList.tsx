@@ -4,6 +4,10 @@ import { SafeAreaView } from 'react-navigation';
 
 import * as navigationProps from '../../lib/navigation-props';
 
+import * as redux from 'redux';
+import { useDispatch } from 'react-redux';
+import * as actions from '../../state/actions';
+
 import * as mentorApi from '../../api/mentors';
 
 import Background from '../components/Background';
@@ -27,10 +31,20 @@ type OwnProps = navigationProps.NavigationProps<
 type Props = OwnProps;
 
 const MentorList = (props: Props) => {
+  const dispatch = useDispatch<redux.Dispatch<actions.Action>>();
+
   const onPressMentor = (mentor: mentorApi.Mentor) => {
     props.navigation.navigate('Main/MentorCardExpanded', {
       mentor,
       didNavigateFromChat: false,
+    });
+
+    dispatch({
+      type: 'statRequest/start',
+      payload: {
+        name: 'open_mentor_profile',
+        props: { mentor_id: mentor.mentorId },
+      },
     });
   };
 
