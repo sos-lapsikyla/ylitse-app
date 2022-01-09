@@ -26,7 +26,6 @@ export const reducer: automaton.Reducer<State, actions.Action> = (
     }
 
     case 'statRequest/end': {
-      console.log('sent stat complete', action.payload);
       return state;
     }
     default: {

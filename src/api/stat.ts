@@ -26,13 +26,9 @@ const stat = t.union([filterSkillStat, openMentorStat]);
 export type Stat = t.TypeOf<typeof stat>;
 
 export const sendStat = (stat: Stat) => (token: authApi.AccessToken) => {
-  const url = `${config.baseUrl}/events/`;
+  const url = `${config.baseUrl}/events`;
 
-  return http.validateResponse(
-    http.post(url, stat, {
-      headers: authApi.authHeader(token),
-    }),
-    t.unknown,
-    _ => true,
-  );
+  return http.post(url, [stat], {
+    headers: authApi.authHeader(token),
+  });
 };

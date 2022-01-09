@@ -44,6 +44,12 @@ export default ({ navigation }: Props) => {
   );
 
   const onPressBack = () => {
+    if (selectedSkills.length > 0) {
+      dispatch({
+        type: 'statRequest/start',
+        payload: { name: 'filter_skills', props: { skills: selectedSkills } },
+      });
+    }
     navigation.goBack();
   };
 
