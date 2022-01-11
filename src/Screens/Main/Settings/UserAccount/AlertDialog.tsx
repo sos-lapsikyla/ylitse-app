@@ -31,13 +31,13 @@ export default (props: Props) => {
           onPress={props.onOkPress}
           messageStyle={styles.buttonText}
           messageId="meta.ok"
-          style={styles.saveButton}
+          style={[styles.button, styles.leftButton]}
         />
         <Button
           onPress={props.onRetryPress}
           messageStyle={styles.buttonText}
           messageId="components.remoteData.retry"
-          style={styles.saveButton}
+          style={styles.button}
         />
       </RN.View>
     </RN.View>
@@ -66,14 +66,11 @@ const styles = RN.StyleSheet.create({
   },
   buttonContainer: {
     flexDirection: 'row',
-    alignSelf: 'stretch',
-    justifyContent: 'space-between',
-    paddingHorizontal: 12,
     marginVertical: 12,
   },
-  saveButton: {
+  leftButton: { marginRight: 24 },
+  button: {
     backgroundColor: colors.blue,
-    minWidth: '40%',
   },
   buttonText: {
     color: colors.white,
