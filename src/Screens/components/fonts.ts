@@ -42,12 +42,12 @@ const fonts = {
   large: {
     fontFamily: 'Nunito-Regular',
     fontSize: 20,
-    lineHeight: 28,
+    lineHeight: 27,
   },
   largeBold: {
     fontFamily: 'Nunito-Bold',
     fontSize: 20,
-    lineHeight: 28,
+    lineHeight: 27,
   },
   title: {
     fontFamily: 'Nunito-Regular',
