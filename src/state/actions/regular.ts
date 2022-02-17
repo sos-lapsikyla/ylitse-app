@@ -8,6 +8,7 @@ import * as mentorApi from '../../api/mentors';
 import * as authApi from '../../api/auth';
 import * as buddyApi from '../../api/buddies';
 import * as messageApi from '../../api/messages';
+import * as statApi from '../../api/stat';
 import { PollingParams } from '../reducers/messages';
 
 type RegularActions = {
@@ -36,6 +37,9 @@ type RegularActions = {
 
   'skillFilter/toggled': { skillName: string };
   'skillFilter/reset': undefined;
+
+  'statRequest/start': statApi.Stat;
+  'statRequest/end': Result<ReturnType<typeof statApi.sendStat>>;
 
   'login/start': authApi.Credentials;
   'login/end': Result<typeof authApi.login>;
