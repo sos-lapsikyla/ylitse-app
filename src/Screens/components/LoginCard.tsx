@@ -32,6 +32,7 @@ const LoginCard = ({
   remoteAction,
   getErrorMessageId,
   onChange,
+  style,
   ...viewProps
 }: Props) => {
   const [credentials, setCredentials] = React.useState<authApi.Credentials>({
@@ -55,25 +56,27 @@ const LoginCard = ({
   const isEmptyFields = !credentials.password || !credentials.userName;
 
   return (
-    <Card {...viewProps}>
-      <Message style={styles.title} id={titleMessageId} />
-      <NamedInputField
-        autoCapitalize="none"
-        style={styles.nickNameInput}
-        name="onboarding.signUp.userName"
-        onChangeText={onUserNameChange}
-        autoComplete="off"
-        testID="onboarding.signUp.userName"
-      />
-      <NamedInputField
-        autoCapitalize="none"
-        style={styles.passwordInput}
-        name="onboarding.signUp.password"
-        isPasswordInput={true}
-        onChangeText={onPasswordChange}
-        autoComplete="off"
-        testID="onboarding.signUp.password"
-      />
+    <Card style={[styles.card, style]} {...viewProps}>
+      <RN.View>
+        <Message style={styles.title} id={titleMessageId} />
+        <NamedInputField
+          autoCapitalize="none"
+          style={styles.nickNameInput}
+          name="onboarding.signUp.userName"
+          onChangeText={onUserNameChange}
+          autoComplete="off"
+          testID="onboarding.signUp.userName"
+        />
+        <NamedInputField
+          autoCapitalize="none"
+          style={styles.passwordInput}
+          name="onboarding.signUp.password"
+          isPasswordInput={true}
+          onChangeText={onPasswordChange}
+          autoComplete="off"
+          testID="onboarding.signUp.password"
+        />
+      </RN.View>
       <ErrorMessage
         style={styles.errorText}
         getMessageId={getErrorMessageId}
@@ -104,6 +107,13 @@ const LoginCard = ({
 };
 
 const styles = RN.StyleSheet.create({
+  card: {
+    flexDirection: 'column',
+    justifyContent: 'space-between',
+    marginVertical: 20,
+    padding: 24,
+    alignSelf: 'stretch',
+  },
   title: {
     ...fonts.titleBold,
     textAlign: 'center',
@@ -127,21 +137,16 @@ const styles = RN.StyleSheet.create({
   backButton: {
     backgroundColor: colors.lightestGray,
     flex: 1.2,
-    marginHorizontal: 4,
     height: 32,
-    marginTop: 4,
   },
   nextButton: {
     flex: 2,
     height: 32,
-    width: 32,
-    marginTop: 4,
-    marginLeft: 18,
+    marginLeft: 24,
   },
   badgeStyle: {
     height: 32,
     width: 32,
-    marginTop: 5,
     marginLeft: 4,
   },
 });
