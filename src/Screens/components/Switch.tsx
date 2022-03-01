@@ -21,6 +21,9 @@ const rightPosition = trackLength - 1.3 * d;
 const middlePosition = (leftPosition + rightPosition) / 2;
 const duration = 400;
 
+const itemBorderWidth = 1;
+const loadingKnobBorderWidth = 0.15 * d;
+
 const getPosition = (value: boolean, isLoading: boolean) =>
   isLoading ? middlePosition : value ? rightPosition : leftPosition;
 
@@ -106,14 +109,25 @@ const Switch: React.FC<SwitchProps> = ({
         borderLeftColor: loadingBorderColor,
         borderTopColor: loadingBorderColor,
         borderBottomColor: loadingBorderColor,
-        borderWidth: 0.15 * d,
+        borderWidth: loadingKnobBorderWidth,
       }
-    : {};
+    : {
+        borderColor: colors.formBorderGray,
+        borderWidth: itemBorderWidth,
+      };
 
   return (
     <RN.Pressable onPress={press} disabled={disabled} testID={testID}>
       <RN.View
-        style={[styles.track, { backgroundColor: switchColors.track }, style]}
+        style={[
+          styles.track,
+          {
+            backgroundColor: switchColors.track,
+            borderColor: colors.formBorderGray,
+            borderWidth: itemBorderWidth,
+          },
+          style,
+        ]}
       >
         <RN.Animated.View
           style={[
@@ -152,7 +166,7 @@ const styles = RN.StyleSheet.create({
   },
   knob: {
     position: 'absolute',
-    top: d * 0.25,
+    top: d * 0.25 - itemBorderWidth,
     width: d,
     height: d,
     borderRadius: d / 2,
