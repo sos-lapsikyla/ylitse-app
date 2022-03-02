@@ -176,3 +176,15 @@ const getBuddies =
 export const getBannedBuddies = getBuddies('Banned');
 
 export const getActiveBuddies = getBuddies('NotBanned');
+
+export const getIsBuddy = (buddyId: string) => (appState: types.AppState) => {
+  const { buddies } = appState.buddies;
+
+  if (RD.isSuccess(buddies)) {
+    const foundBuddy = buddies.value[buddyId];
+
+    return !!foundBuddy;
+  }
+
+  return false;
+};
