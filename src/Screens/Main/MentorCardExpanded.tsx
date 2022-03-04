@@ -5,6 +5,8 @@ import { SafeAreaView } from 'react-navigation';
 import * as navigationProps from '../../lib/navigation-props';
 
 import * as mentorApi from '../../api/mentors';
+import * as buddyState from '../../state/reducers/buddies';
+import { useSelector } from 'react-redux';
 
 import MentorTitle from '../components/MentorTitle';
 import MentorStory from '../components/MentorStory';
@@ -43,6 +45,8 @@ const MentorCardExpanded = ({ navigation }: Props) => {
   const mentor = navigation.getParam('mentor');
   const didNavigateFromChat = navigation.getParam('didNavigateFromChat');
   const color = getBuddyColor(mentor.buddyId);
+  const isBuddy = useSelector(buddyState.getIsBuddy(mentor.buddyId));
+  const shouldNavigateBack = didNavigateFromChat && isBuddy;
 
   const goBack = () => {
     navigation.goBack();
@@ -95,7 +99,7 @@ const MentorCardExpanded = ({ navigation }: Props) => {
         <SafeAreaView style={styles.safeArea} forceInset={{ bottom: 'always' }}>
           <Button
             style={styles.button}
-            onPress={didNavigateFromChat ? goBack : navigateToChat}
+            onPress={shouldNavigateBack ? goBack : navigateToChat}
             messageId="main.mentorCardExpanded.button"
             disabled={isChatDisabled}
           />
