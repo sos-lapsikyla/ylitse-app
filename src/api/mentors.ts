@@ -7,6 +7,7 @@ import * as http from '../lib/http';
 
 import * as config from './config';
 import * as authApi from './auth';
+import {UserAccount} from './account';
 
 type ApiMentor = t.TypeOf<typeof mentorType>;
 
@@ -22,7 +23,7 @@ const mentorType = t.strict({
   is_vacationing: t.boolean,
   status_message: t.string,
 });
-const mentorListType = t.strict({ resources: t.array(mentorType) });
+const mentorListType = t.strict({resources: t.array(mentorType)});
 
 export type Mentor = ReturnType<typeof toMentor>;
 
@@ -40,13 +41,45 @@ const toMentor = ({
   name: display_name,
 });
 
+export const toApiMentor = ({
+  mentorId,
+  buddyId,
+  age,
+  name,
+  ...props
+}: Mentor & {account_id: string}) => ({
+  ...props,
+  birth_year: new Date().getFullYear() - age,
+  display_name: name,
+  user_id: buddyId,
+  id: mentorId,
+});
+
+const putMentor = (mentor: ApiMentor, token: authApi.AccessToken) => {
+  return http.put(`${config.baseUrl}/mentors/${mentor.id}`, mentor, {
+    headers: authApi.authHeader(token),
+  });
+};
+
+export function updateMentor(mentor: Mentor, account: UserAccount,
+): (token: authApi.AccessToken) => TE.TaskEither<string, Mentor> {
+  return token =>
+    http.validateResponse(
+      putMentor(
+        toApiMentor({...mentor, account_id: account.accountId}),
+        token,
+      ),
+      mentorType,
+      toMentor,
+    );
+}
 export type Mentors = Record<string, Mentor>;
 
-const fromMentorList = ({ resources }: t.TypeOf<typeof mentorListType>) =>
+const fromMentorList = ({resources}: t.TypeOf<typeof mentorListType>) =>
   resources.reduce((acc: Mentors, apiMentor) => {
     const mentor = toMentor(apiMentor);
 
-    return { ...acc, [mentor.buddyId]: mentor };
+    return {...acc, [mentor.buddyId]: mentor};
   }, {});
 
 export const fetchMentors: () => TE.TaskEither<string, Record<string, Mentor>> =
@@ -63,7 +96,7 @@ export function compareLang(a: Mentor, b: Mentor) {
   }
 
   const lang = 'Italian';
-  const hasLang = ({ languages }: Mentor) => languages.includes(lang);
+  const hasLang = ({languages}: Mentor) => languages.includes(lang);
 
   if (hasLang(a) && !hasLang(b)) {
     return -1;
