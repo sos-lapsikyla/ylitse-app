@@ -22,6 +22,8 @@ const mentorType = t.strict({
   languages: t.array(t.string),
   is_vacationing: t.boolean,
   status_message: t.string,
+  gender: t.string,
+  communication_channels: t.array(t.string),
 });
 const mentorListType = t.strict({resources: t.array(mentorType)});
 
@@ -56,6 +58,7 @@ export const toApiMentor = ({
 });
 
 const putMentor = (mentor: ApiMentor, token: authApi.AccessToken) => {
+  console.log('putting', mentor)
   return http.put(`${config.baseUrl}/mentors/${mentor.id}`, mentor, {
     headers: authApi.authHeader(token),
   });

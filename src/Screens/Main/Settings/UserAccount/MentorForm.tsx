@@ -1,15 +1,11 @@
 import React from 'react';
 import RN from 'react-native';
 import * as redux from 'redux';
-import { useDispatch, useSelector } from 'react-redux';
-import { pipe } from 'fp-ts/lib/pipeable';
-import * as RD from '@devexperts/remote-data-ts';
-import * as selector from '../../../../state/selectors';
+import {useDispatch, useSelector} from 'react-redux';
 
 import * as config from '../../../../api/config';
 import * as actions from '../../../../state/actions';
 import * as mentorState from '../../../../state/reducers/mentors';
-import * as changeStatusMessageState from '../../../../state/reducers/changeStatusMessage';
 
 import Button from '../../../components/Button';
 import Message from '../../../components/Message';
@@ -26,8 +22,9 @@ type Props = {
   userId: string;
 };
 
-export default ({ userId }: Props) => {
-  const mentor = useSelector(mentorState.getMentorByUserId(userId));
+export default ({userId}: Props) => {
+  const {mentor, account, isMentorDataUpdateLoading} =
+    useSelector(mentorState.getMentorFormData(userId));
 
   const [statusMessage, setStatusMessage] = React.useState(
     mentor?.status_message ?? '',
@@ -35,51 +32,29 @@ export default ({ userId }: Props) => {
 
   const dispatch = useDispatch<redux.Dispatch<actions.Action>>();
 
-  const isVacationStatusLoading = useSelector(
-    selector.getIsChangeVacationStatusLoading,
-  );
-
-  const statusMessageState = useSelector(selector.getStatusMessageChangeState);
-
   const openProfile = () => {
     RN.Linking.openURL(config.loginUrl);
   };
 
   const changeVacationStatus = () => {
-    if (typeof mentor !== 'undefined') {
+    if (!!mentor && !!account) {
+      const updated = {...mentor, is_vacationing: !mentor.is_vacationing}
       dispatch({
-        type: 'mentor/changeVacationStatus/start',
-        payload: { mentor },
+        type: 'mentor/updateMentorData/start',
+        payload: {mentor: updated, account},
       });
     }
   };
 
   const changeStatusMessage = () => {
-    if (typeof mentor !== 'undefined') {
+    if (!!mentor && !!account) {
+      const updated = {...mentor, status_message: statusMessage}
       dispatch({
-        type: 'mentor/changeStatusMessage/start',
-        payload: { statusMessage, mentor },
+        type: 'mentor/updateMentorData/start',
+        payload: {mentor: updated, account},
       });
     }
   };
-
-  const resetStatusMessage = () => {
-    dispatch({
-      type: 'mentor/changeStatusMessage/reset',
-      payload: undefined,
-    });
-  };
-
-  React.useEffect(() => {
-    if (RD.isSuccess(statusMessageState)) {
-      const timeout = setTimeout(
-        resetStatusMessage,
-        changeStatusMessageState.coolDownDuration,
-      );
-
-      return () => clearTimeout(timeout);
-    }
-  }, [statusMessageState]);
 
   React.useEffect(() => {
     setStatusMessage(mentor?.status_message ?? '');
@@ -104,7 +79,7 @@ export default ({ userId }: Props) => {
       <MessageSwitch
         containerStyle={styles.vacationSwitch}
         value={mentor?.is_vacationing ?? false}
-        isLoading={isVacationStatusLoading}
+        isLoading={isMentorDataUpdateLoading}
         messageOn="main.settings.account.vacation.on"
         messageOff="main.settings.account.vacation.off"
         onPress={changeVacationStatus}
@@ -168,5 +143,12 @@ const styles = RN.StyleSheet.create({
   failBox: {
     tintColor: colors.danger,
   },
+<<<<<<< HEAD
   vacationSwitch: { marginTop: 8 },
+=======
+  successBox: {
+    tintColor: colors.darkBlue,
+  },
+  vacationSwitch: {marginTop: 8},
+>>>>>>> a719542 (update mentor data using put-endpoint)
 });
