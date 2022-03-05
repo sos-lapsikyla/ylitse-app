@@ -1,7 +1,7 @@
 import React from 'react';
 import RN from 'react-native';
 import * as redux from 'redux';
-import {useDispatch, useSelector} from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import * as config from '../../../../api/config';
 import * as actions from '../../../../state/actions';
@@ -22,9 +22,10 @@ type Props = {
   userId: string;
 };
 
-export default ({userId}: Props) => {
-  const {mentor, account, isMentorDataUpdateLoading} =
-    useSelector(mentorState.getMentorFormData(userId));
+export default ({ userId }: Props) => {
+  const { mentor, account, isMentorDataUpdateLoading } = useSelector(
+    mentorState.getMentorFormData(userId),
+  );
 
   const [statusMessage, setStatusMessage] = React.useState(
     mentor?.status_message ?? '',
@@ -38,20 +39,20 @@ export default ({userId}: Props) => {
 
   const changeVacationStatus = () => {
     if (!!mentor && !!account) {
-      const updated = {...mentor, is_vacationing: !mentor.is_vacationing}
+      const updated = { ...mentor, is_vacationing: !mentor.is_vacationing };
       dispatch({
         type: 'mentor/updateMentorData/start',
-        payload: {mentor: updated, account},
+        payload: { mentor: updated, account },
       });
     }
   };
 
   const changeStatusMessage = () => {
     if (!!mentor && !!account) {
-      const updated = {...mentor, status_message: statusMessage}
+      const updated = { ...mentor, status_message: statusMessage };
       dispatch({
         type: 'mentor/updateMentorData/start',
-        payload: {mentor: updated, account},
+        payload: { mentor: updated, account },
       });
     }
   };
@@ -143,12 +144,5 @@ const styles = RN.StyleSheet.create({
   failBox: {
     tintColor: colors.danger,
   },
-<<<<<<< HEAD
   vacationSwitch: { marginTop: 8 },
-=======
-  successBox: {
-    tintColor: colors.darkBlue,
-  },
-  vacationSwitch: {marginTop: 8},
->>>>>>> a719542 (update mentor data using put-endpoint)
 });

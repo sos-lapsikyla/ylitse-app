@@ -1,4 +1,3 @@
-/* global Response */
 import * as E from 'fp-ts/lib/Either';
 import * as TE from 'fp-ts/lib/TaskEither';
 
@@ -9,7 +8,7 @@ import * as authApi from '../../api/auth';
 import * as buddyApi from '../../api/buddies';
 import * as messageApi from '../../api/messages';
 import * as statApi from '../../api/stat';
-import {PollingParams} from '../reducers/messages';
+import { PollingParams } from '../reducers/messages';
 
 type RegularActions = {
   'none/none': undefined;
@@ -25,22 +24,13 @@ type RegularActions = {
   'mentors/start': undefined;
   'mentors/end': Result<typeof mentorApi.fetchMentors>;
 
-  'mentor/changeVacationStatus/start': {mentor: mentorApi.Mentor};
-  'mentor/changeVacationStatus/end': E.Either<string, Response>;
-
   'mentor/updateMentorData/start': {
     mentor: mentorApi.Mentor;
     account: accountApi.UserAccount;
   };
   'mentor/updateMentorData/end': E.Either<string, mentorApi.Mentor>;
-  'mentor/changeStatusMessage/start': {
-    statusMessage: string;
-    mentor: mentorApi.Mentor;
-  };
-  'mentor/changeStatusMessage/completed': E.Either<string, Response>;
-  'mentor/changeStatusMessage/reset': undefined;
 
-  'skillFilter/toggled': {skillName: string};
+  'skillFilter/toggled': { skillName: string };
   'skillFilter/reset': undefined;
 
   'statRequest/start': statApi.Stat;
@@ -59,8 +49,8 @@ type RegularActions = {
   'changePassword/completed': Result<ReturnType<typeof authApi.changePassword>>;
   'changePassword/reset': undefined;
 
-  'changeEmail/start': {email?: string; account?: accountApi.UserAccount};
-  'changeEmail/completed': E.Either<string, {email?: string}>;
+  'changeEmail/start': { email?: string; account?: accountApi.UserAccount };
+  'changeEmail/completed': E.Either<string, { email?: string }>;
   'changeEmail/reset': undefined;
 
   'token/Acquired': authApi.AccessToken;
@@ -81,7 +71,7 @@ type RegularActions = {
   'messages/setPollingParams': PollingParams;
   'messages/get/completed': E.Either<string, messageApi.MessageResponse>;
 
-  'messages/markSeen': {message: messageApi.Message};
+  'messages/markSeen': { message: messageApi.Message };
   'messages/markSeen/end': undefined;
 
   'buddies/completed': Result<typeof buddyApi.fetchBuddies>;
@@ -108,7 +98,7 @@ type RegularActions = {
 
   'newMessage/store/write/start': messageApi.SendMessageParams;
   'newMessage/store/write/end': messageApi.SendMessageParams;
-  'newMessage/store/read/start': {buddyId: string};
+  'newMessage/store/read/start': { buddyId: string };
   'newMessage/store/read/end': messageApi.SendMessageParams;
 
   'notifications/requestPermissions/init': undefined;
@@ -145,5 +135,5 @@ export function make<T extends ActionType, P extends RegularActions[T]>(
   type: T;
   payload: P;
 } {
-  return (payload: P) => ({type, payload});
+  return (payload: P) => ({ type, payload });
 }

@@ -2,7 +2,7 @@ import * as automaton from 'redux-automaton';
 import * as T from 'fp-ts/lib/Task';
 
 import * as tokenStorage from '../../api/token-storage';
-import {cmd} from '../middleware';
+import { cmd } from '../middleware';
 
 import * as types from '../types';
 
@@ -19,12 +19,10 @@ import * as markSeen from './markSeen';
 import * as userAccount from './userAccount';
 import * as changePassword from './changePassword';
 import * as changeEmail from './changeEmail';
-import * as changeVacationStatus from './changeVacationStatus';
-import * as changeStatusMessage from './changeStatusMessage';
 import * as notifications from './notifications';
 import * as deleteAccount from './deleteAccount';
 import * as statRequest from './statRequest';
-import * as updateMentorData from './updateMentorData'
+import * as updateMentorData from './updateMentorData';
 
 import * as actions from '../actions';
 
@@ -59,8 +57,6 @@ export const rootReducer: automaton.Reducer<AppState, actions.Action> =
       changePassword: changePassword.reducer,
       changeEmail: changeEmail.reducer,
       updateMentorData: updateMentorData.reducer,
-      changeVacationStatus: changeVacationStatus.reducer,
-      changeStatusMessage: changeStatusMessage.reducer,
       notifications: notifications.reducer,
       deleteAccount: deleteAccount.reducer,
       mentors: mentors.reducer,
@@ -83,8 +79,6 @@ export const initialState: AppState = {
   changePassword: changePassword.initialState,
   changeEmail: changeEmail.initialState,
   updateMentorData: updateMentorData.initialState,
-  changeVacationStatus: changeVacationStatus.initialState,
-  changeStatusMessage: changeStatusMessage.initialState,
   notifications: notifications.initialState,
   deleteAccount: deleteAccount.initialState,
   mentors: mentors.initialState,
