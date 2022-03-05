@@ -2,7 +2,7 @@ import * as automaton from 'redux-automaton';
 import * as T from 'fp-ts/lib/Task';
 
 import * as tokenStorage from '../../api/token-storage';
-import { cmd } from '../middleware';
+import {cmd} from '../middleware';
 
 import * as types from '../types';
 
@@ -24,6 +24,7 @@ import * as changeStatusMessage from './changeStatusMessage';
 import * as notifications from './notifications';
 import * as deleteAccount from './deleteAccount';
 import * as statRequest from './statRequest';
+import * as updateMentorData from './updateMentorData'
 
 import * as actions from '../actions';
 
@@ -57,6 +58,7 @@ export const rootReducer: automaton.Reducer<AppState, actions.Action> =
       userAccount: userAccount.reducer,
       changePassword: changePassword.reducer,
       changeEmail: changeEmail.reducer,
+      updateMentorData: updateMentorData.reducer,
       changeVacationStatus: changeVacationStatus.reducer,
       changeStatusMessage: changeStatusMessage.reducer,
       notifications: notifications.reducer,
@@ -80,6 +82,7 @@ export const initialState: AppState = {
   userAccount: userAccount.initialState,
   changePassword: changePassword.initialState,
   changeEmail: changeEmail.initialState,
+  updateMentorData: updateMentorData.initialState,
   changeVacationStatus: changeVacationStatus.initialState,
   changeStatusMessage: changeStatusMessage.initialState,
   notifications: notifications.initialState,

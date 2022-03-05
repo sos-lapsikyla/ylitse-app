@@ -6,7 +6,7 @@ import * as accountApi from '../api/account';
 import * as buddyApi from '../api/buddies';
 import * as mentorsApi from '../api/mentors';
 import * as messageApi from '../api/messages';
-import { PollingParams } from './reducers/messages';
+import {PollingParams} from './reducers/messages';
 
 export type indexStr = string;
 export type BuddyId = string;
@@ -24,14 +24,15 @@ export type AppState = {
     currentToken: O.Option<authApi.AccessToken>;
     nextToken: RemoteData<authApi.AccessToken>;
     index: number;
-    tasks: Record<indexStr, { task: any; action: any }>;
-    deferredTasks: { task: any; action: any }[];
+    tasks: Record<indexStr, {task: any; action: any}>;
+    deferredTasks: {task: any; action: any}[];
   };
 
   login: RemoteData<authApi.AccessToken>;
   createUser: RemoteData<authApi.AccessToken>;
   changePassword: RemoteAction;
-  changeEmail: RemoteData<{ email?: string }>;
+  changeEmail: RemoteData<{email?: string}>;
+  updateMentorData: RemoteAction
   changeVacationStatus: RemoteAction;
   changeStatusMessage: RemoteAction;
   userAccount: RemoteData<accountApi.UserAccount>;
