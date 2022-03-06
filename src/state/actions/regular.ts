@@ -33,7 +33,7 @@ type RegularActions = {
   'mentor/updateMentorData/end': Result<
     ReturnType<typeof mentorApi.updateMentor>
   >;
-  'mentor/updateMentorData/reset': undefined;
+  'mentor/updateMentorData/reset': UpdateKey;
 
   'skillFilter/toggled': { skillName: string };
   'skillFilter/reset': undefined;

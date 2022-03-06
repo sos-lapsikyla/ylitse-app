@@ -12,11 +12,11 @@ import * as mentorUpdate from '../../../../state/reducers/updateMentorData';
 
 import Button from '../../../components/Button';
 import Message from '../../../components/Message';
-import StatusMessageForm from 'src/Screens/components/StatusMessageForm';
-import MessageSwitch from 'src/Screens/components/MessageSwitch';
-import Spinner from 'src/Screens/components/Spinner';
+import Spinner from '../../../components/Spinner';
 import AlertBox from './AlertBox';
 import AlertDialog from './AlertDialog';
+import StatusMessageForm from 'src/Screens/components/StatusMessageForm';
+import MessageSwitch from 'src/Screens/components/MessageSwitch';
 
 import colors from '../../../components/colors';
 import fonts from '../../../components/fonts';
@@ -30,19 +30,19 @@ export default ({ userId }: Props) => {
     mentorState.getMentorFormData(userId),
   );
 
-  const vacationStatusState = useSelector(
-    mentorUpdate.selectMentorDataUpdatingStateFor('is_vacationing'),
-  );
-
-  const statusMessageState = useSelector(
-    mentorUpdate.selectMentorDataUpdatingStateFor('status_message'),
-  );
-
   const [statusMessage, setStatusMessage] = React.useState(
     mentor?.status_message ?? '',
   );
 
+  const vacationStatusState = useSelector(
+    mentorUpdate.selectMentorDataUpdatingStateFor('is_vacationing'),
+  );
+
   const dispatch = useDispatch<redux.Dispatch<actions.Action>>();
+
+  const statusMessageState = useSelector(
+    mentorUpdate.selectMentorDataUpdatingStateFor('status_message'),
+  );
 
   const openProfile = () => {
     RN.Linking.openURL(config.loginUrl);
@@ -67,7 +67,7 @@ export default ({ userId }: Props) => {
   const resetStatusMessage = () => {
     dispatch({
       type: 'mentor/updateMentorData/reset',
-      payload: undefined,
+      payload: 'status_message',
     });
   };
 

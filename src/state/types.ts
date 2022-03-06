@@ -33,7 +33,10 @@ export type AppState = {
   createUser: RemoteData<authApi.AccessToken>;
   changePassword: RemoteAction;
   changeEmail: RemoteData<{ email?: string }>;
-  updateMentorData: { update: RemoteAction; key: UpdateKey };
+  updateMentorData: {
+    update: Record<UpdateKey, RemoteAction>;
+    current: UpdateKey;
+  };
   userAccount: RemoteData<accountApi.UserAccount>;
 
   deleteAccount: RemoteAction;

@@ -12,14 +12,17 @@ import { AppState } from '../types';
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 
-export type UpdateKey = KeysOfUnion<MentorUpdateData> | null;
+export type UpdateKey = KeysOfUnion<MentorUpdateData>;
 export type MentorUpdateData =
   | {
       is_vacationing: boolean;
     }
   | { status_message: string };
 type State = AppState['updateMentorData'];
-export const initialState = { update: RD.initial, key: null };
+export const initialState = {
+  update: { is_vacationing: RD.initial, status_message: RD.initial },
+  current: 'is_vacationing',
+} as const;
 
 export const successResetDuration = 5000;
 export const reducer: automaton.Reducer<State, actions.Action> = (
@@ -31,7 +34,10 @@ export const reducer: automaton.Reducer<State, actions.Action> = (
       const { key, mentor, account } = action.payload;
 
       return automaton.loop(
-        { key, update: RD.pending },
+        {
+          update: { ...state.update, [key]: RD.pending },
+          current: key,
+        },
         withToken(
           mentorsApi.updateMentor(mentor, account),
           actions.make('mentor/updateMentorData/end'),
@@ -46,15 +52,25 @@ export const reducer: automaton.Reducer<State, actions.Action> = (
           fail =>
             automaton.loop<State, actions.Action>({
               ...state,
-              update: RD.failure(fail),
+              update: { ...state.update, [state.current]: RD.failure(fail) },
             }),
-          _ => automaton.loop({ ...state, update: RD.success(undefined) }),
+          _ =>
+            automaton.loop({
+              ...state,
+              update: {
+                ...state.update,
+                [state.current]: RD.success(undefined),
+              },
+            }),
         ),
       );
     }
 
     case 'mentor/updateMentorData/reset': {
-      return initialState;
+      return {
+        ...state,
+        update: { ...state.update, [action.payload]: RD.initial },
+      };
     }
 
     default:
@@ -65,7 +81,5 @@ export const reducer: automaton.Reducer<State, actions.Action> = (
 export const selectMentorDataUpdatingStateFor =
   (key: UpdateKey) =>
   ({ updateMentorData: state }: AppState) => {
-    if (!key) return RD.initial;
-
-    return key === state.key ? state.update : RD.initial;
+    return state.update[key];
   };

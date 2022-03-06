@@ -57,8 +57,6 @@ export const toApiMentor = ({
 });
 
 const putMentor = (mentor: ApiMentor, token: authApi.AccessToken) => {
-  console.log('putting', mentor);
-
   return http.put(`${config.baseUrl}/mentors/${mentor.id}`, mentor, {
     headers: authApi.authHeader(token),
   });
