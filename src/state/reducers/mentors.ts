@@ -132,10 +132,7 @@ export const getMentorFormData =
   (buddyId: string) => (appState: types.AppState) => {
     const mentor = getMentorByUserId(buddyId)(appState);
     const account = getAccount(appState);
-    const mentorDataUpdatingState = selectMentorDataUpdatingState(appState);
-    const isMentorDataUpdateLoading = RD.isPending(
-      mentorDataUpdatingState.update,
-    );
+    const mentorDataUpdating = selectMentorDataUpdatingState(appState);
 
-    return { mentor, account, isMentorDataUpdateLoading };
+    return { mentor, account, mentorDataUpdating };
   };

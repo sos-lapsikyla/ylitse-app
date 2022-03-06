@@ -12,6 +12,7 @@ import Button from '../../../components/Button';
 import Message from '../../../components/Message';
 import StatusMessageForm from 'src/Screens/components/StatusMessageForm';
 import MessageSwitch from 'src/Screens/components/MessageSwitch';
+import Spinner from 'src/Screens/components/Spinner';
 
 import colors from '../../../components/colors';
 import fonts from '../../../components/fonts';
@@ -21,9 +22,11 @@ type Props = {
 };
 
 export default ({ userId }: Props) => {
-  const { mentor, account, isMentorDataUpdateLoading } = useSelector(
-    mentorState.getMentorFormData(userId),
-  );
+  const {
+    mentor,
+    account,
+    mentorDataUpdating: { isLoading, key },
+  } = useSelector(mentorState.getMentorFormData(userId));
 
   const [statusMessage, setStatusMessage] = React.useState(
     mentor?.status_message ?? '',
@@ -37,12 +40,16 @@ export default ({ userId }: Props) => {
 
   const updateMentorData = (
     updateData: mentorUpdate.MentorUpdateData,
-    key: mentorUpdate.UpdateKey,
+    updateKey: mentorUpdate.UpdateKey,
   ) => {
     if (!!mentor && !!account) {
       dispatch({
         type: 'mentor/updateMentorData/start',
-        payload: { mentor: { ...mentor, ...updateData }, account, key },
+        payload: {
+          mentor: { ...mentor, ...updateData },
+          account,
+          key: updateKey,
+        },
       });
     }
   };
@@ -70,7 +77,7 @@ export default ({ userId }: Props) => {
       <MessageSwitch
         containerStyle={styles.vacationSwitch}
         value={mentor?.is_vacationing ?? false}
-        isLoading={isMentorDataUpdateLoading}
+        isLoading={isLoading && key === 'is_vacationing'}
         messageOn="main.settings.account.vacation.on"
         messageOff="main.settings.account.vacation.off"
         onPress={() =>
@@ -87,14 +94,21 @@ export default ({ userId }: Props) => {
         id="main.settings.account.status.title"
         testID="main.settings.account.status.title"
       />
-      <StatusMessageForm
-        statusMessage={statusMessage}
-        setStatusMessage={setStatusMessage}
-        onButtonPress={() =>
-          updateMentorData({ status_message: statusMessage }, 'status_message')
-        }
-        maxLength={30}
-      />
+      {isLoading && key === 'status_message' ? (
+        <Spinner />
+      ) : (
+        <StatusMessageForm
+          statusMessage={statusMessage}
+          setStatusMessage={setStatusMessage}
+          onButtonPress={() =>
+            updateMentorData(
+              { status_message: statusMessage },
+              'status_message',
+            )
+          }
+          maxLength={30}
+        />
+      )}
     </>
   );
 };

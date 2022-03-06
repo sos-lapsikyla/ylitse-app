@@ -27,6 +27,7 @@ export const reducer: automaton.Reducer<State, actions.Action> = (
   switch (action.type) {
     case 'mentor/updateMentorData/start': {
       const { key, mentor, account } = action.payload;
+
       return automaton.loop(
         { key, update: RD.pending },
         withToken(
@@ -61,4 +62,4 @@ export const reducer: automaton.Reducer<State, actions.Action> = (
 
 export const selectMentorDataUpdatingState = ({
   updateMentorData: state,
-}: AppState) => state;
+}: AppState) => ({ isLoading: RD.isPending(state.update), key: state.key });
