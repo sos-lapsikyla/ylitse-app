@@ -133,7 +133,9 @@ export const getMentorFormData =
     const mentor = getMentorByUserId(buddyId)(appState);
     const account = getAccount(appState);
     const mentorDataUpdatingState = selectMentorDataUpdatingState(appState);
-    const isMentorDataUpdateLoading = RD.isPending(mentorDataUpdatingState);
+    const isMentorDataUpdateLoading = RD.isPending(
+      mentorDataUpdatingState.update,
+    );
 
     return { mentor, account, isMentorDataUpdateLoading };
   };

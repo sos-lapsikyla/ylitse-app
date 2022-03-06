@@ -10,21 +10,27 @@ import * as actions from '../actions';
 import { withToken } from './accessToken';
 import { AppState } from '../types';
 
+type KeysOfUnion<T> = T extends T ? keyof T : never;
+
+export type UpdateKey = KeysOfUnion<MentorUpdateData> | null;
+export type MentorUpdateData =
+  | {
+      is_vacationing: boolean;
+    }
+  | { status_message: string };
 type State = AppState['updateMentorData'];
-export const initialState = RD.initial;
+export const initialState = { update: RD.initial, key: null };
 export const reducer: automaton.Reducer<State, actions.Action> = (
   state = initialState,
   action,
 ) => {
   switch (action.type) {
     case 'mentor/updateMentorData/start': {
+      const { key, mentor, account } = action.payload;
       return automaton.loop(
-        RD.pending,
+        { key, update: RD.pending },
         withToken(
-          mentorsApi.updateMentor(
-            action.payload.mentor,
-            action.payload.account,
-          ),
+          mentorsApi.updateMentor(mentor, account),
           actions.make('mentor/updateMentorData/end'),
         ),
       );
@@ -34,14 +40,18 @@ export const reducer: automaton.Reducer<State, actions.Action> = (
       return pipe(
         action.payload,
         E.fold(
-          fail => automaton.loop<State, actions.Action>(RD.failure(fail)),
-          _ => automaton.loop(RD.success(undefined)),
+          fail =>
+            automaton.loop<State, actions.Action>({
+              ...state,
+              update: RD.failure(fail),
+            }),
+          _ => automaton.loop({ ...state, update: RD.success(undefined) }),
         ),
       );
     }
 
     case 'mentor/updateMentorData/reset': {
-      return RD.initial;
+      return initialState;
     }
 
     default:

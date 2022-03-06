@@ -9,6 +9,7 @@ import * as buddyApi from '../../api/buddies';
 import * as messageApi from '../../api/messages';
 import * as statApi from '../../api/stat';
 import { PollingParams } from '../reducers/messages';
+import { UpdateKey } from '../reducers/updateMentorData';
 
 type RegularActions = {
   'none/none': undefined;
@@ -27,6 +28,7 @@ type RegularActions = {
   'mentor/updateMentorData/start': {
     mentor: mentorApi.Mentor;
     account: accountApi.UserAccount;
+    key: UpdateKey;
   };
   'mentor/updateMentorData/end': Result<
     ReturnType<typeof mentorApi.updateMentor>

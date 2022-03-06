@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import * as config from '../../../../api/config';
 import * as actions from '../../../../state/actions';
 import * as mentorState from '../../../../state/reducers/mentors';
+import * as mentorUpdate from '../../../../state/reducers/updateMentorData';
 
 import Button from '../../../components/Button';
 import Message from '../../../components/Message';
@@ -18,12 +19,6 @@ import fonts from '../../../components/fonts';
 type Props = {
   userId: string;
 };
-
-type MentorUpdateData =
-  | {
-      is_vacationing: boolean;
-    }
-  | { status_message: string };
 
 export default ({ userId }: Props) => {
   const { mentor, account, isMentorDataUpdateLoading } = useSelector(
@@ -40,11 +35,14 @@ export default ({ userId }: Props) => {
     RN.Linking.openURL(config.loginUrl);
   };
 
-  const updateMentorData = (updateData: MentorUpdateData) => {
+  const updateMentorData = (
+    updateData: mentorUpdate.MentorUpdateData,
+    key: mentorUpdate.UpdateKey,
+  ) => {
     if (!!mentor && !!account) {
       dispatch({
         type: 'mentor/updateMentorData/start',
-        payload: { mentor: { ...mentor, ...updateData }, account },
+        payload: { mentor: { ...mentor, ...updateData }, account, key },
       });
     }
   };
@@ -76,7 +74,10 @@ export default ({ userId }: Props) => {
         messageOn="main.settings.account.vacation.on"
         messageOff="main.settings.account.vacation.off"
         onPress={() =>
-          updateMentorData({ is_vacationing: !mentor?.is_vacationing })
+          updateMentorData(
+            { is_vacationing: !mentor?.is_vacationing },
+            'is_vacationing',
+          )
         }
         testID="main.settings.
           account.vacation.switch"
@@ -90,7 +91,7 @@ export default ({ userId }: Props) => {
         statusMessage={statusMessage}
         setStatusMessage={setStatusMessage}
         onButtonPress={() =>
-          updateMentorData({ status_message: statusMessage })
+          updateMentorData({ status_message: statusMessage }, 'status_message')
         }
         maxLength={30}
       />
