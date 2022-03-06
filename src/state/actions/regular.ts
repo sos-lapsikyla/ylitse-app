@@ -28,7 +28,10 @@ type RegularActions = {
     mentor: mentorApi.Mentor;
     account: accountApi.UserAccount;
   };
-  'mentor/updateMentorData/end': E.Either<string, mentorApi.Mentor>;
+  'mentor/updateMentorData/end': Result<
+    ReturnType<typeof mentorApi.updateMentor>
+  >;
+  'mentor/updateMentorData/reset': undefined;
 
   'skillFilter/toggled': { skillName: string };
   'skillFilter/reset': undefined;

@@ -40,6 +40,10 @@ export const reducer: automaton.Reducer<State, actions.Action> = (
       );
     }
 
+    case 'mentor/updateMentorData/reset': {
+      return RD.initial;
+    }
+
     default:
       return state;
   }
