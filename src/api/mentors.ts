@@ -1,4 +1,3 @@
-/* global Response */
 import * as t from 'io-ts';
 import * as TE from 'fp-ts/lib/TaskEither';
 

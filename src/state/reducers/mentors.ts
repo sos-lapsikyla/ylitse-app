@@ -13,7 +13,6 @@ import * as mentorsApi from '../../api/mentors';
 import { cmd } from '../middleware';
 import * as actions from '../actions';
 import * as types from '../types';
-import { selectMentorDataUpdatingState } from './updateMentorData';
 import { getAccount } from '../selectors';
 
 export type State = types.AppState['mentors'];
@@ -132,7 +131,6 @@ export const getMentorFormData =
   (buddyId: string) => (appState: types.AppState) => {
     const mentor = getMentorByUserId(buddyId)(appState);
     const account = getAccount(appState);
-    const mentorDataUpdating = selectMentorDataUpdatingState(appState);
 
-    return { mentor, account, mentorDataUpdating };
+    return { mentor, account };
   };

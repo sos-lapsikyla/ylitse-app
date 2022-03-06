@@ -20,6 +20,8 @@ export type MentorUpdateData =
   | { status_message: string };
 type State = AppState['updateMentorData'];
 export const initialState = { update: RD.initial, key: null };
+
+export const successResetDuration = 5000;
 export const reducer: automaton.Reducer<State, actions.Action> = (
   state = initialState,
   action,
@@ -60,6 +62,10 @@ export const reducer: automaton.Reducer<State, actions.Action> = (
   }
 };
 
-export const selectMentorDataUpdatingState = ({
-  updateMentorData: state,
-}: AppState) => ({ isLoading: RD.isPending(state.update), key: state.key });
+export const selectMentorDataUpdatingStateFor =
+  (key: UpdateKey) =>
+  ({ updateMentorData: state }: AppState) => {
+    if (!key) return RD.initial;
+
+    return key === state.key ? state.update : RD.initial;
+  };
