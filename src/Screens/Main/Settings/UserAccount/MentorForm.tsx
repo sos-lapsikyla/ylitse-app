@@ -9,9 +9,6 @@ import * as mentorState from '../../../../state/reducers/mentors';
 
 import Button from '../../../components/Button';
 import Message from '../../../components/Message';
-import Spinner from '../../../components/Spinner';
-import { Toast } from '../../../components/Toast';
-import AlertDialog from './AlertDialog';
 import StatusMessageForm from 'src/Screens/components/StatusMessageForm';
 import MessageSwitch from 'src/Screens/components/MessageSwitch';
 
@@ -21,6 +18,12 @@ import fonts from '../../../components/fonts';
 type Props = {
   userId: string;
 };
+
+type MentorUpdateData =
+  | {
+      is_vacationing: boolean;
+    }
+  | { status_message: string };
 
 export default ({ userId }: Props) => {
   const { mentor, account, isMentorDataUpdateLoading } = useSelector(
@@ -37,22 +40,11 @@ export default ({ userId }: Props) => {
     RN.Linking.openURL(config.loginUrl);
   };
 
-  const changeVacationStatus = () => {
+  const updateMentorData = (updateData: MentorUpdateData) => {
     if (!!mentor && !!account) {
-      const updated = { ...mentor, is_vacationing: !mentor.is_vacationing };
       dispatch({
         type: 'mentor/updateMentorData/start',
-        payload: { mentor: updated, account },
-      });
-    }
-  };
-
-  const changeStatusMessage = () => {
-    if (!!mentor && !!account) {
-      const updated = { ...mentor, status_message: statusMessage };
-      dispatch({
-        type: 'mentor/updateMentorData/start',
-        payload: { mentor: updated, account },
+        payload: { mentor: { ...mentor, ...updateData }, account },
       });
     }
   };
@@ -83,7 +75,9 @@ export default ({ userId }: Props) => {
         isLoading={isMentorDataUpdateLoading}
         messageOn="main.settings.account.vacation.on"
         messageOff="main.settings.account.vacation.off"
-        onPress={changeVacationStatus}
+        onPress={() =>
+          updateMentorData({ is_vacationing: !mentor?.is_vacationing })
+        }
         testID="main.settings.
           account.vacation.switch"
       />
@@ -92,36 +86,14 @@ export default ({ userId }: Props) => {
         id="main.settings.account.status.title"
         testID="main.settings.account.status.title"
       />
-      {pipe(
-        statusMessageState,
-        RD.fold(
-          () => (
-            <StatusMessageForm
-              statusMessage={statusMessage}
-              setStatusMessage={setStatusMessage}
-              onButtonPress={changeStatusMessage}
-              maxLength={30}
-            />
-          ),
-          () => <Spinner />,
-          () => (
-            <AlertDialog
-              imageStyle={styles.failBox}
-              imageSource={require('../../../images/alert-circle.svg')}
-              messageId="main.settings.account.status.fail"
-              onOkPress={resetStatusMessage}
-              onRetryPress={changeStatusMessage}
-            />
-          ),
-          () => (
-            <Toast
-              toastType="success"
-              duration={changeStatusMessageState.coolDownDuration}
-              messageId="main.settings.account.status.success"
-            />
-          ),
-        ),
-      )}
+      <StatusMessageForm
+        statusMessage={statusMessage}
+        setStatusMessage={setStatusMessage}
+        onButtonPress={() =>
+          updateMentorData({ status_message: statusMessage })
+        }
+        maxLength={30}
+      />
     </>
   );
 };
