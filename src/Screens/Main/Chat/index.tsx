@@ -202,19 +202,18 @@ const Chat = ({ navigation }: Props) => {
         style={styles.container}
         behavior={keyboardViewBehaviour}
       >
-        {isMessageSendFailed ? (
+        {isMessageSendFailed && (
           <Toast
             toastType="danger"
             duration={newMessageState.coolDownDuration}
             messageId="main.chat.send.failure"
           />
-        ) : (
-          <MemoizedMessageList
-            messageList={sortedMessageList}
-            getPreviousMessages={getPreviousMessages}
-            isLoading={isLoading}
-          />
         )}
+        <MemoizedMessageList
+          messageList={sortedMessageList}
+          getPreviousMessages={getPreviousMessages}
+          isLoading={isLoading}
+        />
         <Input style={styles.input} buddyId={buddyId} />
       </RN.KeyboardAvoidingView>
     </RN.TouchableOpacity>
