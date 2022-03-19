@@ -24,7 +24,7 @@ import { Dialog, DialogProps } from '../../components/Dialog';
 import colors from '../../components/colors';
 import { BanAction } from 'src/api/buddies';
 import { MentorCardExpandedRoute } from '../MentorCardExpanded';
-import AlertBox from '../Settings/UserAccount/AlertBox';
+import { Toast } from '../../components/Toast';
 
 export type ChatRoute = {
   'Main/Chat': { buddyId: string };
@@ -203,10 +203,9 @@ const Chat = ({ navigation }: Props) => {
         behavior={keyboardViewBehaviour}
       >
         {isMessageSendFailed ? (
-          <AlertBox
-            imageStyle={styles.failBox}
+          <Toast
+            toastType="danger"
             duration={newMessageState.coolDownDuration}
-            imageSource={require('../../images/alert-circle.svg')}
             messageId="main.chat.send.failure"
           />
         ) : (
@@ -239,9 +238,6 @@ const styles = RN.StyleSheet.create({
   title: {},
   input: {
     marginTop: 8,
-  },
-  failBox: {
-    tintColor: colors.danger,
   },
   spinnerContainer: { flex: 1, justifyContent: 'center', alignItems: 'center' },
 });

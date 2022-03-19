@@ -16,7 +16,7 @@ export const changeEmail = actions.make('changeEmail/start');
 export const resetChangeEmail = actions.make('changeEmail/reset')(undefined);
 
 export const initialState = RD.initial;
-export const coolDownDuration = 5000;
+export const coolDownDuration = 3000;
 
 const _changeEmail =
   ({ email, account }: { email?: string; account?: accountApi.UserAccount }) =>

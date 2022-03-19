@@ -29,7 +29,7 @@ export const Toast: React.FC<Props> = ({
 
   const { backgroundColor, tintColor, icon } = toastProps[toastType];
 
-  const showAndDisappear = () =>
+  const fadeInAndOut = () =>
     RN.Animated.sequence([
       RN.Animated.timing(opacity, {
         toValue: 1,
@@ -50,29 +50,35 @@ export const Toast: React.FC<Props> = ({
         easing: RN.Easing.linear,
       }),
     ]).start();
-  React.useEffect(showAndDisappear, []);
+  React.useEffect(fadeInAndOut, []);
 
   return (
-    <RN.Animated.View
-      style={[styles.container, style, { opacity, backgroundColor }]}
-    >
-      <RN.Image style={[styles.image, { tintColor }]} source={icon} />
-      <Message id={messageId} style={styles.text} />
-    </RN.Animated.View>
+    <RN.View style={styles.container}>
+      <RN.Modal animationType="fade" transparent={true} visible={true}>
+        <RN.Animated.View
+          style={[styles.toastContainer, style, { opacity, backgroundColor }]}
+        >
+          <RN.Image style={[styles.image, { tintColor }]} source={icon} />
+          <Message id={messageId} style={styles.text} />
+        </RN.Animated.View>
+      </RN.Modal>
+    </RN.View>
   );
 };
 
 const styles = RN.StyleSheet.create({
   container: {
-    position: 'absolute',
+    flexGrow: 1,
+  },
+  toastContainer: {
+    marginHorizontal: 16,
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-around',
     borderRadius: 16,
     padding: 24,
-    marginTop: 16,
-    zIndex: 10,
+    marginTop: 24,
     ...shadow(7),
   },
   text: {
