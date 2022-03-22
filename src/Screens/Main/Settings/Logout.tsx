@@ -56,12 +56,14 @@ export default ({ navigation }: Props) => {
         >
           <MessageButton
             style={styles.logoutButton}
+            messageStyle={styles.messageStyle}
             onPress={onLogout}
             messageId={'main.settings.logout.logout'}
             testID="main.settings.logout.logout"
           />
           <MessageButton
             style={styles.cancelButton}
+            messageStyle={styles.messageStyle}
             onPress={onGoBack}
             messageId={'main.settings.logout.cancel'}
             testID="main.settings.logout.cancel"
@@ -114,4 +116,7 @@ const styles = RN.StyleSheet.create({
   },
   logoutButton: { marginBottom: 40 },
   cancelButton: { backgroundColor: colors.gray, marginBottom: 40 },
+  messageStyle: {
+    color: colors.deepBlue,
+  },
 });
