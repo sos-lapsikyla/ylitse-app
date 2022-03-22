@@ -52,7 +52,7 @@ const styles = RN.StyleSheet.create({
     ...fonts.titleLarge,
     ...textShadow,
     textAlign: 'center',
-    color: colors.white,
+    color: colors.deepBlue,
   },
   kebabIconHighlight: {
     height: 32,
@@ -61,5 +61,5 @@ const styles = RN.StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-  kebabIcon: { tintColor: colors.white },
+  kebabIcon: { tintColor: colors.deepBlue },
 });

@@ -138,6 +138,6 @@ const styles = RN.StyleSheet.create({
   buttonText: {
     ...fonts.regularBold,
     // ...textShadow,
-    color: colors.white,
+    color: colors.deepBlue,
   },
 });

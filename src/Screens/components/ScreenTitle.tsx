@@ -53,12 +53,12 @@ const styles = RN.StyleSheet.create({
     zIndex: 3,
   },
   chevron: {
-    tintColor: colors.white,
+    tintColor: colors.deepBlue,
   },
   screenTitleText: {
     ...fonts.titleLarge,
     textAlign: 'center',
-    color: colors.white,
+    color: colors.deepBlue,
   },
   scrollView: {
     zIndex: 1,

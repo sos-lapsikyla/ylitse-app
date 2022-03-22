@@ -88,7 +88,7 @@ const styles = RN.StyleSheet.create({
   buttonText: {
     ...fonts.largeBold,
     ...textShadow,
-    color: colors.white,
+    color: colors.deepBlue,
   },
   cancelButton: { backgroundColor: colors.gray, marginBottom: 16 },
 });

@@ -41,6 +41,6 @@ const chipStyles = RN.StyleSheet.create({
   nameText: {
     ...textShadow,
     ...fonts.smallBold,
-    color: colors.white,
+    color: colors.deepBlue,
   },
 });
