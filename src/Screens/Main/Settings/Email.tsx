@@ -21,7 +21,7 @@ import Spinner from '../../components/Spinner';
 
 import { MentorListRoute } from '../../Onboarding/MentorList';
 
-import AlertBox from './UserAccount/AlertBox';
+import { Toast } from '../../components/Toast';
 import AlertDialog from './UserAccount/AlertDialog';
 import EmailForm from 'src/Screens/components/EmailForm';
 
@@ -114,9 +114,8 @@ export default ({ navigation }: Props) => {
                 />
               ),
               () => (
-                <AlertBox
-                  imageStyle={styles.successBox}
-                  imageSource={require('../../images/checkmark-circle-outline.svg')}
+                <Toast
+                  toastType="success"
                   duration={changeEmailState.coolDownDuration}
                   messageId="main.settings.account.email.success"
                 />

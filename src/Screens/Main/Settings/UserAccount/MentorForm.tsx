@@ -14,7 +14,7 @@ import * as changeStatusMessageState from '../../../../state/reducers/changeStat
 import Button from '../../../components/Button';
 import Message from '../../../components/Message';
 import Spinner from '../../../components/Spinner';
-import AlertBox from './AlertBox';
+import { Toast } from '../../../components/Toast';
 import AlertDialog from './AlertDialog';
 import StatusMessageForm from 'src/Screens/components/StatusMessageForm';
 import MessageSwitch from 'src/Screens/components/MessageSwitch';
@@ -138,9 +138,8 @@ export default ({ userId }: Props) => {
             />
           ),
           () => (
-            <AlertBox
-              imageStyle={styles.successBox}
-              imageSource={require('../../../images/checkmark-circle-outline.svg')}
+            <Toast
+              toastType="success"
               duration={changeStatusMessageState.coolDownDuration}
               messageId="main.settings.account.status.success"
             />
@@ -164,14 +163,10 @@ const styles = RN.StyleSheet.create({
   },
   buttonText: {
     ...fonts.regularBold,
-    // ...textShadow,
     color: colors.white,
   },
   failBox: {
     tintColor: colors.danger,
-  },
-  successBox: {
-    tintColor: colors.darkBlue,
   },
   vacationSwitch: { marginTop: 8 },
 });

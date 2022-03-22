@@ -10,7 +10,7 @@ import { AppState } from '../types';
 import { withToken } from './accessToken';
 
 export const initialState = RD.initial;
-export const coolDownDuration = 5000;
+export const coolDownDuration = 3000;
 
 export const reducer: automaton.Reducer<
   RD.RemoteData<string, Response>,
