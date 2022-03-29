@@ -167,6 +167,7 @@ export default ({ navigation }: Props) => {
             onPress={onPressBack}
             messageId={'main.searchMentor.showButton'}
             testID={'main.searchMentor.showButton'}
+            messageStyle={styles.searchButtonMessage}
           />
         </RN.View>
       </RN.View>
@@ -194,11 +195,11 @@ const styles = RN.StyleSheet.create({
     ...fonts.titleLarge,
     ...textShadow,
     textAlign: 'center',
-    color: colors.white,
+    color: colors.deepBlue,
     flex: 6,
   },
   backButtonIcon: {
-    tintColor: colors.white,
+    tintColor: colors.deepBlue,
     width: 48,
     height: 48,
   },
@@ -300,11 +301,14 @@ const styles = RN.StyleSheet.create({
     marginBottom: 8,
   },
   skillPillButtonText: {
-    color: colors.white,
+    color: colors.deepBlue,
   },
   searchButton: {
     backgroundColor: colors.green,
     marginBottom: 40,
+  },
+  searchButtonMessage: {
+    color: colors.deepBlue,
   },
   resetButton: { backgroundColor: colors.lightestGray, marginBottom: 40 },
   resetButtonText: { color: colors.darkestBlue },
