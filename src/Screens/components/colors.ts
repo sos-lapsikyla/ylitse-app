@@ -27,7 +27,7 @@ const colors = {
   orange: '#F1923E',
 
   // others
-  danger: '#E93C66',
+  danger: '#A8243C',
   yellow: '#FFDA17',
   lighterYellow: '#FDF3A4',
   lightDanger: '#F19A9C',
@@ -36,6 +36,9 @@ const colors = {
   disableGray: '#BDBDBD',
   disableLightGray: '#E0E0E0',
   formBorderGray: '#AFBFCD',
+  pink: '#FFD3D3',
+  lighterGreen: '#E4FDD3',
+  iconGreen: '#4B932A',
 };
 
 export default colors;

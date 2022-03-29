@@ -11,7 +11,7 @@ import { withToken } from './accessToken';
 export const changePassword = actions.make('changePassword/start');
 export const reset = actions.make('changePassword/reset')(undefined);
 export const initialState = remoteData.initial;
-export const coolDownDuration = 5000;
+export const coolDownDuration = 3000;
 
 export const reducer: automaton.Reducer<
   remoteData.RemoteData<string, true>,

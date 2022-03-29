@@ -19,7 +19,7 @@ export type State = AppState['newMessage'];
 type NewMessage = AppState['newMessage'][string];
 type get = (buddyId: string) => (appState: AppState) => O.Option<NewMessage>;
 
-export const coolDownDuration = 5000;
+export const coolDownDuration = 3000;
 
 const get: get =
   buddyId =>

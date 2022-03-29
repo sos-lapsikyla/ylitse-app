@@ -24,7 +24,7 @@ import { Dialog, DialogProps } from '../../components/Dialog';
 import colors from '../../components/colors';
 import { BanAction } from 'src/api/buddies';
 import { MentorCardExpandedRoute } from '../MentorCardExpanded';
-import AlertBox from '../Settings/UserAccount/AlertBox';
+import { Toast } from '../../components/Toast';
 
 export type ChatRoute = {
   'Main/Chat': { buddyId: string };
@@ -202,20 +202,18 @@ const Chat = ({ navigation }: Props) => {
         style={styles.container}
         behavior={keyboardViewBehaviour}
       >
-        {isMessageSendFailed ? (
-          <AlertBox
-            imageStyle={styles.failBox}
+        {isMessageSendFailed && (
+          <Toast
+            toastType="danger"
             duration={newMessageState.coolDownDuration}
-            imageSource={require('../../images/alert-circle.svg')}
             messageId="main.chat.send.failure"
           />
-        ) : (
-          <MemoizedMessageList
-            messageList={sortedMessageList}
-            getPreviousMessages={getPreviousMessages}
-            isLoading={isLoading}
-          />
         )}
+        <MemoizedMessageList
+          messageList={sortedMessageList}
+          getPreviousMessages={getPreviousMessages}
+          isLoading={isLoading}
+        />
         <Input style={styles.input} buddyId={buddyId} />
       </RN.KeyboardAvoidingView>
     </RN.TouchableOpacity>
@@ -239,9 +237,6 @@ const styles = RN.StyleSheet.create({
   title: {},
   input: {
     marginTop: 8,
-  },
-  failBox: {
-    tintColor: colors.danger,
   },
   spinnerContainer: { flex: 1, justifyContent: 'center', alignItems: 'center' },
 });
