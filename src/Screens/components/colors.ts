@@ -35,6 +35,7 @@ const colors = {
   blueGray: '#5A7C9B',
   disableGray: '#BDBDBD',
   disableLightGray: '#E0E0E0',
+  formBorderGray: '#AFBFCD',
   pink: '#FFD3D3',
   lighterGreen: '#E4FDD3',
   iconGreen: '#4B932A',
