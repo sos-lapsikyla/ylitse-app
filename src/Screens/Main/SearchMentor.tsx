@@ -13,12 +13,14 @@ import Message from '../components/Message';
 import * as localization from '../../localization';
 
 import MessageButton from '../components/MessageButton';
+import MessageSwitch from '../components/MessageSwitch';
 import TextButton from '../components/TextButton';
 import TitledContainer from '../components/TitledContainer';
 import { textShadow } from '../components/shadow';
 import colors from '../components/colors';
 
 import * as mentorState from '../../state/reducers/mentors';
+import * as hideVacation from '../../state/reducers/hideVacationing';
 import { MentorListRoute } from './MentorList';
 
 import CreatedBySosBanner from '../components/CreatedBySosBanner';
@@ -37,6 +39,7 @@ export default ({ navigation }: Props) => {
   const dispatch = useDispatch<redux.Dispatch<actions.Action>>();
 
   const allSkills = useSelector(mentorState.getSkillList);
+  const hideVacationMentors = useSelector(hideVacation.select);
   const selectedSkills = useSelector(mentorState.getSelectedSkills);
 
   const skillsToShow = allSkills.filter(skill =>
@@ -56,6 +59,10 @@ export default ({ navigation }: Props) => {
 
   const onPressSkill = (item: string) => {
     dispatch({ type: 'skillFilter/toggled', payload: { skillName: item } });
+  };
+
+  const onHideVacation = () => {
+    dispatch({ type: 'hideVacationing/toggle', payload: undefined });
   };
 
   const onPressReset = () => {
@@ -91,6 +98,13 @@ export default ({ navigation }: Props) => {
       color={colors.blue}
     >
       <RN.View style={styles.contentMargins}>
+        <MessageSwitch
+          onPress={onHideVacation}
+          value={hideVacationMentors}
+          testID={'onboarding.age.switch'}
+          messageOn={'onboarding.age.switch'}
+          messageOff={'onboarding.age.switch'}
+        />
         <RN.View style={styles.searchContainer}>
           <RN.TextInput
             style={styles.searchField}
