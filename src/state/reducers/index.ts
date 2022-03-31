@@ -24,6 +24,7 @@ import * as deleteAccount from './deleteAccount';
 import * as statRequest from './statRequest';
 import * as updateMentorData from './updateMentorData';
 import * as questions from './questions';
+import * as hideVacationing from './hideVacationing';
 
 import * as actions from '../actions';
 
@@ -69,6 +70,7 @@ export const rootReducer: automaton.Reducer<AppState, actions.Action> =
       newMessage: newMessage.reducer,
       markMessageSeen: markSeen.reducer,
       feedbackQuestions: questions.reducer,
+      hideVacationing: hideVacationing.hideReducer,
     }),
   );
 
@@ -92,4 +94,5 @@ export const initialState: AppState = {
   newMessage: {},
   markMessageSeen: {},
   feedbackQuestions: questions.initialState,
+  hideVacationing: hideVacationing.initialState,
 };
