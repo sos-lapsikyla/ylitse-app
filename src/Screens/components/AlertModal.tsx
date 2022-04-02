@@ -17,8 +17,8 @@ type Props = {
   style?: RN.StyleProp<RN.ViewStyle>;
   messageId: localization.MessageId;
   modalType: AlertVariant;
-  onOkPress: () => void;
-  onRetryPress: () => void;
+  onOkPress?: () => void;
+  onRetryPress?: () => void;
 };
 
 export const AlertModal: React.FC<Props> = props => {
@@ -42,21 +42,25 @@ export const AlertModal: React.FC<Props> = props => {
               <Message id={props.messageId} style={styles.text} />
             </RN.View>
             <RN.View style={styles.buttonContainer}>
-              <Button
-                onPress={props.onOkPress}
-                messageStyle={styles.secondaryButtonText}
-                messageId="meta.ok"
-                style={[
-                  styles.button,
-                  { backgroundColor: secondaryButtonBackground },
-                ]}
-              />
-              <Button
-                onPress={props.onRetryPress}
-                messageStyle={styles.buttonText}
-                messageId="components.remoteData.retry"
-                style={[styles.button, { backgroundColor: primaryButton }]}
-              />
+              {props.onOkPress && (
+                <Button
+                  onPress={props.onOkPress}
+                  messageStyle={styles.secondaryButtonText}
+                  messageId="meta.ok"
+                  style={[
+                    styles.button,
+                    { backgroundColor: secondaryButtonBackground },
+                  ]}
+                />
+              )}
+              {props.onRetryPress && (
+                <Button
+                  onPress={props.onRetryPress}
+                  messageStyle={styles.buttonText}
+                  messageId="components.remoteData.retry"
+                  style={[styles.button, { backgroundColor: primaryButton }]}
+                />
+              )}
             </RN.View>
           </RN.View>
         </RN.View>
@@ -92,12 +96,13 @@ const styles = RN.StyleSheet.create({
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'space-around',
+    justifyContent: 'flex-start',
     marginBottom: 8,
   },
   text: {
     color: colors.darkestBlue,
     ...fonts.largeBold,
+    marginLeft: 24,
     textAlign: 'center',
   },
   buttonContainer: {

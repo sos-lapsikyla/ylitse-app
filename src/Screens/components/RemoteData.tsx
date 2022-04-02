@@ -3,13 +3,12 @@ import RN from 'react-native';
 import * as RD from '@devexperts/remote-data-ts';
 import { pipe } from 'fp-ts/lib/pipeable';
 
-import Card from './Card';
 import Spinner from './Spinner';
-import Button from './Button';
 import Message from './Message';
 import fonts from './fonts';
 import colors from './colors';
 import { textShadow } from './shadow';
+import { AlertModal } from './AlertModal';
 
 interface Props<E, A> {
   data: RD.RemoteData<E, A>;
@@ -42,26 +41,11 @@ function RemoteData<E, A>({
         </RN.View>
       ),
       () => (
-        <RN.View style={styles.container}>
-          <Card style={styles.errorCard}>
-            <RN.Image
-              style={styles.errorImage}
-              source={require('../images/cog.svg')}
-            />
-            <Message
-              style={styles.failureText}
-              id="components.remoteData.loadingFailed"
-            />
-            {fetchData ? (
-              <Button
-                onPress={fetchData}
-                messageStyle={styles.retryButtonText}
-                messageId="components.remoteData.retry"
-                style={{ backgroundColor: colors.blue }}
-              />
-            ) : null}
-          </Card>
-        </RN.View>
+        <AlertModal
+          modalType="danger"
+          messageId="components.remoteData.loadingFailed"
+          {...(fetchData && { onRetryPress: fetchData })}
+        />
       ),
       value => <>{children(value)}</>,
     ),
