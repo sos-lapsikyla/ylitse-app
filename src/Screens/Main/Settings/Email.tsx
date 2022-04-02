@@ -108,8 +108,8 @@ export default ({ navigation }: Props) => {
                 <AlertModal
                   modalType="danger"
                   messageId="main.settings.account.email.fail"
-                  onRetryPress={changeEmail}
-                  onOkPress={resetChangeEmail}
+                  onPrimaryPress={changeEmail}
+                  onSecondaryPress={resetChangeEmail}
                 />
               ),
               () => (

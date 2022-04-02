@@ -119,8 +119,8 @@ export default ({ navigation }: Props) => {
         <AlertModal
           modalType="danger"
           messageId="main.chat.deleteAll.error"
-          onOkPress={resetBanRequestState}
-          onRetryPress={() => handleBatchBan('Delete')}
+          onSecondaryPress={resetBanRequestState}
+          onPrimaryPress={() => handleBatchBan('Delete')}
         />
       ) : (
         <RemoteData data={remoteBuddies}>

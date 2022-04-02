@@ -143,8 +143,8 @@ export default ({ userId }: Props) => {
             <AlertModal
               modalType="danger"
               messageId="main.settings.account.status.fail"
-              onOkPress={resetStatusMessage}
-              onRetryPress={() =>
+              onSecondaryPress={resetStatusMessage}
+              onPrimaryPress={() =>
                 updateMentorData(
                   { status_message: statusMessage },
                   'status_message',

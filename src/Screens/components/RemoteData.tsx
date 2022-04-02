@@ -44,7 +44,7 @@ function RemoteData<E, A>({
         <AlertModal
           modalType="danger"
           messageId="components.remoteData.loadingFailed"
-          {...(fetchData && { onRetryPress: fetchData })}
+          {...(fetchData && { onPrimaryPress: fetchData })}
         />
       ),
       value => <>{children(value)}</>,

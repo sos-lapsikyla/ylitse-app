@@ -119,8 +119,8 @@ export default ({ navigation }: Props) => {
                 <AlertModal
                   modalType="danger"
                   messageId="main.settings.account.password.failure"
-                  onOkPress={reset}
-                  onRetryPress={changePassword}
+                  onSecondaryPress={reset}
+                  onPrimaryPress={changePassword}
                 />
               ),
               () => (

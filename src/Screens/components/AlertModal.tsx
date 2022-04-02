@@ -17,8 +17,8 @@ type Props = {
   style?: RN.StyleProp<RN.ViewStyle>;
   messageId: localization.MessageId;
   modalType: AlertVariant;
-  onOkPress?: () => void;
-  onRetryPress?: () => void;
+  onSecondaryPress?: () => void;
+  onPrimaryPress?: () => void;
 };
 
 export const AlertModal: React.FC<Props> = props => {
@@ -26,8 +26,8 @@ export const AlertModal: React.FC<Props> = props => {
     alertProps[props.modalType];
 
   const hasTwoCallbacks =
-    typeof props.onOkPress !== 'undefined' &&
-    typeof props.onRetryPress !== 'undefined';
+    typeof props.onSecondaryPress !== 'undefined' &&
+    typeof props.onPrimaryPress !== 'undefined';
 
   const justifyButtons = {
     justifyContent: hasTwoCallbacks ? 'space-around' : 'center',
@@ -46,17 +46,17 @@ export const AlertModal: React.FC<Props> = props => {
             </RN.View>
 
             <RN.View style={[styles.buttonContainer, justifyButtons]}>
-              {props.onOkPress && (
+              {props.onSecondaryPress && (
                 <Button
-                  onPress={props.onOkPress}
+                  onPress={props.onSecondaryPress}
                   messageStyle={styles.secondaryButtonText}
                   messageId="meta.ok"
                   style={[styles.button, { backgroundColor: secondaryButton }]}
                 />
               )}
-              {props.onRetryPress && (
+              {props.onPrimaryPress && (
                 <Button
-                  onPress={props.onRetryPress}
+                  onPress={props.onPrimaryPress}
                   messageStyle={styles.buttonText}
                   messageId="components.remoteData.retry"
                   style={[styles.button, { backgroundColor: primaryButton }]}
