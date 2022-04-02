@@ -29,6 +29,7 @@ export const AlertModal: React.FC<Props> = props => {
     secondaryButtonBackground,
     primaryButton,
   } = toastProps[props.modalType];
+
   return (
     <RN.View style={styles.container}>
       <RN.Modal animationType="fade" transparent={true} visible={true}>

@@ -11,12 +11,12 @@ import shadow from './shadow';
 
 import { toastProps } from './toastProps';
 
-type ToastType = 'danger' | 'success';
+export type AlertVariant = 'danger' | 'success';
 type Props = {
   style?: RN.StyleProp<RN.TextStyle>;
   duration: number;
   messageId: localization.MessageId;
-  toastType: ToastType;
+  toastType: AlertVariant;
 };
 
 export const Toast: React.FC<Props> = ({
@@ -89,6 +89,5 @@ const styles = RN.StyleSheet.create({
   image: {
     width: 40,
     height: 40,
-    tintColor: colors.danger,
   },
 });
