@@ -9,7 +9,7 @@ import fonts from './fonts';
 import colors from './colors';
 import shadow from './shadow';
 
-import { toastProps } from './toastProps';
+import { props as toastProps } from './alertProps';
 
 export type AlertVariant = 'danger' | 'success';
 type Props = {

@@ -11,7 +11,7 @@ import fonts from './fonts';
 import shadow from './shadow';
 
 import { AlertVariant } from './Toast';
-import { toastProps } from './toastProps';
+import { props as alertProps } from './alertProps';
 
 type Props = {
   style?: RN.StyleProp<RN.ViewStyle>;
@@ -22,13 +22,8 @@ type Props = {
 };
 
 export const AlertModal: React.FC<Props> = props => {
-  const {
-    backgroundColor,
-    tintColor,
-    icon,
-    secondaryButtonBackground,
-    primaryButton,
-  } = toastProps[props.modalType];
+  const { backgroundColor, tintColor, icon, secondaryButton, primaryButton } =
+    alertProps[props.modalType];
 
   return (
     <RN.View style={styles.container}>
@@ -41,16 +36,14 @@ export const AlertModal: React.FC<Props> = props => {
               <RN.Image style={[styles.image, { tintColor }]} source={icon} />
               <Message id={props.messageId} style={styles.text} />
             </RN.View>
+
             <RN.View style={styles.buttonContainer}>
               {props.onOkPress && (
                 <Button
                   onPress={props.onOkPress}
                   messageStyle={styles.secondaryButtonText}
                   messageId="meta.ok"
-                  style={[
-                    styles.button,
-                    { backgroundColor: secondaryButtonBackground },
-                  ]}
+                  style={[styles.button, { backgroundColor: secondaryButton }]}
                 />
               )}
               {props.onRetryPress && (
