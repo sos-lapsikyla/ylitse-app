@@ -25,6 +25,14 @@ export const AlertModal: React.FC<Props> = props => {
   const { backgroundColor, tintColor, icon, secondaryButton, primaryButton } =
     alertProps[props.modalType];
 
+  const hasTwoCallbacks =
+    typeof props.onOkPress !== 'undefined' &&
+    typeof props.onRetryPress !== 'undefined';
+
+  const justifyButtons = {
+    justifyContent: hasTwoCallbacks ? 'space-around' : 'center',
+  } as const;
+
   return (
     <RN.View style={styles.container}>
       <RN.Modal animationType="fade" transparent={true} visible={true}>
@@ -37,7 +45,7 @@ export const AlertModal: React.FC<Props> = props => {
               <Message id={props.messageId} style={styles.text} />
             </RN.View>
 
-            <RN.View style={styles.buttonContainer}>
+            <RN.View style={[styles.buttonContainer, justifyButtons]}>
               {props.onOkPress && (
                 <Button
                   onPress={props.onOkPress}
@@ -74,7 +82,7 @@ const styles = RN.StyleSheet.create({
     justifyContent: 'center',
   },
   modalContainer: {
-    marginHorizontal: 16,
+    marginHorizontal: 24,
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
@@ -90,7 +98,6 @@ const styles = RN.StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'flex-start',
-    marginBottom: 8,
   },
   text: {
     color: colors.darkestBlue,
@@ -101,9 +108,8 @@ const styles = RN.StyleSheet.create({
   buttonContainer: {
     width: '100%',
     flexDirection: 'row',
-    marginVertical: 12,
+    marginTop: 24,
     alignItems: 'center',
-    justifyContent: 'space-around',
   },
   image: {
     width: 40,
