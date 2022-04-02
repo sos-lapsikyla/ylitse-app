@@ -12,6 +12,7 @@ import RemoteData from '../components/RemoteData';
 import * as mentorApi from '../../api/mentors';
 
 import * as mentorState from '../../state/reducers/mentors';
+import * as hideVacation from '../../state/reducers/hideVacationing';
 import * as tokenState from '../../state/reducers/accessToken';
 
 import * as actions from '../../state/actions';
@@ -24,7 +25,7 @@ type Props = {
 export default ({ onPress, testID }: Props) => {
   const userId = useSelector(tokenState.getUserId);
   const selectedSkills = useSelector(mentorState.getSelectedSkills);
-
+  const hideVacationMentors = useSelector(hideVacation.select);
   const dispatch = useDispatch<redux.Dispatch<actions.Action>>();
 
   const fetchMentors = () => {
@@ -35,16 +36,24 @@ export default ({ onPress, testID }: Props) => {
     mentor: mentorApi.Mentor,
     skills: string[],
   ) => {
-    return skills.length > 0
-      ? mentor.buddyId !== userId &&
-          mentor.skills.filter(e => skills.includes(e)).length > 0
+    return skills.length > 0 && mentor.buddyId !== userId
+      ? mentor.skills.filter(e => skills.includes(e)).length > 0
       : mentor.buddyId !== userId;
   };
 
+  const filterOutVacationingIfNeeded = (
+    mentor: mentorApi.Mentor,
+    showVacation: boolean,
+  ) => {
+    return showVacation ? !mentor.is_vacationing : true;
+  };
+
   const mentorList = RD.remoteData.map(useSelector(mentorState.get), mentors =>
-    mentors.filter(mentor =>
-      filterSameIdAndSelectedSkills(mentor, selectedSkills),
-    ),
+    mentors
+      .filter(mentor => filterSameIdAndSelectedSkills(mentor, selectedSkills))
+      .filter(mentor =>
+        filterOutVacationingIfNeeded(mentor, hideVacationMentors),
+      ),
   );
 
   const [{ width, height }, onLayout] = useLayout();
