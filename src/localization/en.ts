@@ -76,7 +76,8 @@ export const messages: { [key in MessageId]: string } = {
 
   'main.settings.account.password.button': 'Change password',
   'main.settings.account.password.current': 'Current password',
-  'main.settings.account.password.failure': 'Password change failed',
+  'main.settings.account.password.failure':
+    'Password change failed: check your password!',
   'main.settings.account.password.new': 'New Password',
   'main.settings.account.password.repeat': 'Repeat new password',
   'main.settings.account.password.success': 'Password change succeeded',

@@ -75,7 +75,8 @@ export const messages = {
 
   'main.settings.account.password.button': 'Vaihda salasana',
   'main.settings.account.password.current': 'nykyinen salasana',
-  'main.settings.account.password.failure': 'Salasanan vaihto epäonnistui!',
+  'main.settings.account.password.failure':
+    'Salasanan vaihto epäonnistui: tarkista salasana!',
   'main.settings.account.password.new': 'uusi salasana',
   'main.settings.account.password.repeat': 'toista uusi salasana',
   'main.settings.account.password.success': 'Salasanan vaihto onnistui!',
