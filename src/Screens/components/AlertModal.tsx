@@ -98,6 +98,7 @@ const styles = RN.StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'flex-start',
+    marginRight: 24,
   },
   text: {
     color: colors.darkestBlue,
