@@ -20,6 +20,8 @@ export const messages: { [key in MessageId]: string } = {
   'components.remoteData.loadingFailed': 'Loading failed',
   'components.remoteData.retry': 'Try again',
 
+  'components.slider.SendAnswerButton': 'Send',
+
   'date.day.today': 'today',
   'date.day.yesterday': 'yesterday',
 

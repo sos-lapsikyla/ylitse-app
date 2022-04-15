@@ -19,6 +19,8 @@ export const messages = {
   'components.remoteData.loadingFailed': 'Lataus epäonnistui',
   'components.remoteData.retry': 'Yritä uudelleen',
 
+  'components.slider.SendAnswerButton': 'Lähetä',
+
   'date.day.today': 'tänään',
   'date.day.yesterday': 'eilen',
 

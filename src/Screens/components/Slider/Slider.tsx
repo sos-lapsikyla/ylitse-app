@@ -3,7 +3,7 @@ import * as RN from 'react-native';
 
 import RNCSlider from '@react-native-community/slider';
 
-type Props = {
+export type Props = {
   onValueChange: (value: number) => void;
   value: number;
   valueRange: [number, number];
@@ -22,7 +22,7 @@ const Slider: React.FC<Props> = ({
       <RN.View style={styles.sliderContainer}>
         <RN.Image
           style={styles.track}
-          source={require('../images/SliderTrack.svg')}
+          source={require('../../images/SliderTrack.svg')}
         />
         <RNCSlider
           style={styles.slider}
@@ -31,7 +31,7 @@ const Slider: React.FC<Props> = ({
           maximumValue={max}
           minimumTrackTintColor="transparent"
           maximumTrackTintColor="transparent"
-          thumbImage={require('../images/SliderThumb.svg')}
+          thumbImage={require('../../images/SliderThumb.svg')}
           onSlidingComplete={onValueChange}
         />
       </RN.View>
