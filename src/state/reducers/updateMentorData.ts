@@ -24,7 +24,7 @@ export const initialState = {
   current: 'is_vacationing',
 } as const;
 
-export const successResetDuration = 5000;
+export const successResetDuration = 3000;
 export const reducer: automaton.Reducer<State, actions.Action> = (
   state = initialState,
   action,
