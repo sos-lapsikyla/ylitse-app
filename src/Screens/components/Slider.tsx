@@ -15,21 +15,26 @@ const Slider: React.FC<Props> = ({
   valueRange: [min, max],
 }) => {
   return (
-    <RN.View style={styles.sliderContainer}>
-      <RN.Image
-        style={styles.track}
-        source={require('../images/SliderTrack.svg')}
-      />
-      <RNCSlider
-        style={styles.slider}
-        value={value}
-        minimumValue={min}
-        maximumValue={max}
-        minimumTrackTintColor="transparent"
-        maximumTrackTintColor="transparent"
-        thumbImage={require('../images/SliderThumb.svg')}
-        onSlidingComplete={onValueChange}
-      />
+    // XXX(Pyry): This outmoust <View> wrapping Protects track image from
+    // margins and padding. Without this and with padding track will be too
+    // slim. There sure is a better way?
+    <RN.View>
+      <RN.View style={styles.sliderContainer}>
+        <RN.Image
+          style={styles.track}
+          source={require('../images/SliderTrack.svg')}
+        />
+        <RNCSlider
+          style={styles.slider}
+          value={value}
+          minimumValue={min}
+          maximumValue={max}
+          minimumTrackTintColor="transparent"
+          maximumTrackTintColor="transparent"
+          thumbImage={require('../images/SliderThumb.svg')}
+          onSlidingComplete={onValueChange}
+        />
+      </RN.View>
     </RN.View>
   );
 };
