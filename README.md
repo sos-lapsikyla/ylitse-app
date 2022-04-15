@@ -26,44 +26,66 @@ You can edit the config file as suited:
 | `apuuUrl`          | Apuu-chat URL            |
 | `messageFetchDelay`| Delay between polling    |
 
-After installation run metro package bundler:
 
-```sh
-npm start
+### Running on iOS
+
+#### Install pods
+On m1 mac pods must be installed via brew, not gem
+[some GH issue that explains](https://github.com/CocoaPods/CocoaPods/issues/9907)
+
+#### Install pods via brew
+```
+sudo gem uninstall cocoapods
+brew install cocoapods
 ```
 
-To deploy the app on an android device run:
+If running on m1 mac and using pods installed via gem thet seem to install successfully if these commands are applied before running "pod install"
 
-```sh
-npm run android
+[random issues says](
+https://github.com/CocoaPods/CocoaPods/issues/10518#issuecomment-798912624)
+```
+sudo arch -x86_64 gem install ffi
+arch -x86_64 pod install
 ```
 
-Or on an iOS device (you have to use a MacBook for this):
-
-```sh
-npm run ios
+```
+cd ios
+pod install
 ```
 
-### Genymotion
+Start metro bundler
+```
+npx react-native start
+```
 
-First start up one of your devices from Genymotion.
-Then make sure config.json connects to localhost.
+Start the app on a simulator
+```
+npx react-native run-ios
+```
+
+### Running on Android
 
 ```js
  "baseUrl": "http://localhost:8080",
  "loginUrl": "http://localhost:3000/login",
 ```
 
+Start metro bundler
+```
+npx react-native start
+```
 
+Start the app on a emulator
+```
+npx react-native run-android
+```
+
+#### Fixing issue when running API locally
 Setup adb reverse connections:
 ```sh
 adb reverse tcp:8081 tcp:8081; adb reverse tcp:8080 tcp:8080
 ```
 
-Start the app
-```sh
-npm run android
-```
 
 
 ### Running end-to-end tests
