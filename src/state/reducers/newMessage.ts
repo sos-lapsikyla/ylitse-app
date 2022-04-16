@@ -2,7 +2,6 @@ import { loop } from 'redux-automaton';
 import * as RD from '@devexperts/remote-data-ts';
 import * as T from 'fp-ts/lib/Task';
 import * as record from 'fp-ts/lib/Record';
-import * as array from 'fp-ts/lib/Array';
 import * as O from 'fp-ts/lib/Option';
 import { pipe } from 'fp-ts/lib/pipeable';
 import { flow } from 'fp-ts/lib/function';
@@ -66,17 +65,6 @@ const getPrev = (buddyId: string, state: State) =>
 
 export const reducer = (state: State, action: actions.Action) => {
   switch (action.type) {
-    case 'buddies/completed': {
-      const actionList = pipe(
-        O.fromEither(action.payload),
-        O.map(record.keys),
-        O.getOrElse<string[]>(() => []),
-        array.map(buddyId => ({ buddyId })),
-        array.map(actions.make('newMessage/store/read/start')),
-      );
-
-      return loop(state, ...actionList);
-    }
     case 'newMessage/store/read/start': {
       const { buddyId } = action.payload;
 
