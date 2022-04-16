@@ -175,6 +175,8 @@ const getBuddies =
 
 export const getBannedBuddies = getBuddies('Banned');
 
+export const getArchivedBuddies = getBuddies('Archived');
+
 export const getActiveBuddies = getBuddies('NotBanned');
 
 export const getIsBuddy = (buddyId: string) => (appState: types.AppState) => {

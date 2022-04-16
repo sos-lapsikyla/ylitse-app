@@ -40,8 +40,12 @@ export default ({ navigation }: Props) => {
     navigation.navigate('Main/Chat', { buddyId });
   };
 
-  const navigateToBanned = () => {
-    navigation.navigate('Main/BannedList', {});
+  const navigateToList = (to: 'archived' | 'banned') => {
+    const route =
+      to === 'archived'
+        ? ('Main/ArchivedList' as const)
+        : ('Main/BannedList' as const);
+    navigation.navigate(route);
     setDropdownOpen(false);
   };
 
@@ -52,7 +56,14 @@ export default ({ navigation }: Props) => {
   };
 
   const dropdownItems: DropDownItem[] = [
-    { textId: 'main.chat.navigation.banned', onPress: navigateToBanned },
+    {
+      textId: 'main.chat.navigation.banned',
+      onPress: () => navigateToList('banned'),
+    },
+    {
+      textId: 'main.chat.navigation.archived',
+      onPress: () => navigateToList('archived'),
+    },
   ];
 
   return (

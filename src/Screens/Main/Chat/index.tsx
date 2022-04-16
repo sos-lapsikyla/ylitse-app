@@ -152,7 +152,8 @@ const Chat = ({ navigation }: Props) => {
           items={dropdownItems[buddyStatus].map(item => ({
             ...item,
             onPress: () => {
-              setDialogs('dialogOpen', true), setBanAction(item.action);
+              setDialogs('dialogOpen', true);
+              setBanAction(item.action);
             },
           }))}
           testID={'main.chat.menu'}
@@ -162,7 +163,7 @@ const Chat = ({ navigation }: Props) => {
       {dialogState.dialogOpen && banAction && (
         <Dialog
           {...dialogProperties[banAction]}
-          onPress={() => setBanStatus(banAction)}
+          onPress={() => handleBan(banAction)}
           buttonId={'meta.ok'}
           onPressCancel={() => setDialogs('dialogOpen', false)}
         />
