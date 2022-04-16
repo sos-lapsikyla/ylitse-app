@@ -90,6 +90,10 @@ const Chat = ({ navigation }: Props) => {
 
   const dispatch = ReactRedux.useDispatch<redux.Dispatch<actions.Action>>();
 
+  const getDraftMessage = () => {
+    dispatch({ type: 'newMessage/store/read/start', payload: { buddyId } });
+  };
+
   const setBanStatus = (banStatus: BanAction) => {
     dispatch({
       type: 'buddies/changeBanStatus/start',
@@ -167,6 +171,10 @@ const Chat = ({ navigation }: Props) => {
       return () => clearTimeout(resetAlertTimeOut);
     }
   }, [isMessageSendFailed]);
+
+  React.useEffect(() => {
+    getDraftMessage();
+  }, []);
 
   return (
     <RN.TouchableOpacity
