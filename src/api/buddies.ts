@@ -20,14 +20,15 @@ export const buddyType = t.intersection([
       t.literal('banned'),
       t.literal('deleted'),
       t.literal('ok'),
+      t.literal('archived'),
     ]),
   }),
 ]);
 
 export const buddiesType = t.strict({ resources: t.array(buddyType) });
 
-export type BanAction = 'Ban' | 'Unban' | 'Delete';
-export type BanStatus = 'Banned' | 'NotBanned' | 'Deleted';
+export type BanAction = 'Ban' | 'Unban' | 'Delete' | 'Archive';
+export type BanStatus = 'Banned' | 'NotBanned' | 'Deleted' | 'Archived';
 
 export type Buddy = {
   buddyId: string;
@@ -41,12 +42,14 @@ const toApiBanStatus = {
   Ban: 'banned',
   Unban: 'ok',
   Delete: 'deleted',
+  Archive: 'archived',
 };
 
 const toBanStatus = {
   banned: 'Banned',
   deleted: 'Deleted',
   ok: 'NotBanned',
+  archived: 'Archived',
 } as const;
 
 const toBuddy = ({ id, display_name, status = 'ok' }: ApiBuddy): Buddy => ({
