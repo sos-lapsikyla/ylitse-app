@@ -35,6 +35,9 @@ export const messages = {
   'date.month.11': 'marraskuuta',
   'date.month.12': 'joulukuuta',
 
+  'main.chat.archive': 'Arkistoi keskustelu',
+  'main.chat.archive.confirmation':
+    'Haluatko varmasti arkistoida tämän keskustelun?',
   'main.chat.ban': 'Estä keskustelu',
   'main.chat.ban.confirmation': 'Haluatko varmasti estää tämän keskustelun?',
   'main.chat.delete': 'Poista keskustelu',

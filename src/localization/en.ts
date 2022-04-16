@@ -36,6 +36,9 @@ export const messages: { [key in MessageId]: string } = {
   'date.month.11': 'November',
   'date.month.12': 'December',
 
+  'main.chat.archive': 'Archive chat',
+  'main.chat.archive.confirmation':
+    'Are you sure you want to archive this chat?',
   'main.chat.ban': 'Ban chat',
   'main.chat.ban.confirmation': 'Are you sure you want to ban this user?',
   'main.chat.delete': 'Delete chat',

@@ -18,8 +18,9 @@ import useLayout from '../../../lib/use-layout';
 import Title from './Title';
 import Input from './Input';
 import { MemoizedMessageList } from './MessageList';
-import DropDown, { DropDownItem } from '../../components/DropDownMenu';
-import { Dialog, DialogProps } from '../../components/Dialog';
+import DropDown from '../../components/DropDownMenu';
+import { Dialog } from '../../components/Dialog';
+import { dialogProperties, dropdownItems } from './chatProperties';
 
 import colors from '../../components/colors';
 import { BanAction } from 'src/api/buddies';
@@ -79,14 +80,14 @@ const Chat = ({ navigation }: Props) => {
     dropdownOpen: false,
   });
 
-  const [deleteOption, setDeleteOption] = React.useState(false);
+  const [banAction, setBanAction] = React.useState<BanAction | undefined>();
 
   const [{ height }, onLayout] = useLayout();
 
   const keyboardViewBehaviour =
     RN.Platform.OS === 'ios' ? 'padding' : undefined;
 
-  const isBanned = ReactRedux.useSelector(selectors.getIsBanned(buddyId));
+  const buddyStatus = ReactRedux.useSelector(selectors.getBuddyStatus(buddyId));
 
   const dispatch = ReactRedux.useDispatch<redux.Dispatch<actions.Action>>();
 
@@ -106,52 +107,6 @@ const Chat = ({ navigation }: Props) => {
     goBack();
     setBanStatus(banStatus);
   };
-
-  const dialogProperties: Omit<DialogProps, 'onPressCancel' | 'buttonId'> =
-    isBanned
-      ? deleteOption
-        ? {
-            textId: 'main.chat.delete.confirmation',
-            onPress: () => handleBan('Delete'),
-            type: 'danger',
-          }
-        : {
-            textId: 'main.chat.unban.confirmation',
-            onPress: () => handleBan('Unban'),
-            type: 'restore',
-          }
-      : {
-          textId: 'main.chat.ban.confirmation',
-          onPress: () => handleBan('Ban'),
-          type: 'warning',
-        };
-
-  const dropdownItems: DropDownItem[] = isBanned
-    ? [
-        {
-          textId: 'main.chat.unban',
-          onPress: () => {
-            setDeleteOption(false);
-            setDialogs('dialogOpen', true);
-          },
-        },
-        {
-          textId: 'main.chat.delete',
-          onPress: () => {
-            setDeleteOption(true);
-            setDialogs('dialogOpen', true);
-          },
-        },
-      ]
-    : [
-        {
-          textId: 'main.chat.ban',
-          onPress: () => {
-            setDeleteOption(false);
-            setDialogs('dialogOpen', true);
-          },
-        },
-      ];
 
   const setDialogs = (key: keyof DialogState, show: boolean) => {
     setDialogState({ ...dialogState, [key]: show });
@@ -194,14 +149,20 @@ const Chat = ({ navigation }: Props) => {
       {dialogState.dropdownOpen && (
         <DropDown
           style={[styles.dropdown, { top: height - 8 }]}
-          items={dropdownItems}
+          items={dropdownItems[buddyStatus].map(item => ({
+            ...item,
+            onPress: () => {
+              setDialogs('dialogOpen', true), setBanAction(item.action);
+            },
+          }))}
           testID={'main.chat.menu'}
           tintColor={colors.black}
         />
       )}
-      {dialogState.dialogOpen && (
+      {dialogState.dialogOpen && banAction && (
         <Dialog
-          {...dialogProperties}
+          {...dialogProperties[banAction]}
+          onPress={() => setBanStatus(banAction)}
           buttonId={'meta.ok'}
           onPressCancel={() => setDialogs('dialogOpen', false)}
         />

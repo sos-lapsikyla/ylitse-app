@@ -65,6 +65,18 @@ export const getIsBanned =
     );
   };
 
+export const getBuddyStatus =
+  (
+    buddyId: string,
+  ): (({ buddies: remoteBuddies }: AppState) => buddyApi.BanStatus) =>
+  ({ buddies: remoteBuddies }: AppState): buddyApi.BanStatus => {
+    return pipe(
+      remoteBuddies.buddies,
+      RD.map(({ [buddyId]: buddy }) => buddy.status),
+      RD.getOrElse<unknown, buddyApi.BanStatus>(() => 'NotBanned'),
+    );
+  };
+
 const messageList = (messageState: AppState['messages'], buddyId: string) => {
   const messagesById = RD.remoteData.map(messageState.messages, r =>
     record.lookup(buddyId, r),
