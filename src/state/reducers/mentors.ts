@@ -1,6 +1,8 @@
 import * as automaton from 'redux-automaton';
 import * as RD from '@devexperts/remote-data-ts';
 import * as T from 'fp-ts/lib/Task';
+import * as E from 'fp-ts/lib/Either';
+
 import { flow } from 'fp-ts/lib/function';
 import { pipe } from 'fp-ts/lib/pipeable';
 
@@ -11,6 +13,7 @@ import * as mentorsApi from '../../api/mentors';
 import { cmd } from '../middleware';
 import * as actions from '../actions';
 import * as types from '../types';
+import { getAccount } from '../selectors';
 
 export type State = types.AppState['mentors'];
 
@@ -26,10 +29,31 @@ export const reducer: automaton.Reducer<State, actions.Action> = (
   action,
 ) => {
   switch (action.type) {
-    case 'mentors/start':
+    case 'mentors/start': {
       return automaton.loop(RD.pending, cmd(fetchMentors));
-    case 'mentors/end':
+    }
+
+    case 'mentors/end': {
       return pipe(action.payload, RD.fromEither);
+    }
+
+    case 'mentor/updateMentorData/end': {
+      return pipe(
+        action.payload,
+        E.fold(
+          () => state,
+          mentor =>
+            pipe(
+              state,
+              RD.map(mentors => ({
+                ...mentors,
+                [mentor.buddyId]: mentor,
+              })),
+            ),
+        ),
+      );
+    }
+
     default:
       return state;
   }
@@ -102,3 +126,11 @@ export const get = ({ mentors }: types.AppState) =>
   RD.remoteData.map(mentors, mentorRecord => Object.values(mentorRecord));
 
 export const select = ({ mentors: state }: types.AppState) => state;
+
+export const getMentorFormData =
+  (buddyId: string) => (appState: types.AppState) => {
+    const mentor = getMentorByUserId(buddyId)(appState);
+    const account = getAccount(appState);
+
+    return { mentor, account };
+  };

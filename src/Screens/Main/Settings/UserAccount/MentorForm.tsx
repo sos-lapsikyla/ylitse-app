@@ -4,12 +4,11 @@ import * as redux from 'redux';
 import { useDispatch, useSelector } from 'react-redux';
 import { pipe } from 'fp-ts/lib/pipeable';
 import * as RD from '@devexperts/remote-data-ts';
-import * as selector from '../../../../state/selectors';
 
 import * as config from '../../../../api/config';
 import * as actions from '../../../../state/actions';
 import * as mentorState from '../../../../state/reducers/mentors';
-import * as changeStatusMessageState from '../../../../state/reducers/changeStatusMessage';
+import * as mentorUpdate from '../../../../state/reducers/updateMentorData';
 
 import Button from '../../../components/Button';
 import Message from '../../../components/Message';
@@ -27,46 +26,48 @@ type Props = {
 };
 
 export default ({ userId }: Props) => {
-  const mentor = useSelector(mentorState.getMentorByUserId(userId));
+  const { mentor, account } = useSelector(
+    mentorState.getMentorFormData(userId),
+  );
 
   const [statusMessage, setStatusMessage] = React.useState(
     mentor?.status_message ?? '',
   );
 
-  const dispatch = useDispatch<redux.Dispatch<actions.Action>>();
-
-  const isVacationStatusLoading = useSelector(
-    selector.getIsChangeVacationStatusLoading,
+  const vacationStatusState = useSelector(
+    mentorUpdate.selectMentorDataUpdatingStateFor('is_vacationing'),
   );
 
-  const statusMessageState = useSelector(selector.getStatusMessageChangeState);
+  const dispatch = useDispatch<redux.Dispatch<actions.Action>>();
+
+  const statusMessageState = useSelector(
+    mentorUpdate.selectMentorDataUpdatingStateFor('status_message'),
+  );
 
   const openProfile = () => {
     RN.Linking.openURL(config.loginUrl);
   };
 
-  const changeVacationStatus = () => {
-    if (typeof mentor !== 'undefined') {
+  const updateMentorData = (
+    updateData: mentorUpdate.MentorUpdateData,
+    updateKey: mentorUpdate.UpdateKey,
+  ) => {
+    if (!!mentor && !!account) {
       dispatch({
-        type: 'mentor/changeVacationStatus/start',
-        payload: { mentor },
-      });
-    }
-  };
-
-  const changeStatusMessage = () => {
-    if (typeof mentor !== 'undefined') {
-      dispatch({
-        type: 'mentor/changeStatusMessage/start',
-        payload: { statusMessage, mentor },
+        type: 'mentor/updateMentorData/start',
+        payload: {
+          mentor: { ...mentor, ...updateData },
+          account,
+          key: updateKey,
+        },
       });
     }
   };
 
   const resetStatusMessage = () => {
     dispatch({
-      type: 'mentor/changeStatusMessage/reset',
-      payload: undefined,
+      type: 'mentor/updateMentorData/reset',
+      payload: 'status_message',
     });
   };
 
@@ -74,7 +75,7 @@ export default ({ userId }: Props) => {
     if (RD.isSuccess(statusMessageState)) {
       const timeout = setTimeout(
         resetStatusMessage,
-        changeStatusMessageState.coolDownDuration,
+        mentorUpdate.successResetDuration,
       );
 
       return () => clearTimeout(timeout);
@@ -104,10 +105,15 @@ export default ({ userId }: Props) => {
       <MessageSwitch
         containerStyle={styles.vacationSwitch}
         value={mentor?.is_vacationing ?? false}
-        isLoading={isVacationStatusLoading}
+        isLoading={RD.isPending(vacationStatusState)}
         messageOn="main.settings.account.vacation.on"
         messageOff="main.settings.account.vacation.off"
-        onPress={changeVacationStatus}
+        onPress={() =>
+          updateMentorData(
+            { is_vacationing: !mentor?.is_vacationing },
+            'is_vacationing',
+          )
+        }
         testID="main.settings.
           account.vacation.switch"
       />
@@ -123,7 +129,12 @@ export default ({ userId }: Props) => {
             <StatusMessageForm
               statusMessage={statusMessage}
               setStatusMessage={setStatusMessage}
-              onButtonPress={changeStatusMessage}
+              onButtonPress={() =>
+                updateMentorData(
+                  { status_message: statusMessage },
+                  'status_message',
+                )
+              }
               maxLength={30}
             />
           ),
@@ -134,13 +145,18 @@ export default ({ userId }: Props) => {
               imageSource={require('../../../images/alert-circle.svg')}
               messageId="main.settings.account.status.fail"
               onOkPress={resetStatusMessage}
-              onRetryPress={changeStatusMessage}
+              onRetryPress={() =>
+                updateMentorData(
+                  { status_message: statusMessage },
+                  'status_message',
+                )
+              }
             />
           ),
           () => (
             <Toast
               toastType="success"
-              duration={changeStatusMessageState.coolDownDuration}
+              duration={mentorUpdate.successResetDuration}
               messageId="main.settings.account.status.success"
             />
           ),

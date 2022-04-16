@@ -17,10 +17,6 @@ import * as authApi from '../api/auth';
 
 import { AppState } from './types';
 
-import { select as selectMentors } from './reducers/mentors';
-import { select as selectVacationStatus } from './reducers/changeVacationStatus';
-import { select as selectStatusMessage } from './reducers/changeStatusMessage';
-
 export function getMentors(
   mentors: RD.RemoteData<string, Record<string, mentorsApi.Mentor>>,
 ): RD.RemoteData<string, mentorApi.Mentor[]> {
@@ -104,21 +100,3 @@ export function getChatList(
     RD.map(Object.values),
   );
 }
-
-export const getIsChangeVacationStatusLoading = (appState: AppState) => {
-  const mentorState = selectMentors(appState);
-  const changeVacationStatusState = selectVacationStatus(appState);
-
-  return RD.isPending(mentorState) || RD.isPending(changeVacationStatusState);
-};
-
-export const getStatusMessageChangeState = (appState: AppState) => {
-  const mentorState = selectMentors(appState);
-  const changeStatusMessageState = selectStatusMessage(appState);
-
-  if (RD.isPending(mentorState)) {
-    return mentorState;
-  }
-
-  return changeStatusMessageState;
-};

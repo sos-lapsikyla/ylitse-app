@@ -7,6 +7,7 @@ import * as buddyApi from '../api/buddies';
 import * as mentorsApi from '../api/mentors';
 import * as messageApi from '../api/messages';
 import { PollingParams } from './reducers/messages';
+import { UpdateKey } from './reducers/updateMentorData';
 
 export type indexStr = string;
 export type BuddyId = string;
@@ -32,8 +33,10 @@ export type AppState = {
   createUser: RemoteData<authApi.AccessToken>;
   changePassword: RemoteAction;
   changeEmail: RemoteData<{ email?: string }>;
-  changeVacationStatus: RemoteAction;
-  changeStatusMessage: RemoteAction;
+  updateMentorData: {
+    update: Record<UpdateKey, RemoteAction>;
+    current: UpdateKey;
+  };
   userAccount: RemoteData<accountApi.UserAccount>;
 
   deleteAccount: RemoteAction;
