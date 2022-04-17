@@ -19,6 +19,7 @@ import { ChatRoute } from '../Chat';
 import DropDown, { DropDownItem } from '../../components/DropDownMenu';
 import { BannedListRoute } from '../BannedList';
 import { Title } from './Title';
+import { ArchivedListRoute } from '../ArchivedList';
 
 export type BuddyListRoute = {
   'Main/BuddyList': {};
@@ -26,7 +27,7 @@ export type BuddyListRoute = {
 
 type Props = navigationProps.NavigationProps<
   BuddyListRoute,
-  ChatRoute & BannedListRoute
+  ChatRoute & BannedListRoute & ArchivedListRoute
 >;
 
 export default ({ navigation }: Props) => {
@@ -40,12 +41,8 @@ export default ({ navigation }: Props) => {
     navigation.navigate('Main/Chat', { buddyId });
   };
 
-  const navigateToList = (to: 'archived' | 'banned') => {
-    const route =
-      to === 'archived'
-        ? ('Main/ArchivedList' as const)
-        : ('Main/BannedList' as const);
-    navigation.navigate(route);
+  const navigateToList = (list: 'Main/ArchivedList' | 'Main/BannedList') => {
+    navigation.navigate(list, {});
     setDropdownOpen(false);
   };
 
@@ -58,11 +55,11 @@ export default ({ navigation }: Props) => {
   const dropdownItems: DropDownItem[] = [
     {
       textId: 'main.chat.navigation.banned',
-      onPress: () => navigateToList('banned'),
+      onPress: () => navigateToList('Main/BannedList'),
     },
     {
       textId: 'main.chat.navigation.archived',
-      onPress: () => navigateToList('archived'),
+      onPress: () => navigateToList('Main/ArchivedList'),
     },
   ];
 
