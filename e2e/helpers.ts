@@ -295,7 +295,7 @@ export async function APISignUpMentor(mentor: any) {
   });
 }
 
-export async function APIBan(sender: any, reciever: any) {
+export async function APIBan(sender: any, reciever: any, status = 'banned') {
   const admin_access_token = await APIAdminAccessToken();
   const info = await APIUsers(admin_access_token);
 
@@ -319,7 +319,7 @@ export async function APIBan(sender: any, reciever: any) {
       method: 'PUT',
       headers: headers,
       body: JSON.stringify({
-        status: 'banned',
+        status,
       }),
     },
   );

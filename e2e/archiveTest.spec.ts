@@ -104,7 +104,7 @@ describe('Archiving', () => {
 
     await forceLogout();
 
-    await APIBan(mentor, mentee);
+    await APIBan(mentor, mentee, 'archived');
 
     await signIn(mentor);
 
@@ -123,7 +123,7 @@ describe('Archiving', () => {
     await waitFor(element(by.id('main.archivedList.back.button')))
       .toBeVisible()
       .withTimeout(5000);
-    await element(by.id('main.bannedlist.back.button')).tap();
+    await element(by.id('main.archivedList.back.button')).tap();
 
     await expect(element(by.text(mentee.displayName))).toBeVisible();
 
@@ -146,7 +146,7 @@ describe('Archiving', () => {
 
     await forceLogout();
 
-    await APIBan(mentor, mentee);
+    await APIBan(mentor, mentee, 'archived');
 
     await signIn(mentor);
 
@@ -188,7 +188,7 @@ describe('Archiving', () => {
     await expect(element(by.id('main.tabs.unseenDot'))).toBeNotVisible();
     await element(by.id('tabs.chats')).tap();
     await element(by.id('main.buddylist.kebabicon')).tap();
-    await element(by.text('Banned')).tap();
+    await element(by.text('Archived')).tap();
     await expect(
       element(by.id('main.buddyList.button.unseenDot')),
     ).toBeNotVisible();
