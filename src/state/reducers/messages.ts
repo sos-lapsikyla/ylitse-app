@@ -17,7 +17,7 @@ import * as actions from '../actions';
 import * as types from '../types';
 
 import { withToken } from './accessToken';
-import { getIsBanned } from '../selectors';
+import { getBuddyStatus } from '../selectors';
 import { createFetchChunks } from 'src/api/buddies';
 
 export type State = types.AppState['messages'];
@@ -192,7 +192,6 @@ export const getLastMessageByBuddyId =
 export const ordMessage: ord.Ord<messageApi.Message> = ord.fromCompare((a, b) =>
   ord.ordNumber.compare(a.sentTime, b.sentTime),
 );
-
 export const hasUnseen: (
   buddyId: string,
 ) => (appState: types.AppState) => boolean = buddyId => appState =>
@@ -204,7 +203,7 @@ export const hasUnseen: (
       ({ type, isSeen }) =>
         type === 'Received' &&
         isSeen === false &&
-        !getIsBanned(buddyId)(appState),
+        getBuddyStatus(buddyId)(appState) === 'NotBanned',
     ),
     O.fold(() => false, identity),
   );

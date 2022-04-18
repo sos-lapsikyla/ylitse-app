@@ -59,19 +59,7 @@ export const getBuddyName = (
   );
 };
 
-export const getIsBanned =
-  (buddyId: string): (({ buddies: remoteBuddies }: AppState) => boolean) =>
-  ({ buddies: remoteBuddies }: AppState): boolean => {
-    return pipe(
-      remoteBuddies.buddies,
-      RD.map(({ [buddyId]: buddy }) => {
-        return buddy ? buddy.status === 'Banned' : false;
-      }),
-      RD.getOrElse<unknown, boolean>(() => true),
-    );
-  };
-
-const getBuddyStatus =
+export const getBuddyStatus =
   (
     buddyId: string,
   ): (({ buddies: remoteBuddies }: AppState) => buddyApi.BanStatus) =>
