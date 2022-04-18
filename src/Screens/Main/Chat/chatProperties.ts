@@ -37,5 +37,8 @@ export const dropdownItems: Record<BanStatus, BanItem[]> = {
     },
   ],
   Deleted: [],
-  Archived: [],
+  Archived: [
+    { textId: 'main.chat.unban', action: 'Unban' },
+    { textId: 'main.chat.delete', action: 'Delete' },
+  ],
 };
