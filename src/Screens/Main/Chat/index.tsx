@@ -4,12 +4,7 @@ import RN from 'react-native';
 import * as redux from 'redux';
 import * as ReactRedux from 'react-redux';
 import * as selectors from '../../../state/selectors';
-import * as mentorState from '../../../state/reducers/mentors';
 import * as newMessageState from '../../../state/reducers/newMessage';
-import {
-  getMessagesByBuddyId,
-  isLoadingBuddyMessages,
-} from '../../../state/reducers/messages';
 import * as actions from '../../../state/actions';
 
 import * as navigationProps from '../../../lib/navigation-props';
@@ -36,6 +31,8 @@ type Props = navigationProps.NavigationProps<
   ChatRoute & MentorCardExpandedRoute
 >;
 
+type DialogState = { dialogOpen: boolean; dropdownOpen: boolean };
+
 const Chat = ({ navigation }: Props) => {
   const goBack = () => {
     navigation.goBack();
@@ -43,37 +40,15 @@ const Chat = ({ navigation }: Props) => {
 
   const buddyId = navigation.getParam('buddyId');
 
-  const messageList = ReactRedux.useSelector(getMessagesByBuddyId(buddyId));
+  const { messageList, isLoading, mentor, isMessageSendFailed, buddyStatus } =
+    ReactRedux.useSelector(selectors.getChatDataFor(buddyId));
 
-  const isLoading = ReactRedux.useSelector(isLoadingBuddyMessages(buddyId));
+  const dispatch = ReactRedux.useDispatch<redux.Dispatch<actions.Action>>();
 
-  const sortedMessageList = React.useMemo(() => {
-    return messageList.sort(({ sentTime: A }, { sentTime: B }) => A - B);
-  }, [messageList]);
-
-  const getPreviousMessages = (messageId: string) => {
-    dispatch({
-      type: 'messages/setPollingParams',
-      payload: { type: 'OlderThan', buddyId, messageId },
-    });
-  };
-
-  const mentor = ReactRedux.useSelector(mentorState.getMentorByUserId(buddyId));
-
-  const isMessageSendFailed = ReactRedux.useSelector(
-    newMessageState.getMessageSendFailed(buddyId),
+  const sortedMessageList = React.useMemo(
+    () => messageList.sort(({ sentTime: A }, { sentTime: B }) => A - B),
+    [messageList],
   );
-
-  const goToMentorCard = () => {
-    if (mentor) {
-      navigation.navigate('Main/MentorCardExpanded', {
-        mentor,
-        didNavigateFromChat: true,
-      });
-    }
-  };
-
-  type DialogState = { dialogOpen: boolean; dropdownOpen: boolean };
 
   const [dialogState, setDialogState] = React.useState<DialogState>({
     dialogOpen: false,
@@ -87,9 +62,21 @@ const Chat = ({ navigation }: Props) => {
   const keyboardViewBehaviour =
     RN.Platform.OS === 'ios' ? 'padding' : undefined;
 
-  const buddyStatus = ReactRedux.useSelector(selectors.getBuddyStatus(buddyId));
+  const getPreviousMessages = (messageId: string) => {
+    dispatch({
+      type: 'messages/setPollingParams',
+      payload: { type: 'OlderThan', buddyId, messageId },
+    });
+  };
 
-  const dispatch = ReactRedux.useDispatch<redux.Dispatch<actions.Action>>();
+  const goToMentorCard = () => {
+    if (mentor) {
+      navigation.navigate('Main/MentorCardExpanded', {
+        mentor,
+        didNavigateFromChat: true,
+      });
+    }
+  };
 
   const getDraftMessage = () => {
     dispatch({ type: 'newMessage/store/read/start', payload: { buddyId } });
@@ -208,7 +195,6 @@ const styles = RN.StyleSheet.create({
   input: {
     marginTop: 8,
   },
-  spinnerContainer: { flex: 1, justifyContent: 'center', alignItems: 'center' },
 });
 
 export default Chat;

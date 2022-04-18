@@ -16,6 +16,12 @@ import * as buddyApi from '../api/buddies';
 import * as authApi from '../api/auth';
 
 import { AppState } from './types';
+import {
+  getMessagesByBuddyId,
+  isLoadingBuddyMessages,
+} from './reducers/messages';
+import { getMentorByUserId } from './reducers/mentors';
+import { getMessageSendFailed } from './reducers/newMessage';
 
 export function getMentors(
   mentors: RD.RemoteData<string, Record<string, mentorsApi.Mentor>>,
@@ -65,7 +71,7 @@ export const getIsBanned =
     );
   };
 
-export const getBuddyStatus =
+const getBuddyStatus =
   (
     buddyId: string,
   ): (({ buddies: remoteBuddies }: AppState) => buddyApi.BanStatus) =>
@@ -112,3 +118,19 @@ export function getChatList(
     RD.map(Object.values),
   );
 }
+
+export const getChatDataFor = (buddyId: string) => (state: AppState) => {
+  const msgList = getMessagesByBuddyId(buddyId)(state);
+  const isLoading = isLoadingBuddyMessages(buddyId)(state);
+  const mentor = getMentorByUserId(buddyId)(state);
+  const isMessageSendFailed = getMessageSendFailed(buddyId)(state);
+  const buddyStatus = getBuddyStatus(buddyId)(state);
+
+  return {
+    messageList: msgList,
+    isMessageSendFailed,
+    isLoading,
+    mentor,
+    buddyStatus,
+  };
+};

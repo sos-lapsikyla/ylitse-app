@@ -6,20 +6,16 @@ import fonts from '../../components/fonts';
 import { textShadow } from '../../components/shadow';
 import Message from '../../components/Message';
 
-export type BannedListRoute = {
-  'Main/BannedList': {};
-};
-
 type Props = {
   onPressBack: () => void | undefined;
 };
 
 export const Title: React.FC<Props> = ({ onPressBack }) => {
   return (
-    <RN.SafeAreaView style={[styles.shadow]}>
+    <RN.SafeAreaView style={[styles.titleContainer]}>
       <RN.TouchableOpacity
         onPress={onPressBack}
-        testID={'main.bannedlist.back.button'}
+        testID={'main.archivedList.back.button'}
       >
         <RN.Image
           source={require('../../images/chevron-left.svg')}
@@ -35,39 +31,29 @@ export const Title: React.FC<Props> = ({ onPressBack }) => {
 };
 
 const styles = RN.StyleSheet.create({
-  shadow: {
+  titleContainer: {
     backgroundColor: colors.blue,
     borderBottomLeftRadius: 40,
     borderBottomRightRadius: 40,
     zIndex: 2,
-    alignSelf: 'stretch',
-    justifyContent: 'space-around',
     paddingVertical: 8,
     paddingHorizontal: 8,
     flexDirection: 'row',
     alignItems: 'center',
   },
-  screenTitleText: {
-    marginTop: 16,
-    marginBottom: 16,
-    ...fonts.titleLarge,
-    ...textShadow,
-    textAlign: 'center',
-    color: colors.white,
-  },
   backButtonIcon: {
     tintColor: colors.white,
+    marginLeft: 16,
     width: 48,
     height: 48,
   },
-  kebabIconHighlight: {
-    height: 32,
-    width: 32,
-    borderRadius: 24,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  kebabIcon: {
-    tintColor: colors.white,
+  screenTitleText: {
+    marginVertical: 16,
+    ...fonts.titleLarge,
+    ...textShadow,
+    textAlign: 'center',
+    marginRight: 32,
+    color: colors.white,
+    flexGrow: 1,
   },
 });

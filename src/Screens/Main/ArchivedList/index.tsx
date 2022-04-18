@@ -39,7 +39,7 @@ export default ({ navigation }: Props) => {
           <RN.ScrollView
             style={styles.scrollView}
             contentContainerStyle={styles.scrollContent}
-            testID={'main.buddyList.view'}
+            testID={'main.archivedList.view'}
           >
             {buddies.map(buddy => (
               <Button
