@@ -20,7 +20,7 @@ import { textShadow } from '../components/shadow';
 import colors from '../components/colors';
 
 import * as mentorState from '../../state/reducers/mentors';
-import * as hideVacation from '../../state/reducers/hideVacationing';
+import * as filterMentorState from '../../state/reducers/filterMentors';
 import { MentorListRoute } from './MentorList';
 
 import CreatedBySosBanner from '../components/CreatedBySosBanner';
@@ -39,7 +39,10 @@ export default ({ navigation }: Props) => {
   const dispatch = useDispatch<redux.Dispatch<actions.Action>>();
 
   const allSkills = useSelector(mentorState.getSkillList);
-  const hideVacationMentors = useSelector(hideVacation.select);
+
+  const { hideInactiveMentors } = useSelector(
+    filterMentorState.selectSearchParams,
+  );
   const selectedSkills = useSelector(mentorState.getSelectedSkills);
 
   const skillsToShow = allSkills.filter(skill =>
@@ -61,8 +64,8 @@ export default ({ navigation }: Props) => {
     dispatch({ type: 'skillFilter/toggled', payload: { skillName: item } });
   };
 
-  const onHideVacation = () => {
-    dispatch({ type: 'hideVacationing/toggle', payload: undefined });
+  const onHideInactiveMentors = () => {
+    dispatch({ type: 'onHideInactiveMentors/toggle', payload: undefined });
   };
 
   const onPressReset = () => {
@@ -98,13 +101,6 @@ export default ({ navigation }: Props) => {
       color={colors.blue}
     >
       <RN.View style={styles.contentMargins}>
-        <MessageSwitch
-          onPress={onHideVacation}
-          value={hideVacationMentors}
-          testID={'onboarding.age.switch'}
-          messageOn={'onboarding.age.switch'}
-          messageOff={'onboarding.age.switch'}
-        />
         <RN.View style={styles.searchContainer}>
           <RN.TextInput
             style={styles.searchField}
@@ -122,6 +118,16 @@ export default ({ navigation }: Props) => {
             source={require('../images/search.svg')}
             resizeMode="stretch"
             resizeMethod="scale"
+          />
+        </RN.View>
+
+        <RN.View style={styles.hideInactiveSwitch}>
+          <MessageSwitch
+            onPress={onHideInactiveMentors}
+            value={hideInactiveMentors}
+            testID={'main.searchMentor.hideInactiveMentors'}
+            messageOn={'main.searchMentor.hideInactiveMentors'}
+            messageOff={'main.searchMentor.hideInactiveMentors'}
           />
         </RN.View>
 
@@ -247,7 +253,7 @@ const styles = RN.StyleSheet.create({
     zIndex: 1,
   },
   chipContainer: {
-    marginTop: 30,
+    marginTop: 16,
     marginBottom: 16,
     flexDirection: 'row',
     flexWrap: 'wrap',
@@ -267,6 +273,10 @@ const styles = RN.StyleSheet.create({
     position: 'relative',
     marginLeft: -40,
     marginTop: 3,
+  },
+  hideInactiveSwitch: {
+    paddingTop: 15,
+    paddingBottom: 15,
   },
   searchField: {
     flex: 1,

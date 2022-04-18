@@ -12,7 +12,7 @@ import RemoteData from '../components/RemoteData';
 import * as mentorApi from '../../api/mentors';
 
 import * as mentorState from '../../state/reducers/mentors';
-import * as hideVacation from '../../state/reducers/hideVacationing';
+import * as filterMentorState from '../../state/reducers/filterMentors';
 import * as tokenState from '../../state/reducers/accessToken';
 
 import * as actions from '../../state/actions';
@@ -25,7 +25,10 @@ type Props = {
 export default ({ onPress, testID }: Props) => {
   const userId = useSelector(tokenState.getUserId);
   const selectedSkills = useSelector(mentorState.getSelectedSkills);
-  const hideVacationMentors = useSelector(hideVacation.select);
+
+  const { hideInactiveMentors } = useSelector(
+    filterMentorState.selectSearchParams,
+  );
   const dispatch = useDispatch<redux.Dispatch<actions.Action>>();
 
   const fetchMentors = () => {
@@ -52,10 +55,9 @@ export default ({ onPress, testID }: Props) => {
     mentors
       .filter(mentor => filterSameIdAndSelectedSkills(mentor, selectedSkills))
       .filter(mentor =>
-        filterOutVacationingIfNeeded(mentor, hideVacationMentors),
+        filterOutVacationingIfNeeded(mentor, hideInactiveMentors),
       ),
   );
-
   const [{ width, height }, onLayout] = useLayout();
   const measuredWidth = width || RN.Dimensions.get('window').width;
 

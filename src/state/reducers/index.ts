@@ -24,7 +24,7 @@ import * as deleteAccount from './deleteAccount';
 import * as statRequest from './statRequest';
 import * as updateMentorData from './updateMentorData';
 import * as questions from './questions';
-import * as hideVacationing from './hideVacationing';
+import * as filterMentors from './filterMentors';
 
 import * as actions from '../actions';
 
@@ -62,7 +62,6 @@ export const rootReducer: automaton.Reducer<AppState, actions.Action> =
       notifications: notifications.reducer,
       deleteAccount: deleteAccount.reducer,
       mentors: mentors.reducer,
-      skillFilter: mentors.skillReducer,
       statRequest: statRequest.reducer,
       buddies: buddies.reducer,
       changeChatStatusRequest: changeChatStatusRequest.reducer,
@@ -70,7 +69,7 @@ export const rootReducer: automaton.Reducer<AppState, actions.Action> =
       newMessage: newMessage.reducer,
       markMessageSeen: markSeen.reducer,
       feedbackQuestions: questions.reducer,
-      hideVacationing: hideVacationing.hideReducer,
+      filterMentors: filterMentors.filterMentorsReducer,
     }),
   );
 
@@ -86,7 +85,6 @@ export const initialState: AppState = {
   notifications: notifications.initialState,
   deleteAccount: deleteAccount.initialState,
   mentors: mentors.initialState,
-  skillFilter: [],
   statRequest: statRequest.initialState,
   buddies: buddies.initialState,
   changeChatStatusRequest: changeChatStatusRequest.initialState,
@@ -94,5 +92,5 @@ export const initialState: AppState = {
   newMessage: {},
   markMessageSeen: {},
   feedbackQuestions: questions.initialState,
-  hideVacationing: hideVacationing.initialState,
+  filterMentors: filterMentors.initialState,
 };

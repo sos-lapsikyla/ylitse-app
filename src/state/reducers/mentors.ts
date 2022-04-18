@@ -59,31 +59,16 @@ export const reducer: automaton.Reducer<State, actions.Action> = (
   }
 };
 
-export const skillReducer: automaton.Reducer<string[], actions.Action> = (
-  state = [],
-  action,
-) => {
-  switch (action.type) {
-    case 'skillFilter/toggled':
-      return state.includes(action.payload.skillName)
-        ? state.filter(skill => skill !== action.payload.skillName)
-        : state.concat(action.payload.skillName);
-    case 'skillFilter/reset':
-      return [];
-    default:
-      return state;
-  }
-};
-
-export const getSelectedSkills = (state: types.AppState) => state.skillFilter;
+export const getSelectedSkills = (state: types.AppState) =>
+  state.filterMentors.skillFilter;
 
 export type ActiveFilters =
   | { kind: 'NoFilters'; message: string }
   | { kind: 'FiltersActive'; message: string };
 export function getActiveFilters({
-  skillFilter,
+  filterMentors,
 }: types.AppState): ActiveFilters {
-  const amount = skillFilter.length;
+  const amount = filterMentors.skillFilter.length;
 
   if (amount === 0) {
     return {
