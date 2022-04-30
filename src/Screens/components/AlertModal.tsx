@@ -30,7 +30,7 @@ export const AlertModal: React.FC<Props> = props => {
     typeof props.onPrimaryPress !== 'undefined';
 
   const justifyButtons = {
-    justifyContent: hasTwoCallbacks ? 'space-around' : 'center',
+    justifyContent: hasTwoCallbacks ? 'space-between' : 'center',
   } as const;
 
   return (
@@ -51,7 +51,10 @@ export const AlertModal: React.FC<Props> = props => {
                   onPress={props.onSecondaryPress}
                   messageStyle={styles.secondaryButtonText}
                   messageId="meta.ok"
-                  style={[styles.button, { backgroundColor: secondaryButton }]}
+                  style={[
+                    styles.button,
+                    { backgroundColor: secondaryButton, marginRight: 12 },
+                  ]}
                 />
               )}
               {props.onPrimaryPress && (
@@ -59,7 +62,10 @@ export const AlertModal: React.FC<Props> = props => {
                   onPress={props.onPrimaryPress}
                   messageStyle={styles.buttonText}
                   messageId="components.remoteData.retry"
-                  style={[styles.button, { backgroundColor: primaryButton }]}
+                  style={[
+                    styles.button,
+                    { backgroundColor: primaryButton, marginLeft: 12 },
+                  ]}
                 />
               )}
             </RN.View>
@@ -98,13 +104,13 @@ const styles = RN.StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'flex-start',
-    marginRight: 24,
   },
   text: {
     color: colors.darkestBlue,
-    ...fonts.largeBold,
+    ...fonts.large,
     marginLeft: 24,
-    textAlign: 'center',
+    flex: 1,
+    flexWrap: 'wrap',
   },
   buttonContainer: {
     width: '100%',
@@ -117,7 +123,7 @@ const styles = RN.StyleSheet.create({
     height: 40,
   },
   button: {
-    minWidth: 120,
+    flex: 1,
   },
   buttonText: {
     color: colors.darkestBlue,

@@ -48,6 +48,7 @@ const styles = RN.StyleSheet.create({
     justifyContent: 'space-evenly',
     alignItems: 'center',
     backgroundColor: colors.pink,
+    borderRadius: 16,
   },
   textContainer: {
     width: '100%',
