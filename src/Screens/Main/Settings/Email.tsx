@@ -22,8 +22,8 @@ import Spinner from '../../components/Spinner';
 import { MentorListRoute } from '../../Onboarding/MentorList';
 
 import { Toast } from '../../components/Toast';
-import AlertDialog from './UserAccount/AlertDialog';
 import EmailForm from 'src/Screens/components/EmailForm';
+import { AlertModal } from 'src/Screens/components/AlertModal';
 
 export type EmailChangeRoute = {
   'Main/Settings/EmailChange': {};
@@ -105,12 +105,11 @@ export default ({ navigation }: Props) => {
                 </RN.View>
               ),
               () => (
-                <AlertDialog
-                  imageStyle={styles.failBox}
-                  imageSource={require('../../images/alert-circle.svg')}
+                <AlertModal
+                  modalType="danger"
                   messageId="main.settings.account.email.fail"
-                  onRetryPress={changeEmail}
-                  onOkPress={resetChangeEmail}
+                  onPrimaryPress={changeEmail}
+                  onSecondaryPress={resetChangeEmail}
                 />
               ),
               () => (

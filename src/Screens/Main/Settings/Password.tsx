@@ -13,16 +13,15 @@ import * as state from '../../../state/reducers/changePassword';
 
 import Message from '../../components/Message';
 import ScreenTitle from '../../components/ScreenTitle';
-import colors from '../../components/colors';
-import fonts from '../../components/fonts';
 import CreatedBySosBanner from '../../components/CreatedBySosBanner';
 import Spinner from '../../components/Spinner';
-
-import { MentorListRoute } from '../../Onboarding/MentorList';
-
 import { Toast } from '../../components/Toast';
-import AlertDialog from './UserAccount/AlertDialog';
+import { AlertModal } from 'src/Screens/components/AlertModal';
+import { MentorListRoute } from '../../Onboarding/MentorList';
 import PasswordForm from 'src/Screens/components/PasswordForm';
+
+import colors from '../../components/colors';
+import fonts from '../../components/fonts';
 
 export type PasswordChangeRoute = {
   'Main/Settings/PasswordChange': {};
@@ -117,12 +116,11 @@ export default ({ navigation }: Props) => {
               ),
               () => <Spinner style={styles.spinner} />,
               () => (
-                <AlertDialog
-                  imageStyle={styles.failBox}
-                  imageSource={require('../../images/alert-circle.svg')}
+                <AlertModal
+                  modalType="danger"
                   messageId="main.settings.account.password.failure"
-                  onOkPress={reset}
-                  onRetryPress={changePassword}
+                  onSecondaryPress={reset}
+                  onPrimaryPress={changePassword}
                 />
               ),
               () => (

@@ -35,7 +35,11 @@ export default ({ openPasswordForm, openEmailForm }: Props) => {
   return (
     <>
       <Message style={styles.accountSettingsText} id="main.settings.title" />
-      <RemoteData data={data} fetchData={fetchUserAccount}>
+      <RemoteData
+        data={data}
+        fetchData={fetchUserAccount}
+        errorStyle={styles.errorStyle}
+      >
         {([{ userId, userName, displayName, email, role }, hasBoth]) => (
           <>
             <Message
@@ -140,4 +144,5 @@ const styles = RN.StyleSheet.create({
     // ...textShadow,
     color: colors.white,
   },
+  errorStyle: { margin: 0 },
 });

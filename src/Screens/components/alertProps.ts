@@ -1,14 +1,18 @@
 import colors from './colors';
 
-export const toastProps = {
+export const props = {
   danger: {
     backgroundColor: colors.pink,
     tintColor: colors.danger,
+    secondaryButton: colors.lightestGray,
+    primaryButton: colors.red,
     icon: require('../images/error_icon.svg'),
   },
   success: {
     backgroundColor: colors.lighterGreen,
     tintColor: colors.iconGreen,
+    secondaryButton: colors.lightestGray,
+    primaryButton: colors.iconGreen,
     icon: require('../images/success_icon.svg'),
   },
 };

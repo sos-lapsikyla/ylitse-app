@@ -14,7 +14,7 @@ import Button from '../../../components/Button';
 import Message from '../../../components/Message';
 import Spinner from '../../../components/Spinner';
 import { Toast } from '../../../components/Toast';
-import AlertDialog from './AlertDialog';
+import { AlertModal } from 'src/Screens/components/AlertModal';
 import StatusMessageForm from 'src/Screens/components/StatusMessageForm';
 import MessageSwitch from 'src/Screens/components/MessageSwitch';
 
@@ -140,12 +140,11 @@ export default ({ userId }: Props) => {
           ),
           () => <Spinner />,
           () => (
-            <AlertDialog
-              imageStyle={styles.failBox}
-              imageSource={require('../../../images/alert-circle.svg')}
+            <AlertModal
+              modalType="danger"
               messageId="main.settings.account.status.fail"
-              onOkPress={resetStatusMessage}
-              onRetryPress={() =>
+              onSecondaryPress={resetStatusMessage}
+              onPrimaryPress={() =>
                 updateMentorData(
                   { status_message: statusMessage },
                   'status_message',

@@ -21,7 +21,7 @@ import { Title } from './Title';
 import colors from '../../components/colors';
 import RemoteData from '../../components/RemoteData';
 import { BanAction } from 'src/api/buddies';
-import AlertDialog from '../Settings/UserAccount/AlertDialog';
+import { AlertModal } from 'src/Screens/components/AlertModal';
 
 export type BannedListRoute = {
   'Main/BannedList': {};
@@ -116,12 +116,11 @@ export default ({ navigation }: Props) => {
         />
       )}
       {isBanRequestFailed ? (
-        <AlertDialog
-          imageStyle={styles.failBox}
-          imageSource={require('../../images/alert-circle.svg')}
+        <AlertModal
+          modalType="danger"
           messageId="main.chat.deleteAll.error"
-          onOkPress={resetBanRequestState}
-          onRetryPress={() => handleBatchBan('Delete')}
+          onSecondaryPress={resetBanRequestState}
+          onPrimaryPress={() => handleBatchBan('Delete')}
         />
       ) : (
         <RemoteData data={remoteBuddies}>
