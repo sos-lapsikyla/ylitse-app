@@ -43,5 +43,7 @@ export default ({ style, ...props }: Omit<RN.ImageProps, 'source'>) => {
 const styles = RN.StyleSheet.create({
   spinner: {
     tintColor: colors.darkestBlue,
+    width: 40,
+    height: 40,
   },
 });
