@@ -53,7 +53,8 @@ export const AlertModal: React.FC<Props> = props => {
                   messageId="meta.ok"
                   style={[
                     styles.button,
-                    { backgroundColor: secondaryButton, marginRight: 12 },
+                    styles.secondaryButton,
+                    { backgroundColor: secondaryButton },
                   ]}
                 />
               )}
@@ -64,7 +65,8 @@ export const AlertModal: React.FC<Props> = props => {
                   messageId="components.remoteData.retry"
                   style={[
                     styles.button,
-                    { backgroundColor: primaryButton, marginLeft: 12 },
+                    styles.primaryButton,
+                    { backgroundColor: primaryButton },
                   ]}
                 />
               )}
@@ -125,6 +127,8 @@ const styles = RN.StyleSheet.create({
   button: {
     flex: 1,
   },
+  secondaryButton: { marginRight: 12 },
+  primaryButton: { marginLeft: 12 },
   buttonText: {
     color: colors.darkestBlue,
     ...fonts.regularBold,

@@ -78,16 +78,18 @@ const styles = RN.StyleSheet.create({
     justifyContent: 'space-around',
     borderRadius: 16,
     padding: 24,
-    marginTop: 24,
+    marginTop: 40,
     ...shadow(7),
-  },
-  text: {
-    color: colors.darkestBlue,
-    ...fonts.regular,
-    textAlign: 'center',
   },
   image: {
     width: 40,
     height: 40,
+    marginRight: 24,
+  },
+  text: {
+    color: colors.darkestBlue,
+    ...fonts.regular,
+    flex: 1,
+    flexWrap: 'wrap',
   },
 });

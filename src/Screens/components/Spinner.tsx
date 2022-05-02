@@ -20,7 +20,7 @@ export default ({ style, ...props }: Omit<RN.ImageProps, 'source'>) => {
   return (
     <RN.Animated.Image
       {...props}
-      source={require('../images/cog.svg')}
+      source={require('../images/ri_loader-2-line.svg')}
       resizeMode="cover"
       style={[
         styles.spinner,
@@ -43,5 +43,7 @@ export default ({ style, ...props }: Omit<RN.ImageProps, 'source'>) => {
 const styles = RN.StyleSheet.create({
   spinner: {
     tintColor: colors.darkestBlue,
+    width: 40,
+    height: 40,
   },
 });
