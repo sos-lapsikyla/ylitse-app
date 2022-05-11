@@ -2,6 +2,13 @@
 
 ## Development
 
+### Node version
+Use node-version specified in .nvmrc
+
+```sh
+nvm use
+```
+
 Install dependencies:
 
 ```sh
