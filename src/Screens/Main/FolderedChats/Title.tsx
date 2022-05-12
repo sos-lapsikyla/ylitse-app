@@ -5,6 +5,7 @@ import colors from '../../components/colors';
 import fonts from '../../components/fonts';
 import { textShadow } from '../../components/shadow';
 import Message from '../../components/Message';
+import { MessageId } from 'src/localization/fi';
 
 export type BannedListRoute = {
   'Main/BannedList': {};
@@ -14,12 +15,14 @@ type Props = {
   openDropdown: () => void | undefined;
   onLayout: (e: RN.LayoutChangeEvent) => void | undefined;
   onPressBack: () => void | undefined;
+  headerId: MessageId;
 };
 
 export const Title: React.FC<Props> = ({
   openDropdown,
   onLayout,
   onPressBack,
+  headerId,
 }) => {
   return (
     <RN.SafeAreaView style={[styles.shadow]} onLayout={onLayout}>
@@ -32,10 +35,7 @@ export const Title: React.FC<Props> = ({
           style={styles.backButtonIcon}
         />
       </RN.TouchableOpacity>
-      <Message
-        id="main.chat.navigation.banned"
-        style={styles.screenTitleText}
-      />
+      <Message id={headerId} style={styles.screenTitleText} />
       <RN.TouchableHighlight
         style={styles.kebabIconHighlight}
         underlayColor={colors.faintBackground}

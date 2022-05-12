@@ -20,17 +20,41 @@ import { Title } from './Title';
 
 import colors from '../../components/colors';
 import RemoteData from '../../components/RemoteData';
-import { BanAction } from 'src/api/buddies';
+import { BanAction, BanStatus, Buddy } from 'src/api/buddies';
 import { AlertModal } from 'src/Screens/components/AlertModal';
+import { MessageId } from 'src/localization/fi';
+import { AppState } from 'src/state/types';
 
-export type BannedListRoute = {
-  'Main/BannedList': {};
+export type FolderType = Exclude<BanStatus, 'Deleted' | 'NotBanned'>;
+
+type ListData = {
+  titleId: MessageId;
+  buddySelector: (appState: AppState) => RD.RemoteData<string, Buddy[]>;
 };
 
-type Props = navigationProps.NavigationProps<BannedListRoute, ChatRoute>;
+const listData: Record<FolderType, ListData> = {
+  Archived: {
+    titleId: 'main.chat.navigation.archived',
+    buddySelector: buddyState.getArchivedBuddies,
+  },
+  Banned: {
+    titleId: 'main.chat.navigation.banned',
+    buddySelector: buddyState.getBannedBuddies,
+  },
+};
+export type FolderedChatsRoute = {
+  'Main/FolderedChats': {
+    folderType: FolderType;
+  };
+};
+
+type Props = navigationProps.NavigationProps<FolderedChatsRoute, ChatRoute>;
 
 export default ({ navigation }: Props) => {
-  const remoteBuddies = ReactRedux.useSelector(buddyState.getBannedBuddies);
+  const folderType = navigation.getParam('folderType');
+  const { buddySelector, titleId } = listData[folderType];
+
+  const remoteBuddies = ReactRedux.useSelector(buddySelector);
 
   const isBanRequestFailed = ReactRedux.useSelector(
     changeBanStatusState.selectBanRequestFailed,
@@ -99,6 +123,7 @@ export default ({ navigation }: Props) => {
         openDropdown={() => setDialogs('dropdownOpen', true)}
         onLayout={onLayout}
         onPressBack={onPressBack}
+        headerId={titleId}
       />
       {dialogState.dropdownOpen && (
         <DropDown
