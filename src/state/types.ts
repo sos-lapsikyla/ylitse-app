@@ -49,7 +49,7 @@ export type AppState = {
     buddies: RemoteData<Record<BuddyId, buddyApi.Buddy>>;
     isInitialFetch: boolean;
   };
-  banBuddyRequest: RemoteAction;
+  changeChatStatusRequest: RemoteAction;
 
   messages: {
     polling: boolean;

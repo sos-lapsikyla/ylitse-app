@@ -11,23 +11,26 @@ import { withToken } from './accessToken';
 
 export const initialState = RD.initial;
 
-type State = AppState['banBuddyRequest'];
+type State = AppState['changeChatStatusRequest'];
 
 export const reducer: automaton.Reducer<State, actions.Action> = (
   state: State = initialState,
   action: actions.Action,
 ) => {
   switch (action.type) {
-    case 'buddies/changeBanStatus/start':
+    case 'buddies/changeChatStatus/start':
       return automaton.loop(
         RD.pending,
         withToken(
-          buddyApi.banBuddy(action.payload.buddyId, action.payload.banStatus),
-          actions.make('buddies/changeBanStatus/end'),
+          buddyApi.changeChatStatus(
+            action.payload.buddyId,
+            action.payload.banStatus,
+          ),
+          actions.make('buddies/changeChatStatus/end'),
         ),
       );
 
-    case 'buddies/changeBanStatus/end': {
+    case 'buddies/changeChatStatus/end': {
       return pipe(
         action.payload,
         E.fold(
@@ -37,19 +40,19 @@ export const reducer: automaton.Reducer<State, actions.Action> = (
       );
     }
 
-    case 'buddies/changeBanStatusBatch/start':
+    case 'buddies/changeChatStatusBatch/start':
       return automaton.loop(
         RD.pending,
         withToken(
-          buddyApi.banBuddies(
+          buddyApi.changeChatStatusMultiple(
             action.payload.buddyIds,
             action.payload.banStatus,
           ),
-          actions.make('buddies/changeBanStatusBatch/end'),
+          actions.make('buddies/changeChatStatusBatch/end'),
         ),
       );
 
-    case 'buddies/changeBanStatusBatch/end': {
+    case 'buddies/changeChatStatusBatch/end': {
       return pipe(
         action.payload,
         E.fold(
@@ -59,7 +62,7 @@ export const reducer: automaton.Reducer<State, actions.Action> = (
       );
     }
 
-    case 'buddies/changeBanStatus/reset': {
+    case 'buddies/changeChatStatus/reset': {
       return RD.initial;
     }
 
@@ -69,9 +72,10 @@ export const reducer: automaton.Reducer<State, actions.Action> = (
   }
 };
 
-export const selectBanBuddyRequest = ({ banBuddyRequest: state }: AppState) =>
-  state;
+export const selectBanBuddyRequest = ({
+  changeChatStatusRequest: state,
+}: AppState) => state;
 
 export const selectBanRequestFailed = (state: AppState): boolean => {
-  return RD.isFailure(state.banBuddyRequest);
+  return RD.isFailure(state.changeChatStatusRequest);
 };

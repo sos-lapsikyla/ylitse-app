@@ -14,7 +14,7 @@ export type State = types.AppState['buddies'];
 
 import { withToken } from './accessToken';
 import * as messageState from './messages';
-import * as banBuddyRequestState from './banBuddyRequest';
+import * as banBuddyRequestState from './changeChatStatus';
 
 export const initialState = { buddies: RD.initial, isInitialFetch: true };
 
@@ -89,7 +89,7 @@ export const reducer: automaton.Reducer<State, actions.Action> = (
         : nextState;
     }
 
-    case 'buddies/changeBanStatus/end': {
+    case 'buddies/changeChatStatus/end': {
       const nextBuddies = pipe(
         action.payload,
         E.fold(
@@ -108,7 +108,7 @@ export const reducer: automaton.Reducer<State, actions.Action> = (
       return { ...state, buddies: nextBuddies };
     }
 
-    case 'buddies/changeBanStatusBatch/end': {
+    case 'buddies/changeChatStatusBatch/end': {
       if (E.isRight(action.payload) && RD.isSuccess(state.buddies)) {
         const responseBuddies = action.payload.right;
         const stateBuddies = state.buddies.value;

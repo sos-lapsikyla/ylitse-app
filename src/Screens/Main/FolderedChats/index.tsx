@@ -6,49 +6,20 @@ import * as ReactRedux from 'react-redux';
 import * as actions from '../../../state/actions';
 import * as RD from '@devexperts/remote-data-ts';
 
-import * as navigationProps from '../../../lib/navigation-props';
 import useLayout from '../../../lib/use-layout';
 
-import * as buddyState from '../../../state/reducers/buddies';
-import * as changeBanStatusState from '../../../state/reducers/banBuddyRequest';
+import * as changeBanStatusState from '../../../state/reducers/changeChatStatus';
 
 import Button from '../BuddyList/Button';
-import { ChatRoute } from '../Chat';
 import DropDown, { DropDownItem } from '../../components/DropDownMenu';
 import { Dialog, DialogProps } from '../../components/Dialog';
 import { Title } from './Title';
 
 import colors from '../../components/colors';
 import RemoteData from '../../components/RemoteData';
-import { BanAction, BanStatus, Buddy } from 'src/api/buddies';
+import { ChangeChatStatusAction } from 'src/api/buddies';
 import { AlertModal } from 'src/Screens/components/AlertModal';
-import { MessageId } from 'src/localization/fi';
-import { AppState } from 'src/state/types';
-
-export type FolderType = Exclude<BanStatus, 'Deleted' | 'NotBanned'>;
-
-type ListData = {
-  titleId: MessageId;
-  buddySelector: (appState: AppState) => RD.RemoteData<string, Buddy[]>;
-};
-
-const listData: Record<FolderType, ListData> = {
-  Archived: {
-    titleId: 'main.chat.navigation.archived',
-    buddySelector: buddyState.getArchivedBuddies,
-  },
-  Banned: {
-    titleId: 'main.chat.navigation.banned',
-    buddySelector: buddyState.getBannedBuddies,
-  },
-};
-export type FolderedChatsRoute = {
-  'Main/FolderedChats': {
-    folderType: FolderType;
-  };
-};
-
-type Props = navigationProps.NavigationProps<FolderedChatsRoute, ChatRoute>;
+import { Props, listData } from './folderedChatProperties';
 
 export default ({ navigation }: Props) => {
   const folderType = navigation.getParam('folderType');
@@ -79,20 +50,20 @@ export default ({ navigation }: Props) => {
 
   const dispatch = ReactRedux.useDispatch<redux.Dispatch<actions.Action>>();
 
-  const handleBatchBan = (banStatus: BanAction) => {
+  const handleBatchBan = (banStatus: ChangeChatStatusAction) => {
     setDialogState({ dropdownOpen: false, dialogOpen: false });
 
     if (RD.isSuccess(remoteBuddies) && remoteBuddies.value?.length) {
       const buddyIds = remoteBuddies.value.map(buddy => buddy.buddyId);
       dispatch({
-        type: 'buddies/changeBanStatusBatch/start',
+        type: 'buddies/changeChatStatusBatch/start',
         payload: { buddyIds, banStatus },
       });
     }
   };
 
   const resetBanRequestState = () => {
-    dispatch({ type: 'buddies/changeBanStatus/reset', payload: undefined });
+    dispatch({ type: 'buddies/changeChatStatus/reset', payload: undefined });
   };
 
   const dialogProperties: Omit<DialogProps, 'onPressCancel' | 'buttonId'> = {

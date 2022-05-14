@@ -19,7 +19,8 @@ import MentorCardExpanded, {
 } from './Main/MentorCardExpanded';
 
 import Chat, { ChatRoute } from './Main/Chat';
-import FolderedChats, { FolderedChatsRoute } from './Main/FolderedChats';
+import FolderedChats from './Main/FolderedChats';
+import { FolderedChatsRoute } from './Main/FolderedChats/folderedChatProperties';
 import Logout, { LogoutRoute } from './Main/Settings/Logout';
 import DeleteAccount, {
   DeleteAccountRoute,

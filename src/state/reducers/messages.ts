@@ -137,7 +137,7 @@ export const reducer: automaton.Reducer<State, actions.Action> = (
       return { ...state, messages: RD.success(messages), previousMsgId };
     }
 
-    case 'buddies/changeBanStatusBatch/end': {
+    case 'buddies/changeChatStatusBatch/end': {
       if (!(E.isRight(action.payload) && RD.isSuccess(state.messages))) {
         return state;
       }

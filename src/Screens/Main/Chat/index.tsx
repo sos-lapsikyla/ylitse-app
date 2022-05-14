@@ -18,7 +18,7 @@ import { Dialog } from '../../components/Dialog';
 import { dialogProperties, dropdownItems } from './chatProperties';
 
 import colors from '../../components/colors';
-import { BanAction } from 'src/api/buddies';
+import { ChangeChatStatusAction } from 'src/api/buddies';
 import { MentorCardExpandedRoute } from '../MentorCardExpanded';
 import { Toast } from '../../components/Toast';
 
@@ -55,7 +55,9 @@ const Chat = ({ navigation }: Props) => {
     dropdownOpen: false,
   });
 
-  const [banAction, setBanAction] = React.useState<BanAction | undefined>();
+  const [banAction, setBanAction] = React.useState<
+    ChangeChatStatusAction | undefined
+  >();
 
   const [{ height }, onLayout] = useLayout();
 
@@ -82,14 +84,14 @@ const Chat = ({ navigation }: Props) => {
     dispatch({ type: 'newMessage/store/read/start', payload: { buddyId } });
   };
 
-  const setBanStatus = (banStatus: BanAction) => {
+  const setBanStatus = (banStatus: ChangeChatStatusAction) => {
     dispatch({
-      type: 'buddies/changeBanStatus/start',
+      type: 'buddies/changeChatStatus/start',
       payload: { buddyId, banStatus },
     });
   };
 
-  const handleBan = (banStatus: BanAction) => {
+  const handleBan = (banStatus: ChangeChatStatusAction) => {
     setDialogState({ dropdownOpen: false, dialogOpen: false });
     goBack();
     setBanStatus(banStatus);

@@ -16,7 +16,10 @@ import RemoteData from '../../components/RemoteData';
 import Button from './Button';
 import { Title } from './Title';
 import DropDown, { DropDownItem } from '../../components/DropDownMenu';
-import { FolderedChatsRoute, FolderType } from '../FolderedChats';
+import {
+  FolderedChatsRoute,
+  FolderType,
+} from '../FolderedChats/folderedChatProperties';
 
 export type BuddyListRoute = {
   'Main/BuddyList': {};
