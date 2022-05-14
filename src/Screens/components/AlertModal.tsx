@@ -17,6 +17,8 @@ type Props = {
   style?: RN.StyleProp<RN.ViewStyle>;
   messageId: localization.MessageId;
   modalType: AlertVariant;
+  primaryButtonMessage?: localization.MessageId;
+  secondaryButtonMessage?: localization.MessageId;
   onSecondaryPress?: () => void;
   onPrimaryPress?: () => void;
 };
@@ -50,7 +52,7 @@ export const AlertModal: React.FC<Props> = props => {
                 <Button
                   onPress={props.onSecondaryPress}
                   messageStyle={styles.secondaryButtonText}
-                  messageId="meta.ok"
+                  messageId={props.secondaryButtonMessage ?? 'meta.ok'}
                   style={[
                     styles.button,
                     styles.secondaryButton,
@@ -62,7 +64,9 @@ export const AlertModal: React.FC<Props> = props => {
                 <Button
                   onPress={props.onPrimaryPress}
                   messageStyle={styles.buttonText}
-                  messageId="components.remoteData.retry"
+                  messageId={
+                    props.primaryButtonMessage ?? 'components.remoteData.retry'
+                  }
                   style={[
                     styles.button,
                     styles.primaryButton,

@@ -15,7 +15,7 @@ import Input from './Input';
 import { MemoizedMessageList } from './MessageList';
 import DropDown from '../../components/DropDownMenu';
 import { AlertModal } from '../../components/AlertModal';
-import { dialogProperties, dropdownItems } from './chatProperties';
+import { dialogProperties, changeChatStatusOptions } from './chatProperties';
 
 import colors from '../../components/colors';
 import { ChangeChatStatusAction } from 'src/api/buddies';
@@ -138,7 +138,7 @@ const Chat = ({ navigation }: Props) => {
       {dialogState.dropdownOpen && (
         <DropDown
           style={[styles.dropdown, { top: height - 8 }]}
-          items={dropdownItems[buddyStatus].map(item => ({
+          items={changeChatStatusOptions[buddyStatus].map(item => ({
             ...item,
             onPress: () => {
               setDialogs('dialogOpen', true);

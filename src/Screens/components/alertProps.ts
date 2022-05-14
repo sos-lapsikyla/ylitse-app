@@ -26,7 +26,7 @@ export const props = {
     backgroundColor: colors.lighterYellow,
     tintColor: colors.iconYellow,
     secondaryButton: colors.lightestGray,
-    primaryButton: colors.iconYellow,
+    primaryButton: colors.lightYellow,
     icon: require('../images/alert_icon.svg'),
   },
 };
