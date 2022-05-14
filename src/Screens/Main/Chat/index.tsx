@@ -14,7 +14,7 @@ import Title from './Title';
 import Input from './Input';
 import { MemoizedMessageList } from './MessageList';
 import DropDown from '../../components/DropDownMenu';
-import { AlertModal } from '../../components/AlertModal';
+import Modal from '../../components/Modal';
 import { dialogProperties, changeChatStatusOptions } from './chatProperties';
 
 import colors from '../../components/colors';
@@ -150,8 +150,10 @@ const Chat = ({ navigation }: Props) => {
         />
       )}
       {dialogState.dialogOpen && banAction && (
-        <AlertModal
+        <Modal
           {...dialogProperties[banAction]}
+          primaryButtonMessage={'meta.ok'}
+          secondaryButtonMessage={'meta.back'}
           onPrimaryPress={() => handleBan(banAction)}
           onSecondaryPress={() => setDialogs('dialogOpen', false)}
         />

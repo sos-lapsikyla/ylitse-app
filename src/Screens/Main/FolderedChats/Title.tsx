@@ -28,7 +28,7 @@ export const Title: React.FC<Props> = ({
     <RN.SafeAreaView style={[styles.shadow]} onLayout={onLayout}>
       <RN.TouchableOpacity
         onPress={onPressBack}
-        testID={'main.bannedlist.back.button'}
+        testID={'main.folderedlist.back.button'}
       >
         <RN.Image
           source={require('../../images/chevron-left.svg')}
@@ -39,7 +39,7 @@ export const Title: React.FC<Props> = ({
       <RN.TouchableHighlight
         style={styles.kebabIconHighlight}
         underlayColor={colors.faintBackground}
-        testID={'main.bannedlist.kebabicon'}
+        testID={'main.folderedlist.kebabicon'}
         onPress={openDropdown}
       >
         <RN.Image

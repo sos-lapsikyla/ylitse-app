@@ -16,7 +16,7 @@ import ScreenTitle from '../../components/ScreenTitle';
 import CreatedBySosBanner from '../../components/CreatedBySosBanner';
 import Spinner from '../../components/Spinner';
 import { Toast } from '../../components/Toast';
-import { AlertModal } from 'src/Screens/components/AlertModal';
+import AlertModal from '../../components/Modal';
 import { MentorListRoute } from '../../Onboarding/MentorList';
 import PasswordForm from 'src/Screens/components/PasswordForm';
 

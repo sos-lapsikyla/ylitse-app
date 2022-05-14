@@ -1,17 +1,17 @@
 import React from 'react';
 import RN from 'react-native';
 
-import * as localization from '../../localization';
+import * as localization from '../../../localization';
 
-import Message from './Message';
-import Button from './Button';
+import Message from '../Message';
+import Button from '../Button';
 
-import colors from './colors';
-import fonts from './fonts';
-import shadow from './shadow';
+import colors from '../colors';
+import fonts from '../fonts';
+import shadow from '../shadow';
 
-import { AlertVariant } from './Toast';
-import { props as alertProps } from './alertProps';
+import { AlertVariant } from '../Toast';
+import { props as modalProps } from './modalProps';
 
 type Props = {
   style?: RN.StyleProp<RN.ViewStyle>;
@@ -23,9 +23,9 @@ type Props = {
   onPrimaryPress?: () => void;
 };
 
-export const AlertModal: React.FC<Props> = props => {
+const Modal: React.FC<Props> = props => {
   const { backgroundColor, tintColor, icon, secondaryButton, primaryButton } =
-    alertProps[props.modalType];
+    modalProps[props.modalType];
 
   const hasTwoCallbacks =
     typeof props.onSecondaryPress !== 'undefined' &&
@@ -139,3 +139,5 @@ const styles = RN.StyleSheet.create({
   },
   secondaryButtonText: { color: colors.darkestBlue, ...fonts.regular },
 });
+
+export default Modal;

@@ -22,8 +22,8 @@ import Spinner from '../../components/Spinner';
 import { MentorListRoute } from '../../Onboarding/MentorList';
 
 import { Toast } from '../../components/Toast';
-import EmailForm from 'src/Screens/components/EmailForm';
-import { AlertModal } from 'src/Screens/components/AlertModal';
+import EmailForm from '../../components/EmailForm';
+import AlertModal from '../../components/Modal';
 
 export type EmailChangeRoute = {
   'Main/Settings/EmailChange': {};

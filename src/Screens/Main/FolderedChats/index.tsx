@@ -12,7 +12,7 @@ import * as changeBanStatusState from '../../../state/reducers/changeChatStatus'
 
 import Button from '../BuddyList/Button';
 import DropDown, { DropDownItem } from '../../components/DropDownMenu';
-import { AlertModal } from '../../components/AlertModal';
+import Modal from '../../components/Modal';
 import { Title } from './Title';
 
 import colors from '../../components/colors';
@@ -65,13 +65,7 @@ export default ({ navigation }: Props) => {
     dispatch({ type: 'buddies/changeChatStatus/reset', payload: undefined });
   };
 
-  const dialogProperties = {
-    messageId: 'main.chat.deleteAll.confirmation',
-    onPrimaryPress: () => handleBatchBan('Delete'),
-    modalType: 'danger',
-  } as const;
-
-  const dropdownItems: DropDownItem[] = [
+  const menuItems: DropDownItem[] = [
     {
       textId: 'main.chat.deleteAll',
       onPress: () => setDialogs('dialogOpen', true),
@@ -98,19 +92,23 @@ export default ({ navigation }: Props) => {
       {dialogState.dropdownOpen && (
         <DropDown
           style={[styles.dropdown, { top: height - 8 }]}
-          items={dropdownItems}
+          items={menuItems}
           testID={'main.chat.menu'}
           tintColor={colors.black}
         />
       )}
       {dialogState.dialogOpen && (
-        <AlertModal
-          {...dialogProperties}
+        <Modal
+          messageId={'main.chat.deleteAll.confirmation'}
+          primaryButtonMessage={'meta.ok'}
+          secondaryButtonMessage={'meta.cancel'}
+          onPrimaryPress={() => handleBatchBan('Delete')}
+          modalType={'danger'}
           onSecondaryPress={() => setDialogs('dialogOpen', false)}
         />
       )}
       {isBanRequestFailed ? (
-        <AlertModal
+        <Modal
           modalType="danger"
           messageId="main.chat.deleteAll.error"
           onSecondaryPress={resetBanRequestState}
