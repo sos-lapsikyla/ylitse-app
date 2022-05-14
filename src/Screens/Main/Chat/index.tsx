@@ -14,7 +14,7 @@ import Title from './Title';
 import Input from './Input';
 import { MemoizedMessageList } from './MessageList';
 import DropDown from '../../components/DropDownMenu';
-import { Dialog } from '../../components/Dialog';
+import { AlertModal } from '../../components/AlertModal';
 import { dialogProperties, dropdownItems } from './chatProperties';
 
 import colors from '../../components/colors';
@@ -150,11 +150,10 @@ const Chat = ({ navigation }: Props) => {
         />
       )}
       {dialogState.dialogOpen && banAction && (
-        <Dialog
+        <AlertModal
           {...dialogProperties[banAction]}
-          onPress={() => handleBan(banAction)}
-          buttonId={'meta.ok'}
-          onPressCancel={() => setDialogs('dialogOpen', false)}
+          onPrimaryPress={() => handleBan(banAction)}
+          onSecondaryPress={() => setDialogs('dialogOpen', false)}
         />
       )}
       <RN.KeyboardAvoidingView

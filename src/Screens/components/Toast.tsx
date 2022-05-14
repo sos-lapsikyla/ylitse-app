@@ -11,7 +11,7 @@ import shadow from './shadow';
 
 import { props as toastProps } from './alertProps';
 
-export type AlertVariant = 'danger' | 'success';
+export type AlertVariant = 'danger' | 'success' | 'info' | 'warning';
 type Props = {
   style?: RN.StyleProp<RN.TextStyle>;
   duration: number;

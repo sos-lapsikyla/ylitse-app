@@ -16,6 +16,7 @@ const colors = {
   deepBlue: '#003363',
   lightBlue: '#5cc5ed',
   lighterBlue: '#a2daf3',
+  iconBlue: '#1A6481',
 
   // searchMentor colors
   cyan: '#00BEEA',
@@ -30,6 +31,7 @@ const colors = {
   danger: '#A8243C',
   yellow: '#FFDA17',
   lighterYellow: '#FDF3A4',
+  iconYellow: '#A07D00',
   lightDanger: '#F19A9C',
   teal: '#75C9C3',
   blueGray: '#5A7C9B',
