@@ -23,10 +23,15 @@ export const Title: React.FC<Props> = ({ openDropdown, onLayout }) => {
         testID={'main.buddylist.kebabicon'}
         onPress={openDropdown}
       >
-        <RN.Image
-          source={require('../../images/three-dot-menu.svg')}
-          style={styles.kebabIcon}
-        />
+        <>
+          <RN.Image
+            source={require('../../images/three-dot-menu.svg')}
+            style={styles.kebabIcon}
+          />
+          {true && (
+            <RN.View style={styles.dot} testID={'main.chat.kebabicon.dot'} />
+          )}
+        </>
       </RN.TouchableHighlight>
     </RN.SafeAreaView>
   );
@@ -62,4 +67,14 @@ const styles = RN.StyleSheet.create({
     alignItems: 'center',
   },
   kebabIcon: { tintColor: colors.white },
+  dot: {
+    zIndex: 2,
+    borderRadius: 8,
+    right: 0,
+    top: 4,
+    width: 12,
+    height: 12,
+    backgroundColor: colors.yellow,
+    position: 'absolute',
+  },
 });

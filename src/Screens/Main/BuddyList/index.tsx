@@ -20,6 +20,7 @@ import {
   FolderedChatsRoute,
   FolderType,
 } from '../FolderedChats/folderedChatProperties';
+import FolderItem from './FolderItem';
 
 export type BuddyListRoute = {
   'Main/BuddyList': {};
@@ -60,6 +61,14 @@ export default ({ navigation }: Props) => {
     {
       textId: 'main.chat.navigation.archived',
       onPress: () => navigateToList('Archived'),
+      ItemComponent: () => (
+        <FolderItem
+          onPress={() => navigateToList('Archived')}
+          textId={'main.chat.navigation.archived'}
+          shouldShowUnseenBall={true}
+          testID={'main.chat.menuitem.arhived.dot'}
+        />
+      ),
     },
   ];
 

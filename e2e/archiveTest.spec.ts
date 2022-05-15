@@ -120,10 +120,10 @@ describe('Archiving', () => {
 
     await element(by.text('OK')).tap();
 
-    await waitFor(element(by.id('main.archivedList.back.button')))
+    await waitFor(element(by.id('main.folderedlist.back.button')))
       .toBeVisible()
       .withTimeout(5000);
-    await element(by.id('main.archivedList.back.button')).tap();
+    await element(by.id('main.folderedlist.back.button')).tap();
 
     await expect(element(by.text(mentee.displayName))).toBeVisible();
 
@@ -165,10 +165,10 @@ describe('Archiving', () => {
     // mentor should not see mentee's name in archived list
     await expect(element(by.text(mentee.displayName))).toBeNotVisible();
 
-    await waitFor(element(by.id('main.archivedList.back.button')))
+    await waitFor(element(by.id('main.folderedlist.back.button')))
       .toBeVisible()
       .withTimeout(5000);
-    await element(by.id('main.archivedList.back.button')).tap();
+    await element(by.id('main.folderedlist.back.button')).tap();
 
     // mentor should not see mentee's name in chats list
     await expect(element(by.text(mentee.displayName))).toBeNotVisible();
