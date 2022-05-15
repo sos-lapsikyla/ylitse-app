@@ -17,8 +17,7 @@ import * as actions from '../actions';
 import * as types from '../types';
 
 import { withToken } from './accessToken';
-import { getBuddyStatus } from '../selectors';
-import { createFetchChunks } from 'src/api/buddies';
+import { getIsBanned, getBuddyStatus } from '../selectors';
 
 export type State = types.AppState['messages'];
 export type LoopState = actions.LS<State>;
@@ -45,7 +44,7 @@ export const reducer: automaton.Reducer<State, actions.Action> = (
   switch (action.type) {
     case 'messages/setPollingParams': {
       if (action.payload.type === 'InitialMessages') {
-        const chunks = createFetchChunks(action.payload.buddyIds);
+        const chunks = buddyApi.createFetchChunks(action.payload.buddyIds);
         const currentParams = chunks[0] ?? [];
         const nextPollingParams = chunks.slice(1);
 
@@ -203,7 +202,7 @@ export const hasUnseen: (
       ({ type, isSeen }) =>
         type === 'Received' &&
         isSeen === false &&
-        getBuddyStatus(buddyId)(appState) === 'NotBanned',
+        !getIsBanned(buddyId)(appState),
     ),
     O.fold(() => false, identity),
   );
@@ -217,6 +216,30 @@ export const isAnyMessageUnseen = (appState: types.AppState) =>
     array.reduce(false, (a, b) => a || b),
   );
 
+export const isAnyCertainTypeOfMessageUnseen =
+  (chatType: buddyApi.ChatStatus) => (appState: types.AppState) =>
+    pipe(
+      getMessages(appState),
+      O.fold(() => ({}), identity),
+      Object.keys,
+      array.map(id => hasUnseenMessagesByType(id, chatType)(appState)),
+      array.reduce(false, (a, b) => a || b),
+    );
+export const hasUnseenMessagesByType =
+  (buddyId: string, chatType: buddyApi.ChatStatus) =>
+  (appState: types.AppState) =>
+    pipe(
+      getMessagesByBuddyId(buddyId)(appState),
+      array.sort(ordMessage),
+      array.last,
+      O.map(
+        ({ type, isSeen }) =>
+          type === 'Received' &&
+          isSeen === false &&
+          getBuddyStatus(buddyId)(appState) === chatType,
+      ),
+      O.fold(() => false, identity),
+    );
 export const getMessage = (
   { messages: messageState }: types.AppState,
   index: {

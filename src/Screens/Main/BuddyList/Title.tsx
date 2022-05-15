@@ -10,9 +10,14 @@ import Message from '../../components/Message';
 type Props = {
   openDropdown: () => void | undefined;
   onLayout: (e: RN.LayoutChangeEvent) => void | undefined;
+  hasUnseenArchivedMessages: boolean;
 };
 
-export const Title: React.FC<Props> = ({ openDropdown, onLayout }) => {
+export const Title: React.FC<Props> = ({
+  openDropdown,
+  onLayout,
+  hasUnseenArchivedMessages,
+}) => {
   return (
     <RN.SafeAreaView style={[styles.shadow]} onLayout={onLayout}>
       <RN.View style={styles.spacer} />
@@ -28,7 +33,7 @@ export const Title: React.FC<Props> = ({ openDropdown, onLayout }) => {
             source={require('../../images/three-dot-menu.svg')}
             style={styles.kebabIcon}
           />
-          {true && (
+          {hasUnseenArchivedMessages && (
             <RN.View style={styles.dot} testID={'main.chat.kebabicon.dot'} />
           )}
         </>

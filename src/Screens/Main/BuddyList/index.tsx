@@ -9,6 +9,7 @@ import * as navigationProps from '../../../lib/navigation-props';
 import useLayout from '../../../lib/use-layout';
 
 import * as buddyState from '../../../state/reducers/buddies';
+import * as messagesState from '../../../state/reducers/messages';
 import { ChatRoute } from '../Chat';
 
 import colors from '../../components/colors';
@@ -34,6 +35,9 @@ type Props = navigationProps.NavigationProps<
 export default ({ navigation }: Props) => {
   const buddies = ReactRedux.useSelector(buddyState.getActiveBuddies);
 
+  const hasUnseenArchivedMessages = ReactRedux.useSelector(
+    messagesState.isAnyCertainTypeOfMessageUnseen('Archived'),
+  );
   const [isDropdownOpen, setDropdownOpen] = React.useState<boolean>(false);
 
   const [{ height }, onLayout] = useLayout();
@@ -65,7 +69,7 @@ export default ({ navigation }: Props) => {
         <FolderItem
           onPress={() => navigateToList('Archived')}
           textId={'main.chat.navigation.archived'}
-          shouldShowUnseenBall={true}
+          shouldShowUnseenBall={hasUnseenArchivedMessages}
           testID={'main.chat.menuitem.arhived.dot'}
         />
       ),
@@ -79,7 +83,11 @@ export default ({ navigation }: Props) => {
       disabled={!isDropdownOpen}
       style={styles.screen}
     >
-      <Title openDropdown={() => setDropdownOpen(true)} onLayout={onLayout} />
+      <Title
+        openDropdown={() => setDropdownOpen(true)}
+        onLayout={onLayout}
+        hasUnseenArchivedMessages={hasUnseenArchivedMessages}
+      />
       {isDropdownOpen && (
         <DropDown
           style={[styles.dropdown, { top: height - 8 }]}

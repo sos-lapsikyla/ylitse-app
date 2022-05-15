@@ -70,17 +70,20 @@ describe('Archiving', () => {
     await element(by.id('main.chat.input.button')).tap();
     await forceLogout();
 
-    // mentor should not see new message indicator
+    // mentor should see new message indicator
     await signIn(mentor);
-    await expect(element(by.id('main.tabs.unseenDot'))).toBeNotVisible();
+    await expect(element(by.id('main.tabs.unseenDot'))).toBeVisible();
     await element(by.id('tabs.chats')).tap();
+    await expect(
+      element(by.id('main.chat.menuitem.archived.unseenDot')),
+    ).toBeVisible();
     await element(by.id('main.buddylist.kebabicon')).tap();
     await element(by.text('Archived')).tap();
     await expect(
       element(by.id('main.buddyList.button.unseenDot')),
-    ).toBeNotVisible();
+    ).toBeVisible();
 
-    // but new msg should still be there
+    // and new msg should still be there
     await element(by.text(mentee.displayName)).atIndex(0).tap();
     await expect(
       element(by.text('Notice me Senpai!')).atIndex(1),
