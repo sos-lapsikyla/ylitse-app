@@ -159,6 +159,37 @@ export const reducer: automaton.Reducer<State, actions.Action> = (
       return { ...state, messages: RD.success(nextMessages) };
     }
 
+    case 'messages/markSeen': {
+      const { messageId, buddyId, type, isSeen } = action.payload.message;
+
+      if (type === 'Sent' || isSeen === true) {
+        return state;
+      }
+
+      const stateMessages = RD.isSuccess(state.messages)
+        ? state.messages.value
+        : {};
+
+      const updatedMessage = {
+        ...action.payload.message,
+        isSeen: true,
+      };
+
+      const updatedRecord = {
+        [buddyId]: {
+          ...stateMessages[buddyId],
+          [messageId]: updatedMessage,
+        },
+      };
+
+      return {
+        ...state,
+        messages: RD.success(
+          messageApi.mergeMessageRecords(stateMessages, updatedRecord),
+        ),
+      };
+    }
+
     default:
       return state;
   }
@@ -235,7 +266,7 @@ export const hasUnseenMessagesByType =
       O.map(
         ({ type, isSeen }) =>
           type === 'Received' &&
-          isSeen === false &&
+          !isSeen &&
           getBuddyStatus(buddyId)(appState) === chatType,
       ),
       O.fold(() => false, identity),

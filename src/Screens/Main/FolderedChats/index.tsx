@@ -49,14 +49,14 @@ export default ({ navigation }: Props) => {
 
   const dispatch = ReactRedux.useDispatch<redux.Dispatch<actions.Action>>();
 
-  const handleBatchBan = (banStatus: ChangeChatStatusAction) => {
+  const handleBatchBan = (chatStatus: ChangeChatStatusAction) => {
     setDialogState({ dropdownOpen: false, dialogOpen: false });
 
     if (RD.isSuccess(remoteBuddies) && remoteBuddies.value?.length) {
       const buddyIds = remoteBuddies.value.map(buddy => buddy.buddyId);
       dispatch({
         type: 'buddies/changeChatStatusBatch/start',
-        payload: { buddyIds, banStatus },
+        payload: { buddyIds, chatStatus },
       });
     }
   };

@@ -74,10 +74,11 @@ describe('Archiving', () => {
     await signIn(mentor);
     await expect(element(by.id('main.tabs.unseenDot'))).toBeVisible();
     await element(by.id('tabs.chats')).tap();
+    await expect(element(by.id('main.chat.kebabicon.unseenDot'))).toBeVisible();
+    await element(by.id('main.buddylist.kebabicon')).tap();
     await expect(
       element(by.id('main.chat.menuitem.archived.unseenDot')),
     ).toBeVisible();
-    await element(by.id('main.buddylist.kebabicon')).tap();
     await element(by.text('Archived')).tap();
     await expect(
       element(by.id('main.buddyList.button.unseenDot')),

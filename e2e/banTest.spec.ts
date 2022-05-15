@@ -120,10 +120,10 @@ describe('Banning', () => {
 
     await element(by.text('OK')).tap();
 
-    await waitFor(element(by.id('main.bannedlist.back.button')))
+    await waitFor(element(by.id('main.folderedlist.back.button')))
       .toBeVisible()
       .withTimeout(5000);
-    await element(by.id('main.bannedlist.back.button')).tap();
+    await element(by.id('main.folderedlist.back.button')).tap();
 
     await expect(element(by.text(mentee.displayName))).toBeVisible();
 
@@ -165,10 +165,10 @@ describe('Banning', () => {
     // mentor should not see mentee's name in banned list
     await expect(element(by.text(mentee.displayName))).toBeNotVisible();
 
-    await waitFor(element(by.id('main.bannedlist.back.button')))
+    await waitFor(element(by.id('main.folderedlist.back.button')))
       .toBeVisible()
       .withTimeout(5000);
-    await element(by.id('main.bannedlist.back.button')).tap();
+    await element(by.id('main.folderedlist.back.button')).tap();
 
     // mentor should not see mentee's name in chats list
     await expect(element(by.text(mentee.displayName))).toBeNotVisible();
@@ -237,7 +237,7 @@ describe('Banning', () => {
     await element(by.id('main.buddylist.kebabicon')).tap();
     await element(by.text('Banned')).tap();
 
-    await element(by.id('main.bannedlist.kebabicon')).tap();
+    await element(by.id('main.folderedlist.kebabicon')).tap();
     await element(by.text('Delete all')).tap();
 
     await element(by.text('OK')).tap();
@@ -246,10 +246,10 @@ describe('Banning', () => {
     await expect(element(by.text(mentee.displayName))).toBeNotVisible();
     await expect(element(by.text(mentee1.displayName))).toBeNotVisible();
 
-    await waitFor(element(by.id('main.bannedlist.back.button')))
+    await waitFor(element(by.id('main.folderedlist.back.button')))
       .toBeVisible()
       .withTimeout(5000);
-    await element(by.id('main.bannedlist.back.button')).tap();
+    await element(by.id('main.folderedlist.back.button')).tap();
 
     // mentor should not see mentees' names in chats list
     await expect(element(by.text(mentee.displayName))).toBeNotVisible();

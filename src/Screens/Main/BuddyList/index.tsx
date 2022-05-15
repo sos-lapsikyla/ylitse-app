@@ -70,7 +70,7 @@ export default ({ navigation }: Props) => {
           onPress={() => navigateToList('Archived')}
           textId={'main.chat.navigation.archived'}
           shouldShowUnseenBall={hasUnseenArchivedMessages}
-          testID={'main.chat.menuitem.arhived.dot'}
+          testID={'main.chat.menuitem.archived.unseenDot'}
         />
       ),
     },

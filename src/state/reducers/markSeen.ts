@@ -31,6 +31,7 @@ export const reducer: automaton.Reducer<State, actions.Action> = (
           payload: undefined,
         })),
       );
+
     default:
       return state;
   }

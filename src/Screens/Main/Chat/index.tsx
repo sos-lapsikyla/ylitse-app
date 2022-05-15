@@ -55,7 +55,7 @@ const Chat = ({ navigation }: Props) => {
     dropdownOpen: false,
   });
 
-  const [banAction, setBanAction] = React.useState<
+  const [changeChatStatusAction, setChangeChatStatusAction] = React.useState<
     ChangeChatStatusAction | undefined
   >();
 
@@ -84,17 +84,17 @@ const Chat = ({ navigation }: Props) => {
     dispatch({ type: 'newMessage/store/read/start', payload: { buddyId } });
   };
 
-  const setBanStatus = (banStatus: ChangeChatStatusAction) => {
+  const setChatStatus = (chatStatus: ChangeChatStatusAction) => {
     dispatch({
       type: 'buddies/changeChatStatus/start',
-      payload: { buddyId, banStatus },
+      payload: { buddyId, chatStatus },
     });
   };
 
-  const handleBan = (banStatus: ChangeChatStatusAction) => {
+  const handleChangeChatStatus = (chatStatus: ChangeChatStatusAction) => {
     setDialogState({ dropdownOpen: false, dialogOpen: false });
     goBack();
-    setBanStatus(banStatus);
+    setChatStatus(chatStatus);
   };
 
   const setDialogs = (key: keyof DialogState, show: boolean) => {
@@ -142,19 +142,19 @@ const Chat = ({ navigation }: Props) => {
             ...item,
             onPress: () => {
               setDialogs('dialogOpen', true);
-              setBanAction(item.action);
+              setChangeChatStatusAction(item.action);
             },
           }))}
           testID={'main.chat.menu'}
           tintColor={colors.black}
         />
       )}
-      {dialogState.dialogOpen && banAction && (
+      {dialogState.dialogOpen && changeChatStatusAction && (
         <Modal
-          {...dialogProperties[banAction]}
+          {...dialogProperties[changeChatStatusAction]}
           primaryButtonMessage={'meta.ok'}
           secondaryButtonMessage={'meta.back'}
-          onPrimaryPress={() => handleBan(banAction)}
+          onPrimaryPress={() => handleChangeChatStatus(changeChatStatusAction)}
           onSecondaryPress={() => setDialogs('dialogOpen', false)}
         />
       )}

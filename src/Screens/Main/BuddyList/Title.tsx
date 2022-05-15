@@ -34,7 +34,10 @@ export const Title: React.FC<Props> = ({
             style={styles.kebabIcon}
           />
           {hasUnseenArchivedMessages && (
-            <RN.View style={styles.dot} testID={'main.chat.kebabicon.dot'} />
+            <RN.View
+              style={styles.dot}
+              testID={'main.chat.kebabicon.unseenDot'}
+            />
           )}
         </>
       </RN.TouchableHighlight>
