@@ -72,10 +72,10 @@ export const reducer: automaton.Reducer<State, actions.Action> = (
   }
 };
 
-export const selectBanBuddyRequest = ({
+export const selectChatStatusRequest = ({
   changeChatStatusRequest: state,
 }: AppState) => state;
 
-export const selectBanRequestFailed = (state: AppState): boolean => {
+export const selectChatStatusRequestFailed = (state: AppState): boolean => {
   return RD.isFailure(state.changeChatStatusRequest);
 };

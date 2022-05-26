@@ -20,11 +20,11 @@ export const dialogProperties = {
   },
 } as const;
 
-type BanItem = Omit<DropDownItem, 'onPress'> & {
+type Item = Omit<DropDownItem, 'onPress'> & {
   nextStatus: ChatStatus;
 };
 
-export const changeChatStatusOptions: Record<ChatStatus, BanItem[]> = {
+export const changeChatStatusOptions: Record<ChatStatus, Item[]> = {
   banned: [
     { textId: 'main.chat.unban', nextStatus: 'ok' },
     { textId: 'main.chat.delete', nextStatus: 'deleted' },

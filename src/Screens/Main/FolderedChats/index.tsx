@@ -26,7 +26,7 @@ export default ({ navigation }: Props) => {
   const remoteBuddies = ReactRedux.useSelector(buddySelector);
 
   const isBanRequestFailed = ReactRedux.useSelector(
-    changeBanStatusState.selectBanRequestFailed,
+    changeBanStatusState.selectChatStatusRequestFailed,
   );
 
   type DialogState = { dialogOpen: boolean; dropdownOpen: boolean };
