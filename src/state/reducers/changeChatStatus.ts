@@ -24,7 +24,7 @@ export const reducer: automaton.Reducer<State, actions.Action> = (
         withToken(
           buddyApi.changeChatStatus(
             action.payload.buddyId,
-            action.payload.chatStatus,
+            action.payload.nextStatus,
           ),
           actions.make('buddies/changeChatStatus/end'),
         ),
@@ -46,7 +46,7 @@ export const reducer: automaton.Reducer<State, actions.Action> = (
         withToken(
           buddyApi.changeChatStatusMultiple(
             action.payload.buddyIds,
-            action.payload.chatStatus,
+            action.payload.nextStatus,
           ),
           actions.make('buddies/changeChatStatusBatch/end'),
         ),

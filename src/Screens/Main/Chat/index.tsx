@@ -18,7 +18,7 @@ import Modal from '../../components/Modal';
 import { dialogProperties, changeChatStatusOptions } from './chatProperties';
 
 import colors from '../../components/colors';
-import { ChangeChatStatusAction } from 'src/api/buddies';
+import { ChatStatus } from 'src/api/buddies';
 import { MentorCardExpandedRoute } from '../MentorCardExpanded';
 import { Toast } from '../../components/Toast';
 
@@ -56,7 +56,7 @@ const Chat = ({ navigation }: Props) => {
   });
 
   const [changeChatStatusAction, setChangeChatStatusAction] = React.useState<
-    ChangeChatStatusAction | undefined
+    ChatStatus | undefined
   >();
 
   const [{ height }, onLayout] = useLayout();
@@ -84,14 +84,14 @@ const Chat = ({ navigation }: Props) => {
     dispatch({ type: 'newMessage/store/read/start', payload: { buddyId } });
   };
 
-  const setChatStatus = (chatStatus: ChangeChatStatusAction) => {
+  const setChatStatus = (nextStatus: ChatStatus) => {
     dispatch({
       type: 'buddies/changeChatStatus/start',
-      payload: { buddyId, chatStatus },
+      payload: { buddyId, nextStatus },
     });
   };
 
-  const handleChangeChatStatus = (chatStatus: ChangeChatStatusAction) => {
+  const handleChangeChatStatus = (chatStatus: ChatStatus) => {
     setDialogState({ dropdownOpen: false, dialogOpen: false });
     goBack();
     setChatStatus(chatStatus);
@@ -142,7 +142,7 @@ const Chat = ({ navigation }: Props) => {
             ...item,
             onPress: () => {
               setDialogs('dialogOpen', true);
-              setChangeChatStatusAction(item.action);
+              setChangeChatStatusAction(item.nextStatus);
             },
           }))}
           testID={'main.chat.menu'}

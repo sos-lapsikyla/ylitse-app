@@ -1,47 +1,47 @@
-import { ChangeChatStatusAction, ChatStatus } from 'src/api/buddies';
+import { ChatStatus } from 'src/api/buddies';
 import { DropDownItem } from 'src/Screens/components/DropDownMenu';
 
 export const dialogProperties = {
-  Delete: {
+  deleted: {
     messageId: 'main.chat.delete.confirmation',
     modalType: 'danger',
   },
-  Unban: {
+  ok: {
     messageId: 'main.chat.unban.confirmation',
     modalType: 'info',
   },
-  Ban: {
+  banned: {
     messageId: 'main.chat.ban.confirmation',
     modalType: 'warning',
   },
-  Archive: {
+  archived: {
     messageId: 'main.chat.archive.confirmation',
     modalType: 'info',
   },
 } as const;
 
 type BanItem = Omit<DropDownItem, 'onPress'> & {
-  action: ChangeChatStatusAction;
+  nextStatus: ChatStatus;
 };
 
 export const changeChatStatusOptions: Record<ChatStatus, BanItem[]> = {
-  Banned: [
-    { textId: 'main.chat.unban', action: 'Unban' },
-    { textId: 'main.chat.delete', action: 'Delete' },
+  banned: [
+    { textId: 'main.chat.unban', nextStatus: 'ok' },
+    { textId: 'main.chat.delete', nextStatus: 'deleted' },
   ],
-  NotBanned: [
+  ok: [
     {
       textId: 'main.chat.ban',
-      action: 'Ban',
+      nextStatus: 'banned',
     },
     {
       textId: 'main.chat.archive',
-      action: 'Archive',
+      nextStatus: 'archived',
     },
   ],
-  Archived: [
-    { textId: 'main.chat.unban', action: 'Unban' },
-    { textId: 'main.chat.delete', action: 'Delete' },
+  archived: [
+    { textId: 'main.chat.unban', nextStatus: 'ok' },
+    { textId: 'main.chat.delete', nextStatus: 'deleted' },
   ],
-  Deleted: [],
+  deleted: [],
 };

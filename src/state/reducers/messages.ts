@@ -145,7 +145,7 @@ export const reducer: automaton.Reducer<State, actions.Action> = (
       const messages = state.messages.value;
 
       const notDeletedBuddies = Object.keys(responseBuddies).filter(
-        buddyId => responseBuddies[buddyId].status !== 'Deleted',
+        buddyId => responseBuddies[buddyId].status !== 'deleted',
       );
 
       const nextBuddies = notDeletedBuddies.reduce<

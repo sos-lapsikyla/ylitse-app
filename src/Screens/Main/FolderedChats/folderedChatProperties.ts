@@ -17,7 +17,7 @@ export type Props = navigationProps.NavigationProps<
   FolderedChatsRoute,
   ChatRoute
 >;
-export type FolderType = Exclude<ChatStatus, 'Deleted' | 'NotBanned'>;
+export type FolderType = Exclude<ChatStatus, 'deleted' | 'ok'>;
 
 export type ListData = {
   titleId: MessageId;
@@ -25,11 +25,11 @@ export type ListData = {
 };
 
 export const listData: Record<FolderType, ListData> = {
-  Archived: {
+  archived: {
     titleId: 'main.chat.navigation.archived',
     buddySelector: buddyState.getArchivedBuddies,
   },
-  Banned: {
+  banned: {
     titleId: 'main.chat.navigation.banned',
     buddySelector: buddyState.getBannedBuddies,
   },

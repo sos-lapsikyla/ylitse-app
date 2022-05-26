@@ -66,8 +66,8 @@ export const getBuddyStatus =
   ({ buddies: remoteBuddies }: AppState): buddyApi.ChatStatus => {
     return pipe(
       remoteBuddies.buddies,
-      RD.map(({ [buddyId]: buddy }) => (buddy ? buddy.status : 'NotBanned')),
-      RD.getOrElse<unknown, buddyApi.ChatStatus>(() => 'NotBanned'),
+      RD.map(({ [buddyId]: buddy }) => (buddy ? buddy.status : 'ok')),
+      RD.getOrElse<unknown, buddyApi.ChatStatus>(() => 'ok'),
     );
   };
 
@@ -77,7 +77,7 @@ export const getIsBanned =
     return pipe(
       remoteBuddies.buddies,
       RD.map(({ [buddyId]: buddy }) => {
-        return buddy ? buddy.status === 'Banned' : false;
+        return buddy ? buddy.status === 'banned' : false;
       }),
       RD.getOrElse<unknown, boolean>(() => true),
     );

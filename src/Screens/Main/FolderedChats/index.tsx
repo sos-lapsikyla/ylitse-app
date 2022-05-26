@@ -17,7 +17,6 @@ import { Title } from './Title';
 
 import colors from '../../components/colors';
 import RemoteData from '../../components/RemoteData';
-import { ChangeChatStatusAction } from 'src/api/buddies';
 import { Props, listData } from './folderedChatProperties';
 
 export default ({ navigation }: Props) => {
@@ -49,14 +48,14 @@ export default ({ navigation }: Props) => {
 
   const dispatch = ReactRedux.useDispatch<redux.Dispatch<actions.Action>>();
 
-  const handleBatchBan = (chatStatus: ChangeChatStatusAction) => {
+  const handleBatchBan = () => {
     setDialogState({ dropdownOpen: false, dialogOpen: false });
 
     if (RD.isSuccess(remoteBuddies) && remoteBuddies.value?.length) {
       const buddyIds = remoteBuddies.value.map(buddy => buddy.buddyId);
       dispatch({
         type: 'buddies/changeChatStatusBatch/start',
-        payload: { buddyIds, chatStatus },
+        payload: { buddyIds, nextStatus: 'deleted' },
       });
     }
   };
@@ -102,7 +101,7 @@ export default ({ navigation }: Props) => {
           messageId={'main.chat.deleteAll.confirmation'}
           primaryButtonMessage={'meta.ok'}
           secondaryButtonMessage={'meta.cancel'}
-          onPrimaryPress={() => handleBatchBan('Delete')}
+          onPrimaryPress={handleBatchBan}
           modalType={'danger'}
           onSecondaryPress={() => setDialogs('dialogOpen', false)}
         />
@@ -112,7 +111,7 @@ export default ({ navigation }: Props) => {
           modalType="danger"
           messageId="main.chat.deleteAll.error"
           onSecondaryPress={resetBanRequestState}
-          onPrimaryPress={() => handleBatchBan('Delete')}
+          onPrimaryPress={handleBatchBan}
         />
       ) : (
         <RemoteData data={remoteBuddies}>

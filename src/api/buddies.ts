@@ -10,25 +10,25 @@ import { PollingParams } from 'src/state/reducers/messages';
 
 type ApiBuddy = t.TypeOf<typeof buddyType>;
 
+const chatStatus = t.keyof({
+  banned: null,
+  deleted: null,
+  ok: null,
+  archived: null,
+});
+
+export type ChatStatus = t.TypeOf<typeof chatStatus>;
 export const buddyType = t.intersection([
   t.strict({
     display_name: t.string,
     id: t.string,
   }),
   t.partial({
-    status: t.union([
-      t.literal('banned'),
-      t.literal('deleted'),
-      t.literal('ok'),
-      t.literal('archived'),
-    ]),
+    status: chatStatus,
   }),
 ]);
 
 export const buddiesType = t.strict({ resources: t.array(buddyType) });
-
-export type ChangeChatStatusAction = 'Ban' | 'Unban' | 'Delete' | 'Archive';
-export type ChatStatus = 'Banned' | 'NotBanned' | 'Deleted' | 'Archived';
 
 export type Buddy = {
   buddyId: string;
@@ -38,24 +38,10 @@ export type Buddy = {
 
 export type Buddies = Record<string, Buddy>;
 
-const toApiChatStatus = {
-  Ban: 'banned',
-  Unban: 'ok',
-  Delete: 'deleted',
-  Archive: 'archived',
-};
-
-const toChatStatus = {
-  banned: 'Banned',
-  deleted: 'Deleted',
-  ok: 'NotBanned',
-  archived: 'Archived',
-} as const;
-
 const toBuddy = ({ id, display_name, status = 'ok' }: ApiBuddy): Buddy => ({
   buddyId: id,
   name: display_name,
-  status: toChatStatus[status],
+  status,
 });
 
 export const reduceToBuddiesRecord = (buddies: Buddies, apiBuddy: ApiBuddy) => {
@@ -91,11 +77,11 @@ export function fetchBuddies(
 const changeChatStatusRequest = (
   buddyId: string,
   accessToken: authApi.AccessToken,
-  status: ChangeChatStatusAction,
+  status: ChatStatus,
 ) => {
   return http.put(
     `${config.baseUrl}/users/${accessToken.userId}/contacts/${buddyId}`,
-    { status: toApiChatStatus[status] },
+    { status },
     {
       headers: authApi.authHeader(accessToken),
     },
@@ -105,12 +91,12 @@ const changeChatStatusRequest = (
 const changeChatStatusMultipleRequest = (
   buddyIds: string[],
   accessToken: authApi.AccessToken,
-  status: ChangeChatStatusAction,
+  status: ChatStatus,
 ) => {
   const buddies = buddyIds.map(buddyId => {
     return {
       id: buddyId,
-      status: toApiChatStatus[status],
+      status,
     };
   });
 
@@ -125,11 +111,11 @@ const changeChatStatusMultipleRequest = (
 
 export function changeChatStatus(
   buddyId: string,
-  banStatus: ChangeChatStatusAction,
+  nextStatus: ChatStatus,
 ): (accessToken: authApi.AccessToken) => TE.TaskEither<string, Buddy> {
   return accessToken =>
     http.validateResponse(
-      changeChatStatusRequest(buddyId, accessToken, banStatus),
+      changeChatStatusRequest(buddyId, accessToken, nextStatus),
       buddyType,
       toBuddy,
     );
@@ -137,11 +123,11 @@ export function changeChatStatus(
 
 export function changeChatStatusMultiple(
   buddyIds: string[],
-  banStatus: ChangeChatStatusAction,
+  nextStatus: ChatStatus,
 ): (accessToken: authApi.AccessToken) => TE.TaskEither<string, Buddies> {
   return accessToken =>
     http.validateResponse(
-      changeChatStatusMultipleRequest(buddyIds, accessToken, banStatus),
+      changeChatStatusMultipleRequest(buddyIds, accessToken, nextStatus),
       buddiesType,
       toBuddies,
     );

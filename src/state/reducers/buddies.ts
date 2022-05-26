@@ -114,7 +114,7 @@ export const reducer: automaton.Reducer<State, actions.Action> = (
         const stateBuddies = state.buddies.value;
 
         const deletedIds = Object.keys(responseBuddies).filter(
-          key => responseBuddies[key].status === 'Deleted',
+          key => responseBuddies[key].status === 'deleted',
         );
 
         const filteredIds = Object.keys(stateBuddies).filter(
@@ -173,11 +173,11 @@ const getBuddies =
     );
   };
 
-export const getBannedBuddies = getBuddies('Banned');
+export const getBannedBuddies = getBuddies('banned');
 
-export const getArchivedBuddies = getBuddies('Archived');
+export const getArchivedBuddies = getBuddies('archived');
 
-export const getActiveBuddies = getBuddies('NotBanned');
+export const getActiveBuddies = getBuddies('ok');
 
 export const getIsBuddy = (buddyId: string) => (appState: types.AppState) => {
   const { buddies } = appState.buddies;

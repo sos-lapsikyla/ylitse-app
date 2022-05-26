@@ -36,7 +36,7 @@ export default ({ navigation }: Props) => {
   const buddies = ReactRedux.useSelector(buddyState.getActiveBuddies);
 
   const hasUnseenArchivedMessages = ReactRedux.useSelector(
-    messagesState.isAnyCertainTypeOfMessageUnseen('Archived'),
+    messagesState.isAnyCertainTypeOfMessageUnseen('archived'),
   );
   const [isDropdownOpen, setDropdownOpen] = React.useState<boolean>(false);
 
@@ -60,14 +60,14 @@ export default ({ navigation }: Props) => {
   const dropdownItems: DropDownItem[] = [
     {
       textId: 'main.chat.navigation.banned',
-      onPress: () => navigateToList('Banned'),
+      onPress: () => navigateToList('banned'),
     },
     {
       textId: 'main.chat.navigation.archived',
-      onPress: () => navigateToList('Archived'),
+      onPress: () => navigateToList('archived'),
       ItemComponent: () => (
         <FolderItem
-          onPress={() => navigateToList('Archived')}
+          onPress={() => navigateToList('archived')}
           textId={'main.chat.navigation.archived'}
           shouldShowUnseenBall={hasUnseenArchivedMessages}
           testID={'main.chat.menuitem.archived.unseenDot'}

@@ -83,11 +83,11 @@ type RegularActions = {
   'buddies/completed': Result<typeof buddyApi.fetchBuddies>;
   'buddies/changeChatStatus/start': {
     buddyId: string;
-    chatStatus: buddyApi.ChangeChatStatusAction;
+    nextStatus: buddyApi.ChatStatus;
   };
   'buddies/changeChatStatusBatch/start': {
     buddyIds: string[];
-    chatStatus: buddyApi.ChangeChatStatusAction;
+    nextStatus: buddyApi.ChatStatus;
   };
   'buddies/changeChatStatusBatch/end': E.Either<string, buddyApi.Buddies>;
   'buddies/changeChatStatus/end': E.Either<string, buddyApi.Buddy>;
