@@ -65,14 +65,13 @@ export default ({ navigation }: Props) => {
     {
       textId: 'main.chat.navigation.archived',
       onPress: () => navigateToList('archived'),
-      ItemComponent: () => (
-        <FolderItem
-          onPress={() => navigateToList('archived')}
-          textId={'main.chat.navigation.archived'}
-          shouldShowUnseenBall={hasUnseenArchivedMessages}
-          testID={'main.chat.menuitem.archived.unseenDot'}
-        />
-      ),
+      specialRender: {
+        RenderItem: FolderItem,
+        props: {
+          testID: 'main.chat.menuitem.archived.unseenDot',
+          shouldShowUnseenBall: hasUnseenArchivedMessages,
+        },
+      },
     },
   ];
 

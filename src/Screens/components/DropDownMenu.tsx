@@ -11,9 +11,12 @@ import shadow from './shadow';
 export type DropDownItem = {
   textId: localization.MessageId;
   onPress: () => void;
-  ItemComponent?: React.FC<SpecialItemProps> & any;
+  specialRender?: {
+    RenderItem: React.FC<SpecialItemProps & any>;
+    props: Record<string, any>;
+  };
 };
-export type SpecialItemProps = Omit<DropDownItem, 'ItemComponent'>;
+export type SpecialItemProps = Omit<DropDownItem, 'specialRender'>;
 
 type Props = {
   items: DropDownItem[];
@@ -26,8 +29,13 @@ const DropDown: React.FC<Props> = ({ items, style }) => {
   return (
     <RN.View style={[styles.dropdown, style]}>
       {items.map((item, index) =>
-        item.ItemComponent ? (
-          <item.ItemComponent key={index} />
+        item.specialRender ? (
+          <item.specialRender.RenderItem
+            key={index}
+            onPress={item.onPress}
+            textId={item.textId}
+            {...item.specialRender.props}
+          />
         ) : (
           <RN.TouchableOpacity
             key={index}
