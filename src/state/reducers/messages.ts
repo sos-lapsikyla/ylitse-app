@@ -166,7 +166,7 @@ export const reducer: automaton.Reducer<State, actions.Action> = (
         return state;
       }
 
-      const stateMessages = RD.isSuccess(state.messages)
+      const oldMessages = RD.isSuccess(state.messages)
         ? state.messages.value
         : {};
 
@@ -175,9 +175,9 @@ export const reducer: automaton.Reducer<State, actions.Action> = (
         isSeen: true,
       };
 
-      const updatedRecord = {
+      const updatedMessageRecord = {
         [buddyId]: {
-          ...stateMessages[buddyId],
+          ...oldMessages[buddyId],
           [messageId]: updatedMessage,
         },
       };
@@ -185,7 +185,7 @@ export const reducer: automaton.Reducer<State, actions.Action> = (
       return {
         ...state,
         messages: RD.success(
-          messageApi.mergeMessageRecords(stateMessages, updatedRecord),
+          messageApi.mergeMessageRecords(oldMessages, updatedMessageRecord),
         ),
       };
     }
@@ -247,7 +247,7 @@ export const isAnyMessageUnseen = (appState: types.AppState) =>
     array.reduce(false, (a, b) => a || b),
   );
 
-export const isAnyCertainTypeOfMessageUnseen =
+export const hasUnseenMessagesOfStatus =
   (chatType: buddyApi.ChatStatus) => (appState: types.AppState) =>
     pipe(
       getMessages(appState),

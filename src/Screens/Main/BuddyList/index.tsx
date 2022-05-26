@@ -36,7 +36,7 @@ export default ({ navigation }: Props) => {
   const buddies = ReactRedux.useSelector(buddyState.getActiveBuddies);
 
   const hasUnseenArchivedMessages = ReactRedux.useSelector(
-    messagesState.isAnyCertainTypeOfMessageUnseen('archived'),
+    messagesState.hasUnseenMessagesOfStatus('archived'),
   );
   const [isDropdownOpen, setDropdownOpen] = React.useState<boolean>(false);
 

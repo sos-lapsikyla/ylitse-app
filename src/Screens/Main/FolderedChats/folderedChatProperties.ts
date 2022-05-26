@@ -17,7 +17,7 @@ export type Props = navigationProps.NavigationProps<
   FolderedChatsRoute,
   ChatRoute
 >;
-export type FolderType = Exclude<ChatStatus, 'deleted' | 'ok'>;
+export type FolderType = Extract<ChatStatus, 'archived' | 'banned'>;
 
 export type ListData = {
   titleId: MessageId;
