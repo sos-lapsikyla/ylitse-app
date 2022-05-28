@@ -8,6 +8,7 @@ import * as authApi from '../../api/auth';
 import * as buddyApi from '../../api/buddies';
 import * as messageApi from '../../api/messages';
 import * as statApi from '../../api/stat';
+import * as feedbackApi from '../../api/feedback';
 import * as messages from '../reducers/messages';
 import * as updateMentorData from '../reducers/updateMentorData';
 
@@ -114,6 +115,8 @@ type RegularActions = {
   'notifications/sendDeviceToken/completed': Result<
     typeof notificationsApi.sendDeviceToken
   >;
+  'questions/getQuestions/start': undefined;
+  'questions/getQuestions/end': Result<typeof feedbackApi.fetchQuestions>;
 };
 
 // TODO name plz.

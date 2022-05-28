@@ -69,4 +69,5 @@ export type AppState = {
     requestPermissions: RemoteData<boolean>;
     sendDeviceToken: RemoteAction;
   };
+  questions: RemoteAction;
 };

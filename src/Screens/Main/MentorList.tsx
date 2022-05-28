@@ -52,6 +52,10 @@ const MentorList = (props: Props) => {
     props.navigation.navigate('Main/SearchMentor', {});
   };
 
+  React.useEffect(() => {
+    dispatch({ type: 'questions/getQuestions/start', payload: undefined });
+  }, []);
+
   return (
     <Background>
       <SafeAreaView
