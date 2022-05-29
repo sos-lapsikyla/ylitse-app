@@ -68,7 +68,7 @@ export const rootReducer: automaton.Reducer<AppState, actions.Action> =
       messages: messages.reducer,
       newMessage: newMessage.reducer,
       markMessageSeen: markSeen.reducer,
-      questions: questions.reducer,
+      feedbackQuestions: questions.reducer,
     }),
   );
 
@@ -91,5 +91,5 @@ export const initialState: AppState = {
   messages: messages.initialState,
   newMessage: {},
   markMessageSeen: {},
-  questions: questions.initialState,
+  feedbackQuestions: questions.initialState,
 };

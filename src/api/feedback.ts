@@ -41,6 +41,7 @@ const questionType = t.strict({
 const questionResponse = t.strict({ resources: t.array(questionType) });
 
 export type Question = t.TypeOf<typeof questionType>;
+
 export function fetchQuestions(
   accessToken: authApi.AccessToken,
 ): TE.TaskEither<string, Array<Question>> {

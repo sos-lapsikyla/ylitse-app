@@ -9,9 +9,11 @@ import { Action } from '../actions';
 import { AppState } from '../types';
 import { withToken } from './accessToken';
 
+import { pipe } from 'fp-ts/lib/function';
+
 export const initialState = RD.initial;
 
-export const reducer: Reducer<AppState['questions'], Action> = (
+export const reducer: Reducer<AppState['feedbackQuestions'], Action> = (
   state = initialState,
   action,
 ) => {
@@ -27,8 +29,7 @@ export const reducer: Reducer<AppState['questions'], Action> = (
     }
 
     case 'questions/getQuestions/end': {
-      console.log('action ended', action.payload);
-      return state;
+      return pipe(action.payload, RD.fromEither);
     }
     default: {
       return state;
