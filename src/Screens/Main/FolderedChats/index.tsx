@@ -6,34 +6,27 @@ import * as ReactRedux from 'react-redux';
 import * as actions from '../../../state/actions';
 import * as RD from '@devexperts/remote-data-ts';
 
-import * as navigationProps from '../../../lib/navigation-props';
 import useLayout from '../../../lib/use-layout';
 
-import * as buddyState from '../../../state/reducers/buddies';
-import * as changeBanStatusState from '../../../state/reducers/banBuddyRequest';
+import * as changeBanStatusState from '../../../state/reducers/changeChatStatus';
 
 import Button from '../BuddyList/Button';
-import { ChatRoute } from '../Chat';
 import DropDown, { DropDownItem } from '../../components/DropDownMenu';
-import { Dialog, DialogProps } from '../../components/Dialog';
+import Modal from '../../components/Modal';
 import { Title } from './Title';
 
 import colors from '../../components/colors';
 import RemoteData from '../../components/RemoteData';
-import { BanAction } from 'src/api/buddies';
-import { AlertModal } from 'src/Screens/components/AlertModal';
-
-export type BannedListRoute = {
-  'Main/BannedList': {};
-};
-
-type Props = navigationProps.NavigationProps<BannedListRoute, ChatRoute>;
+import { Props, listData } from './folderedChatProperties';
 
 export default ({ navigation }: Props) => {
-  const remoteBuddies = ReactRedux.useSelector(buddyState.getBannedBuddies);
+  const folderType = navigation.getParam('folderType');
+  const { buddySelector, titleId } = listData[folderType];
+
+  const remoteBuddies = ReactRedux.useSelector(buddySelector);
 
   const isBanRequestFailed = ReactRedux.useSelector(
-    changeBanStatusState.selectBanRequestFailed,
+    changeBanStatusState.selectChatStatusRequestFailed,
   );
 
   type DialogState = { dialogOpen: boolean; dropdownOpen: boolean };
@@ -55,29 +48,23 @@ export default ({ navigation }: Props) => {
 
   const dispatch = ReactRedux.useDispatch<redux.Dispatch<actions.Action>>();
 
-  const handleBatchBan = (banStatus: BanAction) => {
+  const handleBatchBan = () => {
     setDialogState({ dropdownOpen: false, dialogOpen: false });
 
     if (RD.isSuccess(remoteBuddies) && remoteBuddies.value?.length) {
       const buddyIds = remoteBuddies.value.map(buddy => buddy.buddyId);
       dispatch({
-        type: 'buddies/changeBanStatusBatch/start',
-        payload: { buddyIds, banStatus },
+        type: 'buddies/changeChatStatusBatch/start',
+        payload: { buddyIds, nextStatus: 'deleted' },
       });
     }
   };
 
   const resetBanRequestState = () => {
-    dispatch({ type: 'buddies/changeBanStatus/reset', payload: undefined });
+    dispatch({ type: 'buddies/changeChatStatus/reset', payload: undefined });
   };
 
-  const dialogProperties: Omit<DialogProps, 'onPressCancel' | 'buttonId'> = {
-    textId: 'main.chat.deleteAll.confirmation',
-    onPress: () => handleBatchBan('Delete'),
-    type: 'danger',
-  };
-
-  const dropdownItems: DropDownItem[] = [
+  const menuItems: DropDownItem[] = [
     {
       textId: 'main.chat.deleteAll',
       onPress: () => setDialogs('dialogOpen', true),
@@ -99,28 +86,32 @@ export default ({ navigation }: Props) => {
         openDropdown={() => setDialogs('dropdownOpen', true)}
         onLayout={onLayout}
         onPressBack={onPressBack}
+        headerId={titleId}
       />
       {dialogState.dropdownOpen && (
         <DropDown
           style={[styles.dropdown, { top: height - 8 }]}
-          items={dropdownItems}
+          items={menuItems}
           testID={'main.chat.menu'}
           tintColor={colors.black}
         />
       )}
       {dialogState.dialogOpen && (
-        <Dialog
-          {...dialogProperties}
-          buttonId={'meta.ok'}
-          onPressCancel={() => setDialogs('dialogOpen', false)}
+        <Modal
+          messageId={'main.chat.deleteAll.confirmation'}
+          primaryButtonMessage={'meta.ok'}
+          secondaryButtonMessage={'meta.cancel'}
+          onPrimaryPress={handleBatchBan}
+          modalType={'danger'}
+          onSecondaryPress={() => setDialogs('dialogOpen', false)}
         />
       )}
       {isBanRequestFailed ? (
-        <AlertModal
+        <Modal
           modalType="danger"
           messageId="main.chat.deleteAll.error"
           onSecondaryPress={resetBanRequestState}
-          onPrimaryPress={() => handleBatchBan('Delete')}
+          onPrimaryPress={handleBatchBan}
         />
       ) : (
         <RemoteData data={remoteBuddies}>

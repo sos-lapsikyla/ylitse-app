@@ -4,12 +4,7 @@ import RN from 'react-native';
 import * as redux from 'redux';
 import * as ReactRedux from 'react-redux';
 import * as selectors from '../../../state/selectors';
-import * as mentorState from '../../../state/reducers/mentors';
 import * as newMessageState from '../../../state/reducers/newMessage';
-import {
-  getMessagesByBuddyId,
-  isLoadingBuddyMessages,
-} from '../../../state/reducers/messages';
 import * as actions from '../../../state/actions';
 
 import * as navigationProps from '../../../lib/navigation-props';
@@ -18,11 +13,12 @@ import useLayout from '../../../lib/use-layout';
 import Title from './Title';
 import Input from './Input';
 import { MemoizedMessageList } from './MessageList';
-import DropDown, { DropDownItem } from '../../components/DropDownMenu';
-import { Dialog, DialogProps } from '../../components/Dialog';
+import DropDown from '../../components/DropDownMenu';
+import Modal from '../../components/Modal';
+import { dialogProperties, changeChatStatusOptions } from './chatProperties';
 
 import colors from '../../components/colors';
-import { BanAction } from 'src/api/buddies';
+import { ChatStatus } from 'src/api/buddies';
 import { MentorCardExpandedRoute } from '../MentorCardExpanded';
 import { Toast } from '../../components/Toast';
 
@@ -35,6 +31,8 @@ type Props = navigationProps.NavigationProps<
   ChatRoute & MentorCardExpandedRoute
 >;
 
+type DialogState = { dialogOpen: boolean; dropdownOpen: boolean };
+
 const Chat = ({ navigation }: Props) => {
   const goBack = () => {
     navigation.goBack();
@@ -42,13 +40,29 @@ const Chat = ({ navigation }: Props) => {
 
   const buddyId = navigation.getParam('buddyId');
 
-  const messageList = ReactRedux.useSelector(getMessagesByBuddyId(buddyId));
+  const { messageList, isLoading, mentor, isMessageSendFailed, buddyStatus } =
+    ReactRedux.useSelector(selectors.getChatDataFor(buddyId));
 
-  const isLoading = ReactRedux.useSelector(isLoadingBuddyMessages(buddyId));
+  const dispatch = ReactRedux.useDispatch<redux.Dispatch<actions.Action>>();
 
-  const sortedMessageList = React.useMemo(() => {
-    return messageList.sort(({ sentTime: A }, { sentTime: B }) => A - B);
-  }, [messageList]);
+  const sortedMessageList = React.useMemo(
+    () => messageList.sort(({ sentTime: A }, { sentTime: B }) => A - B),
+    [messageList],
+  );
+
+  const [dialogState, setDialogState] = React.useState<DialogState>({
+    dialogOpen: false,
+    dropdownOpen: false,
+  });
+
+  const [changeChatStatusAction, setChangeChatStatusAction] = React.useState<
+    ChatStatus | undefined
+  >();
+
+  const [{ height }, onLayout] = useLayout();
+
+  const keyboardViewBehaviour =
+    RN.Platform.OS === 'ios' ? 'padding' : undefined;
 
   const getPreviousMessages = (messageId: string) => {
     dispatch({
@@ -56,12 +70,6 @@ const Chat = ({ navigation }: Props) => {
       payload: { type: 'OlderThan', buddyId, messageId },
     });
   };
-
-  const mentor = ReactRedux.useSelector(mentorState.getMentorByUserId(buddyId));
-
-  const isMessageSendFailed = ReactRedux.useSelector(
-    newMessageState.getMessageSendFailed(buddyId),
-  );
 
   const goToMentorCard = () => {
     if (mentor) {
@@ -72,86 +80,22 @@ const Chat = ({ navigation }: Props) => {
     }
   };
 
-  type DialogState = { dialogOpen: boolean; dropdownOpen: boolean };
-
-  const [dialogState, setDialogState] = React.useState<DialogState>({
-    dialogOpen: false,
-    dropdownOpen: false,
-  });
-
-  const [deleteOption, setDeleteOption] = React.useState(false);
-
-  const [{ height }, onLayout] = useLayout();
-
-  const keyboardViewBehaviour =
-    RN.Platform.OS === 'ios' ? 'padding' : undefined;
-
-  const isBanned = ReactRedux.useSelector(selectors.getIsBanned(buddyId));
-
-  const dispatch = ReactRedux.useDispatch<redux.Dispatch<actions.Action>>();
-
   const getDraftMessage = () => {
     dispatch({ type: 'newMessage/store/read/start', payload: { buddyId } });
   };
 
-  const setBanStatus = (banStatus: BanAction) => {
+  const setChatStatus = (nextStatus: ChatStatus) => {
     dispatch({
-      type: 'buddies/changeBanStatus/start',
-      payload: { buddyId, banStatus },
+      type: 'buddies/changeChatStatus/start',
+      payload: { buddyId, nextStatus },
     });
   };
 
-  const handleBan = (banStatus: BanAction) => {
+  const handleChangeChatStatus = (chatStatus: ChatStatus) => {
     setDialogState({ dropdownOpen: false, dialogOpen: false });
     goBack();
-    setBanStatus(banStatus);
+    setChatStatus(chatStatus);
   };
-
-  const dialogProperties: Omit<DialogProps, 'onPressCancel' | 'buttonId'> =
-    isBanned
-      ? deleteOption
-        ? {
-            textId: 'main.chat.delete.confirmation',
-            onPress: () => handleBan('Delete'),
-            type: 'danger',
-          }
-        : {
-            textId: 'main.chat.unban.confirmation',
-            onPress: () => handleBan('Unban'),
-            type: 'restore',
-          }
-      : {
-          textId: 'main.chat.ban.confirmation',
-          onPress: () => handleBan('Ban'),
-          type: 'warning',
-        };
-
-  const dropdownItems: DropDownItem[] = isBanned
-    ? [
-        {
-          textId: 'main.chat.unban',
-          onPress: () => {
-            setDeleteOption(false);
-            setDialogs('dialogOpen', true);
-          },
-        },
-        {
-          textId: 'main.chat.delete',
-          onPress: () => {
-            setDeleteOption(true);
-            setDialogs('dialogOpen', true);
-          },
-        },
-      ]
-    : [
-        {
-          textId: 'main.chat.ban',
-          onPress: () => {
-            setDeleteOption(false);
-            setDialogs('dialogOpen', true);
-          },
-        },
-      ];
 
   const setDialogs = (key: keyof DialogState, show: boolean) => {
     setDialogState({ ...dialogState, [key]: show });
@@ -194,16 +138,24 @@ const Chat = ({ navigation }: Props) => {
       {dialogState.dropdownOpen && (
         <DropDown
           style={[styles.dropdown, { top: height - 8 }]}
-          items={dropdownItems}
+          items={changeChatStatusOptions[buddyStatus].map(item => ({
+            ...item,
+            onPress: () => {
+              setDialogs('dialogOpen', true);
+              setChangeChatStatusAction(item.nextStatus);
+            },
+          }))}
           testID={'main.chat.menu'}
           tintColor={colors.black}
         />
       )}
-      {dialogState.dialogOpen && (
-        <Dialog
-          {...dialogProperties}
-          buttonId={'meta.ok'}
-          onPressCancel={() => setDialogs('dialogOpen', false)}
+      {dialogState.dialogOpen && changeChatStatusAction && (
+        <Modal
+          {...dialogProperties[changeChatStatusAction]}
+          primaryButtonMessage={'meta.ok'}
+          secondaryButtonMessage={'meta.back'}
+          onPrimaryPress={() => handleChangeChatStatus(changeChatStatusAction)}
+          onSecondaryPress={() => setDialogs('dialogOpen', false)}
         />
       )}
       <RN.KeyboardAvoidingView
@@ -246,7 +198,6 @@ const styles = RN.StyleSheet.create({
   input: {
     marginTop: 8,
   },
-  spinnerContainer: { flex: 1, justifyContent: 'center', alignItems: 'center' },
 });
 
 export default Chat;

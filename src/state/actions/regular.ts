@@ -81,18 +81,18 @@ type RegularActions = {
   'messages/markSeen/end': undefined;
 
   'buddies/completed': Result<typeof buddyApi.fetchBuddies>;
-  'buddies/changeBanStatus/start': {
+  'buddies/changeChatStatus/start': {
     buddyId: string;
-    banStatus: buddyApi.BanAction;
+    nextStatus: buddyApi.ChatStatus;
   };
-  'buddies/changeBanStatusBatch/start': {
+  'buddies/changeChatStatusBatch/start': {
     buddyIds: string[];
-    banStatus: buddyApi.BanAction;
+    nextStatus: buddyApi.ChatStatus;
   };
-  'buddies/changeBanStatusBatch/end': E.Either<string, buddyApi.Buddies>;
-  'buddies/changeBanStatus/end': E.Either<string, buddyApi.Buddy>;
+  'buddies/changeChatStatusBatch/end': E.Either<string, buddyApi.Buddies>;
+  'buddies/changeChatStatus/end': E.Either<string, buddyApi.Buddy>;
 
-  'buddies/changeBanStatus/reset': undefined;
+  'buddies/changeChatStatus/reset': undefined;
 
   'newMessage/send/start': messageApi.SendMessageParams;
   'newMessage/send/end': {

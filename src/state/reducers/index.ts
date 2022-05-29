@@ -11,7 +11,7 @@ import * as accessToken from './accessToken';
 import * as login from './login';
 import * as createUser from './createUser';
 import * as buddies from './buddies';
-import * as banBuddyRequest from './banBuddyRequest';
+import * as changeChatStatusRequest from './changeChatStatus';
 import * as messages from './messages';
 import * as newMessage from './newMessage';
 import * as mentors from './mentors';
@@ -64,7 +64,7 @@ export const rootReducer: automaton.Reducer<AppState, actions.Action> =
       skillFilter: mentors.skillReducer,
       statRequest: statRequest.reducer,
       buddies: buddies.reducer,
-      banBuddyRequest: banBuddyRequest.reducer,
+      changeChatStatusRequest: changeChatStatusRequest.reducer,
       messages: messages.reducer,
       newMessage: newMessage.reducer,
       markMessageSeen: markSeen.reducer,
@@ -87,7 +87,7 @@ export const initialState: AppState = {
   skillFilter: [],
   statRequest: statRequest.initialState,
   buddies: buddies.initialState,
-  banBuddyRequest: banBuddyRequest.initialState,
+  changeChatStatusRequest: changeChatStatusRequest.initialState,
   messages: messages.initialState,
   newMessage: {},
   markMessageSeen: {},

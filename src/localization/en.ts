@@ -36,6 +36,9 @@ export const messages: { [key in MessageId]: string } = {
   'date.month.11': 'November',
   'date.month.12': 'December',
 
+  'main.chat.archive': 'Archive chat',
+  'main.chat.archive.confirmation':
+    'Are you sure you want to archive this chat?',
   'main.chat.ban': 'Ban chat',
   'main.chat.ban.confirmation': 'Are you sure you want to ban this user?',
   'main.chat.delete': 'Delete chat',
@@ -45,6 +48,7 @@ export const messages: { [key in MessageId]: string } = {
   'main.chat.deleteAll.confirmation':
     'Are you sure you want to delete all banned chats? This action cannot be undone.',
   'main.chat.deleteAll.error': 'Deleting failed',
+  'main.chat.navigation.archived': 'Archived',
   'main.chat.navigation.banned': 'Banned',
   'main.chat.send.failure': 'Sending message failed',
   'main.chat.unban': 'Restore chat',

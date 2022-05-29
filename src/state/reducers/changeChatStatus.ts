@@ -11,45 +11,26 @@ import { withToken } from './accessToken';
 
 export const initialState = RD.initial;
 
-type State = AppState['banBuddyRequest'];
+type State = AppState['changeChatStatusRequest'];
 
 export const reducer: automaton.Reducer<State, actions.Action> = (
   state: State = initialState,
   action: actions.Action,
 ) => {
   switch (action.type) {
-    case 'buddies/changeBanStatus/start':
+    case 'buddies/changeChatStatus/start':
       return automaton.loop(
         RD.pending,
         withToken(
-          buddyApi.banBuddy(action.payload.buddyId, action.payload.banStatus),
-          actions.make('buddies/changeBanStatus/end'),
-        ),
-      );
-
-    case 'buddies/changeBanStatus/end': {
-      return pipe(
-        action.payload,
-        E.fold(
-          fail => automaton.loop<State, actions.Action>(RD.failure(fail)),
-          _ => automaton.loop(RD.success(undefined)),
-        ),
-      );
-    }
-
-    case 'buddies/changeBanStatusBatch/start':
-      return automaton.loop(
-        RD.pending,
-        withToken(
-          buddyApi.banBuddies(
-            action.payload.buddyIds,
-            action.payload.banStatus,
+          buddyApi.changeChatStatus(
+            action.payload.buddyId,
+            action.payload.nextStatus,
           ),
-          actions.make('buddies/changeBanStatusBatch/end'),
+          actions.make('buddies/changeChatStatus/end'),
         ),
       );
 
-    case 'buddies/changeBanStatusBatch/end': {
+    case 'buddies/changeChatStatus/end': {
       return pipe(
         action.payload,
         E.fold(
@@ -59,7 +40,29 @@ export const reducer: automaton.Reducer<State, actions.Action> = (
       );
     }
 
-    case 'buddies/changeBanStatus/reset': {
+    case 'buddies/changeChatStatusBatch/start':
+      return automaton.loop(
+        RD.pending,
+        withToken(
+          buddyApi.changeChatStatusMultiple(
+            action.payload.buddyIds,
+            action.payload.nextStatus,
+          ),
+          actions.make('buddies/changeChatStatusBatch/end'),
+        ),
+      );
+
+    case 'buddies/changeChatStatusBatch/end': {
+      return pipe(
+        action.payload,
+        E.fold(
+          fail => automaton.loop<State, actions.Action>(RD.failure(fail)),
+          _ => automaton.loop(RD.success(undefined)),
+        ),
+      );
+    }
+
+    case 'buddies/changeChatStatus/reset': {
       return RD.initial;
     }
 
@@ -69,9 +72,10 @@ export const reducer: automaton.Reducer<State, actions.Action> = (
   }
 };
 
-export const selectBanBuddyRequest = ({ banBuddyRequest: state }: AppState) =>
-  state;
+export const selectChatStatusRequest = ({
+  changeChatStatusRequest: state,
+}: AppState) => state;
 
-export const selectBanRequestFailed = (state: AppState): boolean => {
-  return RD.isFailure(state.banBuddyRequest);
+export const selectChatStatusRequestFailed = (state: AppState): boolean => {
+  return RD.isFailure(state.changeChatStatusRequest);
 };

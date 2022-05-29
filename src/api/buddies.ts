@@ -10,49 +10,38 @@ import { PollingParams } from 'src/state/reducers/messages';
 
 type ApiBuddy = t.TypeOf<typeof buddyType>;
 
+const chatStatus = t.keyof({
+  banned: null,
+  deleted: null,
+  ok: null,
+  archived: null,
+});
+
+export type ChatStatus = t.TypeOf<typeof chatStatus>;
 export const buddyType = t.intersection([
   t.strict({
     display_name: t.string,
     id: t.string,
   }),
   t.partial({
-    status: t.union([
-      t.literal('banned'),
-      t.literal('deleted'),
-      t.literal('ok'),
-    ]),
+    status: chatStatus,
   }),
 ]);
 
 export const buddiesType = t.strict({ resources: t.array(buddyType) });
 
-export type BanAction = 'Ban' | 'Unban' | 'Delete';
-export type BanStatus = 'Banned' | 'NotBanned' | 'Deleted';
-
 export type Buddy = {
   buddyId: string;
   name: string;
-  status: BanStatus;
+  status: ChatStatus;
 };
 
 export type Buddies = Record<string, Buddy>;
 
-const toApiBanStatus = {
-  Ban: 'banned',
-  Unban: 'ok',
-  Delete: 'deleted',
-};
-
-const toBanStatus = {
-  banned: 'Banned',
-  deleted: 'Deleted',
-  ok: 'NotBanned',
-} as const;
-
 const toBuddy = ({ id, display_name, status = 'ok' }: ApiBuddy): Buddy => ({
   buddyId: id,
   name: display_name,
-  status: toBanStatus[status],
+  status,
 });
 
 export const reduceToBuddiesRecord = (buddies: Buddies, apiBuddy: ApiBuddy) => {
@@ -85,29 +74,29 @@ export function fetchBuddies(
   );
 }
 
-const banRequest = (
+const changeChatStatusRequest = (
   buddyId: string,
   accessToken: authApi.AccessToken,
-  status: BanAction,
+  status: ChatStatus,
 ) => {
   return http.put(
     `${config.baseUrl}/users/${accessToken.userId}/contacts/${buddyId}`,
-    { status: toApiBanStatus[status] },
+    { status },
     {
       headers: authApi.authHeader(accessToken),
     },
   );
 };
 
-const batchBanRequest = (
+const changeChatStatusMultipleRequest = (
   buddyIds: string[],
   accessToken: authApi.AccessToken,
-  status: BanAction,
+  status: ChatStatus,
 ) => {
   const buddies = buddyIds.map(buddyId => {
     return {
       id: buddyId,
-      status: toApiBanStatus[status],
+      status,
     };
   });
 
@@ -120,25 +109,25 @@ const batchBanRequest = (
   );
 };
 
-export function banBuddy(
+export function changeChatStatus(
   buddyId: string,
-  banStatus: BanAction,
+  nextStatus: ChatStatus,
 ): (accessToken: authApi.AccessToken) => TE.TaskEither<string, Buddy> {
   return accessToken =>
     http.validateResponse(
-      banRequest(buddyId, accessToken, banStatus),
+      changeChatStatusRequest(buddyId, accessToken, nextStatus),
       buddyType,
       toBuddy,
     );
 }
 
-export function banBuddies(
+export function changeChatStatusMultiple(
   buddyIds: string[],
-  banStatus: BanAction,
+  nextStatus: ChatStatus,
 ): (accessToken: authApi.AccessToken) => TE.TaskEither<string, Buddies> {
   return accessToken =>
     http.validateResponse(
-      batchBanRequest(buddyIds, accessToken, banStatus),
+      changeChatStatusMultipleRequest(buddyIds, accessToken, nextStatus),
       buddiesType,
       toBuddies,
     );

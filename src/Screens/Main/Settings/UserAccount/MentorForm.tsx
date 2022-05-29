@@ -14,7 +14,7 @@ import Button from '../../../components/Button';
 import Message from '../../../components/Message';
 import Spinner from '../../../components/Spinner';
 import { Toast } from '../../../components/Toast';
-import { AlertModal } from 'src/Screens/components/AlertModal';
+import AlertModal from '../../../components/Modal';
 import StatusMessageForm from 'src/Screens/components/StatusMessageForm';
 import MessageSwitch from 'src/Screens/components/MessageSwitch';
 

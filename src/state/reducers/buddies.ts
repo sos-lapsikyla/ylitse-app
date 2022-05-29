@@ -14,7 +14,7 @@ export type State = types.AppState['buddies'];
 
 import { withToken } from './accessToken';
 import * as messageState from './messages';
-import * as banBuddyRequestState from './banBuddyRequest';
+import * as changeChatStatusState from './changeChatStatus';
 
 export const initialState = { buddies: RD.initial, isInitialFetch: true };
 
@@ -89,7 +89,7 @@ export const reducer: automaton.Reducer<State, actions.Action> = (
         : nextState;
     }
 
-    case 'buddies/changeBanStatus/end': {
+    case 'buddies/changeChatStatus/end': {
       const nextBuddies = pipe(
         action.payload,
         E.fold(
@@ -108,13 +108,13 @@ export const reducer: automaton.Reducer<State, actions.Action> = (
       return { ...state, buddies: nextBuddies };
     }
 
-    case 'buddies/changeBanStatusBatch/end': {
+    case 'buddies/changeChatStatusBatch/end': {
       if (E.isRight(action.payload) && RD.isSuccess(state.buddies)) {
         const responseBuddies = action.payload.right;
         const stateBuddies = state.buddies.value;
 
         const deletedIds = Object.keys(responseBuddies).filter(
-          key => responseBuddies[key].status === 'Deleted',
+          key => responseBuddies[key].status === 'deleted',
         );
 
         const filteredIds = Object.keys(stateBuddies).filter(
@@ -157,10 +157,10 @@ const getBuddies =
 
     const remoteBuddyOrder = messageState.getOrder(appState);
 
-    const banBuddyRequest =
-      banBuddyRequestState.selectBanBuddyRequest(appState);
+    const changeChatStatusRequest =
+      changeChatStatusState.selectChatStatusRequest(appState);
 
-    if (RD.isPending(banBuddyRequest)) {
+    if (RD.isPending(changeChatStatusRequest)) {
       return RD.pending;
     }
 
@@ -173,9 +173,11 @@ const getBuddies =
     );
   };
 
-export const getBannedBuddies = getBuddies('Banned');
+export const getBannedBuddies = getBuddies('banned');
 
-export const getActiveBuddies = getBuddies('NotBanned');
+export const getArchivedBuddies = getBuddies('archived');
+
+export const getActiveBuddies = getBuddies('ok');
 
 export const getIsBuddy = (buddyId: string) => (appState: types.AppState) => {
   const { buddies } = appState.buddies;

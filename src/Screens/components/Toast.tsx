@@ -9,9 +9,9 @@ import fonts from './fonts';
 import colors from './colors';
 import shadow from './shadow';
 
-import { props as toastProps } from './alertProps';
+import { props as toastProps } from './Modal/modalProps';
 
-export type AlertVariant = 'danger' | 'success';
+export type AlertVariant = 'danger' | 'success' | 'info' | 'warning';
 type Props = {
   style?: RN.StyleProp<RN.TextStyle>;
   duration: number;

@@ -16,6 +16,7 @@ const colors = {
   deepBlue: '#003363',
   lightBlue: '#5cc5ed',
   lighterBlue: '#a2daf3',
+  iconBlue: '#1A6481',
 
   // searchMentor colors
   cyan: '#00BEEA',
@@ -26,19 +27,27 @@ const colors = {
   red: '#EB727C',
   orange: '#F1923E',
 
-  // others
-  danger: '#A8243C',
+  // yellows
   yellow: '#FFDA17',
+  lightYellow: '#EAB90E',
   lighterYellow: '#FDF3A4',
+  iconYellow: '#A07D00',
+
+  // reds
+  danger: '#A8243C',
   lightDanger: '#F19A9C',
+  pink: '#FFD3D3',
+
+  // greens
+  lighterGreen: '#E4FDD3',
+  iconGreen: '#4B932A',
+
+  // others
   teal: '#75C9C3',
   blueGray: '#5A7C9B',
   disableGray: '#BDBDBD',
   disableLightGray: '#E0E0E0',
   formBorderGray: '#AFBFCD',
-  pink: '#FFD3D3',
-  lighterGreen: '#E4FDD3',
-  iconGreen: '#4B932A',
 };
 
 export default colors;

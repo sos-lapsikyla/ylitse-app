@@ -16,6 +16,12 @@ import * as buddyApi from '../api/buddies';
 import * as authApi from '../api/auth';
 
 import { AppState } from './types';
+import {
+  getMessagesByBuddyId,
+  isLoadingBuddyMessages,
+} from './reducers/messages';
+import { getMentorByUserId } from './reducers/mentors';
+import { getMessageSendFailed } from './reducers/newMessage';
 
 export function getMentors(
   mentors: RD.RemoteData<string, Record<string, mentorsApi.Mentor>>,
@@ -53,13 +59,25 @@ export const getBuddyName = (
   );
 };
 
+export const getBuddyStatus =
+  (
+    buddyId: string,
+  ): (({ buddies: remoteBuddies }: AppState) => buddyApi.ChatStatus) =>
+  ({ buddies: remoteBuddies }: AppState): buddyApi.ChatStatus => {
+    return pipe(
+      remoteBuddies.buddies,
+      RD.map(({ [buddyId]: buddy }) => (buddy ? buddy.status : 'ok')),
+      RD.getOrElse<unknown, buddyApi.ChatStatus>(() => 'ok'),
+    );
+  };
+
 export const getIsBanned =
   (buddyId: string): (({ buddies: remoteBuddies }: AppState) => boolean) =>
   ({ buddies: remoteBuddies }: AppState): boolean => {
     return pipe(
       remoteBuddies.buddies,
       RD.map(({ [buddyId]: buddy }) => {
-        return buddy ? buddy.status === 'Banned' : false;
+        return buddy ? buddy.status === 'banned' : false;
       }),
       RD.getOrElse<unknown, boolean>(() => true),
     );
@@ -100,3 +118,19 @@ export function getChatList(
     RD.map(Object.values),
   );
 }
+
+export const getChatDataFor = (buddyId: string) => (state: AppState) => {
+  const msgList = getMessagesByBuddyId(buddyId)(state);
+  const isLoading = isLoadingBuddyMessages(buddyId)(state);
+  const mentor = getMentorByUserId(buddyId)(state);
+  const isMessageSendFailed = getMessageSendFailed(buddyId)(state);
+  const buddyStatus = getBuddyStatus(buddyId)(state);
+
+  return {
+    messageList: msgList,
+    isMessageSendFailed,
+    isLoading,
+    mentor,
+    buddyStatus,
+  };
+};

@@ -9,16 +9,19 @@ import * as navigationProps from '../../../lib/navigation-props';
 import useLayout from '../../../lib/use-layout';
 
 import * as buddyState from '../../../state/reducers/buddies';
+import * as messagesState from '../../../state/reducers/messages';
+import { ChatRoute } from '../Chat';
 
 import colors from '../../components/colors';
 import RemoteData from '../../components/RemoteData';
-
 import Button from './Button';
-
-import { ChatRoute } from '../Chat';
-import DropDown, { DropDownItem } from '../../components/DropDownMenu';
-import { BannedListRoute } from '../BannedList';
 import { Title } from './Title';
+import DropDown, { DropDownItem } from '../../components/DropDownMenu';
+import {
+  FolderedChatsRoute,
+  FolderType,
+} from '../FolderedChats/folderedChatProperties';
+import FolderItem from './FolderItem';
 
 export type BuddyListRoute = {
   'Main/BuddyList': {};
@@ -26,12 +29,15 @@ export type BuddyListRoute = {
 
 type Props = navigationProps.NavigationProps<
   BuddyListRoute,
-  ChatRoute & BannedListRoute
+  ChatRoute & FolderedChatsRoute
 >;
 
 export default ({ navigation }: Props) => {
   const buddies = ReactRedux.useSelector(buddyState.getActiveBuddies);
 
+  const hasUnseenArchivedMessages = ReactRedux.useSelector(
+    messagesState.hasUnseenMessagesOfStatus('archived'),
+  );
   const [isDropdownOpen, setDropdownOpen] = React.useState<boolean>(false);
 
   const [{ height }, onLayout] = useLayout();
@@ -40,8 +46,8 @@ export default ({ navigation }: Props) => {
     navigation.navigate('Main/Chat', { buddyId });
   };
 
-  const navigateToBanned = () => {
-    navigation.navigate('Main/BannedList', {});
+  const navigateToList = (folderType: FolderType) => {
+    navigation.navigate('Main/FolderedChats', { folderType });
     setDropdownOpen(false);
   };
 
@@ -52,7 +58,21 @@ export default ({ navigation }: Props) => {
   };
 
   const dropdownItems: DropDownItem[] = [
-    { textId: 'main.chat.navigation.banned', onPress: navigateToBanned },
+    {
+      textId: 'main.chat.navigation.banned',
+      onPress: () => navigateToList('banned'),
+    },
+    {
+      textId: 'main.chat.navigation.archived',
+      onPress: () => navigateToList('archived'),
+      specialRender: {
+        RenderItem: FolderItem,
+        props: {
+          testID: 'main.chat.menuitem.archived.unseenDot',
+          shouldShowUnseenBall: hasUnseenArchivedMessages,
+        },
+      },
+    },
   ];
 
   return (
@@ -62,7 +82,11 @@ export default ({ navigation }: Props) => {
       disabled={!isDropdownOpen}
       style={styles.screen}
     >
-      <Title openDropdown={() => setDropdownOpen(true)} onLayout={onLayout} />
+      <Title
+        openDropdown={() => setDropdownOpen(true)}
+        onLayout={onLayout}
+        hasUnseenArchivedMessages={hasUnseenArchivedMessages}
+      />
       {isDropdownOpen && (
         <DropDown
           style={[styles.dropdown, { top: height - 8 }]}

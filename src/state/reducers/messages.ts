@@ -17,8 +17,7 @@ import * as actions from '../actions';
 import * as types from '../types';
 
 import { withToken } from './accessToken';
-import { getIsBanned } from '../selectors';
-import { createFetchChunks } from 'src/api/buddies';
+import { getIsBanned, getBuddyStatus } from '../selectors';
 
 export type State = types.AppState['messages'];
 export type LoopState = actions.LS<State>;
@@ -45,7 +44,7 @@ export const reducer: automaton.Reducer<State, actions.Action> = (
   switch (action.type) {
     case 'messages/setPollingParams': {
       if (action.payload.type === 'InitialMessages') {
-        const chunks = createFetchChunks(action.payload.buddyIds);
+        const chunks = buddyApi.createFetchChunks(action.payload.buddyIds);
         const currentParams = chunks[0] ?? [];
         const nextPollingParams = chunks.slice(1);
 
@@ -137,7 +136,7 @@ export const reducer: automaton.Reducer<State, actions.Action> = (
       return { ...state, messages: RD.success(messages), previousMsgId };
     }
 
-    case 'buddies/changeBanStatusBatch/end': {
+    case 'buddies/changeChatStatusBatch/end': {
       if (!(E.isRight(action.payload) && RD.isSuccess(state.messages))) {
         return state;
       }
@@ -146,7 +145,7 @@ export const reducer: automaton.Reducer<State, actions.Action> = (
       const messages = state.messages.value;
 
       const notDeletedBuddies = Object.keys(responseBuddies).filter(
-        buddyId => responseBuddies[buddyId].status !== 'Deleted',
+        buddyId => responseBuddies[buddyId].status !== 'deleted',
       );
 
       const nextBuddies = notDeletedBuddies.reduce<
@@ -158,6 +157,37 @@ export const reducer: automaton.Reducer<State, actions.Action> = (
       const nextMessages = messageApi.filterMessages(nextBuddies, messages);
 
       return { ...state, messages: RD.success(nextMessages) };
+    }
+
+    case 'messages/markSeen': {
+      const { messageId, buddyId, type, isSeen } = action.payload.message;
+
+      if (type === 'Sent' || isSeen === true) {
+        return state;
+      }
+
+      const oldMessages = RD.isSuccess(state.messages)
+        ? state.messages.value
+        : {};
+
+      const updatedMessage = {
+        ...action.payload.message,
+        isSeen: true,
+      };
+
+      const updatedMessageRecord = {
+        [buddyId]: {
+          ...oldMessages[buddyId],
+          [messageId]: updatedMessage,
+        },
+      };
+
+      return {
+        ...state,
+        messages: RD.success(
+          messageApi.mergeMessageRecords(oldMessages, updatedMessageRecord),
+        ),
+      };
     }
 
     default:
@@ -192,7 +222,6 @@ export const getLastMessageByBuddyId =
 export const ordMessage: ord.Ord<messageApi.Message> = ord.fromCompare((a, b) =>
   ord.ordNumber.compare(a.sentTime, b.sentTime),
 );
-
 export const hasUnseen: (
   buddyId: string,
 ) => (appState: types.AppState) => boolean = buddyId => appState =>
@@ -218,6 +247,30 @@ export const isAnyMessageUnseen = (appState: types.AppState) =>
     array.reduce(false, (a, b) => a || b),
   );
 
+export const hasUnseenMessagesOfStatus =
+  (chatType: buddyApi.ChatStatus) => (appState: types.AppState) =>
+    pipe(
+      getMessages(appState),
+      O.fold(() => ({}), identity),
+      Object.keys,
+      array.map(id => hasUnseenMessagesByType(id, chatType)(appState)),
+      array.reduce(false, (a, b) => a || b),
+    );
+export const hasUnseenMessagesByType =
+  (buddyId: string, chatType: buddyApi.ChatStatus) =>
+  (appState: types.AppState) =>
+    pipe(
+      getMessagesByBuddyId(buddyId)(appState),
+      array.sort(ordMessage),
+      array.last,
+      O.map(
+        ({ type, isSeen }) =>
+          type === 'Received' &&
+          !isSeen &&
+          getBuddyStatus(buddyId)(appState) === chatType,
+      ),
+      O.fold(() => false, identity),
+    );
 export const getMessage = (
   { messages: messageState }: types.AppState,
   index: {

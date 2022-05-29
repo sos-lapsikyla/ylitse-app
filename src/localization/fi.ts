@@ -35,6 +35,9 @@ export const messages = {
   'date.month.11': 'marraskuuta',
   'date.month.12': 'joulukuuta',
 
+  'main.chat.archive': 'Arkistoi keskustelu',
+  'main.chat.archive.confirmation':
+    'Haluatko varmasti arkistoida tämän keskustelun?',
   'main.chat.ban': 'Estä keskustelu',
   'main.chat.ban.confirmation': 'Haluatko varmasti estää tämän keskustelun?',
   'main.chat.delete': 'Poista keskustelu',
@@ -44,6 +47,7 @@ export const messages = {
   'main.chat.deleteAll.confirmation':
     'Haluatko varmasti poistaa kaikki estetyt keskustelut? Tätä toimintoa ei voi kumota.',
   'main.chat.deleteAll.error': 'Poistaminen epäonnistui',
+  'main.chat.navigation.archived': 'Arkistoidut',
   'main.chat.navigation.banned': 'Estetyt',
   'main.chat.send.failure': 'Viestin lähettäminen epäonnistui',
   'main.chat.unban': 'Palauta keskustelu',

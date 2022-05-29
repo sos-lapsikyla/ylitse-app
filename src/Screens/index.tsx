@@ -19,7 +19,8 @@ import MentorCardExpanded, {
 } from './Main/MentorCardExpanded';
 
 import Chat, { ChatRoute } from './Main/Chat';
-import BannedList, { BannedListRoute } from './Main/BannedList';
+import FolderedChats from './Main/FolderedChats';
+import { FolderedChatsRoute } from './Main/FolderedChats/folderedChatProperties';
 import Logout, { LogoutRoute } from './Main/Settings/Logout';
 import DeleteAccount, {
   DeleteAccountRoute,
@@ -39,7 +40,7 @@ type RouteName = keyof (SplashRoute &
   TabsRoute &
   MentorCardExpandedRoute &
   ChatRoute &
-  BannedListRoute &
+  FolderedChatsRoute &
   LogoutRoute &
   DeleteAccountRoute &
   PasswordChangeRoute &
@@ -58,7 +59,7 @@ type Screen =
   | typeof Tabs
   | typeof MentorCardExpanded
   | typeof Chat
-  | typeof BannedList
+  | typeof FolderedChats
   | typeof Logout
   | typeof DeleteAccount
   | typeof PasswordChange
@@ -106,8 +107,8 @@ const routes: {
   'Main/Chat': {
     screen: Chat,
   },
-  'Main/BannedList': {
-    screen: BannedList,
+  'Main/FolderedChats': {
+    screen: FolderedChats,
   },
   'Main/Settings/Logout': {
     screen: Logout,
