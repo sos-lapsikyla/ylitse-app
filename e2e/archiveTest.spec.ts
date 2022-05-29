@@ -5,8 +5,9 @@ import {
   APISignUpMentee,
   APISignUpMentor,
   APIDeleteAccounts,
+  APIGetSendInfo,
+  APISendMessage,
   signIn,
-  waitAndTypeText,
   forceLogout,
   APIBan,
 } from './helpers';
@@ -27,15 +28,18 @@ describe('Archiving', () => {
     await APISignUpMentee(mentee);
 
     // mentee sends a msg to mentor
-    await signIn(mentee);
+    const {
+      sender_id: menteeId,
+      recipient_id: mentorId,
+      headers: menteeHeaders,
+    } = await APIGetSendInfo(mentee, mentor);
 
-    await element(by.text('Read more')).tap();
-    await element(by.text('Chat')).tap();
-
-    await waitAndTypeText('main.chat.input.input', 'Hi', true);
-    await element(by.id('main.chat.input.button')).tap();
-
-    await forceLogout();
+    await APISendMessage({
+      sender_id: menteeId,
+      recipient_id: mentorId,
+      content: 'Hi',
+      headers: menteeHeaders,
+    });
 
     // mentor side
     await signIn(mentor);
@@ -63,12 +67,12 @@ describe('Archiving', () => {
     await forceLogout();
 
     // mentee sends another msg to mentor
-    await signIn(mentee);
-    await element(by.text('Read more')).tap();
-    await element(by.text('Chat')).tap();
-    await waitAndTypeText('main.chat.input.input', 'Notice me Senpai!', true);
-    await element(by.id('main.chat.input.button')).tap();
-    await forceLogout();
+    await APISendMessage({
+      sender_id: menteeId,
+      recipient_id: mentorId,
+      content: 'Notice me Senpai!',
+      headers: menteeHeaders,
+    });
 
     // mentor should see new message indicator
     await signIn(mentor);
@@ -98,15 +102,18 @@ describe('Archiving', () => {
     const mentee = accountFixtures.mentees[0];
     await APISignUpMentee(mentee);
 
-    await signIn(mentee);
+    const {
+      sender_id: menteeId,
+      recipient_id: mentorId,
+      headers: menteeHeaders,
+    } = await APIGetSendInfo(mentee, mentor);
 
-    await element(by.text('Read more')).tap();
-    await element(by.text('Chat')).tap();
-
-    await waitAndTypeText('main.chat.input.input', 'Hi', true);
-    await element(by.id('main.chat.input.button')).tap();
-
-    await forceLogout();
+    await APISendMessage({
+      sender_id: menteeId,
+      recipient_id: mentorId,
+      content: 'Hi',
+      headers: menteeHeaders,
+    });
 
     await APIBan(mentor, mentee, 'archived');
 
@@ -140,16 +147,18 @@ describe('Archiving', () => {
     const mentee = accountFixtures.mentees[0];
     await APISignUpMentee(mentee);
 
-    await signIn(mentee);
+    const {
+      sender_id: menteeId,
+      recipient_id: mentorId,
+      headers: menteeHeaders,
+    } = await APIGetSendInfo(mentee, mentor);
 
-    await element(by.text('Read more')).tap();
-    await element(by.text('Chat')).tap();
-
-    await waitAndTypeText('main.chat.input.input', 'Hi', true);
-    await element(by.id('main.chat.input.button')).tap();
-
-    await forceLogout();
-
+    await APISendMessage({
+      sender_id: menteeId,
+      recipient_id: mentorId,
+      content: 'Hi',
+      headers: menteeHeaders,
+    });
     await APIBan(mentor, mentee, 'archived');
 
     await signIn(mentor);
@@ -180,12 +189,12 @@ describe('Archiving', () => {
     await forceLogout();
 
     // mentee can send another msg to mentor
-    await signIn(mentee);
-    await element(by.text('Read more')).tap();
-    await element(by.text('Chat')).tap();
-    await waitAndTypeText('main.chat.input.input', 'Notice me Senpai!', true);
-    await element(by.id('main.chat.input.button')).tap();
-    await forceLogout();
+    await APISendMessage({
+      sender_id: menteeId,
+      recipient_id: mentorId,
+      content: 'Notice me Senpai!',
+      headers: menteeHeaders,
+    });
 
     // mentor should not see new message indicator
     await signIn(mentor);

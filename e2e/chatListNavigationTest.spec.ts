@@ -6,7 +6,8 @@ import {
   APISignUpMentor,
   APIDeleteAccounts,
   signIn,
-  waitAndTypeText,
+  APIGetSendInfo,
+  APISendMessage,
   forceLogout,
   APIBan,
 } from './helpers';
@@ -28,15 +29,18 @@ describe('Navigate in chat views', () => {
     const mentee = accountFixtures.mentees[0];
     await APISignUpMentee(mentee);
 
-    await signIn(mentee);
+    const {
+      sender_id: menteeId,
+      recipient_id: mentorId,
+      headers: menteeHeaders,
+    } = await APIGetSendInfo(mentee, mentor);
 
-    await element(by.text('Read more')).tap();
-    await element(by.text('Chat')).tap();
-
-    await waitAndTypeText('main.chat.input.input', 'Hi', true);
-    await element(by.id('main.chat.input.button')).tap();
-
-    await forceLogout();
+    await APISendMessage({
+      sender_id: menteeId,
+      recipient_id: mentorId,
+      content: 'Hi',
+      headers: menteeHeaders,
+    });
 
     await signIn(mentor);
 
@@ -53,16 +57,18 @@ describe('Navigate in chat views', () => {
     const mentee = accountFixtures.mentees[0];
     await APISignUpMentee(mentee);
 
-    await signIn(mentee);
+    const {
+      sender_id: menteeId,
+      recipient_id: mentorId,
+      headers: menteeHeaders,
+    } = await APIGetSendInfo(mentee, mentor);
 
-    await element(by.text('Read more')).tap();
-    await element(by.text('Chat')).tap();
-
-    await waitAndTypeText('main.chat.input.input', 'Hi', true);
-    await element(by.id('main.chat.input.button')).tap();
-
-    await forceLogout();
-
+    await APISendMessage({
+      sender_id: menteeId,
+      recipient_id: mentorId,
+      content: 'Hi',
+      headers: menteeHeaders,
+    });
     await APIBan(mentor, mentee);
 
     await signIn(mentor);
