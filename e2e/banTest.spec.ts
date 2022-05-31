@@ -5,8 +5,9 @@ import {
   APISignUpMentee,
   APISignUpMentor,
   APIDeleteAccounts,
+  APISendMessage,
+  APIGetSendInfo,
   signIn,
-  waitAndTypeText,
   forceLogout,
   APIBan,
 } from './helpers';
@@ -27,15 +28,18 @@ describe('Banning', () => {
     await APISignUpMentee(mentee);
 
     // mentee sends a msg to mentor
-    await signIn(mentee);
+    const {
+      sender_id: menteeId,
+      recipient_id: mentorId,
+      headers: menteeHeaders,
+    } = await APIGetSendInfo(mentee, mentor);
 
-    await element(by.text('Read more')).tap();
-    await element(by.text('Chat')).tap();
-
-    await waitAndTypeText('main.chat.input.input', 'Hi', true);
-    await element(by.id('main.chat.input.button')).tap();
-
-    await forceLogout();
+    await APISendMessage({
+      sender_id: menteeId,
+      recipient_id: mentorId,
+      content: 'Hi',
+      headers: menteeHeaders,
+    });
 
     // mentor side
     await signIn(mentor);
@@ -63,12 +67,12 @@ describe('Banning', () => {
     await forceLogout();
 
     // mentee sends another msg to mentor
-    await signIn(mentee);
-    await element(by.text('Read more')).tap();
-    await element(by.text('Chat')).tap();
-    await waitAndTypeText('main.chat.input.input', 'Notice me Senpai!', true);
-    await element(by.id('main.chat.input.button')).tap();
-    await forceLogout();
+    await APISendMessage({
+      sender_id: menteeId,
+      recipient_id: mentorId,
+      content: 'Notice me Senpai!',
+      headers: menteeHeaders,
+    });
 
     // mentor should not see new message indicator
     await signIn(mentor);
@@ -94,15 +98,18 @@ describe('Banning', () => {
     const mentee = accountFixtures.mentees[0];
     await APISignUpMentee(mentee);
 
-    await signIn(mentee);
+    const {
+      sender_id: menteeId,
+      recipient_id: mentorId,
+      headers: menteeHeaders,
+    } = await APIGetSendInfo(mentee, mentor);
 
-    await element(by.text('Read more')).tap();
-    await element(by.text('Chat')).tap();
-
-    await waitAndTypeText('main.chat.input.input', 'Hi', true);
-    await element(by.id('main.chat.input.button')).tap();
-
-    await forceLogout();
+    await APISendMessage({
+      sender_id: menteeId,
+      recipient_id: mentorId,
+      content: 'Hi',
+      headers: menteeHeaders,
+    });
 
     await APIBan(mentor, mentee);
 
@@ -136,15 +143,18 @@ describe('Banning', () => {
     const mentee = accountFixtures.mentees[0];
     await APISignUpMentee(mentee);
 
-    await signIn(mentee);
+    const {
+      sender_id: menteeId,
+      recipient_id: mentorId,
+      headers: menteeHeaders,
+    } = await APIGetSendInfo(mentee, mentor);
 
-    await element(by.text('Read more')).tap();
-    await element(by.text('Chat')).tap();
-
-    await waitAndTypeText('main.chat.input.input', 'Hi', true);
-    await element(by.id('main.chat.input.button')).tap();
-
-    await forceLogout();
+    await APISendMessage({
+      sender_id: menteeId,
+      recipient_id: mentorId,
+      content: 'Hi',
+      headers: menteeHeaders,
+    });
 
     await APIBan(mentor, mentee);
 
@@ -176,12 +186,12 @@ describe('Banning', () => {
     await forceLogout();
 
     // mentee can send another msg to mentor
-    await signIn(mentee);
-    await element(by.text('Read more')).tap();
-    await element(by.text('Chat')).tap();
-    await waitAndTypeText('main.chat.input.input', 'Notice me Senpai!', true);
-    await element(by.id('main.chat.input.button')).tap();
-    await forceLogout();
+    await APISendMessage({
+      sender_id: menteeId,
+      recipient_id: mentorId,
+      content: 'Notice me Senpai!',
+      headers: menteeHeaders,
+    });
 
     // mentor should not see new message indicator
     await signIn(mentor);
@@ -204,31 +214,37 @@ describe('Banning', () => {
     await APISignUpMentor(mentor);
     const mentee = accountFixtures.mentees[0];
     await APISignUpMentee(mentee);
-    const mentee1 = accountFixtures.mentees[1];
-    await APISignUpMentee(mentee1);
+    const mentee2 = accountFixtures.mentees[1];
+    await APISignUpMentee(mentee2);
 
-    await signIn(mentee);
+    const {
+      sender_id: menteeId,
+      recipient_id: mentorId,
+      headers: menteeHeaders,
+    } = await APIGetSendInfo(mentee, mentor);
 
-    await element(by.text('Read more')).tap();
-    await element(by.text('Chat')).tap();
+    await APISendMessage({
+      sender_id: menteeId,
+      recipient_id: mentorId,
+      content: 'Notice me Senpai!',
+      headers: menteeHeaders,
+    });
 
-    await waitAndTypeText('main.chat.input.input', 'Hi', true);
-    await element(by.id('main.chat.input.button')).tap();
+    const {
+      sender_id: mentee2Id,
+      recipient_id: mentor2Id,
+      headers: mentee2Headers,
+    } = await APIGetSendInfo(mentee2, mentor);
 
-    await forceLogout();
-
-    await signIn(mentee1);
-
-    await element(by.text('Read more')).tap();
-    await element(by.text('Chat')).tap();
-
-    await waitAndTypeText('main.chat.input.input', 'Hi!', true);
-    await element(by.id('main.chat.input.button')).tap();
-
-    await forceLogout();
+    await APISendMessage({
+      sender_id: mentee2Id,
+      recipient_id: mentor2Id,
+      content: 'Notice me Senpai!',
+      headers: mentee2Headers,
+    });
 
     await APIBan(mentor, mentee);
-    await APIBan(mentor, mentee1);
+    await APIBan(mentor, mentee2);
 
     await signIn(mentor);
 
@@ -244,7 +260,7 @@ describe('Banning', () => {
 
     // mentor should not see mentees' names in banned list
     await expect(element(by.text(mentee.displayName))).toBeNotVisible();
-    await expect(element(by.text(mentee1.displayName))).toBeNotVisible();
+    await expect(element(by.text(mentee2.displayName))).toBeNotVisible();
 
     await waitFor(element(by.id('main.folderedlist.back.button')))
       .toBeVisible()
@@ -253,7 +269,7 @@ describe('Banning', () => {
 
     // mentor should not see mentees' names in chats list
     await expect(element(by.text(mentee.displayName))).toBeNotVisible();
-    await expect(element(by.text(mentee1.displayName))).toBeNotVisible();
+    await expect(element(by.text(mentee2.displayName))).toBeNotVisible();
 
     await forceLogout();
   });

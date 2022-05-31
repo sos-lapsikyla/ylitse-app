@@ -324,3 +324,48 @@ export async function APIBan(sender: any, reciever: any, status = 'banned') {
     },
   );
 }
+
+export async function APIGetSendInfo(sender: any, reciever: any) {
+  const admin_access_token = await APIAdminAccessToken();
+  const info = await APIUsers(admin_access_token);
+
+  let sender_info = info.find(
+    (o: any) => o.display_name === sender.displayName,
+  );
+
+  let reciever_info = info.find(
+    (o: any) => o.display_name === reciever.displayName,
+  );
+
+  const access_token = await APIAccessToken(sender.loginName, sender.password);
+
+  const headers = {
+    Authorization: `Bearer ${access_token}`,
+  };
+
+  return { sender_id: sender_info.id, recipient_id: reciever_info.id, headers };
+}
+
+type Data = {
+  sender_id: string;
+  recipient_id: string;
+  content: string;
+  headers: Record<string, string>;
+};
+export async function APISendMessage({
+  sender_id,
+  recipient_id,
+  content,
+  headers,
+}: Data) {
+  await fetch(`${API_URL}/users/${sender_id}/messages`, {
+    method: 'POST',
+    headers,
+    body: JSON.stringify({
+      sender_id,
+      recipient_id,
+      content,
+      opened: false,
+    }),
+  });
+}
