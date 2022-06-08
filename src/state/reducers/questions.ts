@@ -36,3 +36,8 @@ export const reducer: Reducer<AppState['feedbackQuestions'], Action> = (
     }
   }
 };
+
+export const selectFirstQuestion = ({ feedbackQuestions }: AppState) =>
+  RD.isSuccess(feedbackQuestions) && feedbackQuestions.value.length > 0
+    ? feedbackQuestions.value[0]
+    : null;

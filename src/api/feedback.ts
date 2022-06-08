@@ -5,7 +5,17 @@ import * as http from '../lib/http';
 
 import * as config from './config';
 
-const langCode = t.keyof({
+interface ITupleArray<T> extends Array<T> {
+  readonly tupleArray: unique symbol;
+}
+
+const tupleArray = <C extends t.Mixed>(a: C) =>
+  t.brand(
+    t.array(a),
+    (n: Array<C>): n is t.Branded<Array<C>, ITupleArray<C>> => n.length === 2,
+    'tupleArray',
+  );
+export const langCode = t.keyof({
   fi: null,
   en: null,
 });
@@ -28,19 +38,19 @@ const answerRange = t.strict({
 
 const answerOptions = t.strict({
   type: t.literal('options'),
-  options: t.array(value),
+  options: tupleArray(value),
 });
 
-const questionType = t.strict({
+const question = t.strict({
   titles: localizable,
   answer: t.union([answerRange, answerOptions]),
   answer_id: t.string,
   id: t.string,
 });
 
-const questionResponse = t.strict({ resources: t.array(questionType) });
+const questionResponse = t.strict({ resources: t.array(question) });
 
-export type Question = t.TypeOf<typeof questionType>;
+export type Question = t.TypeOf<typeof question>;
 
 export function fetchQuestions(
   accessToken: authApi.AccessToken,
