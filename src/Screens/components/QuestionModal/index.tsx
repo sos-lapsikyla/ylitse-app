@@ -1,29 +1,82 @@
 import React from 'react';
 import RN from 'react-native';
 import { Question } from 'src/api/feedback';
+
 import { lang } from '../../../localization';
-import SliderModal from '../Slider/';
-import YesNoModal from '../YesNoModal';
+import colors from '../colors';
+import fonts from '../fonts';
+
+import Card from '../Card';
+import RangeQuestion from './Range';
+import YesNoQuestion from './YesNo';
 
 type Props = { question: Question };
 
+const borderRadius = 16;
+
 const QuestionModal = ({ question }: Props) => {
-  return question.answer.type === 'range' ? (
-    <SliderModal
-      onValueChange={() => console.log('hehee')}
-      value={0}
-      minText={question.answer.min.labels[lang]}
-      maxText={question.answer.max.labels[lang]}
-      valueRange={[question.answer.min.value, question.answer.max.value]}
-    />
-  ) : (
-    <YesNoModal
-      yesText={question.answer.options[0].labels[lang]}
-      noText={question.answer.options[1].labels[lang]}
-    />
+  return (
+    <RN.Modal animationType="fade" transparent={true} visible={true}>
+      <RN.View style={styles.background}>
+        <Card style={styles.card}>
+          <RN.View style={styles.titleContainer}>
+            <RN.Image
+              style={styles.close}
+              source={require('../../images/close.svg')}
+            />
+            <RN.Text style={styles.titleText}>{question.titles[lang]}</RN.Text>
+          </RN.View>
+          {question.answer.type === 'range' ? (
+            <RangeQuestion
+              onValueChange={() => console.log('hehee')}
+              value={0}
+              minText={question.answer.min.labels[lang]}
+              maxText={question.answer.max.labels[lang]}
+              valueRange={[
+                question.answer.min.value,
+                question.answer.max.value,
+              ]}
+            />
+          ) : (
+            <YesNoQuestion
+              yesText={question.answer.yes.labels[lang]}
+              noText={question.answer.no.labels[lang]}
+            />
+          )}
+        </Card>
+      </RN.View>
+    </RN.Modal>
   );
 };
 
-const styles = RN.StyleSheet.create({});
+const styles = RN.StyleSheet.create({
+  background: {
+    backgroundColor: colors.transparentBlack,
+    position: 'absolute',
+    height: '100%',
+    width: '100%',
+    justifyContent: 'center',
+  },
+  card: {
+    marginHorizontal: 8,
+    borderRadius,
+  },
+  titleContainer: {
+    borderRadius,
+    flexDirection: 'column',
+    backgroundColor: colors.blue,
+  },
+  titleText: {
+    ...fonts.large,
+    textAlign: 'center',
+    paddingHorizontal: 40,
+    paddingBottom: 24,
+  },
+  close: {
+    alignSelf: 'flex-end',
+    marginRight: 12,
+    marginTop: 12,
+  },
+});
 
 export default QuestionModal;

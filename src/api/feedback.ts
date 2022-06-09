@@ -5,16 +5,6 @@ import * as http from '../lib/http';
 
 import * as config from './config';
 
-interface ITupleArray<T> extends Array<T> {
-  readonly tupleArray: unique symbol;
-}
-
-const tupleArray = <C extends t.Mixed>(a: C) =>
-  t.brand(
-    t.array(a),
-    (n: Array<C>): n is t.Branded<Array<C>, ITupleArray<C>> => n.length === 2,
-    'tupleArray',
-  );
 export const langCode = t.keyof({
   fi: null,
   en: null,
@@ -36,14 +26,15 @@ const answerRange = t.strict({
   max: value,
 });
 
-const answerOptions = t.strict({
-  type: t.literal('options'),
-  options: tupleArray(value),
+const answerYesNo = t.strict({
+  type: t.literal('yes-no'),
+  yes: value,
+  no: value,
 });
 
 const question = t.strict({
   titles: localizable,
-  answer: t.union([answerRange, answerOptions]),
+  answer: t.union([answerRange, answerYesNo]),
   answer_id: t.string,
   id: t.string,
 });
