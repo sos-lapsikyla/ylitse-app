@@ -2,6 +2,7 @@ import * as t from 'io-ts';
 import * as TE from 'fp-ts/lib/TaskEither';
 import * as authApi from '../api/auth';
 import * as http from '../lib/http';
+import { pipe } from 'fp-ts/lib/pipeable';
 
 import * as config from './config';
 
@@ -19,14 +20,14 @@ const value = t.strict({
 
 export type Value = t.TypeOf<typeof value>;
 
-const answerRange = t.strict({
+const rangeQuestion = t.strict({
   type: t.literal('range'),
   step: t.number,
   min: value,
   max: value,
 });
 
-const answerYesNo = t.strict({
+const yesNoQuestion = t.strict({
   type: t.literal('yes-no'),
   yes: value,
   no: value,
@@ -34,7 +35,7 @@ const answerYesNo = t.strict({
 
 const question = t.strict({
   titles: localizable,
-  answer: t.union([answerRange, answerYesNo]),
+  answer: t.union([rangeQuestion, yesNoQuestion]),
   answer_id: t.string,
   id: t.string,
 });
@@ -54,3 +55,20 @@ export function fetchQuestions(
     response => response.resources,
   );
 }
+
+export type Answer = {
+  answer_id: number;
+  value: number;
+};
+export const sendAnswer =
+  (answer: Answer) =>
+  (accessToken: authApi.AccessToken): TE.TaskEither<string, undefined> => {
+    const url = `${config.baseUrl}/feedback/questions`;
+
+    return pipe(
+      http.post(url, answer, {
+        headers: authApi.authHeader(accessToken),
+      }),
+      TE.map(_ => undefined),
+    );
+  };

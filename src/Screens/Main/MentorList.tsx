@@ -57,7 +57,7 @@ const MentorList = (props: Props) => {
   };
 
   React.useEffect(() => {
-    dispatch({ type: 'questions/getQuestions/start', payload: undefined });
+    dispatch({ type: 'feedback/getQuestions/start', payload: undefined });
   }, []);
 
   return (
