@@ -26,23 +26,28 @@ const QuestionModal = ({ question }: Props) => {
             />
             <RN.Text style={styles.titleText}>{question.titles[lang]}</RN.Text>
           </RN.View>
-          {question.answer.type === 'range' ? (
-            <RangeQuestion
-              onValueChange={() => console.log('hehee')}
-              value={0}
-              minText={question.answer.min.labels[lang]}
-              maxText={question.answer.max.labels[lang]}
-              valueRange={[
-                question.answer.min.value,
-                question.answer.max.value,
-              ]}
-            />
-          ) : (
-            <YesNoQuestion
-              yesText={question.answer.yes.labels[lang]}
-              noText={question.answer.no.labels[lang]}
-            />
-          )}
+          <RN.View style={styles.questionContent}>
+            {question.answer.type === 'range' ? (
+              <RangeQuestion
+                defaultValue={
+                  (question.answer.max.value + question.answer.min.value) / 2
+                }
+                minText={question.answer.min.labels[lang]}
+                maxText={question.answer.max.labels[lang]}
+                valueRange={[
+                  question.answer.min.value,
+                  question.answer.max.value,
+                ]}
+              />
+            ) : (
+              <YesNoQuestion
+                yesText={question.answer.yes.labels[lang]}
+                yesValue={question.answer.yes.value}
+                noText={question.answer.no.labels[lang]}
+                noValue={question.answer.no.value}
+              />
+            )}
+          </RN.View>
         </Card>
       </RN.View>
     </RN.Modal>
@@ -60,6 +65,9 @@ const styles = RN.StyleSheet.create({
   card: {
     marginHorizontal: 8,
     borderRadius,
+  },
+  questionContent: {
+    padding: 24,
   },
   titleContainer: {
     borderRadius,

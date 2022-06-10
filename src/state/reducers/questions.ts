@@ -20,7 +20,7 @@ export const reducer: Reducer<AppState['feedbackQuestions'], Action> = (
   switch (action.type) {
     case 'feedback/getQuestions/start': {
       return automaton.loop(
-        state,
+        RD.pending,
         withToken(
           feedbackApi.fetchQuestions,
           actions.make('feedback/getQuestions/end'),
@@ -34,7 +34,7 @@ export const reducer: Reducer<AppState['feedbackQuestions'], Action> = (
 
     case 'feedback/sendAnswer/start': {
       return automaton.loop(
-        state,
+        RD.pending,
         withToken(
           feedbackApi.sendAnswer(action.payload),
           actions.make('feedback/sendAnswer/end'),
@@ -43,7 +43,14 @@ export const reducer: Reducer<AppState['feedbackQuestions'], Action> = (
     }
 
     case 'feedback/sendAnswer/end': {
-      return state;
+      return automaton.loop(
+        state,
+        actions.make('feedback/getQuestions/start')(undefined),
+      );
+    }
+
+    case 'feedback/reset/': {
+      return initialState;
     }
 
     default: {

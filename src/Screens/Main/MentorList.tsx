@@ -21,6 +21,7 @@ import { MentorCardExpandedRoute } from './MentorCardExpanded';
 import { SearchMentorRoute } from '../Main/SearchMentor';
 import QuestionModal from '../components/QuestionModal';
 import { selectFirstQuestion } from 'src/state/reducers/questions';
+import { Question } from 'src/api/feedback';
 
 export type MentorListRoute = {
   'Main/MentorList': {};
@@ -59,6 +60,33 @@ const MentorList = (props: Props) => {
   React.useEffect(() => {
     dispatch({ type: 'feedback/getQuestions/start', payload: undefined });
   }, []);
+
+  //eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const question: Question = {
+    titles: {
+      fi: 'Oletko saanut apua mentorilta?',
+      en: 'Have you received help from a mentor?',
+    },
+    answer: {
+      type: 'yes-no',
+      yes: {
+        value: 1,
+        labels: {
+          fi: 'Kyllä olen',
+          en: 'Yes, I have',
+        },
+      },
+      no: {
+        value: 0,
+        labels: {
+          fi: 'En ole',
+          en: "No, I haven't",
+        },
+      },
+    },
+    answer_id: '914',
+    id: '666',
+  };
 
   return (
     <Background>

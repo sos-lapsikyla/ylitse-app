@@ -1,34 +1,41 @@
 import React from 'react';
 import * as RN from 'react-native';
 
+import colors from '../../colors';
 import fonts from '../../fonts';
+
+import { Button } from './Button';
 
 type Props = {
   yesText: string;
+  yesValue: number;
   noText: string;
+  noValue: number;
 };
 
-export default ({ yesText, noText }: Props) => {
+export default ({ yesText, yesValue, noText, noValue }: Props) => {
   return (
-    <RN.View style={styles.textContainer}>
-      <RN.Text style={styles.leftText}>{yesText}</RN.Text>
-      <RN.Text style={styles.rightText}>{noText}</RN.Text>
+    <RN.View style={styles.buttonContainer}>
+      <Button text={noText} value={noValue} style={styles.noButton} />
+      <Button text={yesText} value={yesValue} style={styles.yesButton} />
     </RN.View>
   );
 };
 
 const styles = RN.StyleSheet.create({
-  textContainer: {
+  buttonContainer: {
+    width: '100%',
     flexDirection: 'row',
-    justifyContent: 'space-between',
+    alignItems: 'center',
   },
-  leftText: {
-    flex: 1,
-    ...fonts.regular,
+  noButton: {
+    backgroundColor: colors.red,
   },
-  rightText: {
-    flex: 1,
-    ...fonts.regular,
-    textAlign: 'right',
+  text: {
+    ...fonts.regularBold,
+    textAlign: 'center',
+  },
+  yesButton: {
+    backgroundColor: colors.green,
   },
 });

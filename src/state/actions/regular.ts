@@ -119,6 +119,7 @@ type RegularActions = {
   'feedback/getQuestions/end': Result<typeof feedbackApi.fetchQuestions>;
   'feedback/sendAnswer/start': feedbackApi.Answer;
   'feedback/sendAnswer/end': Result<ReturnType<typeof feedbackApi.sendAnswer>>;
+  'feedback/reset/': undefined;
 };
 
 // TODO name plz.

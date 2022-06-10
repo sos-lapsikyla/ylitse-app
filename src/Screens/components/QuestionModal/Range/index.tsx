@@ -4,37 +4,38 @@ import * as RN from 'react-native';
 import fonts from '../../fonts';
 import Button from '../../Button';
 
-import Slider, { Props as SliderProps } from './Slider';
+import Slider from './Slider';
 
 type Props = {
   minText: string;
   maxText: string;
+  defaultValue: number;
+  valueRange: [number, number];
 };
 
-export default ({ minText, maxText, ...sliderProps }: SliderProps & Props) => {
+export default ({ minText, maxText, defaultValue, ...sliderProps }: Props) => {
+  const [value, setValue] = React.useState(defaultValue);
+
   return (
-    <RN.View style={styles.cardContent}>
+    <>
       <RN.View style={styles.textContainer}>
         <RN.Text style={styles.leftText}>{minText}</RN.Text>
         <RN.View style={styles.spacer} />
         <RN.Text style={styles.rightText}>{maxText}</RN.Text>
       </RN.View>
 
-      <Slider {...sliderProps} />
+      <Slider onValueChange={setValue} value={value} {...sliderProps} />
 
       <Button
         style={styles.button}
-        onPress={() => {}}
+        onPress={() => console.log('value', value)}
         messageId="components.slider.SendAnswerButton"
       />
-    </RN.View>
+    </>
   );
 };
 
 const styles = RN.StyleSheet.create({
-  cardContent: {
-    padding: 24,
-  },
   textContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
