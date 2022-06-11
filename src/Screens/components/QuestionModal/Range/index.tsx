@@ -11,9 +11,16 @@ type Props = {
   maxText: string;
   defaultValue: number;
   valueRange: [number, number];
+  onAnswer: (answer: number) => void;
 };
 
-export default ({ minText, maxText, defaultValue, ...sliderProps }: Props) => {
+export default ({
+  minText,
+  maxText,
+  defaultValue,
+  onAnswer,
+  ...sliderProps
+}: Props) => {
   const [value, setValue] = React.useState(defaultValue);
 
   return (
@@ -28,7 +35,7 @@ export default ({ minText, maxText, defaultValue, ...sliderProps }: Props) => {
 
       <Button
         style={styles.button}
-        onPress={() => console.log('value', value)}
+        onPress={() => onAnswer(Math.round(value))}
         messageId="components.slider.SendAnswerButton"
       />
     </>

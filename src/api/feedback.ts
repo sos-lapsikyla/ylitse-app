@@ -57,13 +57,13 @@ export function fetchQuestions(
 }
 
 export type Answer = {
-  answer_id: number;
+  answer_id: string;
   value: number;
 };
 export const sendAnswer =
   (answer: Answer) =>
   (accessToken: authApi.AccessToken): TE.TaskEither<string, undefined> => {
-    const url = `${config.baseUrl}/feedback/questions`;
+    const url = `${config.baseUrl}/feedback/answer`;
 
     return pipe(
       http.post(url, answer, {

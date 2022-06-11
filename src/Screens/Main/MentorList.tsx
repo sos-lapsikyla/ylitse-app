@@ -7,8 +7,10 @@ import * as navigationProps from '../../lib/navigation-props';
 import * as redux from 'redux';
 import { useDispatch, useSelector } from 'react-redux';
 import * as actions from '../../state/actions';
+import { selectFirstQuestion } from '../../state/reducers/questions';
 
 import * as mentorApi from '../../api/mentors';
+import { Answer } from '../../api/feedback';
 
 import Background from '../components/Background';
 import { textShadow } from '../components/shadow';
@@ -20,8 +22,6 @@ import fonts from '../components/fonts';
 import { MentorCardExpandedRoute } from './MentorCardExpanded';
 import { SearchMentorRoute } from '../Main/SearchMentor';
 import QuestionModal from '../components/QuestionModal';
-import { selectFirstQuestion } from 'src/state/reducers/questions';
-import { Question } from 'src/api/feedback';
 
 export type MentorListRoute = {
   'Main/MentorList': {};
@@ -61,32 +61,11 @@ const MentorList = (props: Props) => {
     dispatch({ type: 'feedback/getQuestions/start', payload: undefined });
   }, []);
 
-  //eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const question: Question = {
-    titles: {
-      fi: 'Oletko saanut apua mentorilta?',
-      en: 'Have you received help from a mentor?',
-    },
-    answer: {
-      type: 'yes-no',
-      yes: {
-        value: 1,
-        labels: {
-          fi: 'Kyllä olen',
-          en: 'Yes, I have',
-        },
-      },
-      no: {
-        value: 0,
-        labels: {
-          fi: 'En ole',
-          en: "No, I haven't",
-        },
-      },
-    },
-    answer_id: '914',
-    id: '666',
-  };
+  const handleCloseQuestion = () =>
+    dispatch({ type: 'feedback/reset/', payload: undefined });
+
+  const handleAnswer = (answer: Answer) =>
+    dispatch({ type: 'feedback/sendAnswer/start', payload: answer });
 
   return (
     <Background>
@@ -100,7 +79,13 @@ const MentorList = (props: Props) => {
         />
         <MentorListComponent onPress={onPressMentor} />
         <RN.View style={styles.bottomSeparator} />
-        {feedbackQuestion && <QuestionModal question={feedbackQuestion} />}
+        {feedbackQuestion && (
+          <QuestionModal
+            question={feedbackQuestion}
+            onClose={handleCloseQuestion}
+            onAnswer={handleAnswer}
+          />
+        )}
       </SafeAreaView>
     </Background>
   );
