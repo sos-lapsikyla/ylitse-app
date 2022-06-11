@@ -10,7 +10,11 @@ type Props = { title: string; onClose: () => void };
 
 export const Title: React.FC<Props> = ({ title, onClose }) => (
   <RN.View style={styles.titleContainer}>
-    <RN.TouchableOpacity onPress={onClose} style={styles.closeButton}>
+    <RN.TouchableOpacity
+      onPress={onClose}
+      style={styles.closeButton}
+      testID="questionModal.close.icon"
+    >
       <RN.Image source={require('../../images/close.svg')} />
     </RN.TouchableOpacity>
     <RN.Text style={styles.titleText}>{title}</RN.Text>

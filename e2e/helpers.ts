@@ -369,3 +369,16 @@ export async function APISendMessage({
     }),
   });
 }
+
+export async function APICreateQuestion(question: any) {
+  const access_token = await APIAdminAccessToken();
+
+  const headers = {
+    Authorization: `Bearer ${access_token}`,
+  };
+  await fetch(`${API_URL}/feedback/questions`, {
+    method: 'POST',
+    headers: headers,
+    body: JSON.stringify(question),
+  });
+}

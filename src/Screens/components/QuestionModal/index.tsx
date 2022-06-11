@@ -4,7 +4,6 @@ import { Answer, Question } from 'src/api/feedback';
 
 import { lang } from '../../../localization';
 import colors from '../colors';
-import fonts from '../fonts';
 
 import Card from '../Card';
 import RangeQuestion from './Range';
@@ -75,22 +74,6 @@ const styles = RN.StyleSheet.create({
   },
   questionContent: {
     padding: 24,
-  },
-  titleContainer: {
-    borderRadius,
-    flexDirection: 'column',
-    backgroundColor: colors.blue,
-  },
-  titleText: {
-    ...fonts.large,
-    textAlign: 'center',
-    paddingHorizontal: 40,
-    paddingBottom: 24,
-  },
-  closeButton: {
-    alignSelf: 'flex-end',
-    marginRight: 12,
-    marginTop: 12,
   },
 });
 
