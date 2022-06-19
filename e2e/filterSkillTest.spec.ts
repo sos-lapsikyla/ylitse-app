@@ -30,6 +30,7 @@ describe('Skill filter', () => {
   it('show all mentors when nothing is selected', async () => {
     await APISignUpMentor(accountFixtures.mentors[0]);
     await APISignUpMentor(accountFixtures.mentors[1]);
+    await APISignUpMentor(accountFixtures.mentors[2]);
 
     const mentee = accountFixtures.mentees[0];
     await APISignUpMentee(mentee);
@@ -44,8 +45,22 @@ describe('Skill filter', () => {
     let mentorsFound = {
       [accountFixtures.mentors[0].displayName]: false,
       [accountFixtures.mentors[1].displayName]: false,
+      [accountFixtures.mentors[2].displayName]: false,
     };
     const mentorIndexes = [0, 1, 2];
+    for (let i in mentorIndexes) {
+      try {
+        await expect(
+          element(by.text(accountFixtures.mentors[i].displayName)),
+        ).toBeVisible();
+        mentorsFound[accountFixtures.mentors[i].displayName] = true;
+      } catch (error) {
+        continue;
+      }
+    }
+
+    await element(by.id('components.mentorList')).swipe('left', 'slow');
+
     for (let i in mentorIndexes) {
       try {
         await expect(
@@ -73,6 +88,7 @@ describe('Skill filter', () => {
     const expectedMentors = {
       [accountFixtures.mentors[0].displayName]: true,
       [accountFixtures.mentors[1].displayName]: true,
+      [accountFixtures.mentors[2].displayName]: true,
     };
     jestExpect(mentorsFound).toEqual(expectedMentors);
   });

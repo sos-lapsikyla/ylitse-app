@@ -41,7 +41,7 @@ describe('Hide inactive mentors', () => {
     await forceLogout();
   });
 
-  it('Hide inactive mentors by default', async () => {
+  it('Show inactive mentors by default', async () => {
     await APISignUpMentor(accountFixtures.mentors[0]);
     await APISignUpMentor(accountFixtures.mentors[1]);
     await APISignUpMentor(accountFixtures.mentors[2]);
@@ -71,12 +71,12 @@ describe('Hide inactive mentors', () => {
     const expectedMentors = {
       [accountFixtures.mentors[0].displayName]: true,
       [accountFixtures.mentors[1].displayName]: true,
-      [accountFixtures.mentors[2].displayName]: false, // Third mentor is on vacation
+      [accountFixtures.mentors[2].displayName]: true, // Third mentor is on vacation, but show anyway
     };
     jestExpect(mentorsFound).toEqual(expectedMentors);
   });
 
-  it('Show inactive mentors', async () => {
+  it('Hide inactive mentors', async () => {
     await APISignUpMentor(accountFixtures.mentors[0]);
     await APISignUpMentor(accountFixtures.mentors[1]);
     await APISignUpMentor(accountFixtures.mentors[2]);
@@ -110,7 +110,7 @@ describe('Hide inactive mentors', () => {
     const expectedMentors = {
       [accountFixtures.mentors[0].displayName]: true,
       [accountFixtures.mentors[1].displayName]: true,
-      [accountFixtures.mentors[2].displayName]: true, // Third mentor is on vacation, but show anyway
+      [accountFixtures.mentors[2].displayName]: false, // Third mentor is on vacation
     };
     jestExpect(mentorsFound).toEqual(expectedMentors);
   });

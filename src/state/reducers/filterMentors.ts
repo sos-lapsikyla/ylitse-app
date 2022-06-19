@@ -5,7 +5,7 @@ import * as types from '../types';
 export type State = types.AppState['filterMentors'];
 export const initialState = {
   skillFilter: [],
-  hideInactiveMentors: true,
+  hideInactiveMentors: false,
 };
 
 export const filterMentorsReducer: automaton.Reducer<State, actions.Action> = (
