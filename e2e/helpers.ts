@@ -370,6 +370,9 @@ export async function APISendMessage({
   });
 }
 
+/**
+ * Create a question
+ */
 export async function APICreateQuestion(question: any) {
   const access_token = await APIAdminAccessToken();
 
@@ -381,4 +384,39 @@ export async function APICreateQuestion(question: any) {
     headers: headers,
     body: JSON.stringify(question),
   });
+}
+
+/**
+ * Get all questions from API
+ */
+export async function APIQuestions(access_token: string) {
+  const headers = {
+    Authorization: `Bearer ${access_token}`,
+  };
+
+  const questionsResponse = await fetch(`${API_URL}/feedback/questions`, {
+    method: 'GET',
+    headers: headers,
+  });
+  const questions: any = await questionsResponse.json();
+
+  return questions.resources;
+}
+
+/**
+ * Makes HTTP API calls to delete all questions
+ */
+export async function APIDeleteQuestions() {
+  const access_token = await APIAdminAccessToken();
+  const questions: any = await APIQuestions(access_token);
+
+  const headers = {
+    Authorization: `Bearer ${access_token}`,
+  };
+  for (const question of questions) {
+    await fetch(`${API_URL}/feedback/questions/${question.id}`, {
+      method: 'DELETE',
+      headers: headers,
+    });
+  }
 }

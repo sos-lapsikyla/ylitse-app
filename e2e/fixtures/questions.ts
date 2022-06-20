@@ -58,8 +58,8 @@ export const questions = [
       schedule: {
         remind_times_when_skipped: 0,
         first: {
-          days_since_registration: 7,
-          sent_messages_threshold: 1,
+          days_since_registration: 0,
+          sent_messages_threshold: 0,
         },
         repetitions: {
           type: 'until_value',
@@ -70,4 +70,4 @@ export const questions = [
       },
     },
   },
-];
+] as const;

@@ -7,12 +7,14 @@ export type Props = {
   onValueChange: (value: number) => void;
   value: number;
   valueRange: [number, number];
+  testID?: string;
 };
 
 const Slider: React.FC<Props> = ({
   onValueChange,
   value,
   valueRange: [min, max],
+  testID,
 }) => {
   return (
     // XXX(Pyry): This outmoust <View> wrapping Protects track image from
@@ -25,6 +27,7 @@ const Slider: React.FC<Props> = ({
           source={require('../../../images/SliderTrack.svg')}
         />
         <RNCSlider
+          testID={testID}
           style={styles.slider}
           value={value}
           minimumValue={min}

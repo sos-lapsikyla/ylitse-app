@@ -31,7 +31,12 @@ export default ({
         <RN.Text style={styles.rightText}>{maxText}</RN.Text>
       </RN.View>
 
-      <Slider onValueChange={setValue} value={value} {...sliderProps} />
+      <Slider
+        onValueChange={setValue}
+        value={value}
+        {...sliderProps}
+        testID={'questionModal.slider'}
+      />
 
       <Button
         style={styles.button}

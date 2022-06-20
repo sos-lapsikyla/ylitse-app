@@ -33,8 +33,14 @@ export const reducer: Reducer<AppState['feedbackQuestions'], Action> = (
     }
 
     case 'feedback/sendAnswer/start': {
+      const nextQuestions = pipe(
+        state,
+        RD.getOrElse<unknown, feedbackApi.Question[]>(() => []),
+        questions => questions.slice(1),
+      );
+
       return automaton.loop(
-        RD.pending,
+        RD.success(nextQuestions),
         withToken(
           feedbackApi.sendAnswer(action.payload),
           actions.make('feedback/sendAnswer/end'),
@@ -43,6 +49,10 @@ export const reducer: Reducer<AppState['feedbackQuestions'], Action> = (
     }
 
     case 'feedback/sendAnswer/end': {
+      if (RD.isSuccess(state) && state.value.length > 0) {
+        return state;
+      }
+
       return automaton.loop(
         state,
         actions.make('feedback/getQuestions/start')(undefined),
@@ -60,6 +70,8 @@ export const reducer: Reducer<AppState['feedbackQuestions'], Action> = (
 };
 
 export const selectFirstQuestion = ({ feedbackQuestions }: AppState) =>
-  RD.isSuccess(feedbackQuestions) && feedbackQuestions.value.length > 0
-    ? feedbackQuestions.value[0]
-    : null;
+  pipe(
+    feedbackQuestions,
+    RD.getOrElse<unknown, feedbackApi.Question[]>(() => []),
+    questions => (questions.length > 0 ? questions[0] : null),
+  );
