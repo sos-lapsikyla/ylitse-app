@@ -1,5 +1,5 @@
 import { by, element, expect, device } from 'detox';
-import { describe, it, beforeEach } from '@jest/globals';
+import { describe, it, beforeEach, afterAll } from '@jest/globals';
 
 import {
   APISignUpMentee,
@@ -15,6 +15,10 @@ import { questions } from './fixtures/questions';
 const accountFixtures = require('./fixtures/accounts.json');
 
 describe('Feedback', () => {
+  afterAll(async () => {
+    await APIDeleteQuestions();
+  });
+
   beforeEach(async () => {
     await APIDeleteAccounts();
     await APIDeleteQuestions();
@@ -39,7 +43,7 @@ describe('Feedback', () => {
     const { titles } = firstQuestion.rules;
     // the Question is rendered on the Screen
     const titleText = element(by.text(titles.en));
-    expect(titleText).toBeVisible();
+    await expect(titleText).toBeVisible();
 
     // close the question
     await element(by.id('questionModal.close.icon')).tap();
@@ -64,7 +68,7 @@ describe('Feedback', () => {
     const { titles } = firstQuestion.rules;
     // the Question is rendered on the Screen
     const titleText = element(by.text(titles.en));
-    expect(titleText).toBeVisible();
+    await expect(titleText).toBeVisible();
 
     const position = 0.75;
     // adjust the slider to position
@@ -102,13 +106,13 @@ describe('Feedback', () => {
     const { titles, answer } = secondQuestion.rules;
     // the Question is rendered on the Screen
     const titleText = element(by.text(titles.en));
-    expect(titleText).toBeVisible();
+    await expect(titleText).toBeVisible();
 
     // check yes and no buttons are visible
     const yesButton = element(by.text(answer.yes.labels.en));
     const noButton = element(by.text(answer.no.labels.en));
-    expect(yesButton).toBeVisible();
-    expect(noButton).toBeVisible();
+    await expect(yesButton).toBeVisible();
+    await expect(noButton).toBeVisible();
 
     // send answer
     await yesButton.tap();
@@ -134,7 +138,7 @@ describe('Feedback', () => {
 
     // the first Question is rendered on the Screen
     const firstText = element(by.text(firstQuestion.rules.titles.en));
-    expect(firstText).toBeVisible();
+    await expect(firstText).toBeVisible();
 
     // send answer
     const sendButton = element(by.text('Send'));
@@ -145,7 +149,7 @@ describe('Feedback', () => {
 
     // the second Question is rendered on the Screen
     const secondText = element(by.text(secondQuestion.rules.titles.en));
-    expect(secondText).toBeVisible();
+    await expect(secondText).toBeVisible();
 
     const yesButton = element(
       by.text(secondQuestion.rules.answer.yes.labels.en),
