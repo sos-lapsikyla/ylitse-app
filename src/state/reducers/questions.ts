@@ -49,7 +49,13 @@ export const reducer: Reducer<AppState['feedbackQuestions'], Action> = (
     }
 
     case 'feedback/sendAnswer/end': {
-      if (RD.isSuccess(state) && state.value.length > 0) {
+      const hasUnAnsweredQuestions = pipe(
+        state,
+        RD.getOrElse<unknown, feedbackApi.Question[]>(() => []),
+        questions => questions.length > 0,
+      );
+
+      if (hasUnAnsweredQuestions) {
         return state;
       }
 
@@ -69,7 +75,9 @@ export const reducer: Reducer<AppState['feedbackQuestions'], Action> = (
   }
 };
 
-export const selectFirstQuestion = ({ feedbackQuestions }: AppState) =>
+export const selectFirstQuestion = ({
+  feedbackQuestions,
+}: AppState): feedbackApi.Question | null =>
   pipe(
     feedbackQuestions,
     RD.getOrElse<unknown, feedbackApi.Question[]>(() => []),

@@ -2,8 +2,9 @@ import React from 'react';
 import * as RN from 'react-native';
 
 import fonts from '../../fonts';
-import Button from '../../Button';
+import colors from '../../colors';
 
+import Button from '../../Button';
 import Slider from './Slider';
 
 type Props = {
@@ -47,25 +48,31 @@ export default ({
   );
 };
 
+const isIphone = RN.Platform.OS === 'ios';
+
 const styles = RN.StyleSheet.create({
   textContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: isIphone ? 12 : 24,
   },
   leftText: {
     flex: 1,
+    color: colors.deepBlue,
     ...fonts.regular,
   },
   spacer: {
     flex: 1,
   },
   rightText: {
+    color: colors.deepBlue,
     flex: 1,
     ...fonts.regular,
     textAlign: 'right',
   },
   button: {
-    marginTop: 24,
+    marginTop: isIphone ? 16 : 32,
     alignSelf: 'center',
     minWidth: '40%',
   },

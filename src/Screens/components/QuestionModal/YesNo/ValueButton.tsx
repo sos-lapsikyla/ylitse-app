@@ -2,7 +2,9 @@ import React from 'react';
 import * as RN from 'react-native';
 
 import fonts from '../../fonts';
+import colors from '../../colors';
 import shadow from '../../shadow';
+
 type Props = {
   text: string;
   value: number;
@@ -33,11 +35,11 @@ const styles = RN.StyleSheet.create({
   button: {
     padding: 8,
     borderRadius: 16,
-    marginRight: 12,
-    ...shadow(4),
+    ...shadow(7),
   },
   text: {
     ...fonts.regularBold,
     textAlign: 'center',
+    color: colors.deepBlue,
   },
 });

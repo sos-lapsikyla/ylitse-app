@@ -39,12 +39,14 @@ const styles = RN.StyleSheet.create({
   },
   noButton: {
     backgroundColor: colors.red,
+    marginRight: 12,
   },
   text: {
     ...fonts.regularBold,
     textAlign: 'center',
   },
   yesButton: {
-    backgroundColor: colors.green,
+    backgroundColor: colors.buttonGreen,
+    marginLeft: 12,
   },
 });

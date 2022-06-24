@@ -1,4 +1,6 @@
-const fonts = {
+import RN from 'react-native';
+
+const fonts: Record<string, RN.TextStyle> = {
   tiny: {
     fontFamily: 'Nunito-Regular',
     fontSize: 12,
@@ -48,6 +50,12 @@ const fonts = {
     fontFamily: 'Nunito-Bold',
     fontSize: 20,
     lineHeight: 27,
+  },
+  questionTitle: {
+    fontFamily: 'Nunito-Bold',
+    fontSize: 22,
+    lineHeight: 30,
+    fontWeight: '500',
   },
   title: {
     fontFamily: 'Nunito-Regular',

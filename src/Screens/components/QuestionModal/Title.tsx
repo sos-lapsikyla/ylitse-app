@@ -33,9 +33,10 @@ const styles = RN.StyleSheet.create({
     marginTop: 12,
   },
   titleText: {
-    ...fonts.large,
+    ...fonts.questionTitle,
     textAlign: 'center',
     paddingHorizontal: 40,
     paddingBottom: 24,
+    color: colors.deepBlue,
   },
 });

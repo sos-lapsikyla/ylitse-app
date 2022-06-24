@@ -1,5 +1,5 @@
 import { by, element, expect, device } from 'detox';
-import { describe, it, beforeEach, afterAll } from '@jest/globals';
+import { describe, it, beforeEach, afterAll, afterEach } from '@jest/globals';
 
 import {
   APISignUpMentee,
@@ -24,6 +24,10 @@ describe('Feedback', () => {
     await APIDeleteQuestions();
     await device.launchApp();
     await device.reloadReactNative();
+  });
+
+  afterEach(async () => {
+    await forceLogout();
   });
 
   it('can dismiss questions', async () => {
@@ -51,6 +55,10 @@ describe('Feedback', () => {
     // the title has disappeared and no questions are rendered anymore
     await expect(titleText).not.toBeVisible();
     await forceLogout();
+
+    // mentee sign in again
+    await signIn(mentee);
+    await expect(titleText).not.toBeVisible();
   });
 
   it('can move the slider and send answer in range question', async () => {
@@ -88,7 +96,6 @@ describe('Feedback', () => {
 
     // modal is closed
     await expect(titleText).not.toBeVisible();
-    await forceLogout();
   });
 
   it('can answer to a yes-no question', async () => {
@@ -119,7 +126,6 @@ describe('Feedback', () => {
 
     // modal is closed
     await expect(titleText).not.toBeVisible();
-    await forceLogout();
   });
 
   it('if multiple unanswered, will answer in sequence', async () => {
@@ -159,6 +165,13 @@ describe('Feedback', () => {
 
     // modal is closed
     await expect(secondText).not.toBeVisible();
+
+    //logout
     await forceLogout();
+
+    // mentee sign in again
+    await signIn(mentee);
+    await expect(firstText).not.toBeVisible();
+    await expect(secondText).not.toBeVisible();
   });
 });
