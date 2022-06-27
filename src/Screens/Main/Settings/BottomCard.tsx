@@ -51,7 +51,7 @@ export default ({ navigateToDeleteAccount, navigateToLogout }: Props) => {
       />
       <MessageButton
         style={styles.logOutButton}
-        messageStyle={styles.buttonText}
+        messageStyle={[styles.buttonText, styles.logoutButtonText]}
         onPress={navigateToLogout}
         messageId="main.settings.other.button.logOut"
         testID="main.settings.other.button.logOut"
@@ -89,13 +89,13 @@ const styles = RN.StyleSheet.create({
   buttonText: {
     ...fonts.largeBold,
     ...textShadow,
-    color: colors.deepBlue,
   },
   logOutButton: {
     marginTop: 32,
     alignSelf: 'flex-start',
     minWidth: '70%',
   },
+  logoutButtonText: { color: colors.deepBlue },
   deleteAccountButton: {
     marginTop: 40,
     alignSelf: 'flex-start',
