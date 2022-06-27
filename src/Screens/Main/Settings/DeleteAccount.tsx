@@ -45,6 +45,8 @@ export default ({ navigation }: Props) => {
         style={styles.title}
         id="main.settings.deleteAccount.title"
         onBack={onGoBack}
+        iconStyle={styles.iconStyle}
+        textStyle={styles.titleStyle}
       />
       <RN.ScrollView
         style={styles.scrollView}
@@ -73,14 +75,13 @@ export default ({ navigation }: Props) => {
         >
           <MessageButton
             style={styles.deleteAccountButton}
-            messageStyle={styles.messageStyle}
             onPress={onDeleteAccount}
             messageId={'main.settings.deleteAccount.deleteAccount'}
             testID={'main.settings.deleteAccount.deleteAccount'}
           />
           <MessageButton
             style={styles.cancelButton}
-            messageStyle={styles.messageStyle}
+            messageStyle={styles.cancelButtonText}
             onPress={onGoBack}
             messageId={'main.settings.deleteAccount.cancel'}
             testID={'main.settings.deleteAccount.cancel'}
@@ -136,7 +137,9 @@ const styles = RN.StyleSheet.create({
   },
   deleteAccountButton: { backgroundColor: colors.danger, marginBottom: 40 },
   cancelButton: { backgroundColor: colors.gray, marginBottom: 40 },
-  messageStyle: {
+  cancelButtonText: {
     color: colors.deepBlue,
   },
+  iconStyle: { tintColor: colors.white },
+  titleStyle: { color: colors.white },
 });

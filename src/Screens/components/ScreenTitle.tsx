@@ -13,9 +13,11 @@ type Props = {
   id: MessageId;
   onBack?: () => void | undefined;
   style?: RN.StyleProp<RN.ViewStyle>;
+  textStyle?: RN.StyleProp<RN.TextStyle>;
+  iconStyle?: RN.StyleProp<RN.ImageStyle>;
 };
 
-export default ({ id, onBack, style }: Props) => {
+export default ({ id, onBack, style, textStyle, iconStyle }: Props) => {
   return (
     <SafeAreaView
       style={[styles.container, style]}
@@ -25,10 +27,10 @@ export default ({ id, onBack, style }: Props) => {
         <RN.TouchableOpacity style={styles.button} onPress={onBack}>
           <RN.Image
             source={require('../images/chevron-left.svg')}
-            style={styles.chevron}
+            style={[styles.chevron, iconStyle]}
           />
         </RN.TouchableOpacity>
-        <Message style={styles.screenTitleText} id={id} />
+        <Message style={[styles.screenTitleText, textStyle]} id={id} />
       </RN.View>
     </SafeAreaView>
   );
