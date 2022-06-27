@@ -73,12 +73,14 @@ export default ({ navigation }: Props) => {
         >
           <MessageButton
             style={styles.deleteAccountButton}
+            messageStyle={styles.messageStyle}
             onPress={onDeleteAccount}
             messageId={'main.settings.deleteAccount.deleteAccount'}
             testID={'main.settings.deleteAccount.deleteAccount'}
           />
           <MessageButton
             style={styles.cancelButton}
+            messageStyle={styles.messageStyle}
             onPress={onGoBack}
             messageId={'main.settings.deleteAccount.cancel'}
             testID={'main.settings.deleteAccount.cancel'}
@@ -134,4 +136,7 @@ const styles = RN.StyleSheet.create({
   },
   deleteAccountButton: { backgroundColor: colors.danger, marginBottom: 40 },
   cancelButton: { backgroundColor: colors.gray, marginBottom: 40 },
+  messageStyle: {
+    color: colors.deepBlue,
+  },
 });

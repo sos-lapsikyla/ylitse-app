@@ -76,7 +76,7 @@ const styles = RN.StyleSheet.create({
     ...fonts.titleLarge,
     ...textShadow,
     textAlign: 'center',
-    color: colors.white,
+    color: colors.deepBlue,
   },
   scrollView: {
     zIndex: 1,
