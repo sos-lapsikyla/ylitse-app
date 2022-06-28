@@ -20,7 +20,7 @@
   ],
   "dependencies": {
     "@devexperts/remote-data-ts": "2.0.4",
-    "@react-native-async-storage/async-storage": "1.13.2",
+    "@react-native-async-storage/async-storage": "^1.13.4",
     "@react-native-community/masked-view": "^0.1.11",
     "@react-native-community/slider": "^4.2.3",
     "@react-native-firebase/app": "10.1.0",
