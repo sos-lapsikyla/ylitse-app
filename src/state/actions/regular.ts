@@ -115,8 +115,11 @@ type RegularActions = {
   'notifications/sendDeviceToken/completed': Result<
     typeof notificationsApi.sendDeviceToken
   >;
-  'questions/getQuestions/start': undefined;
-  'questions/getQuestions/end': Result<typeof feedbackApi.fetchQuestions>;
+  'feedback/getQuestions/start': undefined;
+  'feedback/getQuestions/end': Result<typeof feedbackApi.fetchQuestions>;
+  'feedback/sendAnswer/start': feedbackApi.Answer;
+  'feedback/sendAnswer/end': Result<ReturnType<typeof feedbackApi.sendAnswer>>;
+  'feedback/reset/': undefined;
 };
 
 // TODO name plz.

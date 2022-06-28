@@ -41,6 +41,7 @@ const colors = {
   // greens
   lighterGreen: '#E4FDD3',
   iconGreen: '#4B932A',
+  buttonGreen: '#75C550',
 
   // others
   teal: '#75C9C3',

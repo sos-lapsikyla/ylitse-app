@@ -2,10 +2,11 @@ import * as t from 'io-ts';
 import * as TE from 'fp-ts/lib/TaskEither';
 import * as authApi from '../api/auth';
 import * as http from '../lib/http';
+import { pipe } from 'fp-ts/lib/pipeable';
 
 import * as config from './config';
 
-const langCode = t.keyof({
+export const langCode = t.keyof({
   fi: null,
   en: null,
 });
@@ -19,28 +20,29 @@ const value = t.strict({
 
 export type Value = t.TypeOf<typeof value>;
 
-const answerRange = t.strict({
+const rangeQuestion = t.strict({
   type: t.literal('range'),
   step: t.number,
   min: value,
   max: value,
 });
 
-const answerOptions = t.strict({
-  type: t.literal('options'),
-  options: t.array(value),
+const yesNoQuestion = t.strict({
+  type: t.literal('yes-no'),
+  yes: value,
+  no: value,
 });
 
-const questionType = t.strict({
+const question = t.strict({
   titles: localizable,
-  answer: t.union([answerRange, answerOptions]),
+  answer: t.union([rangeQuestion, yesNoQuestion]),
   answer_id: t.string,
   id: t.string,
 });
 
-const questionResponse = t.strict({ resources: t.array(questionType) });
+const questionResponse = t.strict({ resources: t.array(question) });
 
-export type Question = t.TypeOf<typeof questionType>;
+export type Question = t.TypeOf<typeof question>;
 
 export function fetchQuestions(
   accessToken: authApi.AccessToken,
@@ -53,3 +55,20 @@ export function fetchQuestions(
     response => response.resources,
   );
 }
+
+export type Answer = {
+  answer_id: string;
+  value: number;
+};
+export const sendAnswer =
+  (answer: Answer) =>
+  (accessToken: authApi.AccessToken): TE.TaskEither<string, undefined> => {
+    const url = `${config.baseUrl}/feedback/answer`;
+
+    return pipe(
+      http.post(url, answer, {
+        headers: authApi.authHeader(accessToken),
+      }),
+      TE.map(_ => undefined),
+    );
+  };

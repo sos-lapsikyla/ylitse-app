@@ -6,11 +6,13 @@ import isFinnishPhone from '../lib/isFinnishPhone';
 import * as fi from './fi';
 import * as en from './en';
 
+import * as t from 'io-ts';
+import { langCode } from '../api/feedback';
 export type MessageId = fi.MessageId;
 
-type Language = 'fi' | 'en';
+type Language = t.TypeOf<typeof langCode>;
 
-const lang: Language = isFinnishPhone ? 'fi' : 'en';
+export const lang: Language = isFinnishPhone ? 'fi' : 'en';
 
 const messages = {
   fi: fi.messages,
