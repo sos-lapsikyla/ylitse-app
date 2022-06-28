@@ -55,7 +55,7 @@ const styles = RN.StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    marginBottom: isIphone ? 12 : 24,
+    marginBottom: isIphone ? 8 : 16,
   },
   leftText: {
     flex: 1,
@@ -72,7 +72,7 @@ const styles = RN.StyleSheet.create({
     textAlign: 'right',
   },
   button: {
-    marginTop: isIphone ? 16 : 32,
+    marginTop: isIphone ? 32 : 40,
     alignSelf: 'center',
     minWidth: '40%',
   },

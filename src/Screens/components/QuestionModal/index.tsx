@@ -73,7 +73,7 @@ const styles = RN.StyleSheet.create({
     borderRadius,
   },
   questionContent: {
-    padding: 24,
+    padding: 32,
   },
 });
 

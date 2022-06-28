@@ -39,7 +39,7 @@ const styles = RN.StyleSheet.create({
   },
   noButton: {
     backgroundColor: colors.red,
-    marginRight: 12,
+    marginRight: 16,
   },
   text: {
     ...fonts.regularBold,
@@ -47,6 +47,6 @@ const styles = RN.StyleSheet.create({
   },
   yesButton: {
     backgroundColor: colors.buttonGreen,
-    marginLeft: 12,
+    marginLeft: 16,
   },
 });
