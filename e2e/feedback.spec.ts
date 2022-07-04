@@ -174,4 +174,49 @@ describe('Feedback', () => {
     await expect(firstText).not.toBeVisible();
     await expect(secondText).not.toBeVisible();
   });
+
+  it('fetches and shows questions when focusing on tab screen', async () => {
+    const mentee = accountFixtures.mentees[0];
+    await APISignUpMentee(mentee);
+
+    const firstQuestion = questions[0];
+
+    // mentee sign in
+    await signIn(mentee);
+
+    // create question
+    await APICreateQuestion(firstQuestion);
+
+    // go to away from the TabNavigator
+    await element(by.id('tabs.chats')).tap();
+    await element(by.id('main.buddylist.kebabicon')).tap();
+    await element(by.text('Banned')).tap();
+    await element(by.id('main.folderedlist.back.button')).tap();
+
+    // the Question is rendered on the Screen
+    const firstText = element(by.text(firstQuestion.rules.titles.en));
+    await expect(firstText).toBeVisible();
+  });
+
+  it('fetches and shows questions when coming from background', async () => {
+    const mentee = accountFixtures.mentees[0];
+    await APISignUpMentee(mentee);
+
+    const firstQuestion = questions[0];
+
+    // mentee sign in
+    await signIn(mentee);
+
+    // Put app on background
+    await device.sendToHome();
+
+    // create question
+    await APICreateQuestion(firstQuestion);
+
+    // bring the app from background
+    await device.launchApp({ newInstance: false });
+
+    // the Question is rendered on the Screen
+    await expect(element(by.text(firstQuestion.rules.titles.en))).toBeVisible();
+  });
 });

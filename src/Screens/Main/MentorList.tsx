@@ -5,12 +5,10 @@ import { SafeAreaView } from 'react-navigation';
 import * as navigationProps from '../../lib/navigation-props';
 
 import * as redux from 'redux';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import * as actions from '../../state/actions';
-import { selectFirstQuestion } from '../../state/reducers/questions';
 
 import * as mentorApi from '../../api/mentors';
-import { Answer } from '../../api/feedback';
 
 import Background from '../components/Background';
 import { textShadow } from '../components/shadow';
@@ -21,7 +19,6 @@ import fonts from '../components/fonts';
 
 import { MentorCardExpandedRoute } from './MentorCardExpanded';
 import { SearchMentorRoute } from '../Main/SearchMentor';
-import QuestionModal from '../components/QuestionModal';
 
 export type MentorListRoute = {
   'Main/MentorList': {};
@@ -35,8 +32,6 @@ type Props = OwnProps;
 
 const MentorList = (props: Props) => {
   const dispatch = useDispatch<redux.Dispatch<actions.Action>>();
-
-  const feedbackQuestion = useSelector(selectFirstQuestion);
 
   const onPressMentor = (mentor: mentorApi.Mentor) => {
     props.navigation.navigate('Main/MentorCardExpanded', {
@@ -57,16 +52,6 @@ const MentorList = (props: Props) => {
     props.navigation.navigate('Main/SearchMentor', {});
   };
 
-  React.useEffect(() => {
-    dispatch({ type: 'feedback/getQuestions/start', payload: undefined });
-  }, []);
-
-  const handleCloseQuestion = () =>
-    dispatch({ type: 'feedback/reset/', payload: undefined });
-
-  const handleAnswer = (answer: Answer) =>
-    dispatch({ type: 'feedback/sendAnswer/start', payload: answer });
-
   return (
     <Background>
       <SafeAreaView
@@ -79,13 +64,6 @@ const MentorList = (props: Props) => {
         />
         <MentorListComponent onPress={onPressMentor} />
         <RN.View style={styles.bottomSeparator} />
-        {feedbackQuestion && (
-          <QuestionModal
-            question={feedbackQuestion}
-            onClose={handleCloseQuestion}
-            onAnswer={handleAnswer}
-          />
-        )}
       </SafeAreaView>
     </Background>
   );
