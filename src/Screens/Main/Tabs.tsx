@@ -1,8 +1,10 @@
 import React from 'react';
 import RN from 'react-native';
 import * as reactRedux from 'react-redux';
-import { SafeAreaView } from 'react-navigation';
+import { SafeAreaView, NavigationEvents } from 'react-navigation';
 import * as reactNavigationTab from 'react-navigation-tabs';
+
+import * as ReactRedux from 'react-redux';
 
 import * as localization from '../../localization';
 import { isAnyMessageUnseen } from '../../state/reducers/messages';
@@ -14,6 +16,10 @@ import shadow from '../components/shadow';
 import BuddyList, { BuddyListRoute } from './BuddyList';
 import MentorList, { MentorListRoute } from './MentorList';
 import Settings, { SettingsRoute } from './Settings';
+
+import QuestionModal from '../components/QuestionModal';
+import { Answer } from '../../api/feedback';
+import { selectFirstQuestion } from '../../state/reducers/questions';
 
 export type TabsRoute = { 'Main/Tabs': {} };
 
@@ -66,6 +72,37 @@ const TabBar = ({
 }: reactNavigationTab.BottomTabBarProps & Props) => {
   const routes = navigation.state.routes;
   const currentIndex = navigation.state.index;
+  const dispatch = ReactRedux.useDispatch();
+
+  const appState = React.useRef(RN.AppState.currentState);
+
+  const handleFetchQuestions = () =>
+    dispatch({ type: 'feedback/getQuestions/start', payload: undefined });
+
+  const feedbackQuestion = ReactRedux.useSelector(selectFirstQuestion);
+
+  const handleCloseQuestion = () =>
+    dispatch({ type: 'feedback/reset/', payload: undefined });
+
+  const handleAnswer = (answer: Answer) =>
+    dispatch({ type: 'feedback/sendAnswer/start', payload: answer });
+
+  React.useEffect(() => {
+    const subscription = RN.AppState.addEventListener(
+      'change',
+      nextAppState => {
+        if (nextAppState === 'active') {
+          handleFetchQuestions();
+        }
+
+        appState.current = nextAppState;
+      },
+    );
+
+    return () => {
+      subscription.remove();
+    };
+  }, [appState]);
 
   return (
     <RN.View style={styles.tabBar}>
@@ -92,9 +129,17 @@ const TabBar = ({
                 <RN.Image style={iconStyle} source={icons[index]} />
                 <RN.Text style={labelStyle}>{routeName}</RN.Text>
               </RN.TouchableOpacity>
+              {feedbackQuestion && (
+                <QuestionModal
+                  question={feedbackQuestion}
+                  onClose={handleCloseQuestion}
+                  onAnswer={handleAnswer}
+                />
+              )}
             </RN.View>
           );
         })}
+        <NavigationEvents onDidFocus={handleFetchQuestions} />
       </SafeAreaView>
     </RN.View>
   );
