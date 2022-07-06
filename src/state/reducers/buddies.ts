@@ -136,6 +136,29 @@ export const reducer: automaton.Reducer<State, actions.Action> = (
       return state;
     }
 
+    case 'mentors/end': {
+      if (E.isRight(action.payload) && RD.isSuccess(state.buddies)) {
+        const mentors = action.payload.right;
+        const stateBuddies = state.buddies.value;
+        const buddyIds = Object.keys(stateBuddies);
+
+        const nextBuddies = buddyIds.reduce<Record<string, buddyApi.Buddy>>(
+          (buddies, id) => {
+            const updatedBuddy = mentors[id]
+              ? { ...stateBuddies[id], name: mentors[id].name }
+              : stateBuddies[id];
+
+            return { ...buddies, [id]: updatedBuddy };
+          },
+          {},
+        );
+
+        return { ...state, buddies: RD.success(nextBuddies) };
+      }
+
+      return state;
+    }
+
     default:
       return state;
   }

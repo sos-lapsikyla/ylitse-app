@@ -76,9 +76,10 @@ const TabBar = ({
 
   const appState = React.useRef(RN.AppState.currentState);
 
-  const handleFetchQuestions = () =>
+  const handleRefetchData = () => {
     dispatch({ type: 'feedback/getQuestions/start', payload: undefined });
-
+    dispatch({ type: 'mentors/start', payload: undefined });
+  };
   const feedbackQuestion = ReactRedux.useSelector(selectFirstQuestion);
 
   const handleCloseQuestion = () =>
@@ -92,7 +93,7 @@ const TabBar = ({
       'change',
       nextAppState => {
         if (nextAppState === 'active') {
-          handleFetchQuestions();
+          handleRefetchData();
         }
 
         appState.current = nextAppState;
@@ -139,7 +140,7 @@ const TabBar = ({
             </RN.View>
           );
         })}
-        <NavigationEvents onDidFocus={handleFetchQuestions} />
+        <NavigationEvents onDidFocus={handleRefetchData} />
       </SafeAreaView>
     </RN.View>
   );
