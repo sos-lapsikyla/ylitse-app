@@ -49,7 +49,11 @@ const Title: React.FC<Props> = ({
     >
       <SafeAreaView style={styles.safeArea} forceInset={{ top: 'always' }}>
         {!onPress ? null : (
-          <RN.TouchableOpacity style={styles.chevronButton} onPress={onPress}>
+          <RN.TouchableOpacity
+            style={styles.chevronButton}
+            onPress={onPress}
+            testID={'chat.back.button'}
+          >
             <RN.Image
               source={require('../../images/chevron-left.svg')}
               style={styles.chevronIcon}

@@ -420,3 +420,60 @@ export async function APIDeleteQuestions() {
     });
   }
 }
+
+/**
+ * map to apimentor
+ */
+const toApiMentor = ({
+  birthYear,
+  displayName,
+  story,
+  languages,
+  skills,
+  communication_channels,
+  gender,
+  region,
+}: any) => ({
+  birth_year: birthYear,
+  display_name: displayName,
+  story,
+  languages,
+  skills,
+  communication_channels,
+  gender,
+  region,
+});
+
+/**
+ * Get mentors
+ */
+export const APIMentors = async () => {
+  const mentorsResponse = await fetch(`${API_URL}/mentors`);
+
+  const mentorsJson: any = await mentorsResponse.json();
+
+  return mentorsJson.resources;
+};
+
+/**
+ * Update mentors data
+ */
+export async function APIUpdateMentor(mentorName: string, mentor: any) {
+  const access_token = await APIAdminAccessToken();
+  const mentors = await APIMentors();
+
+  const mentorData = mentors.find((o: any) => o.display_name === mentorName);
+
+  const headers = {
+    Authorization: `Bearer ${access_token}`,
+  };
+
+  const mappedMentorData = toApiMentor(mentor);
+  const updatedMentor = { ...mentorData, ...mappedMentorData };
+
+  await fetch(`${API_URL}/mentors/${mentorData.id}`, {
+    method: 'PUT',
+    headers: headers,
+    body: JSON.stringify(updatedMentor),
+  });
+}
