@@ -67,6 +67,7 @@ export const messages: { [key in MessageId]: string } = {
   'main.mentorsTitleAndSearchButtonFiltersActive': 'Filters',
   'main.searchMentor.resetButton': 'Reset',
   'main.searchMentor.searchField.placeholder': 'Type in keyword',
+  'main.searchMentor.shouldHideInactiveMentors': 'Hide inactive mentors',
   'main.searchMentor.showButton': 'Show',
   'main.searchMentor.title': 'Search',
 

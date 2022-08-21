@@ -13,12 +13,14 @@ import Message from '../components/Message';
 import * as localization from '../../localization';
 
 import MessageButton from '../components/MessageButton';
+import MessageSwitch from '../components/MessageSwitch';
 import TextButton from '../components/TextButton';
 import TitledContainer from '../components/TitledContainer';
 import { textShadow } from '../components/shadow';
 import colors from '../components/colors';
 
 import * as mentorState from '../../state/reducers/mentors';
+import * as filterMentorState from '../../state/reducers/filterMentors';
 import { MentorListRoute } from './MentorList';
 
 import CreatedBySosBanner from '../components/CreatedBySosBanner';
@@ -37,17 +39,20 @@ export default ({ navigation }: Props) => {
   const dispatch = useDispatch<redux.Dispatch<actions.Action>>();
 
   const allSkills = useSelector(mentorState.getSkillList);
-  const selectedSkills = useSelector(mentorState.getSelectedSkills);
+
+  const { shouldHideInactiveMentors, skillFilter } = useSelector(
+    filterMentorState.selectSearchParams,
+  );
 
   const skillsToShow = allSkills.filter(skill =>
     skill.toLowerCase().includes(skillSearch.toLowerCase()),
   );
 
   const onPressBack = () => {
-    if (selectedSkills.length > 0) {
+    if (skillFilter.length > 0) {
       dispatch({
         type: 'statRequest/start',
-        payload: { name: 'filter_skills', props: { skills: selectedSkills } },
+        payload: { name: 'filter_skills', props: { skills: skillFilter } },
       });
     }
 
@@ -56,6 +61,10 @@ export default ({ navigation }: Props) => {
 
   const onPressSkill = (item: string) => {
     dispatch({ type: 'skillFilter/toggled', payload: { skillName: item } });
+  };
+
+  const onHideInactiveMentors = () => {
+    dispatch({ type: 'onHideInactiveMentors/toggle', payload: undefined });
   };
 
   const onPressReset = () => {
@@ -111,6 +120,16 @@ export default ({ navigation }: Props) => {
           />
         </RN.View>
 
+        <RN.View style={styles.hideInactiveSwitch}>
+          <MessageSwitch
+            onPress={onHideInactiveMentors}
+            value={shouldHideInactiveMentors}
+            testID={'main.searchMentor.shouldHideInactiveMentors'}
+            messageOn={'main.searchMentor.shouldHideInactiveMentors'}
+            messageOff={'main.searchMentor.shouldHideInactiveMentors'}
+          />
+        </RN.View>
+
         <RN.View testID="main.searchMentor.skills.view">
           <RN.View>
             <RN.Image
@@ -126,7 +145,7 @@ export default ({ navigation }: Props) => {
             >
               <RN.View style={styles.chipContainer}>
                 {skillsToShow.map(skill => {
-                  const isSelected = selectedSkills.includes(skill);
+                  const isSelected = skillFilter.includes(skill);
 
                   return (
                     <TextButton
@@ -233,7 +252,7 @@ const styles = RN.StyleSheet.create({
     zIndex: 1,
   },
   chipContainer: {
-    marginTop: 30,
+    marginTop: 16,
     marginBottom: 16,
     flexDirection: 'row',
     flexWrap: 'wrap',
@@ -253,6 +272,10 @@ const styles = RN.StyleSheet.create({
     position: 'relative',
     marginLeft: -40,
     marginTop: 3,
+  },
+  hideInactiveSwitch: {
+    paddingTop: 15,
+    paddingBottom: 15,
   },
   searchField: {
     flex: 1,

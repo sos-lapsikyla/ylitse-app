@@ -37,6 +37,7 @@ type RegularActions = {
   'mentor/updateMentorData/reset': updateMentorData.UpdateKey;
 
   'skillFilter/toggled': { skillName: string };
+  'onHideInactiveMentors/toggle': undefined;
   'skillFilter/reset': undefined;
 
   'statRequest/start': statApi.Stat;
