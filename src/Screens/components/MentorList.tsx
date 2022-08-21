@@ -24,9 +24,8 @@ type Props = {
 
 export default ({ onPress, testID }: Props) => {
   const userId = useSelector(tokenState.getUserId);
-  const selectedSkills = useSelector(mentorState.getSelectedSkills);
 
-  const { hideInactiveMentors } = useSelector(
+  const { shouldHideInactiveMentors, skillFilter } = useSelector(
     filterMentorState.selectSearchParams,
   );
   const dispatch = useDispatch<redux.Dispatch<actions.Action>>();
@@ -53,9 +52,9 @@ export default ({ onPress, testID }: Props) => {
 
   const mentorList = RD.remoteData.map(useSelector(mentorState.get), mentors =>
     mentors
-      .filter(mentor => filterSameIdAndSelectedSkills(mentor, selectedSkills))
+      .filter(mentor => filterSameIdAndSelectedSkills(mentor, skillFilter))
       .filter(mentor =>
-        filterOutVacationingIfNeeded(mentor, hideInactiveMentors),
+        filterOutVacationingIfNeeded(mentor, shouldHideInactiveMentors),
       ),
   );
   const [{ width, height }, onLayout] = useLayout();

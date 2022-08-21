@@ -45,7 +45,7 @@ export type AppState = {
   mentors: RemoteData<Record<BuddyId, mentorsApi.Mentor>>;
   filterMentors: {
     skillFilter: string[];
-    hideInactiveMentors: boolean;
+    shouldHideInactiveMentors: boolean;
   };
   statRequest: RemoteAction;
   buddies: {

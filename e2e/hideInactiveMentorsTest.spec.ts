@@ -86,7 +86,7 @@ describe('Hide inactive mentors', () => {
     await signIn(mentee);
 
     await element(by.id('main.mentorsTitleAndSearchButton')).tap();
-    await element(by.id('main.searchMentor.hideInactiveMentors')).tap();
+    await element(by.id('main.searchMentor.shouldHideInactiveMentors')).tap();
     await element(by.id('main.searchMentor.showButton')).tap();
 
     // Try to find a mentor from 3 possibilities. Swipe and repeat.

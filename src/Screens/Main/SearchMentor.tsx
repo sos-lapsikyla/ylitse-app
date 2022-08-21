@@ -40,20 +40,19 @@ export default ({ navigation }: Props) => {
 
   const allSkills = useSelector(mentorState.getSkillList);
 
-  const { hideInactiveMentors } = useSelector(
+  const { shouldHideInactiveMentors, skillFilter } = useSelector(
     filterMentorState.selectSearchParams,
   );
-  const selectedSkills = useSelector(mentorState.getSelectedSkills);
 
   const skillsToShow = allSkills.filter(skill =>
     skill.toLowerCase().includes(skillSearch.toLowerCase()),
   );
 
   const onPressBack = () => {
-    if (selectedSkills.length > 0) {
+    if (skillFilter.length > 0) {
       dispatch({
         type: 'statRequest/start',
-        payload: { name: 'filter_skills', props: { skills: selectedSkills } },
+        payload: { name: 'filter_skills', props: { skills: skillFilter } },
       });
     }
 
@@ -124,10 +123,10 @@ export default ({ navigation }: Props) => {
         <RN.View style={styles.hideInactiveSwitch}>
           <MessageSwitch
             onPress={onHideInactiveMentors}
-            value={hideInactiveMentors}
-            testID={'main.searchMentor.hideInactiveMentors'}
-            messageOn={'main.searchMentor.hideInactiveMentors'}
-            messageOff={'main.searchMentor.hideInactiveMentors'}
+            value={shouldHideInactiveMentors}
+            testID={'main.searchMentor.shouldHideInactiveMentors'}
+            messageOn={'main.searchMentor.shouldHideInactiveMentors'}
+            messageOff={'main.searchMentor.shouldHideInactiveMentors'}
           />
         </RN.View>
 
@@ -146,7 +145,7 @@ export default ({ navigation }: Props) => {
             >
               <RN.View style={styles.chipContainer}>
                 {skillsToShow.map(skill => {
-                  const isSelected = selectedSkills.includes(skill);
+                  const isSelected = skillFilter.includes(skill);
 
                   return (
                     <TextButton

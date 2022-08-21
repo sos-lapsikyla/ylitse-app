@@ -64,9 +64,10 @@ export const messages = {
 
   'main.mentorsTitleAndSearchButton': 'Hae',
   'main.mentorsTitleAndSearchButtonFiltersActive': 'Filtterit',
-  'main.searchMentor.hideInactiveMentors': 'Piilota ei-aktiiviset mentorit',
   'main.searchMentor.resetButton': 'Tyhjennä',
   'main.searchMentor.searchField.placeholder': 'Kirjoita hakusana',
+  'main.searchMentor.shouldHideInactiveMentors':
+    'Piilota ei-aktiiviset mentorit',
   'main.searchMentor.showButton': 'Näytä',
   'main.searchMentor.title': 'Hae mentoria',
 
