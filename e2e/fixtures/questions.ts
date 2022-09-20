@@ -1,6 +1,7 @@
 export const questions = [
   {
     rules: {
+      recipients: ['mentee'],
       titles: {
         fi: 'Kun ajattelet nykyhetkeä, kuinka tyytyväinen olet luottamuksellisiin ihmissuhteisiisi?',
         en: 'When you think about the present, how satisfied are you with your confidential relationships?',
@@ -40,6 +41,7 @@ export const questions = [
   },
   {
     rules: {
+      recipients: ['mentee'],
       titles: {
         fi: 'Oletko saanut apua mentorilta?',
         en: 'Have you received help from a mentor?',
