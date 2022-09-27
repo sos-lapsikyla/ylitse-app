@@ -26,6 +26,7 @@ export const questions = [
       },
       schedule: {
         remind_times_when_skipped: 3,
+        remind_interval_days: 1,
         first: {
           days_since_registration: 0,
           sent_messages_threshold: 0,
@@ -59,6 +60,7 @@ export const questions = [
       },
       schedule: {
         remind_times_when_skipped: 0,
+        remind_interval_days: 1,
         first: {
           days_since_registration: 0,
           sent_messages_threshold: 0,
