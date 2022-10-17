@@ -30,12 +30,14 @@ export const questions = [
         first: {
           days_since_registration: 0,
           sent_messages_threshold: 0,
+          max_old_account_in_days: 30,
         },
         repetitions: {
           type: 'predefined',
           times: 2,
           days_since_previous_answer: 30,
           messages_since_previous_answer: 100,
+          min_days_since_previous_answer: 14,
         },
       },
     },
@@ -64,6 +66,7 @@ export const questions = [
         first: {
           days_since_registration: 0,
           sent_messages_threshold: 0,
+          max_old_account_in_days: 30,
         },
         repetitions: {
           type: 'until_value',
