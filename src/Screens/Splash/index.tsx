@@ -1,10 +1,12 @@
 import React from 'react';
 import RN from 'react-native';
-import * as redux from 'redux';
 import * as RD from '@devexperts/remote-data-ts';
 import * as O from 'fp-ts/lib/Option';
 
-import * as navigationProps from '../../lib/navigation-props';
+import { StackScreenProps } from '@react-navigation/stack';
+import { StackRoutes } from '..';
+
+import * as redux from 'redux';
 import { useDispatch, useSelector } from 'react-redux';
 
 import * as storage from '../../state/reducers/storage';
@@ -13,17 +15,11 @@ import * as actions from '../../state/actions';
 
 import colors from '../components/colors';
 
-import { WelcomeRoute } from '../Onboarding/Welcome';
-import { TabsRoute } from '../Main/Tabs';
-
 export type SplashRoute = {
   Splash: {};
 };
 
-type Props = navigationProps.NavigationProps<
-  SplashRoute,
-  WelcomeRoute & TabsRoute
->;
+type Props = StackScreenProps<StackRoutes, 'Splash'>;
 
 const Splash = ({ navigation }: Props) => {
   const dispatch = useDispatch<redux.Dispatch<actions.Action>>();

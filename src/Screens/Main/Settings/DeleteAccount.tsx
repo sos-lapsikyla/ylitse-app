@@ -2,10 +2,11 @@ import React from 'react';
 import RN from 'react-native';
 import * as redux from 'redux';
 import { useDispatch } from 'react-redux';
-import { SafeAreaView } from 'react-navigation';
-
 import * as actions from '../../../state/actions';
-import * as navigationProps from '../../../lib/navigation-props';
+
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { StackScreenProps } from '@react-navigation/stack';
+import { StackRoutes } from 'src/Screens';
 
 import Message from '../../components/Message';
 import { textShadow } from '../../components/shadow';
@@ -15,24 +16,18 @@ import fonts from '../../components/fonts';
 import MessageButton from '../../components/MessageButton';
 import CreatedBySosBanner from '../../components/CreatedBySosBanner';
 
-import { MentorListRoute } from '../../Onboarding/MentorList';
-import navigateOnboarding from './navigateOnboarding';
-
 export type DeleteAccountRoute = {
   'Main/Settings/DeleteAccount': {};
 };
 
-type Props = navigationProps.NavigationProps<
-  DeleteAccountRoute,
-  MentorListRoute
->;
+type Props = StackScreenProps<StackRoutes, 'Main/Settings/DeleteAccount'>;
 
 export default ({ navigation }: Props) => {
   const dispatch = useDispatch<redux.Dispatch<actions.Action>>();
 
   const onDeleteAccount = () => {
     dispatch(actions.make('deleteAccount/start')(undefined));
-    navigateOnboarding(navigation);
+    navigation.reset({ routes: [{ name: 'Onboarding/MentorList' }] });
   };
 
   const onGoBack = () => {
@@ -69,10 +64,7 @@ export default ({ navigation }: Props) => {
             id={'main.settings.deleteAccount.text3'}
           />
         </RN.View>
-        <SafeAreaView
-          forceInset={{ bottom: 'always' }}
-          style={styles.buttonContainer}
-        >
+        <SafeAreaView style={styles.buttonContainer}>
           <MessageButton
             style={styles.deleteAccountButton}
             onPress={onDeleteAccount}

@@ -2,10 +2,11 @@ import React from 'react';
 import RN from 'react-native';
 
 import { isRight } from 'fp-ts/lib/Either';
-
 import * as authApi from '../../api/auth';
 
-import * as navigationProps from '../../lib/navigation-props';
+import { StackScreenProps } from '@react-navigation/stack';
+import { StackRoutes } from '..';
+
 import { ValidName } from '../../lib/validators';
 
 import OnboardingBackground from '../components/OnboardingBackground';
@@ -16,16 +17,14 @@ import colors from '../components/colors';
 import Button from '../components/Button';
 import NamedInputField from '../components/NamedInputField';
 
-import { EmailRoute } from './Email';
-
 export type DisplayNameRoute = {
   'Onboarding/DisplayName': { credentials: authApi.Credentials };
 };
 
-type Props = navigationProps.NavigationProps<DisplayNameRoute, EmailRoute>;
+type Props = StackScreenProps<StackRoutes, 'Onboarding/DisplayName'>;
 
-const DisplayName = ({ navigation }: Props) => {
-  const { userName, password } = navigation.getParam('credentials');
+const DisplayName = ({ navigation, route }: Props) => {
+  const { userName, password } = route.params?.credentials;
   const [displayName, setDisplayName] = React.useState(userName);
 
   const goBack = () => {

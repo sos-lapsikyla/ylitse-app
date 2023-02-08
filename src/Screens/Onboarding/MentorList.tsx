@@ -1,8 +1,9 @@
 import React from 'react';
 import RN from 'react-native';
-import { SafeAreaView } from 'react-navigation';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
-import * as navigationProps from '../../lib/navigation-props';
+import {StackScreenProps} from '@react-navigation/stack';
+import {StackRoutes} from '..';
 
 import MentorListComponent from '../components/MentorList';
 import Background from '../components/Background';
@@ -13,13 +14,12 @@ import Button from '../components/Button';
 import Message from '../components/Message';
 import CreatedBySosBanner from '../components/CreatedBySosBanner';
 
-import { SignRoute } from './Sign';
 
 export type MentorListRoute = {
   'Onboarding/MentorList': {};
 };
 
-type Props = navigationProps.NavigationProps<MentorListRoute, SignRoute>;
+type Props = StackScreenProps<StackRoutes, 'Onboarding/MentorList'>;
 
 const MentorList = (props: Props) => {
   const navigateNext = () => {
@@ -30,7 +30,6 @@ const MentorList = (props: Props) => {
     <Background>
       <SafeAreaView
         style={styles.container}
-        forceInset={{ top: 'always', bottom: 'always' }}
         testID="onboarding.mentorlist.view"
       >
         <Message style={styles.title} id="onboarding.mentorlist.lowerTitle" />

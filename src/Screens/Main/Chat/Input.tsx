@@ -12,7 +12,7 @@ import fonts from '../../components/fonts';
 import colors from '../../components/colors';
 import getBuddyColor from '../../components/getBuddyColor';
 
-import { SafeAreaView } from 'react-navigation';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import Spinner from 'src/Screens/components/Spinner';
 
 type Props = {
@@ -57,7 +57,7 @@ export default ({ buddyId }: Props) => {
   const inputContainerBg = showPending ? colors.lightestGray : colors.white;
 
   return (
-    <SafeAreaView style={styles.container} forceInset={{ bottom: 'always' }}>
+    <SafeAreaView style={styles.container}>
       <RN.View
         style={[styles.inputContainer, { backgroundColor: inputContainerBg }]}
       >

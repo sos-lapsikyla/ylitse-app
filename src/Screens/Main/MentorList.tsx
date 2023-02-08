@@ -1,8 +1,6 @@
 import React from 'react';
 import RN from 'react-native';
-import { SafeAreaView } from 'react-navigation';
-
-import * as navigationProps from '../../lib/navigation-props';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 import * as redux from 'redux';
 import { useDispatch } from 'react-redux';
@@ -17,17 +15,15 @@ import MentorListComponent from '../components/MentorList';
 import colors from '../components/colors';
 import fonts from '../components/fonts';
 
-import { MentorCardExpandedRoute } from './MentorCardExpanded';
-import { SearchMentorRoute } from '../Main/SearchMentor';
+import { StackScreenProps } from '@react-navigation/stack';
+import { StackRoutes } from '..';
 
 export type MentorListRoute = {
   'Main/MentorList': {};
 };
 
-type OwnProps = navigationProps.NavigationProps<
-  MentorListRoute,
-  MentorCardExpandedRoute & SearchMentorRoute
->;
+type OwnProps = StackScreenProps<StackRoutes, 'Main/Tabs'>;
+
 type Props = OwnProps;
 
 const MentorList = (props: Props) => {
@@ -54,10 +50,7 @@ const MentorList = (props: Props) => {
 
   return (
     <Background>
-      <SafeAreaView
-        style={styles.container}
-        forceInset={{ top: 'always', bottom: 'always' }}
-      >
+      <SafeAreaView style={styles.container}>
         <MentorsTitleAndSearchButton
           id="main.mentorList.title"
           onPress={onPressSearchMentor}

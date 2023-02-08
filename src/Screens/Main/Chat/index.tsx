@@ -7,7 +7,9 @@ import * as selectors from '../../../state/selectors';
 import * as newMessageState from '../../../state/reducers/newMessage';
 import * as actions from '../../../state/actions';
 
-import * as navigationProps from '../../../lib/navigation-props';
+import { StackScreenProps } from '@react-navigation/stack';
+import { StackRoutes } from 'src/Screens';
+
 import useLayout from '../../../lib/use-layout';
 
 import Title from './Title';
@@ -19,26 +21,22 @@ import { dialogProperties, changeChatStatusOptions } from './chatProperties';
 
 import colors from '../../components/colors';
 import { ChatStatus } from 'src/api/buddies';
-import { MentorCardExpandedRoute } from '../MentorCardExpanded';
 import { Toast } from '../../components/Toast';
 
 export type ChatRoute = {
   'Main/Chat': { buddyId: string };
 };
 
-type Props = navigationProps.NavigationProps<
-  ChatRoute,
-  ChatRoute & MentorCardExpandedRoute
->;
+type Props = StackScreenProps<StackRoutes, 'Main/Chat'>;
 
 type DialogState = { dialogOpen: boolean; dropdownOpen: boolean };
 
-const Chat = ({ navigation }: Props) => {
+const Chat = ({ navigation, route }: Props) => {
   const goBack = () => {
     navigation.goBack();
   };
 
-  const buddyId = navigation.getParam('buddyId');
+  const buddyId = route.params?.buddyId;
 
   const { messageList, isLoading, mentor, isMessageSendFailed, buddyStatus } =
     ReactRedux.useSelector(selectors.getChatDataFor(buddyId));

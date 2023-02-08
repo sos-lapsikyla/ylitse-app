@@ -19,8 +19,8 @@ import colors from '../../components/colors';
 import RemoteData from '../../components/RemoteData';
 import { Props, listData } from './folderedChatProperties';
 
-export default ({ navigation }: Props) => {
-  const folderType = navigation.getParam('folderType');
+export default ({ navigation, route }: Props) => {
+  const folderType = route.params?.folderType;
   const { buddySelector, titleId } = listData[folderType];
 
   const remoteBuddies = ReactRedux.useSelector(buddySelector);

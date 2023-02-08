@@ -3,10 +3,14 @@ import RN from 'react-native';
 import * as redux from 'redux';
 import { useDispatch, useSelector } from 'react-redux';
 
-import * as navigationProps from '../../lib/navigation-props';
-import useLayout from 'src/lib/use-layout';
-
+import * as mentorState from '../../state/reducers/mentors';
+import * as filterMentorState from '../../state/reducers/filterMentors';
 import * as actions from '../../state/actions';
+
+import { StackScreenProps } from '@react-navigation/stack';
+import { StackRoutes } from '..';
+
+import useLayout from 'src/lib/use-layout';
 
 import fonts from '../components/fonts';
 import Message from '../components/Message';
@@ -19,20 +23,13 @@ import TitledContainer from '../components/TitledContainer';
 import { textShadow } from '../components/shadow';
 import colors from '../components/colors';
 
-import * as mentorState from '../../state/reducers/mentors';
-import * as filterMentorState from '../../state/reducers/filterMentors';
-import { MentorListRoute } from './MentorList';
-
 import CreatedBySosBanner from '../components/CreatedBySosBanner';
 
 export type SearchMentorRoute = {
   'Main/SearchMentor': {};
 };
 
-type Props = navigationProps.NavigationProps<
-  SearchMentorRoute,
-  MentorListRoute
->;
+type Props = StackScreenProps<StackRoutes, 'Main/SearchMentor'>;
 
 export default ({ navigation }: Props) => {
   const [skillSearch, setSkillSearch] = React.useState('');

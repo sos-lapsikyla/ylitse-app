@@ -1,6 +1,6 @@
 import React from 'react';
 import RN from 'react-native';
-import { SafeAreaView } from 'react-navigation';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 import Background from './Background';
 import CreatedBySosBanner from '../components/CreatedBySosBanner';
@@ -23,12 +23,7 @@ const OnboardinBackground: React.FC<Props> = ({
         showsHorizontalScrollIndicator={false}
         testID={testID}
       >
-        <SafeAreaView
-          style={styles.container}
-          forceInset={{ top: 'always', bottom: 'always' }}
-        >
-          {children}
-        </SafeAreaView>
+        <SafeAreaView style={styles.container}>{children}</SafeAreaView>
       </RN.ScrollView>
     </RN.KeyboardAvoidingView>
   </Background>

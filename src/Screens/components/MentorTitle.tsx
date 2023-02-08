@@ -1,6 +1,6 @@
 import React from 'react';
 import RN from 'react-native';
-import { SafeAreaView } from 'react-navigation';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 import * as mentorApi from '../../api/mentors';
 
@@ -19,7 +19,7 @@ type Props = {
 };
 
 const SafeAreaWrapper: React.FC<{}> = ({ children }) => (
-  <SafeAreaView style={styles.safeArea} forceInset={{ top: 'always' }}>
+  <SafeAreaView style={styles.safeArea} >
     {children}
   </SafeAreaView>
 );

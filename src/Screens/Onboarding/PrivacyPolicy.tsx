@@ -5,12 +5,13 @@ import * as ReactRedux from 'react-redux';
 import * as O from 'fp-ts/lib/Option';
 import * as RD from '@devexperts/remote-data-ts';
 
-import * as navigationProps from '../../lib/navigation-props';
-
 import * as config from '../../api/config';
 import * as accountApi from '../../api/account';
 import * as state from '../../state';
 import * as actions from '../../state/actions';
+
+import { StackScreenProps } from '@react-navigation/stack';
+import { StackRoutes } from '..';
 
 import OnboardingBackground from '../components/OnboardingBackground';
 import Card from '../components/Card';
@@ -21,9 +22,6 @@ import colors from '../components/colors';
 import Button from '../components/Button';
 import ErrorMessage from '../components/ErrorMessage';
 import Link from '../components/Link';
-
-import navigateMain from './navigateMain';
-import { TabsRoute } from '../Main/Tabs';
 
 export type PrivacyPolicyRoute = {
   'Onboarding/PrivacyPolicy': { user: accountApi.User };
@@ -37,19 +35,20 @@ type StateProps = {
 type DispatchProps = {
   createUser: (user: accountApi.User) => void | undefined;
 };
-type OwnProps = navigationProps.NavigationProps<PrivacyPolicyRoute, TabsRoute>;
+type OwnProps = StackScreenProps<StackRoutes, 'Onboarding/PrivacyPolicy'>;
 
 type Props = StateProps & DispatchProps & OwnProps;
 
 const PrivacyPolicy = ({
   navigation,
+  route,
   accessToken,
   createUser,
   createUserState,
 }: Props) => {
   React.useEffect(() => {
     if (O.isSome(accessToken.currentToken)) {
-      navigateMain(navigation);
+      navigation.reset({ routes: [{ name: 'Main/Tabs' }] });
     }
   }, [accessToken]);
   const [isAgreed, setAgreed] = React.useState(false);
@@ -60,7 +59,7 @@ const PrivacyPolicy = ({
   };
 
   const onNextPress = () => {
-    const user = navigation.getParam('user');
+    const user = route.params?.user ?? '';
     createUser(user);
   };
 

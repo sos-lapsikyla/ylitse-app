@@ -1,7 +1,8 @@
 import React from 'react';
 import RN from 'react-native';
 
-import * as navigationProps from '../../../lib/navigation-props';
+import { StackScreenProps } from '@react-navigation/stack';
+import { StackRoutes } from 'src/Screens';
 
 import Message from '../../components/Message';
 import { textShadow } from '../../components/shadow';
@@ -11,19 +12,12 @@ import fonts from '../../components/fonts';
 
 import UserAccount from './UserAccount';
 import BottomCard from './BottomCard';
-import { LogoutRoute } from './Logout';
-import { DeleteAccountRoute } from './DeleteAccount';
-import { PasswordChangeRoute } from './Password';
-import { EmailChangeRoute } from './Email';
 
 export type SettingsRoute = {
   'Main/Settings': {};
 };
 
-type OwnProps = navigationProps.NavigationProps<
-  SettingsRoute,
-  LogoutRoute & DeleteAccountRoute & PasswordChangeRoute & EmailChangeRoute
->;
+type OwnProps = StackScreenProps<StackRoutes, 'Main/Tabs'>;
 type Props = OwnProps;
 
 const Settings = ({ navigation }: Props) => {

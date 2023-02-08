@@ -1,6 +1,6 @@
 import React from 'react';
 import RN from 'react-native';
-import { SafeAreaView } from 'react-navigation';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { useSelector } from 'react-redux';
 
 import * as ReactRedux from 'react-redux';
@@ -47,7 +47,7 @@ const Title: React.FC<Props> = ({
       onLayout={onLayout}
       style={[styles.blob, { backgroundColor: color }, style]}
     >
-      <SafeAreaView style={styles.safeArea} forceInset={{ top: 'always' }}>
+      <SafeAreaView style={styles.safeArea}>
         {!onPress ? null : (
           <RN.TouchableOpacity
             style={styles.chevronButton}
