@@ -15,7 +15,6 @@ import shadow from '../components/shadow';
 
 import QuestionModal from '../components/QuestionModal';
 import { Answer } from '../../api/feedback';
-import { SafeAreaView } from 'react-native-safe-area-context';
 
 type TabSettings = {
   icon: RN.ImageSourcePropType;
@@ -56,50 +55,48 @@ export const TabBar = ({ state, navigation }: Props) => {
 
   return (
     <RN.View style={styles.tabBar}>
-      <SafeAreaView style={styles.safeArea}>
-        {state.routes.map((route, index) => {
-          const testID = TabMap[index].testID;
-          const isFocused = state.index === index;
+      {state.routes.map((route, index) => {
+        const testID = TabMap[index].testID;
+        const isFocused = state.index === index;
 
-          const [iconStyle, labelStyle] = isFocused
-            ? [styles.selectedIcon, styles.selectedLabel]
-            : [styles.icon, styles.label];
+        const [iconStyle, labelStyle] = isFocused
+          ? [styles.selectedIcon, styles.selectedLabel]
+          : [styles.icon, styles.label];
 
-          const onTabPress = () => {
-            const event = navigation.emit({
-              type: 'tabPress',
-              target: route.key,
-              canPreventDefault: true,
-            });
+        const onTabPress = () => {
+          const event = navigation.emit({
+            type: 'tabPress',
+            target: route.key,
+            canPreventDefault: true,
+          });
 
-            if (!isFocused && !event.defaultPrevented) {
-              navigation.navigate(route.name);
-            }
-          };
+          if (!isFocused && !event.defaultPrevented) {
+            navigation.navigate(route.name);
+          }
+        };
 
-          return (
-            <RN.View key={route.key} style={styles.container}>
-              {index > 0 ? <RN.View style={styles.separator} /> : null}
-              <RN.TouchableOpacity
-                style={styles.tab}
-                onPress={onTabPress}
-                testID={testID}
-              >
-                {index === 2 ? <UnseenDot /> : null}
-                <RN.Image style={iconStyle} source={TabMap[index].icon} />
-                <RN.Text style={labelStyle}>{TabMap[index].text}</RN.Text>
-              </RN.TouchableOpacity>
-              {feedbackQuestion && (
-                <QuestionModal
-                  question={feedbackQuestion}
-                  onClose={handleCloseQuestion}
-                  onAnswer={handleAnswer}
-                />
-              )}
-            </RN.View>
-          );
-        })}
-      </SafeAreaView>
+        return (
+          <RN.View key={route.key} style={styles.container}>
+            {index > 0 ? <RN.View style={styles.separator} /> : null}
+            <RN.TouchableOpacity
+              style={styles.tab}
+              onPress={onTabPress}
+              testID={testID}
+            >
+              {index === 2 ? <UnseenDot /> : null}
+              <RN.Image style={iconStyle} source={TabMap[index].icon} />
+              <RN.Text style={labelStyle}>{TabMap[index].text}</RN.Text>
+            </RN.TouchableOpacity>
+            {feedbackQuestion && (
+              <QuestionModal
+                question={feedbackQuestion}
+                onClose={handleCloseQuestion}
+                onAnswer={handleAnswer}
+              />
+            )}
+          </RN.View>
+        );
+      })}
     </RN.View>
   );
 };
@@ -135,17 +132,16 @@ const styles = RN.StyleSheet.create({
     borderRadius: 40,
     minHeight: 64,
     backgroundColor: colors.lightestGray,
-  },
-  safeArea: {
-    paddingTop: 20,
-    paddingBottom: 8,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    borderRadius: 40,
     flex: 1,
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingBottom: 16,
+    paddingTop: 16,
   },
   container: {
     flex: 1,
+    display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',
   },
