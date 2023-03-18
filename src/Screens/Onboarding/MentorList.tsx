@@ -2,8 +2,8 @@ import React from 'react';
 import RN from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
-import {StackScreenProps} from '@react-navigation/stack';
-import {StackRoutes} from '..';
+import { StackScreenProps } from '@react-navigation/stack';
+import { StackRoutes } from '..';
 
 import MentorListComponent from '../components/MentorList';
 import Background from '../components/Background';
@@ -13,7 +13,6 @@ import { textShadow } from '../components/shadow';
 import Button from '../components/Button';
 import Message from '../components/Message';
 import CreatedBySosBanner from '../components/CreatedBySosBanner';
-
 
 export type MentorListRoute = {
   'Onboarding/MentorList': {};

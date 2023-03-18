@@ -5,19 +5,13 @@ import Message from './Message';
 import fonts from './fonts';
 import colors from './colors';
 
-import { MessageId } from 'src/localization';
-
-const CreatedBySosBanner = ({ style, ...textProps }: RN.TextProps) => {
-  const createdBySosMessage: MessageId = 'components.createdBySosBanner';
-
-  return (
-    <Message
-      style={[styles.banner, style]}
-      id={createdBySosMessage}
-      {...textProps}
-    />
-  );
-};
+const CreatedBySosBanner = ({ style, ...textProps }: RN.TextProps) => (
+  <Message
+    style={[styles.banner, style]}
+    id="components.createdBySosBanner"
+    {...textProps}
+  />
+);
 
 const styles = RN.StyleSheet.create({
   banner: {
