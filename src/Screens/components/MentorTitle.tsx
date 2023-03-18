@@ -18,11 +18,9 @@ type Props = {
   withStatus?: boolean;
 };
 
-const SafeAreaWrapper: React.FC<{}> = ({ children }) => (
-  <SafeAreaView style={styles.safeArea} >
-    {children}
-  </SafeAreaView>
-);
+const SafeAreaWrapper: React.FC<{ children: React.ReactNode }> = ({
+  children,
+}) => <SafeAreaView style={styles.safeArea}>{children}</SafeAreaView>;
 
 const MentorTitle: React.FC<Props> = ({
   onPress,

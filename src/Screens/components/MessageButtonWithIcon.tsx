@@ -9,6 +9,7 @@ interface Props {
   style?: RN.StyleProp<RN.ViewStyle>;
   messageStyle?: RN.StyleProp<RN.TextStyle>;
   testID?: string;
+  children: React.ReactNode;
 }
 
 const FilterButton: React.FC<Props> = ({
