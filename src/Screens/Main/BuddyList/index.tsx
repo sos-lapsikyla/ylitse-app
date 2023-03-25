@@ -20,12 +20,18 @@ import { Title } from './Title';
 import DropDown, { DropDownItem } from '../../components/DropDownMenu';
 import { FolderType } from '../FolderedChats/folderedChatProperties';
 import FolderItem from './FolderItem';
+import { CompositeScreenProps } from '@react-navigation/native';
+import { BottomTabScreenProps } from '@react-navigation/bottom-tabs';
+import { TabRoutes } from '../Tabs';
 
 export type BuddyListRoute = {
-  'Main/BuddyList': {};
+  'Main/BuddyList': undefined;
 };
 
-type Props = StackScreenProps<StackRoutes, 'Main/Tabs'>;
+type Props = CompositeScreenProps<
+  BottomTabScreenProps<TabRoutes, 'Main/BuddyList'>,
+  StackScreenProps<StackRoutes>
+>;
 
 export default ({ navigation }: Props) => {
   const buddies = ReactRedux.useSelector(buddyState.getActiveBuddies);

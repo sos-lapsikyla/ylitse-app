@@ -32,6 +32,8 @@ export function getMentors(
 export const getAccessToken = ({ accessToken }: AppState) =>
   accessToken.currentToken;
 
+export const getCreateUserState = ({ createUser }: AppState) => createUser;
+
 export const getAC = flow(
   getAccessToken,
   O.getOrElse(constant(authApi.invalidToken)),

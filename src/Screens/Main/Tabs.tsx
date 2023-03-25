@@ -1,5 +1,4 @@
 import React from 'react';
-import RN from 'react-native';
 
 import * as ReactRedux from 'react-redux';
 import { selectFirstQuestion } from '../../state/reducers/questions';
@@ -18,15 +17,11 @@ import { TabBar } from './TabBar';
 
 export type TabsRoute = { 'Main/Tabs': {} };
 
-type TabRoutes = BuddyListRoute & MentorListRoute & SettingsRoute;
+export type TabRoutes = BuddyListRoute & MentorListRoute & SettingsRoute;
 
 const Tab = createBottomTabNavigator<TabRoutes>();
 
-type Props = {
-  labels: string[];
-  icons: RN.ImageSourcePropType[];
-  testIDs: string[];
-} & StackScreenProps<StackRoutes, 'Main/Tabs'>;
+type Props = {} & StackScreenProps<StackRoutes, 'Main/Tabs'>;
 
 const Main = ({ navigation }: Props) => {
   const dispatch = ReactRedux.useDispatch();
@@ -55,6 +50,7 @@ const Main = ({ navigation }: Props) => {
     <>
       <Tab.Navigator
         initialRouteName="Main/MentorList"
+        screenOptions={{ headerShown: false }}
         tabBar={props => <TabBar {...props} />}
       >
         <Tab.Screen name="Main/Settings" component={Settings} />

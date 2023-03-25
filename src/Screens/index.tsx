@@ -51,7 +51,10 @@ const Stack = reactNavigationStack.createStackNavigator<StackRoutes>();
 
 export default () => (
   <NavigationContainer>
-    <Stack.Navigator initialRouteName="Splash" headerMode="none">
+    <Stack.Navigator
+      initialRouteName="Splash"
+      screenOptions={{ headerShown: false }}
+    >
       <Stack.Screen name="Splash" component={Splash} />
       <Stack.Screen name="Onboarding/Welcome" component={Welcome} />
       <Stack.Screen name="Onboarding/MentorList" component={MentorList} />

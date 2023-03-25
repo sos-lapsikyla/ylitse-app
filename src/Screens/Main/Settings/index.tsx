@@ -12,12 +12,18 @@ import fonts from '../../components/fonts';
 
 import UserAccount from './UserAccount';
 import BottomCard from './BottomCard';
+import { BottomTabScreenProps } from '@react-navigation/bottom-tabs';
+import { TabRoutes } from '../Tabs';
+import { CompositeScreenProps } from '@react-navigation/native';
 
 export type SettingsRoute = {
   'Main/Settings': {};
 };
 
-type OwnProps = StackScreenProps<StackRoutes, 'Main/Tabs'>;
+type OwnProps = CompositeScreenProps<
+  BottomTabScreenProps<TabRoutes, 'Main/Settings'>,
+  StackScreenProps<StackRoutes>
+>;
 type Props = OwnProps;
 
 const Settings = ({ navigation }: Props) => {

@@ -1,14 +1,12 @@
 import React from 'react';
 import RN from 'react-native';
-import * as redux from 'redux';
 import * as ReactRedux from 'react-redux';
+import { getAccessToken, getCreateUserState } from 'src/state/selectors';
 import * as O from 'fp-ts/lib/Option';
 import * as RD from '@devexperts/remote-data-ts';
 
 import * as config from '../../api/config';
 import * as accountApi from '../../api/account';
-import * as state from '../../state';
-import * as actions from '../../state/actions';
 
 import { StackScreenProps } from '@react-navigation/stack';
 import { StackRoutes } from '..';
@@ -27,30 +25,21 @@ export type PrivacyPolicyRoute = {
   'Onboarding/PrivacyPolicy': { user: accountApi.User };
 };
 
-type StateProps = {
-  accessToken: state.AppState['accessToken'];
-  createUserState: state.AppState['createUser'];
-};
-
-type DispatchProps = {
-  createUser: (user: accountApi.User) => void | undefined;
-};
 type OwnProps = StackScreenProps<StackRoutes, 'Onboarding/PrivacyPolicy'>;
 
-type Props = StateProps & DispatchProps & OwnProps;
+type Props = OwnProps;
 
-const PrivacyPolicy = ({
-  navigation,
-  route,
-  accessToken,
-  createUser,
-  createUserState,
-}: Props) => {
+const PrivacyPolicy = ({ navigation, route }: Props) => {
+  const accessToken = ReactRedux.useSelector(getAccessToken);
+  const createUserState = ReactRedux.useSelector(getCreateUserState);
+  const dispatch = ReactRedux.useDispatch();
+
   React.useEffect(() => {
-    if (O.isSome(accessToken.currentToken)) {
+    if (O.isSome(accessToken)) {
       navigation.reset({ routes: [{ name: 'Main/Tabs' }] });
     }
   }, [accessToken]);
+
   const [isAgreed, setAgreed] = React.useState(false);
   const [isOver15, setIsOver15] = React.useState(false);
 
@@ -60,7 +49,7 @@ const PrivacyPolicy = ({
 
   const onNextPress = () => {
     const user = route.params?.user ?? '';
-    createUser(user);
+    dispatch({ type: 'createUser/start', payload: user });
   };
 
   return (
@@ -207,14 +196,4 @@ const styles = RN.StyleSheet.create({
   },
 });
 
-export default ReactRedux.connect<StateProps, {}, OwnProps, state.AppState>(
-  ({ accessToken, createUser }) => ({
-    accessToken,
-    createUserState: createUser,
-  }),
-  (dispatch: redux.Dispatch<actions.Action>) => ({
-    createUser: (payload: accountApi.User) => {
-      dispatch({ type: 'createUser/start', payload });
-    },
-  }),
-)(PrivacyPolicy);
+export default PrivacyPolicy;

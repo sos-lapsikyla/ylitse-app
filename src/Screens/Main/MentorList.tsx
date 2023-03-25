@@ -17,12 +17,18 @@ import fonts from '../components/fonts';
 
 import { StackScreenProps } from '@react-navigation/stack';
 import { StackRoutes } from '..';
+import { CompositeScreenProps } from '@react-navigation/native';
+import { BottomTabScreenProps } from '@react-navigation/bottom-tabs';
+import { TabRoutes } from './Tabs';
 
 export type MentorListRoute = {
   'Main/MentorList': {};
 };
 
-type OwnProps = StackScreenProps<StackRoutes, 'Main/Tabs'>;
+type OwnProps = CompositeScreenProps<
+  BottomTabScreenProps<TabRoutes, 'Main/MentorList'>,
+  StackScreenProps<StackRoutes>
+>;
 
 type Props = OwnProps;
 
