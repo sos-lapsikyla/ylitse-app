@@ -32,13 +32,17 @@ const Splash = ({ navigation }: Props) => {
 
   React.useEffect(() => {
     if (RD.isFailure(readTokenState)) {
-      navigation.replace('Onboarding/Welcome', {});
+      setTimeout(() => {
+        navigation.replace('Onboarding/Welcome', {});
+      }, 500);
     }
   }, [readTokenState]);
 
   React.useEffect(() => {
     if (O.isSome(tokenState)) {
-      navigation.replace('Main/Tabs', {});
+      setTimeout(() => {
+        navigation.replace('Main/Tabs', {});
+      }, 500);
     }
   });
 
