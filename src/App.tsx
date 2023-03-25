@@ -7,19 +7,6 @@ import * as ReactRedux from 'react-redux';
 import Screens from './Screens';
 import * as state from './state';
 
-import { LogBox } from 'react-native';
-LogBox.ignoreLogs([
-  // https://github.com/react-navigation/react-navigation/issues/7839
-  'Sending `onAnimatedValueUpdate` with no listeners registered.',
-  // https://github.com/facebook/react-native/issues/16376
-  'RCTBridge required dispatch_sync to load RCTDevLoadingView. This may lead to deadlocks',
-  // https://stackoverflow.com/questions/69538962/new-nativeeventemitter-was-called-with-a-non-null-argument-without-the-requir
-  // https://github.com/facebook/react-native/issues/32037
-  // https://github.com/react-navigation/react-navigation/issues/9882
-  "EventEmitter.removeListener('change', ...): Method has been deprecated. Please instead use `remove()` on the subscription returned by `EventEmitter.addListener`.",
-  '`new NativeEventEmitter()`',
-]);
-
 const App: React.FC = () => (
   <RN.View style={styles.root}>
     <ReactRedux.Provider store={state.store}>

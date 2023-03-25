@@ -53,7 +53,10 @@ const Main = ({ navigation }: Props) => {
 
   return (
     <>
-      <Tab.Navigator tabBar={props => <TabBar {...props} />}>
+      <Tab.Navigator
+        initialRouteName="Main/MentorList"
+        tabBar={props => <TabBar {...props} />}
+      >
         <Tab.Screen name="Main/Settings" component={Settings} />
         <Tab.Screen name="Main/MentorList" component={MentorList} />
         <Tab.Screen name="Main/BuddyList" component={BuddyList} />

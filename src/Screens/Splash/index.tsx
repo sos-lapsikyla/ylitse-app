@@ -28,13 +28,14 @@ const Splash = ({ navigation }: Props) => {
   }, []);
 
   const readTokenState = useSelector(storage.getReadToken);
+  const tokenState = useSelector(token.getToken);
 
   React.useEffect(() => {
     if (RD.isFailure(readTokenState)) {
       navigation.replace('Onboarding/Welcome', {});
     }
   }, [readTokenState]);
-  const tokenState = useSelector(token.getToken);
+
   React.useEffect(() => {
     if (O.isSome(tokenState)) {
       navigation.replace('Main/Tabs', {});
