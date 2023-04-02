@@ -31,7 +31,7 @@ type Props = StateProps & DispatchProps & OwnProps;
 const SignIn = (props: Props) => {
   React.useEffect(() => {
     if (option.isSome(props.accessToken.currentToken)) {
-      props.navigation.reset({ routes: [{ name: 'Main/Tabs' }] });
+      props.navigation.navigate('Main/Tabs', {});
     }
   }, [props.accessToken]);
 

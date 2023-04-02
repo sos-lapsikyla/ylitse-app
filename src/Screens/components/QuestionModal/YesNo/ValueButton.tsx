@@ -18,16 +18,11 @@ export const ValueButton: React.FC<Props> = ({
   style,
   onPress,
 }) => (
-  <RN.Pressable
-    style={({ pressed }) =>
-      pressed ? { opacity: 0.9, ...styles.pressable } : styles.pressable
-    }
-    onPress={() => onPress(value)}
-  >
+  <RN.TouchableOpacity style={styles.pressable} onPress={() => onPress(value)}>
     <RN.View style={[styles.button, style]}>
       <RN.Text style={styles.text}>{text}</RN.Text>
     </RN.View>
-  </RN.Pressable>
+  </RN.TouchableOpacity>
 );
 
 const styles = RN.StyleSheet.create({

@@ -19,6 +19,7 @@ export const reducer: Reducer<AppState['feedbackQuestions'], Action> = (
 ) => {
   switch (action.type) {
     case 'feedback/getQuestions/start': {
+      console.log('fetching questions start');
       return automaton.loop(
         RD.pending,
         withToken(
@@ -29,10 +30,12 @@ export const reducer: Reducer<AppState['feedbackQuestions'], Action> = (
     }
 
     case 'feedback/getQuestions/end': {
+      console.log('fetching questions end');
       return pipe(action.payload, RD.fromEither);
     }
 
     case 'feedback/sendAnswer/start': {
+      console.log('qiestion sending start');
       const nextQuestions = pipe(
         state,
         RD.getOrElse<unknown, feedbackApi.Question[]>(() => []),
@@ -49,6 +52,7 @@ export const reducer: Reducer<AppState['feedbackQuestions'], Action> = (
     }
 
     case 'feedback/sendAnswer/end': {
+      console.log('qiestion sent');
       const hasUnAnsweredQuestions = pipe(
         state,
         RD.getOrElse<unknown, feedbackApi.Question[]>(() => []),
@@ -66,6 +70,7 @@ export const reducer: Reducer<AppState['feedbackQuestions'], Action> = (
     }
 
     case 'feedback/reset/': {
+      console.log('resetting state');
       return initialState;
     }
 

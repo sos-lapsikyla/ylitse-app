@@ -47,6 +47,8 @@ export type Question = t.TypeOf<typeof question>;
 export function fetchQuestions(
   accessToken: authApi.AccessToken,
 ): TE.TaskEither<string, Array<Question>> {
+  console.log('going to fetch questions');
+
   return http.validateResponse(
     http.get(`${config.baseUrl}/feedback/needs_answers`, {
       headers: authApi.authHeader(accessToken),
