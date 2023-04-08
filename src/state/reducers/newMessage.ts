@@ -3,8 +3,7 @@ import * as RD from '@devexperts/remote-data-ts';
 import * as T from 'fp-ts/lib/Task';
 import * as record from 'fp-ts/lib/Record';
 import * as O from 'fp-ts/lib/Option';
-import { pipe } from 'fp-ts/lib/function';
-import { flow } from 'fp-ts/lib/function';
+import { pipe, flow } from 'fp-ts/lib/function';
 import { cmd } from '../middleware';
 
 import * as messageApi from '../../api/messages';

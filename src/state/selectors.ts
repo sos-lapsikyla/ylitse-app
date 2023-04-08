@@ -5,8 +5,7 @@ import * as record from 'fp-ts/lib/Record';
 import * as array from 'fp-ts/lib/Array';
 import { monoidAny } from 'fp-ts/lib/Monoid';
 import * as RD from '@devexperts/remote-data-ts';
-import { pipe } from 'fp-ts/lib/function';
-import { flow, constant } from 'fp-ts/lib/function';
+import { pipe, flow, constant } from 'fp-ts/lib/function';
 
 import * as mentorsApi from '../api/mentors';
 
