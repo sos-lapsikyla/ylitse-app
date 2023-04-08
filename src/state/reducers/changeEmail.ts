@@ -2,7 +2,7 @@ import * as automaton from 'redux-automaton';
 import * as O from 'fp-ts/lib/Option';
 import * as RD from '@devexperts/remote-data-ts';
 import * as TE from 'fp-ts/lib/TaskEither';
-import { pipe } from 'fp-ts/lib/pipeable';
+import { pipe } from 'fp-ts/lib/function';
 
 import * as authApi from '../../api/auth';
 import * as accountApi from '../../api/account';

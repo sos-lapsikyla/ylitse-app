@@ -1,7 +1,7 @@
 import React from 'react';
 import RN from 'react-native';
 import * as RD from '@devexperts/remote-data-ts';
-import { pipe } from 'fp-ts/lib/pipeable';
+import { pipe } from 'fp-ts/lib/function';
 
 import Spinner from './Spinner';
 import Message from './Message';

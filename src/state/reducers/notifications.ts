@@ -2,7 +2,7 @@ import * as automaton from 'redux-automaton';
 import * as RD from '@devexperts/remote-data-ts';
 import * as T from 'fp-ts/lib/Task';
 import * as E from 'fp-ts/lib/Either';
-import { pipe } from 'fp-ts/lib/pipeable';
+import { pipe } from 'fp-ts/lib/function';
 import { fold } from 'fp-ts/lib/boolean';
 
 import * as notificationsApi from '../../api/notifications';

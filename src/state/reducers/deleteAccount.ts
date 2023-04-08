@@ -1,7 +1,7 @@
 import { Reducer, loop } from 'redux-automaton';
 import * as RD from '@devexperts/remote-data-ts';
 import * as E from 'fp-ts/lib/Either';
-import { pipe } from 'fp-ts/lib/pipeable';
+import { pipe } from 'fp-ts/lib/function';
 
 import * as accountApi from '../../api/account';
 

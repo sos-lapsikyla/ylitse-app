@@ -1,5 +1,5 @@
 import * as t from 'io-ts';
-import { pipe } from 'fp-ts/lib/pipeable';
+import { pipe } from 'fp-ts/lib/function';
 import * as TE from 'fp-ts/lib/TaskEither';
 import { identity, tuple } from 'fp-ts/lib/function';
 

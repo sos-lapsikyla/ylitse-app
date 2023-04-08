@@ -10,7 +10,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { StackScreenProps } from '@react-navigation/stack';
 import { StackRoutes } from 'src/Screens';
 
-import { pipe } from 'fp-ts/lib/pipeable';
+import { pipe } from 'fp-ts/lib/function';
 import * as RD from '@devexperts/remote-data-ts';
 
 import Message from '../../components/Message';

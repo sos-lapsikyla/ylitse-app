@@ -16,7 +16,6 @@ import Settings, { SettingsRoute } from './Settings';
 import QuestionModal from '../components/QuestionModal';
 import { Answer } from '../../api/feedback';
 import { TabBar } from './TabBar';
-import { Text, View } from 'react-native';
 
 export type TabsRoute = { 'Main/Tabs': {} };
 
@@ -47,7 +46,6 @@ const Main = ({ navigation }: Props) => {
   useRefetch({ callback: handleRefetchData });
 
   React.useEffect(() => {
-    console.log('reset navigation state');
     navigation.dispatch(state => {
       const routes = state.routes.filter(r => !r.name.includes('Onboarding'));
 
@@ -58,8 +56,6 @@ const Main = ({ navigation }: Props) => {
       });
     });
   }, []);
-
-  console.log('perse', feedbackQuestion);
 
   return (
     <>
@@ -72,9 +68,6 @@ const Main = ({ navigation }: Props) => {
         <Tab.Screen name="Main/MentorList" component={MentorList} />
         <Tab.Screen name="Main/BuddyList" component={BuddyList} />
       </Tab.Navigator>
-      <View>
-        <Text>moi</Text>
-      </View>
       {feedbackQuestion && (
         <QuestionModal
           question={feedbackQuestion}

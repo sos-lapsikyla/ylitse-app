@@ -1,7 +1,7 @@
 import React from 'react';
 import RN from 'react-native';
 import * as RD from '@devexperts/remote-data-ts';
-import { pipe } from 'fp-ts/lib/pipeable';
+import { pipe } from 'fp-ts/lib/function';
 
 import { StackScreenProps } from '@react-navigation/stack';
 import { StackRoutes } from '..';

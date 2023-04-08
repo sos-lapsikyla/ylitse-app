@@ -2,7 +2,7 @@ import * as t from 'io-ts';
 import * as TE from 'fp-ts/lib/TaskEither';
 import * as E from 'fp-ts/lib/Either';
 import * as O from 'fp-ts/lib/Option';
-import { pipe } from 'fp-ts/lib/pipeable';
+import { pipe } from 'fp-ts/lib/function';
 import { flow } from 'fp-ts/lib/function';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 

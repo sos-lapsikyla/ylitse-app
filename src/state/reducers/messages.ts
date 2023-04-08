@@ -7,7 +7,7 @@ import * as E from 'fp-ts/lib/Either';
 import * as array from 'fp-ts/lib/Array';
 import { flow, identity } from 'fp-ts/lib/function';
 import * as record from 'fp-ts/lib/Record';
-import { pipe } from 'fp-ts/lib/pipeable';
+import { pipe } from 'fp-ts/lib/function';
 
 import * as messageApi from '../../api/messages';
 import * as buddyApi from '../../api/buddies';
