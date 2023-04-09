@@ -17,15 +17,27 @@ type Props = {
 
 export default (props: Props) => {
   //github.com/facebook/react-native/issues/36494
+  const [onChangeShield, setOnChangeShield] = React.useState(true);
+
   React.useEffect(() => {
-    setTimeout(() => props.setStatusMessage(props.statusMessage), 300);
+    if (onChangeShield) {
+      setTimeout(() => setOnChangeShield(false), 300);
+    }
   }, []);
+
+  const handleTextChange = (text: string) => {
+    if (onChangeShield) {
+      return;
+    }
+
+    props.setStatusMessage(text);
+  };
 
   return (
     <>
       <InputField
         value={props.statusMessage}
-        onChangeText={props.setStatusMessage}
+        onChangeText={handleTextChange}
         maxLength={props.maxLength}
         multiline
         testID="main.settings.account.status.input"
