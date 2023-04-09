@@ -16,13 +16,18 @@ type Props = {
 };
 
 export default (props: Props) => {
+  //github.com/facebook/react-native/issues/36494
+  React.useEffect(() => {
+    setTimeout(() => props.setStatusMessage(props.statusMessage), 300);
+  }, []);
+
   return (
     <>
       <InputField
         value={props.statusMessage}
         onChangeText={props.setStatusMessage}
         maxLength={props.maxLength}
-        multiline={true}
+        multiline
         testID="main.settings.account.status.input"
       />
       <RN.Text style={styles.maxCharactersText}>
