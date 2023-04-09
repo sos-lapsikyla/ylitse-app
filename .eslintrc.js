@@ -1,16 +1,9 @@
 module.exports = {
   root: true,
-  extends: [
-    '@react-native-community',
-
-
-    'prettier',
-
-    'plugin:import/typescript',
-  ],
-  'parser': '@typescript-eslint/parser',
-  'parserOptions': {
-    'project': './tsconfig.json'
+  extends: ['@react-native-community', 'prettier', 'plugin:import/typescript'],
+  parser: '@typescript-eslint/parser',
+  parserOptions: {
+    project: './tsconfig.json',
   },
   plugins: [
     '@typescript-eslint',
@@ -19,10 +12,10 @@ module.exports = {
     'react',
     'react-hooks',
     'react-native',
-],
+  ],
   settings: {
-    'react': {
-      'version': 'detect'
+    react: {
+      version: 'detect',
     },
     'import/resolver': {
       node: {
@@ -38,14 +31,15 @@ module.exports = {
     '@typescript-eslint/no-unused-vars': [
       'error',
       {
-        'args': 'after-used',
-        'argsIgnorePattern': '^_$',
-        'ignoreRestSiblings': true
-      }
+        args: 'after-used',
+        argsIgnorePattern: '^_$',
+        ignoreRestSiblings: true,
+      },
     ],
     '@typescript-eslint/restrict-plus-operands': 'error',
     'react/prop-types': ['off'],
     'react/destructuring-assignment': ['off'],
+    'react/no-unstable-nested-components': ['warn', { allowAsProps: true }],
     'react-hooks/rules-of-hooks': 'error',
     'react-hooks/exhaustive-deps': ['off'],
     'import/no-unresolved': [2, { commonjs: true }],
@@ -56,16 +50,16 @@ module.exports = {
     '@typescript-eslint/no-shadow': ['error'],
     'padding-line-between-statements': [
       'error',
-      { 'blankLine': 'always', 'prev': '*', 'next': 'function' },
-      { 'blankLine': 'always', 'prev': 'function', 'next': '*' },
-      { 'blankLine': 'always', 'prev': '*', 'next': 'return' },
-      { 'blankLine': 'always', 'prev': '*', 'next': 'if' },
-      { 'blankLine': 'always', 'prev': 'if', 'next': '*' },
+      { blankLine: 'always', prev: '*', next: 'function' },
+      { blankLine: 'always', prev: 'function', next: '*' },
+      { blankLine: 'always', prev: '*', next: 'return' },
+      { blankLine: 'always', prev: '*', next: 'if' },
+      { blankLine: 'always', prev: 'if', next: '*' },
       {
-        'blankLine': 'always',
-        'prev': '*',
-        'next': ['multiline-const', 'multiline-let']
-      }
+        blankLine: 'always',
+        prev: '*',
+        next: ['multiline-const', 'multiline-let'],
+      },
     ],
   },
 };
