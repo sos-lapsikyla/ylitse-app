@@ -11,7 +11,7 @@ export const request = (url: string, options: RequestInit) =>
   pipe(
     TE.tryCatch(
       () => fetch(url, options),
-      () => 'Connection failure.',
+      () => 'Connection failure',
     ),
     TE.chain(response =>
       response.ok

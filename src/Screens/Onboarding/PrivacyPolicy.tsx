@@ -36,7 +36,7 @@ const PrivacyPolicy = ({ navigation, route }: Props) => {
 
   React.useEffect(() => {
     if (O.isSome(accessToken)) {
-      navigation.reset({ routes: [{ name: 'Main/Tabs' }] });
+      navigation.navigate('Main/Tabs', {});
     }
   }, [accessToken]);
 

@@ -91,7 +91,11 @@ export function refreshAccessToken(
 export function authHeader({
   accessToken,
 }: AccessToken): RequestInit['headers'] {
-  return { Authorization: `Bearer ${accessToken}` };
+  return {
+    Authorization: `Bearer ${accessToken}`,
+    Accept: 'application/json',
+    ['Content-Type']: 'application/json',
+  };
 }
 
 export type NewPassword = {
