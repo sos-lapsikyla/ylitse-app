@@ -20,7 +20,7 @@ module.exports = {
       type: 'ios.app',
       binaryPath: 'ios/build/Build/Products/Debug-iphonesimulator/ylitse.app',
       build:
-        "xcodebuild -workspace ios/ylitse.xcworkspace -configuration Debug -scheme ylitse -destination 'platform=iOS Simulator,name=iPhone 14,OS=16.2' -derivedDataPath ios/build",
+        "xcodebuild -workspace ios/ylitse.xcworkspace -configuration Debug -scheme ylitse -destination 'platform=iOS Simulator,name=iPhone 14,OS=16.4' -derivedDataPath ios/build",
     },
     'android.debug': {
       type: 'android.apk',
