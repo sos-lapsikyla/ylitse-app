@@ -136,7 +136,7 @@ export default ({ navigation }: Props) => {
               resizeMethod="scale"
             />
             <RN.ScrollView
-              style={{ ...styles.carouselContainer, height: skillAreaHeight }}
+              style={{ ...styles.skillContainer, height: skillAreaHeight }}
               showsHorizontalScrollIndicator={true}
               contentContainerStyle={styles.contentContainer}
             >
@@ -233,7 +233,7 @@ const styles = RN.StyleSheet.create({
   },
   topGradient: {
     height: 40,
-    tintColor: '#EFF5F9',
+    tintColor: colors.background,
     marginBottom: -40,
     width: '100%',
     alignSelf: 'stretch',
@@ -259,7 +259,8 @@ const styles = RN.StyleSheet.create({
     justifyContent: 'space-between',
     flexGrow: 1,
   },
-  carouselContainer: {
+  skillContainer: {
+    paddingVertical: 12,
     flexShrink: 1,
   },
   icon: {
@@ -271,8 +272,7 @@ const styles = RN.StyleSheet.create({
     marginTop: 3,
   },
   hideInactiveSwitch: {
-    paddingTop: 15,
-    paddingBottom: 15,
+    paddingTop: 16,
   },
   searchField: {
     flex: 1,
