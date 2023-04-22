@@ -87,6 +87,18 @@ Start the app on a emulator
 npx react-native run-android
 ```
 
+
+### Debugging
+
+We are using [Flipper](https://fbflipper.com/) for debugging, so install the [Desktop application](https://fbflipper.com/docs/getting-started/) to your environment
+
+1. Run the application
+2. Open [Flipper](https://fbflipper.com/docs/getting-started/#setup-your-react-native-app)
+3. Install plugin [redux-debugger](https://github.com/jk-gan/flipper-plugin-redux-debugger)
+4. Now you should see all logs, networking and redux things in the Flipper tool
+
+
+
 #### Fixing issue when running API locally
 Setup adb reverse connections:
 ```sh
