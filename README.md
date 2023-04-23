@@ -97,7 +97,7 @@ We are using [Flipper](https://fbflipper.com/) for debugging, so install the [De
 3. Install plugin [redux-debugger](https://github.com/jk-gan/flipper-plugin-redux-debugger)
 4. Now you should see all logs, networking and redux things in the Flipper tool
 
-
+For troubleshooting, please refer to the [Flipper documentation](https://fbflipper.com/docs/getting-started/troubleshooting/)
 
 #### Fixing issue when running API locally
 Setup adb reverse connections:
@@ -156,7 +156,7 @@ YLITSE_API_USER={{userwithadminaccess}} YLITSE_API_PASS={{password}} YLITSE_API_
 
 Replace the moustached values with your values
 
-## Troubleshooting
+#### Troubleshooting
 
 - If you get error ==ReferenceError: fetch is not defined== then you are not running the tests with npm 18, which ships with fetch. Refer to the _Node version_ section of this README
 

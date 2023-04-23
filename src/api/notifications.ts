@@ -1,4 +1,4 @@
-import RN from 'react-native';
+import RN, { PermissionsAndroid } from 'react-native';
 import * as t from 'io-ts';
 import { fold } from 'fp-ts/lib/boolean';
 import * as TE from 'fp-ts/lib/TaskEither';
@@ -25,8 +25,21 @@ const checkIfHasPermission = TE.tryCatch(
   () => 'Has permissions threw.',
 );
 
+const getAndroidPermission = async () => {
+  const permissionStatus = await PermissionsAndroid.request(
+    PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS,
+  );
+
+  return permissionStatus === PermissionsAndroid.RESULTS.GRANTED
+    ? messaging.AuthorizationStatus.AUTHORIZED
+    : messaging.AuthorizationStatus.DENIED;
+};
+
 const requestPermission = TE.tryCatch(
-  () => messaging().requestPermission(),
+  () =>
+    RN.Platform.OS === 'android'
+      ? getAndroidPermission()
+      : messaging().requestPermission(),
   () => 'Permissions requesting threw.',
 );
 
