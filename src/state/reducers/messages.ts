@@ -5,9 +5,8 @@ import * as RD from '@devexperts/remote-data-ts';
 import * as T from 'fp-ts/lib/Task';
 import * as E from 'fp-ts/lib/Either';
 import * as array from 'fp-ts/lib/Array';
-import { flow, identity } from 'fp-ts/lib/function';
+import { pipe, flow, identity } from 'fp-ts/lib/function';
 import * as record from 'fp-ts/lib/Record';
-import { pipe } from 'fp-ts/lib/pipeable';
 
 import * as messageApi from '../../api/messages';
 import * as buddyApi from '../../api/buddies';

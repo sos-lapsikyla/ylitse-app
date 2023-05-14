@@ -6,6 +6,7 @@ interface Props {
   onPress: () => void | undefined;
   style?: RN.StyleProp<RN.ViewStyle>;
   testID?: string;
+  children: React.ReactNode;
 }
 
 const ButtonContainer: React.FC<Props> = ({

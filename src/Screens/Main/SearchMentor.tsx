@@ -3,10 +3,14 @@ import RN from 'react-native';
 import * as redux from 'redux';
 import { useDispatch, useSelector } from 'react-redux';
 
-import * as navigationProps from '../../lib/navigation-props';
-import useLayout from 'src/lib/use-layout';
-
+import * as mentorState from '../../state/reducers/mentors';
+import * as filterMentorState from '../../state/reducers/filterMentors';
 import * as actions from '../../state/actions';
+
+import { StackScreenProps } from '@react-navigation/stack';
+import { StackRoutes } from '..';
+
+import useLayout from 'src/lib/use-layout';
 
 import fonts from '../components/fonts';
 import Message from '../components/Message';
@@ -19,20 +23,13 @@ import TitledContainer from '../components/TitledContainer';
 import { textShadow } from '../components/shadow';
 import colors from '../components/colors';
 
-import * as mentorState from '../../state/reducers/mentors';
-import * as filterMentorState from '../../state/reducers/filterMentors';
-import { MentorListRoute } from './MentorList';
-
 import CreatedBySosBanner from '../components/CreatedBySosBanner';
 
 export type SearchMentorRoute = {
   'Main/SearchMentor': {};
 };
 
-type Props = navigationProps.NavigationProps<
-  SearchMentorRoute,
-  MentorListRoute
->;
+type Props = StackScreenProps<StackRoutes, 'Main/SearchMentor'>;
 
 export default ({ navigation }: Props) => {
   const [skillSearch, setSkillSearch] = React.useState('');
@@ -139,7 +136,7 @@ export default ({ navigation }: Props) => {
               resizeMethod="scale"
             />
             <RN.ScrollView
-              style={{ ...styles.carouselContainer, height: skillAreaHeight }}
+              style={{ ...styles.skillContainer, height: skillAreaHeight }}
               showsHorizontalScrollIndicator={true}
               contentContainerStyle={styles.contentContainer}
             >
@@ -236,7 +233,7 @@ const styles = RN.StyleSheet.create({
   },
   topGradient: {
     height: 40,
-    tintColor: '#EFF5F9',
+    tintColor: colors.background,
     marginBottom: -40,
     width: '100%',
     alignSelf: 'stretch',
@@ -262,7 +259,8 @@ const styles = RN.StyleSheet.create({
     justifyContent: 'space-between',
     flexGrow: 1,
   },
-  carouselContainer: {
+  skillContainer: {
+    paddingVertical: 12,
     flexShrink: 1,
   },
   icon: {
@@ -274,8 +272,7 @@ const styles = RN.StyleSheet.create({
     marginTop: 3,
   },
   hideInactiveSwitch: {
-    paddingTop: 15,
-    paddingBottom: 15,
+    paddingTop: 16,
   },
   searchField: {
     flex: 1,

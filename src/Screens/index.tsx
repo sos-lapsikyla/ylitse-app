@@ -1,6 +1,6 @@
 import React from 'react';
-import { createAppContainer } from 'react-navigation';
-import * as reactNavigationStack from 'react-navigation-stack';
+import { NavigationContainer } from '@react-navigation/native';
+import * as reactNavigationStack from '@react-navigation/stack';
 
 import Splash, { SplashRoute } from './Splash';
 import Welcome, { WelcomeRoute } from './Onboarding/Welcome';
@@ -28,14 +28,14 @@ import DeleteAccount, {
 import PasswordChange, { PasswordChangeRoute } from './Main/Settings/Password';
 import EmailChange, { EmailChangeRoute } from './Main/Settings/Email';
 
-type RouteName = keyof (SplashRoute &
+export type StackRoutes = SplashRoute &
   WelcomeRoute &
   MentorListRoute &
-  SignUpRoute &
   SignRoute &
   DisplayNameRoute &
   EmailRoute &
   PrivacyPolicyRoute &
+  SearchMentorRoute &
   SignInRoute &
   TabsRoute &
   MentorCardExpandedRoute &
@@ -45,99 +45,43 @@ type RouteName = keyof (SplashRoute &
   DeleteAccountRoute &
   PasswordChangeRoute &
   EmailChangeRoute &
-  SearchMentorRoute);
-type Screen =
-  | typeof Splash
-  | typeof Welcome
-  | typeof MentorList
-  | typeof Sign
-  | typeof SignUp
-  | typeof DisplayName
-  | typeof Email
-  | typeof PrivacyPolicy
-  | typeof SignIn
-  | typeof Tabs
-  | typeof MentorCardExpanded
-  | typeof Chat
-  | typeof FolderedChats
-  | typeof Logout
-  | typeof DeleteAccount
-  | typeof PasswordChange
-  | typeof EmailChange
-  | typeof SearchMentor;
+  SignUpRoute;
 
-export type Route = keyof typeof routes;
+const Stack = reactNavigationStack.createStackNavigator<StackRoutes>();
 
-const routes: {
-  [name in RouteName]: { screen: Screen };
-} = {
-  Splash: {
-    screen: Splash,
-  },
-  'Onboarding/Welcome': {
-    screen: Welcome,
-  },
-  'Onboarding/MentorList': {
-    screen: MentorList,
-  },
-  'Onboarding/Sign': {
-    screen: Sign,
-  },
-  'Onboarding/SignUp': {
-    screen: SignUp,
-  },
-  'Onboarding/SignIn': {
-    screen: SignIn,
-  },
-  'Onboarding/DisplayName': {
-    screen: DisplayName,
-  },
-  'Onboarding/Email': {
-    screen: Email,
-  },
-  'Onboarding/PrivacyPolicy': {
-    screen: PrivacyPolicy,
-  },
-  'Main/Tabs': {
-    screen: Tabs,
-  },
-  'Main/MentorCardExpanded': {
-    screen: MentorCardExpanded,
-  },
-  'Main/Chat': {
-    screen: Chat,
-  },
-  'Main/FolderedChats': {
-    screen: FolderedChats,
-  },
-  'Main/Settings/Logout': {
-    screen: Logout,
-  },
-  'Main/Settings/DeleteAccount': {
-    screen: DeleteAccount,
-  },
-  'Main/Settings/PasswordChange': {
-    screen: PasswordChange,
-  },
-  'Main/Settings/EmailChange': {
-    screen: EmailChange,
-  },
-  'Main/SearchMentor': {
-    screen: SearchMentor,
-  },
-};
-
-const initialRouteName: RouteName = 'Splash';
-
-const config = {
-  initialRouteName,
-  headerMode: 'none' as const,
-};
-
-const StackNavigator = reactNavigationStack.createStackNavigator(
-  routes,
-  config,
+export default () => (
+  <NavigationContainer>
+    <Stack.Navigator
+      initialRouteName="Splash"
+      screenOptions={{ headerShown: false }}
+    >
+      <Stack.Screen name="Splash" component={Splash} />
+      <Stack.Screen name="Onboarding/Welcome" component={Welcome} />
+      <Stack.Screen name="Onboarding/MentorList" component={MentorList} />
+      <Stack.Screen name="Onboarding/Sign" component={Sign} />
+      <Stack.Screen name="Onboarding/SignUp" component={SignUp} />
+      <Stack.Screen name="Onboarding/SignIn" component={SignIn} />
+      <Stack.Screen name="Onboarding/DisplayName" component={DisplayName} />
+      <Stack.Screen name="Onboarding/Email" component={Email} />
+      <Stack.Screen name="Onboarding/PrivacyPolicy" component={PrivacyPolicy} />
+      <Stack.Screen name="Main/Tabs" component={Tabs} />
+      <Stack.Screen
+        name="Main/MentorCardExpanded"
+        component={MentorCardExpanded}
+      />
+      <Stack.Screen name="Main/SearchMentor" component={SearchMentor} />
+      <Stack.Screen name="Main/Chat" component={Chat} />
+      <Stack.Screen name="Main/FolderedChats" component={FolderedChats} />
+      <Stack.Screen name="Main/Settings/Logout" component={Logout} />
+      <Stack.Screen
+        name="Main/Settings/DeleteAccount"
+        component={DeleteAccount}
+      />
+      <Stack.Screen
+        name="Main/Settings/PasswordChange"
+        component={PasswordChange}
+      />
+      <Stack.Screen name="Main/Settings/EmailChange" component={EmailChange} />
+    </Stack.Navigator>
+  </NavigationContainer>
 );
-const AppContainer = createAppContainer(StackNavigator);
-
-export default () => <AppContainer />;

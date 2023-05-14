@@ -2,11 +2,14 @@ import React from 'react';
 import RN from 'react-native';
 import * as redux from 'redux';
 import { useDispatch, useSelector } from 'react-redux';
-import { SafeAreaView } from 'react-navigation';
-import { pipe } from 'fp-ts/lib/pipeable';
+
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { StackScreenProps } from '@react-navigation/stack';
+import { StackRoutes } from 'src/Screens';
+
+import { pipe } from 'fp-ts/lib/function';
 import * as RD from '@devexperts/remote-data-ts';
 
-import * as navigationProps from '../../../lib/navigation-props';
 import * as actions from '../../../state/actions';
 import * as selector from '../../../state/selectors';
 import * as state from '../../../state/reducers/changePassword';
@@ -17,7 +20,6 @@ import CreatedBySosBanner from '../../components/CreatedBySosBanner';
 import Spinner from '../../components/Spinner';
 import { Toast } from '../../components/Toast';
 import AlertModal from '../../components/Modal';
-import { MentorListRoute } from '../../Onboarding/MentorList';
 import PasswordForm from 'src/Screens/components/PasswordForm';
 
 import colors from '../../components/colors';
@@ -27,10 +29,7 @@ export type PasswordChangeRoute = {
   'Main/Settings/PasswordChange': {};
 };
 
-type Props = navigationProps.NavigationProps<
-  PasswordChangeRoute,
-  MentorListRoute
->;
+type Props = StackScreenProps<StackRoutes, 'Main/Settings/PasswordChange'>;
 
 export default ({ navigation }: Props) => {
   const account = useSelector(selector.getAccount);
@@ -85,10 +84,7 @@ export default ({ navigation }: Props) => {
         showsVerticalScrollIndicator={false}
         testID={'main.settings.password.view'}
       >
-        <SafeAreaView
-          forceInset={{ bottom: 'always' }}
-          style={styles.buttonContainer}
-        >
+        <SafeAreaView style={styles.buttonContainer}>
           <Message
             style={styles.title}
             id="main.settings.account.password.title"

@@ -8,13 +8,11 @@ import * as state from '../../state';
 import * as actions from '../../state/actions';
 import * as authApi from '../../api/auth';
 
-import * as navigationProps from '../../lib/navigation-props';
+import { StackScreenProps } from '@react-navigation/stack';
+import { StackRoutes } from '..';
 
 import OnboardingBackground from '../components/OnboardingBackground';
 import LoginCard from '../components/LoginCard';
-
-import navigateMain from './navigateMain';
-import { TabsRoute } from '../Main/Tabs';
 
 export type SignInRoute = {
   'Onboarding/SignIn': {};
@@ -27,13 +25,13 @@ type StateProps = {
 type DispatchProps = {
   login: (creds: authApi.Credentials) => void | undefined;
 };
-type OwnProps = navigationProps.NavigationProps<SignInRoute, TabsRoute>;
+type OwnProps = StackScreenProps<StackRoutes, 'Onboarding/SignIn'>;
 type Props = StateProps & DispatchProps & OwnProps;
 
 const SignIn = (props: Props) => {
   React.useEffect(() => {
     if (option.isSome(props.accessToken.currentToken)) {
-      navigateMain(props.navigation);
+      props.navigation.navigate('Main/Tabs', {});
     }
   }, [props.accessToken]);
 
@@ -45,9 +43,6 @@ const SignIn = (props: Props) => {
     props.login(credentials);
   };
 
-  // React.useEffect(() => {
-  //   props.login({ userName: 'test', password: 'test' });
-  // }, []);
   return (
     <OnboardingBackground testID="onboarding.signIn.view">
       <LoginCard

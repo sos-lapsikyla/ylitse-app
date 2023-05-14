@@ -1,8 +1,10 @@
 import React from 'react';
 import RN from 'react-native';
-import { SafeAreaView } from 'react-navigation';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
-import * as navigationProps from '../../lib/navigation-props';
+import { StackScreenProps } from '@react-navigation/stack';
+import { StackRoutes } from '..';
+
 import * as config from '../../api/config';
 
 import Card from '../components/Card';
@@ -14,13 +16,11 @@ import fonts from '../components/fonts';
 import colors from '../components/colors';
 import Link from '../components/Link';
 
-import { MentorListRoute } from './MentorList';
-
 export type WelcomeRoute = {
   'Onboarding/Welcome': {};
 };
 
-type Props = navigationProps.NavigationProps<WelcomeRoute, MentorListRoute>;
+type Props = StackScreenProps<StackRoutes, 'Onboarding/Welcome'>;
 
 export default ({ navigation }: Props) => {
   const navigateNext = () => {
@@ -28,10 +28,7 @@ export default ({ navigation }: Props) => {
   };
 
   return (
-    <SafeAreaView
-      forceInset={{ top: 'always', bottom: 'always' }}
-      style={styles.background}
-    >
+    <SafeAreaView style={styles.background}>
       <RN.ScrollView
         style={styles.scroll}
         contentContainerStyle={styles.scrollContent}

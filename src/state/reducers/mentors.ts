@@ -3,8 +3,7 @@ import * as RD from '@devexperts/remote-data-ts';
 import * as T from 'fp-ts/lib/Task';
 import * as E from 'fp-ts/lib/Either';
 
-import { flow } from 'fp-ts/lib/function';
-import { pipe } from 'fp-ts/lib/pipeable';
+import { pipe, flow } from 'fp-ts/lib/function';
 
 import * as localization from '../../localization';
 

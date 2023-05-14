@@ -1,7 +1,8 @@
 import React from 'react';
 import RN from 'react-native';
 
-import * as navigationProps from '../../lib/navigation-props';
+import { StackScreenProps } from '@react-navigation/stack';
+import { StackRoutes } from '..';
 
 import OnboardingBackground from '../components/OnboardingBackground';
 import Card from '../components/Card';
@@ -9,17 +10,12 @@ import MessageButton from '../components/MessageButton';
 import fonts from '../components/fonts';
 import colors from '../components/colors';
 
-import { SignInRoute } from './SignIn';
-import { SignUpRoute } from './SignUp';
-
 export type SignRoute = {
   'Onboarding/Sign': {};
 };
 
-type Props = navigationProps.NavigationProps<
-  SignRoute,
-  SignInRoute & SignUpRoute
->;
+type Props = StackScreenProps<StackRoutes, 'Onboarding/Sign'>;
+
 export default ({ navigation }: Props) => {
   const navigateSignUp = () => {
     navigation.navigate('Onboarding/SignUp', {});

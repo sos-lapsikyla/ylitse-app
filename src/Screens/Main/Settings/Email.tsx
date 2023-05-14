@@ -2,15 +2,16 @@ import React from 'react';
 import RN from 'react-native';
 import * as redux from 'redux';
 import { useDispatch, useSelector } from 'react-redux';
-import { SafeAreaView } from 'react-navigation';
-import { pipe } from 'fp-ts/lib/pipeable';
-import * as RD from '@devexperts/remote-data-ts';
-
-import * as navigationProps from '../../../lib/navigation-props';
-
 import * as changeEmailState from '../../../state/reducers/changeEmail';
 import * as actions from '../../../state/actions';
 import * as selector from '../../../state/selectors';
+
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { StackScreenProps } from '@react-navigation/stack';
+import { StackRoutes } from 'src/Screens';
+
+import { pipe } from 'fp-ts/lib/function';
+import * as RD from '@devexperts/remote-data-ts';
 
 import Message from '../../components/Message';
 import ScreenTitle from '../../components/ScreenTitle';
@@ -18,8 +19,6 @@ import colors from '../../components/colors';
 import fonts from '../../components/fonts';
 import CreatedBySosBanner from '../../components/CreatedBySosBanner';
 import Spinner from '../../components/Spinner';
-
-import { MentorListRoute } from '../../Onboarding/MentorList';
 
 import { Toast } from '../../components/Toast';
 import EmailForm from '../../components/EmailForm';
@@ -29,7 +28,7 @@ export type EmailChangeRoute = {
   'Main/Settings/EmailChange': {};
 };
 
-type Props = navigationProps.NavigationProps<EmailChangeRoute, MentorListRoute>;
+type Props = StackScreenProps<StackRoutes, 'Main/Settings/EmailChange'>;
 
 export default ({ navigation }: Props) => {
   const account = useSelector(selector.getAccount);
@@ -75,10 +74,7 @@ export default ({ navigation }: Props) => {
         showsVerticalScrollIndicator={false}
         testID={'main.settings.email.view'}
       >
-        <SafeAreaView
-          forceInset={{ bottom: 'always' }}
-          style={styles.buttonContainer}
-        >
+        <SafeAreaView style={styles.buttonContainer}>
           <Message
             style={styles.title}
             id="main.settings.account.email.title"

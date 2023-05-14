@@ -1,8 +1,6 @@
 import React from 'react';
 import RN from 'react-native';
-import { SafeAreaView } from 'react-navigation';
-
-import * as navigationProps from '../../lib/navigation-props';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 import * as mentorApi from '../../api/mentors';
 import * as buddyState from '../../state/reducers/buddies';
@@ -17,7 +15,8 @@ import Button from '../components/Button';
 import colors from '../components/colors';
 import fonts from '../components/fonts';
 
-import { ChatRoute } from './Chat';
+import { StackScreenProps } from '@react-navigation/stack';
+import { StackRoutes } from '..';
 
 const langMap: Record<string, RN.ImageSourcePropType> = {
   Finnish: require('../images/flags/fi.svg'),
@@ -34,16 +33,13 @@ export type MentorCardExpandedRoute = {
   };
 };
 
-type OwnProps = navigationProps.NavigationProps<
-  MentorCardExpandedRoute,
-  ChatRoute
->;
+type OwnProps = StackScreenProps<StackRoutes, 'Main/MentorCardExpanded'>;
 
 type Props = OwnProps;
 
-const MentorCardExpanded = ({ navigation }: Props) => {
-  const mentor = navigation.getParam('mentor');
-  const didNavigateFromChat = navigation.getParam('didNavigateFromChat');
+const MentorCardExpanded = ({ navigation, route }: Props) => {
+  const mentor = route.params?.mentor;
+  const didNavigateFromChat = route.params?.didNavigateFromChat;
   const color = getBuddyColor(mentor.buddyId);
   const isBuddy = useSelector(buddyState.getIsBuddy(mentor.buddyId));
   const shouldNavigateBack = didNavigateFromChat && isBuddy;
@@ -96,7 +92,7 @@ const MentorCardExpanded = ({ navigation }: Props) => {
         <Message id={'main.mentor.story'} style={styles.subtitle} />
         <MentorStory style={styles.story} story={mentor.story} showAll={true} />
         <Skills style={styles.skills} color={color} skills={mentor.skills} />
-        <SafeAreaView style={styles.safeArea} forceInset={{ bottom: 'always' }}>
+        <SafeAreaView style={styles.safeArea}>
           <Button
             style={styles.button}
             onPress={shouldNavigateBack ? goBack : navigateToChat}

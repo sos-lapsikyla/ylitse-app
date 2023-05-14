@@ -114,8 +114,6 @@ describe('Change status message', () => {
       0.2,
     );
 
-    await element(by.id('main.settings.account.status.save')).tap();
-
     await expect(element(by.text(newStatusMessage))).toBeVisible();
 
     await forceLogout();

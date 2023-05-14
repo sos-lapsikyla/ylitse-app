@@ -1,11 +1,12 @@
 import * as buddyState from '../../../state/reducers/buddies';
 import * as RD from '@devexperts/remote-data-ts';
-import * as navigationProps from '../../../lib/navigation-props';
 
 import { ChatStatus, Buddy } from '../../../api/buddies';
-import { ChatRoute } from '../Chat';
 import { MessageId } from '../../../localization/fi';
 import { AppState } from '../../../state/types';
+
+import { StackScreenProps } from '@react-navigation/stack';
+import { StackRoutes } from 'src/Screens';
 
 export type FolderedChatsRoute = {
   'Main/FolderedChats': {
@@ -13,10 +14,8 @@ export type FolderedChatsRoute = {
   };
 };
 
-export type Props = navigationProps.NavigationProps<
-  FolderedChatsRoute,
-  ChatRoute
->;
+export type Props = StackScreenProps<StackRoutes, 'Main/FolderedChats'>;
+
 export type FolderType = Extract<ChatStatus, 'archived' | 'banned'>;
 
 export type ListData = {

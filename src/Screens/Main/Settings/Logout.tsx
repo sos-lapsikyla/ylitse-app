@@ -2,10 +2,11 @@ import React from 'react';
 import RN from 'react-native';
 import * as redux from 'redux';
 import { useDispatch } from 'react-redux';
-import { SafeAreaView } from 'react-navigation';
-
-import * as navigationProps from '../../../lib/navigation-props';
 import * as actions from '../../../state/actions';
+
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { StackScreenProps } from '@react-navigation/stack';
+import { StackRoutes } from 'src/Screens';
 
 import Message from '../../components/Message';
 import { textShadow } from '../../components/shadow';
@@ -15,21 +16,18 @@ import fonts from '../../components/fonts';
 import MessageButton from '../../components/MessageButton';
 import CreatedBySosBanner from '../../components/CreatedBySosBanner';
 
-import { MentorListRoute } from '../../Onboarding/MentorList';
-import navigateOnboarding from './navigateOnboarding';
-
 export type LogoutRoute = {
   'Main/Settings/Logout': {};
 };
 
-type Props = navigationProps.NavigationProps<LogoutRoute, MentorListRoute>;
+type Props = StackScreenProps<StackRoutes, 'Main/Settings/Logout'>;
 
 export default ({ navigation }: Props) => {
   const dispatch = useDispatch<redux.Dispatch<actions.Action>>();
 
   const onLogout = () => {
     dispatch(actions.make('logout/logout')(undefined));
-    navigateOnboarding(navigation);
+    navigation.reset({ routes: [{ name: 'Onboarding/MentorList' }] });
   };
 
   const onGoBack = () => {
@@ -50,10 +48,7 @@ export default ({ navigation }: Props) => {
           <Message style={styles.text} id={'main.settings.logout.text1'} />
           <Message style={styles.text} id={'main.settings.logout.text2'} />
         </RN.View>
-        <SafeAreaView
-          forceInset={{ bottom: 'always' }}
-          style={styles.buttonContainer}
-        >
+        <SafeAreaView style={styles.buttonContainer}>
           <MessageButton
             style={styles.logoutButton}
             messageStyle={styles.messageStyle}

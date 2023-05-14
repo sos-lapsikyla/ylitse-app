@@ -1,25 +1,25 @@
 import React from 'react';
 import RN from 'react-native';
 import * as RD from '@devexperts/remote-data-ts';
-import { pipe } from 'fp-ts/lib/pipeable';
+import { pipe } from 'fp-ts/lib/function';
+
+import { StackScreenProps } from '@react-navigation/stack';
+import { StackRoutes } from '..';
 
 import * as accountApi from '../../api/account';
 import * as authApi from '../../api/auth';
 
 import * as localization from '../../localization';
-import * as navigationProps from '../../lib/navigation-props';
 import useRemoteData from '../../lib/use-remote-data';
 
 import OnboardingBackground from '../components/OnboardingBackground';
 import LoginCard from '../components/LoginCard';
 
-import { DisplayNameRoute } from './DisplayName';
-
 export type SignUpRoute = {
   'Onboarding/SignUp': {};
 };
 
-type Props = navigationProps.NavigationProps<SignUpRoute, DisplayNameRoute>;
+type Props = StackScreenProps<StackRoutes, 'Onboarding/SignUp'>;
 
 const SignUp = ({ navigation }: Props) => {
   const [credentialsCheck, checkCredentials, resetCredentialsCheck] =

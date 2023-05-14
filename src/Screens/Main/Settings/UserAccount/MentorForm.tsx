@@ -2,7 +2,7 @@ import React from 'react';
 import RN from 'react-native';
 import * as redux from 'redux';
 import { useDispatch, useSelector } from 'react-redux';
-import { pipe } from 'fp-ts/lib/pipeable';
+import { pipe } from 'fp-ts/lib/function';
 import * as RD from '@devexperts/remote-data-ts';
 
 import * as config from '../../../../api/config';

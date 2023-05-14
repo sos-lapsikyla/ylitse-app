@@ -1,6 +1,6 @@
 import * as automaton from 'redux-automaton';
 import * as RD from '@devexperts/remote-data-ts';
-import { pipe } from 'fp-ts/lib/pipeable';
+import { pipe } from 'fp-ts/lib/function';
 import * as E from 'fp-ts/lib/Either';
 
 import * as buddyApi from '../../api/buddies';

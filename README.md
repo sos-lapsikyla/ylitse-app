@@ -87,6 +87,18 @@ Start the app on a emulator
 npx react-native run-android
 ```
 
+
+### Debugging
+
+We are using [Flipper](https://fbflipper.com/) for debugging, so install the [Desktop application](https://fbflipper.com/docs/getting-started/) to your environment
+
+1. Run the application
+2. Open [Flipper](https://fbflipper.com/docs/getting-started/#setup-your-react-native-app)
+3. Install plugin [redux-debugger](https://github.com/jk-gan/flipper-plugin-redux-debugger)
+4. Now you should see all logs, networking and redux things in the Flipper tool
+
+For troubleshooting, please refer to the [Flipper documentation](https://fbflipper.com/docs/getting-started/troubleshooting/)
+
 #### Fixing issue when running API locally
 Setup adb reverse connections:
 ```sh
@@ -97,57 +109,55 @@ adb reverse tcp:8081 tcp:8081; adb reverse tcp:8080 tcp:8080
 
 ### Running end-to-end tests
 
-Run the steps described below in separate terminals.
+Its a good idea to clean up the project first
+
+Android
+```sh
+make clean
+```
+
+iOS
+```
+cd ios && rm -rf Pods && pod update && pod install & cd .. 
+```
+
+Then you can proceed to build the debug-application
+Refer to the detoxrc.js `configurations` for targetting correct device/emulator
+
+
+```sh
+npx detox build --configuration {{target}}
+```
+
+
+Run the steps described below in three separate terminals.
 
 1. Go to Ylitse API repo and start the backend locally (make sure `admin`
    user exists):
 
 ```sh
 source env/bin/activate
-make run-gunicorn
+make run-standalone
 ```
 
-2. Start bundler:
+2. Start the metro bundler 
 
 ```sh
-make bundler
+npx react-native start
 ```
 
 3. And finally run tests (make sure password matches the one configured for
-   the local API):
+   the local API, and make sure that config.json _loginUrl_ and _baseUrl_  matches the local API)
+
 
 ```sh
-YLITSE_API_PASS=random make e2e
+YLITSE_API_USER={{userwithadminaccess}} YLITSE_API_PASS={{password}} YLITSE_API_URL="http://127.0.0.1:8080" npx detox test --configuration {{target}}
 ```
 
-By default emulator device name is `pixel`, but you can overwrite it like so:
+Replace the moustached values with your values
 
-```sh
-YLITSE_DEVICE=pixel_xl YLITSE_API_PASS=random make e2e
-```
+#### Troubleshooting
 
-#### E2E tests with Genymotion
+- If you get error ==ReferenceError: fetch is not defined== then you are not running the tests with npm 18, which ships with fetch. Refer to the _Node version_ section of this README
 
-Running e2e tests with Genymotion is almost the same as with Android emulator or physical device.
-
-First make sure you are able to run the app with `npm run android`
-
-Then make sure .detoxrc.json has the correct IP address for your Genymotion device.
-
-```js
-"android.genymotion.debug": {
-...
-   "device": {
-      "adbName": "192.168.56.101:5555"
-   }
-```
-
-Then build
-```sh
-detox build --configuration android.genymotion.debug
-```
-
-And run tests
-```sh
-YLITSE_API_PASS=random detox test --configuration android.genymotion.debug
-```
+- If you get error ==ECONNREFUSED== then you are probably using localhost as a value for the ${YLITSE_API_URL} env-variable. Replace localhost with 127.0.0.1

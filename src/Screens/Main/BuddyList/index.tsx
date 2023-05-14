@@ -5,31 +5,32 @@ import * as redux from 'redux';
 import * as ReactRedux from 'react-redux';
 import * as actions from '../../../state/actions';
 
-import * as navigationProps from '../../../lib/navigation-props';
+import { StackScreenProps } from '@react-navigation/stack';
+import { StackRoutes } from 'src/Screens';
+
 import useLayout from '../../../lib/use-layout';
 
 import * as buddyState from '../../../state/reducers/buddies';
 import * as messagesState from '../../../state/reducers/messages';
-import { ChatRoute } from '../Chat';
 
 import colors from '../../components/colors';
 import RemoteData from '../../components/RemoteData';
 import Button from './Button';
 import { Title } from './Title';
 import DropDown, { DropDownItem } from '../../components/DropDownMenu';
-import {
-  FolderedChatsRoute,
-  FolderType,
-} from '../FolderedChats/folderedChatProperties';
+import { FolderType } from '../FolderedChats/folderedChatProperties';
 import FolderItem from './FolderItem';
+import { CompositeScreenProps } from '@react-navigation/native';
+import { BottomTabScreenProps } from '@react-navigation/bottom-tabs';
+import { TabRoutes } from '../Tabs';
 
 export type BuddyListRoute = {
-  'Main/BuddyList': {};
+  'Main/BuddyList': undefined;
 };
 
-type Props = navigationProps.NavigationProps<
-  BuddyListRoute,
-  ChatRoute & FolderedChatsRoute
+type Props = CompositeScreenProps<
+  BottomTabScreenProps<TabRoutes, 'Main/BuddyList'>,
+  StackScreenProps<StackRoutes>
 >;
 
 export default ({ navigation }: Props) => {

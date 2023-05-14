@@ -22,7 +22,6 @@ describe('Feedback', () => {
   beforeEach(async () => {
     await APIDeleteAccounts();
     await APIDeleteQuestions();
-    await device.launchApp();
     await device.reloadReactNative();
   });
 

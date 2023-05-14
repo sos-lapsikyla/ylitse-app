@@ -3,8 +3,10 @@ import RN from 'react-native';
 
 import { isRight } from 'fp-ts/lib/Either';
 
+import { StackScreenProps } from '@react-navigation/stack';
+import { StackRoutes } from '..';
+
 import * as accountApi from '../../api/account';
-import * as navigationProps from '../../lib/navigation-props';
 import { ValidEmail } from '../../lib/validators';
 
 import OnboardingBackground from '../components/OnboardingBackground';
@@ -15,17 +17,15 @@ import colors from '../components/colors';
 import Button from '../components/Button';
 import NamedInputField from '../components/NamedInputField';
 
-import { PrivacyPolicyRoute } from './PrivacyPolicy';
-
 export type EmailRoute = {
   'Onboarding/Email': {
     user: Omit<accountApi.User, 'email'>;
   };
 };
 
-type Props = navigationProps.NavigationProps<EmailRoute, PrivacyPolicyRoute>;
+type Props = StackScreenProps<StackRoutes, 'Onboarding/Email'>;
 
-const Email = ({ navigation }: Props) => {
+const Email = ({ navigation, route }: Props) => {
   const [email, setEmail] = React.useState('');
 
   const goBack = () => {
@@ -35,7 +35,7 @@ const Email = ({ navigation }: Props) => {
   const navigateNext = () => {
     navigation.navigate('Onboarding/PrivacyPolicy', {
       user: {
-        ...navigation.getParam('user'),
+        ...route.params?.user,
         email,
       },
     });

@@ -90,9 +90,7 @@ describe('Archiving', () => {
 
     // and new msg should still be there
     await element(by.text(mentee.displayName)).atIndex(0).tap();
-    await expect(
-      element(by.text('Notice me Senpai!')).atIndex(1),
-    ).toBeVisible();
+    await expect(element(by.text('Notice me Senpai!'))).toBeVisible();
     await forceLogout();
   });
 

@@ -1,6 +1,6 @@
 import React from 'react';
 import RN from 'react-native';
-import { SafeAreaView } from 'react-navigation';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { MessageId } from '../../localization';
 
@@ -19,10 +19,7 @@ type Props = {
 
 export default ({ id, onBack, style, textStyle, iconStyle }: Props) => {
   return (
-    <SafeAreaView
-      style={[styles.container, style]}
-      forceInset={{ top: 'always' }}
-    >
+    <SafeAreaView style={[styles.container, style]}>
       <RN.View style={styles.content}>
         <RN.TouchableOpacity style={styles.button} onPress={onBack}>
           <RN.Image

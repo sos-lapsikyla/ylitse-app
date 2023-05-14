@@ -1,16 +1,15 @@
 import React from 'react';
 import RN from 'react-native';
-import * as redux from 'redux';
 import * as ReactRedux from 'react-redux';
+import { getAccessToken, getCreateUserState } from 'src/state/selectors';
 import * as O from 'fp-ts/lib/Option';
 import * as RD from '@devexperts/remote-data-ts';
 
-import * as navigationProps from '../../lib/navigation-props';
-
 import * as config from '../../api/config';
 import * as accountApi from '../../api/account';
-import * as state from '../../state';
-import * as actions from '../../state/actions';
+
+import { StackScreenProps } from '@react-navigation/stack';
+import { StackRoutes } from '..';
 
 import OnboardingBackground from '../components/OnboardingBackground';
 import Card from '../components/Card';
@@ -22,36 +21,25 @@ import Button from '../components/Button';
 import ErrorMessage from '../components/ErrorMessage';
 import Link from '../components/Link';
 
-import navigateMain from './navigateMain';
-import { TabsRoute } from '../Main/Tabs';
-
 export type PrivacyPolicyRoute = {
   'Onboarding/PrivacyPolicy': { user: accountApi.User };
 };
 
-type StateProps = {
-  accessToken: state.AppState['accessToken'];
-  createUserState: state.AppState['createUser'];
-};
+type OwnProps = StackScreenProps<StackRoutes, 'Onboarding/PrivacyPolicy'>;
 
-type DispatchProps = {
-  createUser: (user: accountApi.User) => void | undefined;
-};
-type OwnProps = navigationProps.NavigationProps<PrivacyPolicyRoute, TabsRoute>;
+type Props = OwnProps;
 
-type Props = StateProps & DispatchProps & OwnProps;
+const PrivacyPolicy = ({ navigation, route }: Props) => {
+  const accessToken = ReactRedux.useSelector(getAccessToken);
+  const createUserState = ReactRedux.useSelector(getCreateUserState);
+  const dispatch = ReactRedux.useDispatch();
 
-const PrivacyPolicy = ({
-  navigation,
-  accessToken,
-  createUser,
-  createUserState,
-}: Props) => {
   React.useEffect(() => {
-    if (O.isSome(accessToken.currentToken)) {
-      navigateMain(navigation);
+    if (O.isSome(accessToken)) {
+      navigation.navigate('Main/Tabs', {});
     }
   }, [accessToken]);
+
   const [isAgreed, setAgreed] = React.useState(false);
   const [isOver15, setIsOver15] = React.useState(false);
 
@@ -60,8 +48,8 @@ const PrivacyPolicy = ({
   };
 
   const onNextPress = () => {
-    const user = navigation.getParam('user');
-    createUser(user);
+    const user = route.params?.user ?? '';
+    dispatch({ type: 'createUser/start', payload: user });
   };
 
   return (
@@ -208,14 +196,4 @@ const styles = RN.StyleSheet.create({
   },
 });
 
-export default ReactRedux.connect<StateProps, {}, OwnProps, state.AppState>(
-  ({ accessToken, createUser }) => ({
-    accessToken,
-    createUserState: createUser,
-  }),
-  (dispatch: redux.Dispatch<actions.Action>) => ({
-    createUser: (payload: accountApi.User) => {
-      dispatch({ type: 'createUser/start', payload });
-    },
-  }),
-)(PrivacyPolicy);
+export default PrivacyPolicy;

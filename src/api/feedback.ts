@@ -2,7 +2,7 @@ import * as t from 'io-ts';
 import * as TE from 'fp-ts/lib/TaskEither';
 import * as authApi from '../api/auth';
 import * as http from '../lib/http';
-import { pipe } from 'fp-ts/lib/pipeable';
+import { pipe } from 'fp-ts/lib/function';
 
 import * as config from './config';
 

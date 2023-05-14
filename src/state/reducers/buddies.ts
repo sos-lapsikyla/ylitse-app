@@ -2,8 +2,7 @@ import * as automaton from 'redux-automaton';
 import * as RD from '@devexperts/remote-data-ts';
 import * as record from 'fp-ts/lib/Record';
 import * as E from 'fp-ts/lib/Either';
-import { pipe } from 'fp-ts/lib/pipeable';
-import { flow } from 'fp-ts/lib/function';
+import { pipe, flow } from 'fp-ts/lib/function';
 
 import * as buddyApi from '../../api/buddies';
 

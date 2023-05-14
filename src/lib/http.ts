@@ -2,7 +2,7 @@
 import * as t from 'io-ts';
 import * as E from 'fp-ts/lib/Either';
 import * as TE from 'fp-ts/lib/TaskEither';
-import { pipe } from 'fp-ts/lib/pipeable';
+import { pipe } from 'fp-ts/lib/function';
 
 const unauthorizedRequest = 'Request Unauthorized';
 export const isUnauthorized = (u: unknown) => u === unauthorizedRequest;
@@ -11,7 +11,7 @@ export const request = (url: string, options: RequestInit) =>
   pipe(
     TE.tryCatch(
       () => fetch(url, options),
-      () => 'Connection failure.',
+      () => 'Connection failure',
     ),
     TE.chain(response =>
       response.ok

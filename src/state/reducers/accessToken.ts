@@ -4,8 +4,7 @@ import * as record from 'fp-ts/lib/Record';
 import * as automaton from 'redux-automaton';
 import * as O from 'fp-ts/lib/Option';
 import * as E from 'fp-ts/lib/Either';
-import { pipe } from 'fp-ts/lib/pipeable';
-import { flow } from 'fp-ts/lib/function';
+import { pipe, flow } from 'fp-ts/lib/function';
 
 import * as authApi from '../../api/auth';
 import * as storageApi from '../../api/token-storage';

@@ -4,11 +4,17 @@ import * as redux from 'redux';
 import * as types from './types';
 import * as reducers from './reducers';
 import * as middleware from './middleware';
+import createDebugger from 'redux-flipper';
 
 export type AppState = types.AppState;
 
-const compose = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || redux.compose;
-const enhancer = compose(redux.applyMiddleware(middleware.taskRunner));
+const middlewares = [middleware.taskRunner];
+
+if (__DEV__) {
+  middlewares.push(createDebugger());
+}
+
+const enhancer = redux.compose(redux.applyMiddleware(...middlewares));
 
 export const store = automaton.createStore(
   reducers.rootReducer,
