@@ -52,6 +52,7 @@ export const messages: { [key in MessageId]: string } = {
   'main.chat.deleteAll.error': 'Deleting failed',
   'main.chat.navigation.archived': 'Archived',
   'main.chat.navigation.banned': 'Banned',
+  'main.chat.report': 'Report',
   'main.chat.send.failure': 'Sending message failed',
   'main.chat.unban': 'Restore chat',
   'main.chat.unban.confirmation': 'Are you sure you want to restore this user?',
@@ -131,6 +132,8 @@ export const messages: { [key in MessageId]: string } = {
   'main.settings.other.userGuide': 'Mentoring guide (in Finnish)',
   'main.settings.other.whatToAgree': 'What do I agree when using this app?',
   'main.settings.title': 'Settings',
+
+  'main.userreport.title': 'Report',
 
   'meta.back': 'Back',
   'meta.blank': ' ',

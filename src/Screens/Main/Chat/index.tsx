@@ -15,7 +15,7 @@ import useLayout from '../../../lib/use-layout';
 import Title from './Title';
 import Input from './Input';
 import { MemoizedMessageList } from './MessageList';
-import DropDown from '../../components/DropDownMenu';
+import DropDown, { DropDownItem } from '../../components/DropDownMenu';
 import Modal from '../../components/Modal';
 import { dialogProperties, changeChatStatusOptions } from './chatProperties';
 
@@ -118,6 +118,22 @@ const Chat = ({ navigation, route }: Props) => {
     getDraftMessage();
   }, []);
 
+  const chatStatusActions: Array<DropDownItem> = changeChatStatusOptions[
+    buddyStatus
+  ].map(item => ({
+    ...item,
+    onPress: () => {
+      setDialogs('dialogOpen', true);
+      setChangeChatStatusAction(item.nextStatus);
+    },
+  }));
+
+  const reportAction: DropDownItem = {
+    textId: 'main.chat.report',
+    onPress: () =>
+      navigation.navigate('Main/UserReport', { reportedId: buddyId }),
+  };
+
   return (
     <RN.TouchableOpacity
       style={styles.screen}
@@ -136,13 +152,7 @@ const Chat = ({ navigation, route }: Props) => {
       {dialogState.dropdownOpen && (
         <DropDown
           style={[styles.dropdown, { top: height - 8 }]}
-          items={changeChatStatusOptions[buddyStatus].map(item => ({
-            ...item,
-            onPress: () => {
-              setDialogs('dialogOpen', true);
-              setChangeChatStatusAction(item.nextStatus);
-            },
-          }))}
+          items={[...chatStatusActions, reportAction]}
           testID={'main.chat.menu'}
           tintColor={colors.black}
         />

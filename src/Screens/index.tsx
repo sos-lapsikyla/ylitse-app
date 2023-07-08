@@ -27,6 +27,7 @@ import DeleteAccount, {
 } from './Main/Settings/DeleteAccount';
 import PasswordChange, { PasswordChangeRoute } from './Main/Settings/Password';
 import EmailChange, { EmailChangeRoute } from './Main/Settings/Email';
+import UserReport, { UserReportRoute } from './Main/UserReport';
 
 export type StackRoutes = SplashRoute &
   WelcomeRoute &
@@ -40,6 +41,7 @@ export type StackRoutes = SplashRoute &
   TabsRoute &
   MentorCardExpandedRoute &
   ChatRoute &
+  UserReportRoute &
   FolderedChatsRoute &
   LogoutRoute &
   DeleteAccountRoute &
@@ -71,6 +73,7 @@ export default () => (
       />
       <Stack.Screen name="Main/SearchMentor" component={SearchMentor} />
       <Stack.Screen name="Main/Chat" component={Chat} />
+      <Stack.Screen name="Main/UserReport" component={UserReport} />
       <Stack.Screen name="Main/FolderedChats" component={FolderedChats} />
       <Stack.Screen name="Main/Settings/Logout" component={Logout} />
       <Stack.Screen

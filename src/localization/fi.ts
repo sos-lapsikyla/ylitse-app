@@ -51,6 +51,7 @@ export const messages = {
   'main.chat.deleteAll.error': 'Poistaminen epäonnistui',
   'main.chat.navigation.archived': 'Arkistoidut',
   'main.chat.navigation.banned': 'Estetyt',
+  'main.chat.report': 'Ilmianna',
   'main.chat.send.failure': 'Viestin lähettäminen epäonnistui',
   'main.chat.unban': 'Palauta keskustelu',
   'main.chat.unban.confirmation': 'Haluatko palauttaa tämän keskustelun?',
@@ -131,6 +132,8 @@ export const messages = {
   'main.settings.other.userGuide': 'Opas mentoreille',
   'main.settings.other.whatToAgree': 'Mihin suostun, kun käytän tätä?',
   'main.settings.title': 'Asetukset',
+
+  'main.userreport.title': 'Ilmianna',
 
   'meta.back': 'Takaisin',
   'meta.blank': ' ',
