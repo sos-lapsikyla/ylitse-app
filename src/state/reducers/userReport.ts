@@ -33,3 +33,10 @@ export const reducer: automaton.Reducer<State, actions.Action> = (
     }
   }
 };
+
+export const selectUserReportRequest = ({ userReport: state }: AppState) =>
+  state;
+
+export const selectIsUserReportLoading = (state: AppState): boolean => {
+  return RD.isPending(state.userReport);
+};
