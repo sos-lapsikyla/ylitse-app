@@ -48,6 +48,7 @@ export type AppState = {
     shouldHideInactiveMentors: boolean;
   };
   statRequest: RemoteAction;
+  userReport: RemoteAction;
   buddies: {
     buddies: RemoteData<Record<BuddyId, buddyApi.Buddy>>;
     isInitialFetch: boolean;

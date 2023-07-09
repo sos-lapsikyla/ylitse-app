@@ -134,6 +134,7 @@ export const messages: { [key in MessageId]: string } = {
   'main.settings.title': 'Settings',
 
   'main.userreport.title': 'Report',
+  'main.userreport.send.button': 'Send',
 
   'meta.back': 'Back',
   'meta.blank': ' ',

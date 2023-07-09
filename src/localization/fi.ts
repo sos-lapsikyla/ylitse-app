@@ -134,6 +134,7 @@ export const messages = {
   'main.settings.title': 'Asetukset',
 
   'main.userreport.title': 'Ilmianna',
+  'main.userreport.send.button': 'Lähetä',
 
   'meta.back': 'Takaisin',
   'meta.blank': ' ',

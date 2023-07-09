@@ -10,6 +10,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { Title } from './Title';
 import TitledContainer from 'src/Screens/components/TitledContainer';
 import colors from 'src/Screens/components/colors';
+import Button from 'src/Screens/components/Button';
 
 export type UserReportRoute = {
   'Main/UserReport': { reportedId: string };
@@ -25,6 +26,10 @@ const UserReport = ({ navigation, route }: Props) => {
     navigation.goBack();
   };
 
+  const handleReport = () => {
+    console.log('reporting');
+  };
+
   return (
     <TitledContainer
       onLayout={onLayout}
@@ -33,6 +38,10 @@ const UserReport = ({ navigation, route }: Props) => {
     >
       <SafeAreaView style={styles.container}>
         <RN.Text>Report user with id: {reportedId} </RN.Text>
+        <Button
+          onPress={handleReport}
+          messageId="main.userreport.send.button"
+        />
       </SafeAreaView>
     </TitledContainer>
   );

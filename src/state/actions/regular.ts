@@ -8,6 +8,7 @@ import * as authApi from '../../api/auth';
 import * as buddyApi from '../../api/buddies';
 import * as messageApi from '../../api/messages';
 import * as statApi from '../../api/stat';
+import * as userReportApi from '../../api/userReport';
 import * as feedbackApi from '../../api/feedback';
 import * as messages from '../reducers/messages';
 import * as updateMentorData from '../reducers/updateMentorData';
@@ -42,6 +43,9 @@ type RegularActions = {
 
   'statRequest/start': statApi.Stat;
   'statRequest/end': Result<ReturnType<typeof statApi.sendStat>>;
+
+  'userReport/start': userReportApi.AppReport;
+  'userReport/end': Result<ReturnType<typeof statApi.sendStat>>;
 
   'login/start': authApi.Credentials;
   'login/end': Result<typeof authApi.login>;
