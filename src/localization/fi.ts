@@ -133,8 +133,9 @@ export const messages = {
   'main.settings.other.whatToAgree': 'Mihin suostun, kun käytän tätä?',
   'main.settings.title': 'Asetukset',
 
-  'main.userreport.title': 'Ilmianna',
+  'main.userreport.description.label': 'Syy ilmiantoon',
   'main.userreport.send.button': 'Lähetä',
+  'main.userreport.title': 'Ilmianna',
 
   'meta.back': 'Takaisin',
   'meta.blank': ' ',
