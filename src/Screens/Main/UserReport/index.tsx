@@ -1,6 +1,8 @@
 import React from 'react';
 import RN from 'react-native';
 
+import * as ReactRedux from 'react-redux';
+
 import { StackScreenProps } from '@react-navigation/stack';
 import { StackRoutes } from '../..';
 
@@ -21,13 +23,23 @@ type Props = StackScreenProps<StackRoutes, 'Main/UserReport'>;
 const UserReport = ({ navigation, route }: Props) => {
   const reportedId = route.params?.reportedId;
   const [_, onLayout] = useLayout();
+  const dispatch = ReactRedux.useDispatch();
 
   const handleBackPress = () => {
     navigation.goBack();
   };
 
   const handleReport = () => {
-    console.log('reporting');
+    dispatch({
+      type: 'userReport/start',
+      payload: {
+        reportedId,
+        contactEmail: 'asd@moi.fi',
+        contactPhone: '0447766444',
+        description: 'Hello World',
+        reportedMessageId: 'jsL8mJ_9hAbbs68jJsh4D4NDzPKD_K-fEnUX07PTLpY',
+      },
+    });
   };
 
   return (
