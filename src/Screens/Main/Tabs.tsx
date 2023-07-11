@@ -17,7 +17,11 @@ import QuestionModal from '../components/QuestionModal';
 import { Answer } from '../../api/feedback';
 import { TabBar } from './TabBar';
 
-export type TabsRoute = { 'Main/Tabs': {} };
+export type TabsRoute = {
+  'Main/Tabs': {
+    initial?: 'Main/Settings' | 'Main/BuddyList' | 'Main/MentorList';
+  };
+};
 
 export type TabRoutes = BuddyListRoute & MentorListRoute & SettingsRoute;
 
@@ -25,8 +29,10 @@ const Tab = createBottomTabNavigator<TabRoutes>();
 
 type Props = {} & StackScreenProps<StackRoutes, 'Main/Tabs'>;
 
-const Main = ({ navigation }: Props) => {
+const Main = ({ navigation, route }: Props) => {
   const dispatch = ReactRedux.useDispatch();
+
+  const initialRouteName = route.params?.initial;
 
   const handleRefetchData = () => {
     dispatch({ type: 'feedback/getQuestions/start', payload: undefined });
@@ -62,7 +68,7 @@ const Main = ({ navigation }: Props) => {
   return (
     <>
       <Tab.Navigator
-        initialRouteName="Main/MentorList"
+        initialRouteName={initialRouteName ?? 'Main/MentorList'}
         screenOptions={{ headerShown: false }}
         tabBar={props => <TabBar {...props} />}
       >

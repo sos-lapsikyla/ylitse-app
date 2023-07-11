@@ -133,8 +133,17 @@ export const messages: { [key in MessageId]: string } = {
   'main.settings.other.whatToAgree': 'What do I agree when using this app?',
   'main.settings.title': 'Settings',
 
+  'main.userreport.bodyText1':
+    'Ilmianna käyttäjä, jos epäilet tai havaitset mentorin käyttävän palvelua väärin. Tällaisia tilanteita ovat esimerkiksi X ja Y.',
+  'main.userreport.bodyText2':
+    'Ilmiantamisen jälkeen SOS-Lapsikylän työntekijä käy keskustelun läpi palvelun väärinkäytön selvittämiseksi.',
+  'main.userreport.bodyText3':
+    'Tähän vielä selvitys, miksi yhteystietoja kysytään ja mitä niillä tehdään.',
+  'main.userreport.contact.label': 'Contact information',
   'main.userreport.description.label': 'Reason for reporting',
   'main.userreport.send.button': 'Send',
+  'main.userreport.success.toast':
+    'Käyttäjä ilmiannettiin. SOS-Lapsikylän työntekijä käy keskustelun läpi ja on sinuun yhteydessä, jos x.',
   'main.userreport.title': 'Report',
 
   'meta.back': 'Back',

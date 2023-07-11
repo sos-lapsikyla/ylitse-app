@@ -45,7 +45,8 @@ type RegularActions = {
   'statRequest/end': Result<ReturnType<typeof statApi.sendStat>>;
 
   'userReport/start': userReportApi.AppReport;
-  'userReport/end': Result<ReturnType<typeof statApi.sendStat>>;
+  'userReport/end': Result<ReturnType<typeof userReportApi.reportUser>>;
+  'userReport/reset': undefined;
 
   'login/start': authApi.Credentials;
   'login/end': Result<typeof authApi.login>;

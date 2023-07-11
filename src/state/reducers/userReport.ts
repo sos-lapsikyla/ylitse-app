@@ -7,17 +7,20 @@ import { withToken } from './accessToken';
 import * as userReportApi from '../../api/userReport';
 
 export const initialState = RD.initial;
+export const coolDownDuration = 3000;
 
-type State = AppState['userReport'];
-
-export const reducer: automaton.Reducer<State, actions.Action> = (
-  state: State = initialState,
-  action: actions.Action,
-) => {
+export const reducer: automaton.Reducer<
+  RD.RemoteData<string, true>,
+  actions.Action
+> = (state = initialState, action: actions.Action) => {
   switch (action.type) {
     case 'userReport/start': {
+      if (!RD.isInitial(state)) {
+        return state;
+      }
+
       return automaton.loop(
-        state,
+        RD.pending,
         withToken(
           userReportApi.reportUser(action.payload),
           actions.make('userReport/end'),
@@ -26,8 +29,15 @@ export const reducer: automaton.Reducer<State, actions.Action> = (
     }
 
     case 'userReport/end': {
-      return state;
+      return RD.fromEither(action.payload);
     }
+    case 'userReport/reset':
+      if (RD.isPending(state)) {
+        return state;
+      }
+
+      return RD.initial;
+
     default: {
       return state;
     }
@@ -37,6 +47,9 @@ export const reducer: automaton.Reducer<State, actions.Action> = (
 export const selectUserReportRequest = ({ userReport: state }: AppState) =>
   state;
 
-export const selectIsUserReportLoading = (state: AppState): boolean => {
-  return RD.isPending(state.userReport);
+export const selectUserReportStatus = (state: AppState) => {
+  return {
+    isLoading: RD.isPending(state.userReport),
+    isSuccess: RD.isSuccess(state.userReport),
+  };
 };

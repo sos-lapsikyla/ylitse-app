@@ -40,6 +40,14 @@ export const isValidName = (value: string): boolean => {
   return /^[\u00C0-\u017FA-zA-Z'0-9-_]{3,35}$/.test(value);
 };
 
+export const isValidDescription = (value: string): boolean => {
+  if (value === '') {
+    return false;
+  }
+
+  return /(.*?)/.test(value);
+};
+
 export const ValidEmail = new t.Type<string, string, unknown>(
   'ValidEmail',
   (input: unknown): input is string => typeof input === 'string',
@@ -55,6 +63,16 @@ export const ValidName = new t.Type<string, string, unknown>(
   (input: unknown): input is string => typeof input === 'string',
   (input, context) =>
     typeof input === 'string' && isValidName(input)
+      ? t.success(input)
+      : t.failure(input, context),
+  t.identity,
+);
+
+export const ValidDescription = new t.Type<string, string, unknown>(
+  'ValidDescription',
+  (input: unknown): input is string => typeof input === 'string',
+  (input, context) =>
+    typeof input === 'string' && isValidDescription(input)
       ? t.success(input)
       : t.failure(input, context),
   t.identity,

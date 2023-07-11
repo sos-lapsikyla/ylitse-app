@@ -1,4 +1,5 @@
 import * as http from '../lib/http';
+import * as t from 'io-ts';
 
 import * as authApi from './auth';
 import * as config from './config';
@@ -42,7 +43,11 @@ export const reportUser =
   (report: AppReport) => (token: authApi.AccessToken) => {
     const url = `${config.baseUrl}/reports`;
 
-    return http.post(url, toApiReport(report, token.userId), {
-      headers: authApi.authHeader(token),
-    });
+    return http.validateResponse(
+      http.post(url, toApiReport(report, token.userId), {
+        headers: authApi.authHeader(token),
+      }),
+      t.any,
+      _ => true as const,
+    );
   };

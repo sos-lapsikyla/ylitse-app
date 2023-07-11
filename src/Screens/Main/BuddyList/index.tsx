@@ -4,6 +4,10 @@ import RN from 'react-native';
 import * as redux from 'redux';
 import * as ReactRedux from 'react-redux';
 import * as actions from '../../../state/actions';
+import {
+  coolDownDuration,
+  selectUserReportStatus,
+} from 'src/state/reducers/userReport';
 
 import { StackScreenProps } from '@react-navigation/stack';
 import { StackRoutes } from 'src/Screens';
@@ -23,6 +27,7 @@ import FolderItem from './FolderItem';
 import { CompositeScreenProps } from '@react-navigation/native';
 import { BottomTabScreenProps } from '@react-navigation/bottom-tabs';
 import { TabRoutes } from '../Tabs';
+import { Toast } from 'src/Screens/components/Toast';
 
 export type BuddyListRoute = {
   'Main/BuddyList': undefined;
@@ -35,6 +40,10 @@ type Props = CompositeScreenProps<
 
 export default ({ navigation }: Props) => {
   const buddies = ReactRedux.useSelector(buddyState.getActiveBuddies);
+
+  const { isSuccess: isUserReportSuccess } = ReactRedux.useSelector(
+    selectUserReportStatus,
+  );
 
   const hasUnseenArchivedMessages = ReactRedux.useSelector(
     messagesState.hasUnseenMessagesOfStatus('archived'),
@@ -76,6 +85,16 @@ export default ({ navigation }: Props) => {
     },
   ];
 
+  React.useEffect(() => {
+    if (isUserReportSuccess) {
+      const timeout = setTimeout(() => {
+        dispatch({ type: 'userReport/reset', payload: undefined });
+
+        return () => clearTimeout(timeout);
+      }, coolDownDuration);
+    }
+  }, []);
+
   return (
     <RN.TouchableOpacity
       activeOpacity={1}
@@ -115,6 +134,13 @@ export default ({ navigation }: Props) => {
           </RN.ScrollView>
         )}
       </RemoteData>
+      {isUserReportSuccess && (
+        <Toast
+          toastType="success"
+          duration={coolDownDuration}
+          messageId="main.userreport.success.toast"
+        />
+      )}
     </RN.TouchableOpacity>
   );
 };
