@@ -141,6 +141,7 @@ export const messages: { [key in MessageId]: string } = {
     'Tähän vielä selvitys, miksi yhteystietoja kysytään ja mitä niillä tehdään.',
   'main.userreport.contact.label': 'Contact information',
   'main.userreport.description.label': 'Reason for reporting',
+  'main.userreport.failure.toast': 'Failed to report user',
   'main.userreport.send.button': 'Send',
   'main.userreport.success.toast':
     'Käyttäjä ilmiannettiin. SOS-Lapsikylän työntekijä käy keskustelun läpi ja on sinuun yhteydessä, jos x.',

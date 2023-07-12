@@ -141,6 +141,7 @@ export const messages = {
     'Tähän vielä selvitys, miksi yhteystietoja kysytään ja mitä niillä tehdään.',
   'main.userreport.contact.label': 'Yhteystietosi',
   'main.userreport.description.label': 'Syy ilmiantoon',
+  'main.userreport.failure.toast': 'Kayttajan ilmiantaminen epaonnistui',
   'main.userreport.send.button': 'Lähetä',
   'main.userreport.success.toast':
     'Käyttäjä ilmiannettiin. SOS-Lapsikylän työntekijä käy keskustelun läpi ja on sinuun yhteydessä, jos x.',

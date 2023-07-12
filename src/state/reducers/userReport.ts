@@ -51,5 +51,6 @@ export const selectUserReportStatus = (state: AppState) => {
   return {
     isLoading: RD.isPending(state.userReport),
     isSuccess: RD.isSuccess(state.userReport),
+    isError: RD.isFailure(state.userReport),
   };
 };

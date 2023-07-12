@@ -2,7 +2,10 @@ import React from 'react';
 import RN from 'react-native';
 
 import * as ReactRedux from 'react-redux';
-import { selectUserReportStatus } from 'src/state/reducers/userReport';
+import {
+  coolDownDuration,
+  selectUserReportStatus,
+} from 'src/state/reducers/userReport';
 
 import { StackScreenProps } from '@react-navigation/stack';
 import { StackRoutes } from '../..';
@@ -17,6 +20,7 @@ import NamedInputField from 'src/Screens/components/NamedInputField';
 import fonts from 'src/Screens/components/fonts';
 import Message from '../../components/Message';
 import { textShadow } from 'src/Screens/components/shadow';
+import { Toast } from 'src/Screens/components/Toast';
 
 export type UserReportRoute = {
   'Main/UserReport': { reportedId: string };
@@ -27,7 +31,7 @@ type Props = StackScreenProps<StackRoutes, 'Main/UserReport'>;
 const UserReport = ({ navigation, route }: Props) => {
   const reportedId = route.params?.reportedId;
 
-  const { isLoading, isSuccess } = ReactRedux.useSelector(
+  const { isLoading, isSuccess, isError } = ReactRedux.useSelector(
     selectUserReportStatus,
   );
   const dispatch = ReactRedux.useDispatch();
@@ -59,6 +63,16 @@ const UserReport = ({ navigation, route }: Props) => {
       navigation.replace('Main/Tabs', { initial: 'Main/BuddyList' });
     }
   }, [isLoading]);
+
+  React.useEffect(() => {
+    if (isError) {
+      const timeout = setTimeout(() => {
+        dispatch({ type: 'userReport/reset', payload: undefined });
+
+        return () => clearTimeout(timeout);
+      }, coolDownDuration);
+    }
+  }, []);
 
   return (
     <TitledContainer
@@ -102,6 +116,13 @@ const UserReport = ({ navigation, route }: Props) => {
           disabled={description.length === 0}
         />
       </RN.ScrollView>
+      {isError && (
+        <Toast
+          toastType="danger"
+          duration={coolDownDuration}
+          messageId="main.userreport.failure.toast"
+        />
+      )}
     </TitledContainer>
   );
 };
