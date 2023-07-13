@@ -85,16 +85,6 @@ export default ({ navigation }: Props) => {
     },
   ];
 
-  React.useEffect(() => {
-    if (isUserReportSuccess) {
-      const timeout = setTimeout(() => {
-        dispatch({ type: 'userReport/reset', payload: undefined });
-
-        return () => clearTimeout(timeout);
-      }, coolDownDuration);
-    }
-  }, []);
-
   return (
     <RN.TouchableOpacity
       activeOpacity={1}

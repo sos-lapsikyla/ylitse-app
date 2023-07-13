@@ -36,6 +36,7 @@ const UserReport = ({ navigation, route }: Props) => {
   );
   const dispatch = ReactRedux.useDispatch();
   const [description, setDescription] = React.useState('');
+  const [contact, setContact] = React.useState('');
   const [isValidDescription, setIsValidDescription] = React.useState(true);
 
   const handleBackPress = () => {
@@ -48,9 +49,7 @@ const UserReport = ({ navigation, route }: Props) => {
       payload: {
         reportedId,
         description,
-        contactEmail: 'asd@moi.fi',
-        contactPhone: '0447766444',
-        reportedMessageId: 'jsL8mJ_9hAbbs68jJsh4D4NDzPKD_K-fEnUX07PTLpY',
+        contact,
       },
     });
   };
@@ -63,16 +62,6 @@ const UserReport = ({ navigation, route }: Props) => {
       navigation.replace('Main/Tabs', { initial: 'Main/BuddyList' });
     }
   }, [isLoading]);
-
-  React.useEffect(() => {
-    if (isError) {
-      const timeout = setTimeout(() => {
-        dispatch({ type: 'userReport/reset', payload: undefined });
-
-        return () => clearTimeout(timeout);
-      }, coolDownDuration);
-    }
-  }, []);
 
   return (
     <TitledContainer
@@ -106,8 +95,8 @@ const UserReport = ({ navigation, route }: Props) => {
           <NamedInputField
             name="main.userreport.contact.label"
             style={styles.contactInformationInput}
-            value={''}
-            onChangeText={() => {}}
+            value={contact}
+            onChangeText={setContact}
           />
         </RN.View>
         <Button

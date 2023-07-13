@@ -6,37 +6,25 @@ import * as config from './config';
 
 export type AppReport = {
   reportedId: string;
-  contactEmail: string;
-  contactPhone: string;
+  contact: string;
   description: string;
-  reportedMessageId: string;
 };
 
 type ApiReport = {
   reported_user_id: string;
   reporter_user_id: string;
-  contact_email: string;
-  contact_phone: string;
+  contact_field: string;
   report_reason: string;
-  reported_message_id: string;
 };
 
 const toApiReport = (
-  {
-    reportedId,
-    contactEmail,
-    contactPhone,
-    description,
-    reportedMessageId,
-  }: AppReport,
+  { reportedId, contact, description }: AppReport,
   userId: string,
 ): ApiReport => ({
   reported_user_id: reportedId,
   reporter_user_id: userId,
-  contact_email: contactEmail,
-  contact_phone: contactPhone,
+  contact_field: contact,
   report_reason: description,
-  reported_message_id: reportedMessageId,
 });
 
 export const reportUser =

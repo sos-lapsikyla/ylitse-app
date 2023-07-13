@@ -4,6 +4,9 @@ import * as RD from '@devexperts/remote-data-ts';
 import * as actions from '../actions';
 import { AppState } from '../types';
 import { withToken } from './accessToken';
+import { cmd } from '../middleware';
+import { pipe } from 'fp-ts/lib/function';
+import * as T from 'fp-ts/lib/Task';
 import * as userReportApi from '../../api/userReport';
 
 export const initialState = RD.initial;
@@ -28,9 +31,18 @@ export const reducer: automaton.Reducer<
       );
     }
 
-    case 'userReport/end': {
-      return RD.fromEither(action.payload);
-    }
+    case 'userReport/end':
+      return automaton.loop(
+        RD.fromEither(action.payload),
+        cmd(
+          pipe(
+            T.of(undefined),
+            T.map(actions.make('userReport/reset')),
+            T.delay(coolDownDuration),
+          ),
+        ),
+      );
+
     case 'userReport/reset':
       if (RD.isPending(state)) {
         return state;
