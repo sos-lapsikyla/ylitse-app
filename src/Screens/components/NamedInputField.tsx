@@ -11,6 +11,7 @@ export interface Props extends RN.TextInputProps {
   name: localization.MessageId;
   isPasswordInput?: boolean;
   inputStyle?: RN.StyleProp<RN.ViewStyle>;
+  labelStyle?: RN.StyleProp<RN.TextStyle>;
 }
 
 const NamedInputField = ({
@@ -18,6 +19,7 @@ const NamedInputField = ({
   isPasswordInput,
   style,
   inputStyle,
+  labelStyle,
   ...textInputProps
 }: Props) => {
   const [isSecureText, setSecureText] = React.useState(
@@ -28,10 +30,10 @@ const NamedInputField = ({
 
   return (
     <RN.View style={style}>
-      <Message style={styles.nameText} id={name} />
+      <Message style={[styles.nameText, labelStyle]} id={name} />
       <RN.View>
         <RN.TextInput
-          style={[inputStyle, styles.inputText]}
+          style={[styles.inputText, inputStyle]}
           editable={true}
           secureTextEntry={isSecureText}
           {...textInputProps}

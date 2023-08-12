@@ -37,9 +37,8 @@ const styles = RN.StyleSheet.create({
     alignItems: 'center',
   },
   backButtonTouchable: {
-    marginRight: 0,
-    flex: 1,
-    backgroundColor: 'cornsilk',
+    position: 'absolute',
+    left: 8,
   },
   backButtonIcon: {
     tintColor: colors.deepBlue,
@@ -51,7 +50,5 @@ const styles = RN.StyleSheet.create({
     ...textShadow,
     textAlign: 'center',
     color: colors.deepBlue,
-    backgroundColor: 'lightsalmon',
-    flex: 6,
   },
 });

@@ -15,12 +15,12 @@ import { isRight } from 'fp-ts/lib/Either';
 import { Title } from './Title';
 import TitledContainer from 'src/Screens/components/TitledContainer';
 import colors from 'src/Screens/components/colors';
-import Button from 'src/Screens/components/Button';
 import NamedInputField from 'src/Screens/components/NamedInputField';
 import fonts from 'src/Screens/components/fonts';
 import Message from '../../components/Message';
 import { textShadow } from 'src/Screens/components/shadow';
 import { Toast } from 'src/Screens/components/Toast';
+import { BottomActions } from './BottomActions';
 
 export type UserReportRoute = {
   'Main/UserReport': { reportedId: string };
@@ -77,32 +77,37 @@ const UserReport = ({ navigation, route }: Props) => {
         <RN.View>
           <Message style={styles.bodyText} id="main.userreport.bodyText1" />
           <Message style={styles.bodyText} id="main.userreport.bodyText2" />
-          <Message style={styles.bodyText} id="main.userreport.bodyText3" />
           <NamedInputField
             name="main.userreport.description.label"
             style={styles.descriptionInput}
+            labelStyle={
+              isValidDescription ? styles.inputLabel : styles.errorLabel
+            }
+            inputStyle={
+              !isValidDescription ? styles.descriptionValidationError : {}
+            }
             value={description}
             onChangeText={setDescription}
             onBlur={checkIsDescriptionValid}
             multiline
           />
-          {isValidDescription ? null : (
+          {!isValidDescription && (
             <Message
-              style={styles.error}
-              id="main.settings.account.email.invalid"
+              style={styles.validationMessage}
+              id="main.userreport.description.validationerror"
             />
           )}
           <NamedInputField
             name="main.userreport.contact.label"
-            style={styles.contactInformationInput}
+            labelStyle={styles.inputLabel}
             value={contact}
             onChangeText={setContact}
           />
         </RN.View>
-        <Button
-          onPress={handleReport}
-          messageId="main.userreport.send.button"
-          disabled={description.length === 0}
+        <BottomActions
+          onBack={handleBackPress}
+          onSend={handleReport}
+          isSendDisabled={!isValidDescription || description.length === 0}
         />
       </RN.ScrollView>
       {isError && (
@@ -110,6 +115,7 @@ const UserReport = ({ navigation, route }: Props) => {
           toastType="danger"
           duration={coolDownDuration}
           messageId="main.userreport.failure.toast"
+          containerStyle={styles.toastContainer}
         />
       )}
     </TitledContainer>
@@ -129,12 +135,11 @@ const styles = RN.StyleSheet.create({
   scrollView: {
     zIndex: 1,
     marginTop: -32,
-    backgroundColor: 'lightpink',
   },
   scrollContent: {
     paddingTop: 48,
     paddingBottom: 16,
-    paddingHorizontal: 16,
+    paddingHorizontal: 24,
     display: 'flex',
     flexDirection: 'column',
     flexGrow: 1,
@@ -143,21 +148,31 @@ const styles = RN.StyleSheet.create({
   bodyText: {
     ...fonts.regular,
     color: colors.darkestBlue,
-    marginBottom: 32,
+    marginBottom: 16,
+  },
+  inputLabel: {
+    fontWeight: '500',
+  },
+  errorLabel: {
+    color: colors.danger,
+    fontWeight: '500',
   },
   descriptionInput: {
-    backgroundColor: 'yellow',
     marginBottom: 16,
   },
-  contactInformationInput: {
-    backgroundColor: 'yellow',
+  descriptionValidationError: {
+    borderColor: colors.danger,
+    borderWidth: 1,
+    borderStyle: 'solid',
   },
-  error: {
-    color: colors.red,
+  validationMessage: {
+    ...fonts.regular,
+    color: colors.danger,
     fontWeight: '500',
-    marginTop: -12,
+    marginTop: -8,
     marginBottom: 16,
   },
+  toastContainer: {},
 });
 
 export default UserReport;
