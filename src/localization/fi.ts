@@ -134,11 +134,11 @@ export const messages = {
   'main.settings.title': 'Asetukset',
 
   'main.userreport.bodyText1':
-    'Ilmianna käyttäjä, jos epäilet tai havaitset mentorin käyttävän palvelua väärin. Tällaisia tilanteita ovat esimerkiksi X ja Y.',
+    'Ilmianna käyttäjä, jos epäilet tai havaitset mentorin käyttävän palvelua väärin. Tällaisia tilanteita ovat esimerkiksi SOS-Lapsikylän arvojen vastainen toiminta ja rikollinen toiminta.',
   'main.userreport.bodyText2':
-    'Ilmiantamisen jälkeen SOS-Lapsikylän työntekijä käy keskustelun läpi palvelun väärinkäytön selvittämiseksi.',
+    'Ilmiantamisen jälkeen SOS-Lapsikylän työntekijä selvittää tilanteen ja ottaa sinuun yhteyttä.',
   'main.userreport.bodyText3':
-    'Tähän vielä selvitys, miksi yhteystietoja kysytään ja mitä niillä tehdään.',
+    'Yhteystietoja käytetään selvityksen ajan eikä niitä luovuteta ulkopuolisille.',
   'main.userreport.contact.label': 'Yhteystietosi',
   'main.userreport.description.label': 'Syy ilmiantoon',
   'main.userreport.failure.toast': 'Kayttajan ilmiantaminen epaonnistui',

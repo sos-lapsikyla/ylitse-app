@@ -134,11 +134,11 @@ export const messages: { [key in MessageId]: string } = {
   'main.settings.title': 'Settings',
 
   'main.userreport.bodyText1':
-    'Ilmianna käyttäjä, jos epäilet tai havaitset mentorin käyttävän palvelua väärin. Tällaisia tilanteita ovat esimerkiksi X ja Y.',
+    "Report the user if you suspect or observe the mentor using the service improperly. Such situations include actions contrary to SOS Children's Village values and criminal activities.",
   'main.userreport.bodyText2':
-    'Ilmiantamisen jälkeen SOS-Lapsikylän työntekijä käy keskustelun läpi palvelun väärinkäytön selvittämiseksi.',
+    "After the report, an SOS Children's Village employee will assess the situation and contact you.",
   'main.userreport.bodyText3':
-    'Tähän vielä selvitys, miksi yhteystietoja kysytään ja mitä niillä tehdään.',
+    'The contact information will be used during the investigation and will not be disclosed to outsiders.',
   'main.userreport.contact.label': 'Contact information',
   'main.userreport.description.label': 'Reason for reporting',
   'main.userreport.failure.toast': 'Failed to report user',
