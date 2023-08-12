@@ -45,7 +45,7 @@ export const isValidDescription = (value: string): boolean => {
     return false;
   }
 
-  return /(.*?)/.test(value);
+  return /^(?!\s*$).+/.test(value);
 };
 
 export const ValidEmail = new t.Type<string, string, unknown>(
