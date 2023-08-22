@@ -22,11 +22,15 @@ export const useRefetch = ({ callback }: Params) => {
 
   React.useEffect(() => {
     const subscription = AppState.addEventListener('change', nextAppState => {
-      if (
-        appState.current.match(/inacteve|background/) &&
-        nextAppState === 'active'
-      ) {
-        callback();
+      if (nextAppState === 'active') {
+        switch (appState.current) {
+          case 'inactive':
+          case 'background':
+            callback();
+            break;
+          default:
+            break;
+        }
       }
 
       appState.current = nextAppState;
