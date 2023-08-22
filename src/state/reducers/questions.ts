@@ -19,7 +19,7 @@ export const reducer: Reducer<AppState['feedbackQuestions'], Action> = (
 ) => {
   switch (action.type) {
     case 'feedback/getQuestions/start': {
-      if (RD.isPending(state)) {
+      if (RD.isPending(state) || hasUnAnsweredQuestions(state)) {
         return state;
       }
 
@@ -53,13 +53,7 @@ export const reducer: Reducer<AppState['feedbackQuestions'], Action> = (
     }
 
     case 'feedback/sendAnswer/end': {
-      const hasUnAnsweredQuestions = pipe(
-        state,
-        RD.getOrElse<unknown, feedbackApi.Question[]>(() => []),
-        questions => questions.length > 0,
-      );
-
-      if (hasUnAnsweredQuestions) {
+      if (hasUnAnsweredQuestions(state)) {
         return state;
       }
 
@@ -78,6 +72,13 @@ export const reducer: Reducer<AppState['feedbackQuestions'], Action> = (
     }
   }
 };
+
+const hasUnAnsweredQuestions = (state: AppState['feedbackQuestions']) =>
+  pipe(
+    state,
+    RD.getOrElse<unknown, feedbackApi.Question[]>(() => []),
+    questions => questions.length > 0,
+  );
 
 export const selectFirstQuestion = ({
   feedbackQuestions,
