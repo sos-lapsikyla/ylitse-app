@@ -19,6 +19,10 @@ export const reducer: Reducer<AppState['feedbackQuestions'], Action> = (
 ) => {
   switch (action.type) {
     case 'feedback/getQuestions/start': {
+      if (RD.isPending(state)) {
+        return state;
+      }
+
       return automaton.loop(
         RD.pending,
         withToken(

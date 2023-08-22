@@ -43,7 +43,9 @@ const Main = ({ navigation }: Props) => {
     dispatch({ type: 'feedback/sendAnswer/start', payload: answer });
   };
 
-  useRefetch({ callback: handleRefetchData });
+  useRefetch({
+    callback: handleRefetchData,
+  });
 
   React.useEffect(() => {
     navigation.dispatch(state => {
