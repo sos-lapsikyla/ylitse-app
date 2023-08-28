@@ -138,9 +138,9 @@ export const messages: { [key in MessageId]: string } = {
   'meta.error': 'An error occurred, please try again',
   'meta.ok': 'OK',
   'meta.save': 'Save',
-  'onboarding.age.switch': 'I am over 15 years old',
+  'onboarding.age.switch': 'I am over 17 years old',
   'onboarding.displayName.bodyText':
-    "*if you want to stay anonymous to our mentors, please enter a display name that can't identify you.",
+    'If you want to remain anonymous, do not use your real name',
   'onboarding.displayName.inputTitle': 'Display name*',
   'onboarding.displayName.nextButton': 'Continue',
   'onboarding.displayName.title': 'Almost ready',
@@ -191,12 +191,11 @@ export const messages: { [key in MessageId]: string } = {
 
   'onboarding.welcome.apuu.link': 'Apuu-chat',
   'onboarding.welcome.button': 'Start',
-  'onboarding.welcome.text1': 'Cool, that you have started using the service!',
-  'onboarding.welcome.text2':
-    'Here you can ask confidential things from mentors.',
+  'onboarding.welcome.text1': 'Thank you for using our service',
+  'onboarding.welcome.text2': 'Start a confidential conversation with a mentor',
   'onboarding.welcome.text3':
-    'The service is intended for people over 15 years of age. If you are under 15, visit Apuu-chat.',
-  'onboarding.welcome.text4': 'We hope you will have pleasant conversations!',
+    'The service is intended for people over 17 years of age. If you are under 17, visit Apuu-chat.',
+  'onboarding.welcome.text4': 'We hope you will enjoy the service',
   'onboarding.welcome.title': 'Hello!',
 
   'tabs.chats': 'Chats',

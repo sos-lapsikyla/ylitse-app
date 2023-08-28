@@ -138,7 +138,7 @@ export const messages = {
   'meta.error': 'Virhe',
   'meta.ok': 'OK',
   'meta.save': 'Tallenna',
-  'onboarding.age.switch': 'Olen yli 15-vuotias',
+  'onboarding.age.switch': 'Olen yli 17-vuotias',
   'onboarding.displayName.bodyText':
     '*Jos haluat pysyä nimettömänä, valitse itsellesi nimimerkki, josta et ole tunnistettavissa.',
   'onboarding.displayName.inputTitle': 'Valitse itsellesi nimimerkki*',
@@ -194,7 +194,7 @@ export const messages = {
   'onboarding.welcome.text1': 'Kiva, että otit palvelun käyttöön!',
   'onboarding.welcome.text2':
     'Voit kysyä mentoreilta mieltäsi painavista asioista luottamuksellisesti.',
-  'onboarding.welcome.text3': `Palvelu on tarkoitettu 15 vuotta täyttäneille. Jos olet alle 15-vuotias vieraile:`,
+  'onboarding.welcome.text3': `Palvelu on tarkoitettu 17 vuotta täyttäneille. Jos olet alle 17-vuotias vieraile:`,
   'onboarding.welcome.text4': 'Mukavia keskusteluja!',
   'onboarding.welcome.title': 'Moi!',
 
