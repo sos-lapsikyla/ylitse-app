@@ -40,11 +40,9 @@ const Splash = ({ navigation }: Props) => {
 
   React.useEffect(() => {
     if (O.isSome(tokenState)) {
-      setTimeout(() => {
-        navigation.replace('Main/Tabs', {});
-      }, 500);
+      navigation.replace('Main/Tabs', {});
     }
-  });
+  }, [tokenState]);
 
   return <RN.View style={styles.background} />;
 };
