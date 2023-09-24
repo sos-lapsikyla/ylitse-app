@@ -31,7 +31,7 @@ describe('Archiving', () => {
     const {
       sender_id: menteeId,
       recipient_id: mentorId,
-      headers: menteeHeaders,
+      senderHeaders: menteeHeaders,
     } = await APIGetSendInfo(mentee, mentor);
 
     await APISendMessage({
@@ -103,7 +103,7 @@ describe('Archiving', () => {
     const {
       sender_id: menteeId,
       recipient_id: mentorId,
-      headers: menteeHeaders,
+      senderHeaders: menteeHeaders,
     } = await APIGetSendInfo(mentee, mentor);
 
     await APISendMessage({
@@ -148,7 +148,7 @@ describe('Archiving', () => {
     const {
       sender_id: menteeId,
       recipient_id: mentorId,
-      headers: menteeHeaders,
+      senderHeaders: menteeHeaders,
     } = await APIGetSendInfo(mentee, mentor);
 
     await APISendMessage({
