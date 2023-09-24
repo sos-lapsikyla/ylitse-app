@@ -12,7 +12,11 @@ type Props = {
 
 export const BottomActions = ({ onBack, onSend, isSendDisabled }: Props) => (
   <RN.View style={styles.bottomActions}>
-    <RN.TouchableOpacity style={styles.backButtonTouchable} onPress={onBack}>
+    <RN.TouchableOpacity
+      style={styles.backButtonTouchable}
+      onPress={onBack}
+      testID="main.userreport.back.button"
+    >
       <RN.Image
         source={require('../../images/chevron-left.svg')}
         style={styles.backButtonIcon}

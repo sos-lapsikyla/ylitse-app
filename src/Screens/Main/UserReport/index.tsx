@@ -78,6 +78,7 @@ const UserReport = ({ navigation, route }: Props) => {
           <Message style={styles.bodyText} id="main.userreport.bodyText1" />
           <Message style={styles.bodyText} id="main.userreport.bodyText2" />
           <NamedInputField
+            testID="main.userreport.description.input"
             name="main.userreport.description.label"
             style={styles.descriptionInput}
             labelStyle={
@@ -98,6 +99,7 @@ const UserReport = ({ navigation, route }: Props) => {
             />
           )}
           <NamedInputField
+            testID="main.userreport.contact.input"
             name="main.userreport.contact.label"
             labelStyle={styles.inputLabel}
             value={contact}
