@@ -51,6 +51,7 @@ export const messages = {
   'main.chat.deleteAll.error': 'Poistaminen epäonnistui',
   'main.chat.navigation.archived': 'Arkistoidut',
   'main.chat.navigation.banned': 'Estetyt',
+  'main.chat.report': 'Ilmianna',
   'main.chat.send.failure': 'Viestin lähettäminen epäonnistui',
   'main.chat.unban': 'Palauta keskustelu',
   'main.chat.unban.confirmation': 'Haluatko palauttaa tämän keskustelun?',
@@ -131,6 +132,20 @@ export const messages = {
   'main.settings.other.userGuide': 'Opas mentoreille',
   'main.settings.other.whatToAgree': 'Mihin suostun, kun käytän tätä?',
   'main.settings.title': 'Asetukset',
+
+  'main.userreport.bodyText1':
+    'Ilmianna käyttäjä, jos epäilet tai havaitset mentorin käyttävän palvelua väärin. Tällaisia tilanteita ovat esimerkiksi SOS-Lapsikylän arvojen vastainen toiminta ja rikollinen toiminta.',
+  'main.userreport.bodyText2':
+    'Ilmiantamisen jälkeen SOS-Lapsikylän työntekijä selvittää tilanteen ja ottaa sinuun yhteyttä. Yhteystietoja käytetään selvityksen ajan eikä niitä luovuteta ulkopuolisille.',
+  'main.userreport.contact.label': 'Yhteystietosi',
+  'main.userreport.description.label': 'Syy ilmiantoon *',
+  'main.userreport.description.validationerror':
+    'Syy ilmiantoon on pakollinen kenttä.',
+  'main.userreport.failure.toast': 'Käyttäjän ilmianto epäonnistui.',
+  'main.userreport.send.button': 'Lähetä',
+  'main.userreport.success.toast':
+    'Ilmiannoit käyttäjän. SOS-Lapsikylän työntekijä selvittää tilanteen ja ottaa sinuun yhteyttä.',
+  'main.userreport.title': 'Ilmianna',
 
   'meta.back': 'Takaisin',
   'meta.blank': ' ',

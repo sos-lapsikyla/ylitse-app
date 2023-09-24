@@ -22,6 +22,7 @@ import * as changeEmail from './changeEmail';
 import * as notifications from './notifications';
 import * as deleteAccount from './deleteAccount';
 import * as statRequest from './statRequest';
+import * as userReport from './userReport';
 import * as updateMentorData from './updateMentorData';
 import * as questions from './questions';
 import * as filterMentors from './filterMentors';
@@ -63,6 +64,7 @@ export const rootReducer: automaton.Reducer<AppState, actions.Action> =
       deleteAccount: deleteAccount.reducer,
       mentors: mentors.reducer,
       statRequest: statRequest.reducer,
+      userReport: userReport.reducer,
       buddies: buddies.reducer,
       changeChatStatusRequest: changeChatStatusRequest.reducer,
       messages: messages.reducer,
@@ -86,6 +88,7 @@ export const initialState: AppState = {
   deleteAccount: deleteAccount.initialState,
   mentors: mentors.initialState,
   statRequest: statRequest.initialState,
+  userReport: userReport.initialState,
   buddies: buddies.initialState,
   changeChatStatusRequest: changeChatStatusRequest.initialState,
   messages: messages.initialState,

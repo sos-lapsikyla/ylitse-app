@@ -5,6 +5,7 @@ import * as redux from 'redux';
 import * as ReactRedux from 'react-redux';
 import * as selectors from '../../../state/selectors';
 import * as newMessageState from '../../../state/reducers/newMessage';
+import * as tokenState from '../../../state/reducers/accessToken';
 import * as actions from '../../../state/actions';
 
 import { StackScreenProps } from '@react-navigation/stack';
@@ -15,13 +16,14 @@ import useLayout from '../../../lib/use-layout';
 import Title from './Title';
 import Input from './Input';
 import { MemoizedMessageList } from './MessageList';
-import DropDown from '../../components/DropDownMenu';
+import DropDown, { DropDownItem } from '../../components/DropDownMenu';
 import Modal from '../../components/Modal';
 import { dialogProperties, changeChatStatusOptions } from './chatProperties';
 
 import colors from '../../components/colors';
 import { ChatStatus } from 'src/api/buddies';
 import { Toast } from '../../components/Toast';
+import { useSelector } from 'react-redux';
 
 export type ChatRoute = {
   'Main/Chat': { buddyId: string };
@@ -36,6 +38,7 @@ const Chat = ({ navigation, route }: Props) => {
     navigation.goBack();
   };
 
+  const isMentor = useSelector(tokenState.isMentor);
   const buddyId = route.params?.buddyId;
 
   const { messageList, isLoading, mentor, isMessageSendFailed, buddyStatus } =
@@ -118,6 +121,28 @@ const Chat = ({ navigation, route }: Props) => {
     getDraftMessage();
   }, []);
 
+  const chatStatusActions: Array<DropDownItem> = changeChatStatusOptions[
+    buddyStatus
+  ].map(item => ({
+    ...item,
+    onPress: () => {
+      setDialogs('dialogOpen', true);
+      setChangeChatStatusAction(item.nextStatus);
+    },
+  }));
+
+  const reportAction: DropDownItem = {
+    textId: 'main.chat.report',
+    onPress: () => {
+      setDialogs('dropdownOpen', false);
+      navigation.navigate('Main/UserReport', { reportedId: buddyId });
+    },
+  };
+
+  const dropDownItems = isMentor
+    ? chatStatusActions
+    : [...chatStatusActions, reportAction];
+
   return (
     <RN.TouchableOpacity
       style={styles.screen}
@@ -136,13 +161,7 @@ const Chat = ({ navigation, route }: Props) => {
       {dialogState.dropdownOpen && (
         <DropDown
           style={[styles.dropdown, { top: height - 8 }]}
-          items={changeChatStatusOptions[buddyStatus].map(item => ({
-            ...item,
-            onPress: () => {
-              setDialogs('dialogOpen', true);
-              setChangeChatStatusAction(item.nextStatus);
-            },
-          }))}
+          items={dropDownItems}
           testID={'main.chat.menu'}
           tintColor={colors.black}
         />

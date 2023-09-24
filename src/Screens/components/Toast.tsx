@@ -14,6 +14,7 @@ import { props as toastProps } from './Modal/modalProps';
 export type AlertVariant = 'danger' | 'success' | 'info' | 'warning';
 type Props = {
   style?: RN.StyleProp<RN.TextStyle>;
+  containerStyle?: RN.StyleProp<RN.ViewStyle>;
   duration: number;
   messageId: localization.MessageId;
   toastType: AlertVariant;
@@ -21,6 +22,7 @@ type Props = {
 
 export const Toast: React.FC<Props> = ({
   style,
+  containerStyle,
   duration,
   messageId,
   toastType,
@@ -53,7 +55,7 @@ export const Toast: React.FC<Props> = ({
   React.useEffect(fadeInAndOut, []);
 
   return (
-    <RN.View style={styles.container}>
+    <RN.View style={containerStyle ?? styles.container}>
       <RN.Modal animationType="fade" transparent={true} visible={true}>
         <RN.Animated.View
           style={[styles.toastContainer, style, { opacity, backgroundColor }]}

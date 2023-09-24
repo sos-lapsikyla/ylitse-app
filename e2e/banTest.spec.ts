@@ -31,7 +31,7 @@ describe('Banning', () => {
     const {
       sender_id: menteeId,
       recipient_id: mentorId,
-      headers: menteeHeaders,
+      senderHeaders: menteeHeaders,
     } = await APIGetSendInfo(mentee, mentor);
 
     await APISendMessage({
@@ -99,7 +99,7 @@ describe('Banning', () => {
     const {
       sender_id: menteeId,
       recipient_id: mentorId,
-      headers: menteeHeaders,
+      senderHeaders: menteeHeaders,
     } = await APIGetSendInfo(mentee, mentor);
 
     await APISendMessage({
@@ -144,7 +144,7 @@ describe('Banning', () => {
     const {
       sender_id: menteeId,
       recipient_id: mentorId,
-      headers: menteeHeaders,
+      senderHeaders: menteeHeaders,
     } = await APIGetSendInfo(mentee, mentor);
 
     await APISendMessage({
@@ -218,7 +218,7 @@ describe('Banning', () => {
     const {
       sender_id: menteeId,
       recipient_id: mentorId,
-      headers: menteeHeaders,
+      senderHeaders: menteeHeaders,
     } = await APIGetSendInfo(mentee, mentor);
 
     await APISendMessage({
@@ -231,7 +231,7 @@ describe('Banning', () => {
     const {
       sender_id: mentee2Id,
       recipient_id: mentor2Id,
-      headers: mentee2Headers,
+      senderHeaders: mentee2Headers,
     } = await APIGetSendInfo(mentee2, mentor);
 
     await APISendMessage({

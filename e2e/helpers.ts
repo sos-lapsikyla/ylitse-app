@@ -324,25 +324,36 @@ export async function APIBan(sender: any, reciever: any, status = 'banned') {
   );
 }
 
-export async function APIGetSendInfo(sender: any, reciever: any) {
-  const admin_access_token = await APIAdminAccessToken();
-  const info = await APIUsers(admin_access_token);
+const toHeader = (token: string) => ({ Authorization: `Bearer ${token}` });
 
-  let sender_info = info.find(
+export async function APIGetSendInfo(sender: any, reciever: any) {
+  const adminAccessToken = await APIAdminAccessToken();
+  const info = await APIUsers(adminAccessToken);
+
+  const senderInfo = info.find(
     (o: any) => o.display_name === sender.displayName,
   );
 
-  let reciever_info = info.find(
+  const recieverInfo = info.find(
     (o: any) => o.display_name === reciever.displayName,
   );
 
-  const access_token = await APIAccessToken(sender.loginName, sender.password);
+  const accessTokenSender = await APIAccessToken(
+    sender.loginName,
+    sender.password,
+  );
 
-  const headers = {
-    Authorization: `Bearer ${access_token}`,
+  const accessTokenReciever = await APIAccessToken(
+    reciever.loginName,
+    reciever.password,
+  );
+
+  return {
+    sender_id: senderInfo.id,
+    recipient_id: recieverInfo.id,
+    senderHeaders: toHeader(accessTokenSender),
+    recieverHeaders: toHeader(accessTokenReciever),
   };
-
-  return { sender_id: sender_info.id, recipient_id: reciever_info.id, headers };
 }
 
 type Data = {

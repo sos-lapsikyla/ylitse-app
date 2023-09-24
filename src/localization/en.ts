@@ -52,6 +52,7 @@ export const messages: { [key in MessageId]: string } = {
   'main.chat.deleteAll.error': 'Deleting failed',
   'main.chat.navigation.archived': 'Archived',
   'main.chat.navigation.banned': 'Banned',
+  'main.chat.report': 'Report',
   'main.chat.send.failure': 'Sending message failed',
   'main.chat.unban': 'Restore chat',
   'main.chat.unban.confirmation': 'Are you sure you want to restore this user?',
@@ -131,6 +132,20 @@ export const messages: { [key in MessageId]: string } = {
   'main.settings.other.userGuide': 'Mentoring guide (in Finnish)',
   'main.settings.other.whatToAgree': 'What do I agree when using this app?',
   'main.settings.title': 'Settings',
+
+  'main.userreport.bodyText1':
+    "Report the user if you suspect or observe the mentor using the service improperly. Such situations include actions contrary to SOS Children's Village values and criminal activities.",
+  'main.userreport.bodyText2':
+    "After the report, an SOS Children's Village employee will assess the situation and contact you. The contact information will be used during the investigation and will not be disclosed to outsiders.",
+  'main.userreport.contact.label': 'Contact information',
+  'main.userreport.description.label': 'Reason for reporting *',
+  'main.userreport.description.validationerror':
+    'The reason for reporting is a mandatory field.',
+  'main.userreport.failure.toast': 'Failed to report user',
+  'main.userreport.send.button': 'Send',
+  'main.userreport.success.toast':
+    "You reported a user. An SOS Children's Village employee will assess the situation and get in touch with you.",
+  'main.userreport.title': 'Report',
 
   'meta.back': 'Back',
   'meta.blank': ' ',
