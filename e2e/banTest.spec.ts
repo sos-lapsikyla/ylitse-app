@@ -1,5 +1,6 @@
 import { by, element, expect, device, waitFor } from 'detox';
 import { describe, it, beforeEach } from '@jest/globals';
+import accountFixtures from './fixtures/accounts.json';
 
 import {
   APISignUpMentee,
@@ -11,8 +12,6 @@ import {
   forceLogout,
   APIBan,
 } from './helpers';
-
-const accountFixtures = require('./fixtures/accounts.json');
 
 describe('Banning', () => {
   beforeEach(async () => {
@@ -57,7 +56,7 @@ describe('Banning', () => {
     await element(by.text('Ban chat')).tap();
     await element(by.text('OK')).tap();
 
-    await expect(element(by.text(mentee.displayName))).toBeNotVisible();
+    await expect(element(by.text(mentee.displayName))).not.toBeVisible();
 
     await element(by.id('main.buddylist.kebabicon')).tap();
     await element(by.text('Banned')).tap();
@@ -76,13 +75,13 @@ describe('Banning', () => {
 
     // mentor should not see new message indicator
     await signIn(mentor);
-    await expect(element(by.id('main.tabs.unseenDot'))).toBeNotVisible();
+    await expect(element(by.id('main.tabs.unseenDot'))).not.toBeVisible();
     await element(by.id('tabs.chats')).tap();
     await element(by.id('main.buddylist.kebabicon')).tap();
     await element(by.text('Banned')).tap();
     await expect(
       element(by.id('main.buddyList.button.unseenDot')),
-    ).toBeNotVisible();
+    ).not.toBeVisible();
 
     // but new msg should still be there
     await element(by.text(mentee.displayName)).atIndex(0).tap();
@@ -171,7 +170,7 @@ describe('Banning', () => {
     await element(by.text('OK')).tap();
 
     // mentor should not see mentee's name in banned list
-    await expect(element(by.text(mentee.displayName))).toBeNotVisible();
+    await expect(element(by.text(mentee.displayName))).not.toBeVisible();
 
     await waitFor(element(by.id('main.folderedlist.back.button')))
       .toBeVisible()
@@ -179,7 +178,7 @@ describe('Banning', () => {
     await element(by.id('main.folderedlist.back.button')).tap();
 
     // mentor should not see mentee's name in chats list
-    await expect(element(by.text(mentee.displayName))).toBeNotVisible();
+    await expect(element(by.text(mentee.displayName))).not.toBeVisible();
 
     await forceLogout();
 
@@ -193,16 +192,16 @@ describe('Banning', () => {
 
     // mentor should not see new message indicator
     await signIn(mentor);
-    await expect(element(by.id('main.tabs.unseenDot'))).toBeNotVisible();
+    await expect(element(by.id('main.tabs.unseenDot'))).not.toBeVisible();
     await element(by.id('tabs.chats')).tap();
     await element(by.id('main.buddylist.kebabicon')).tap();
     await element(by.text('Banned')).tap();
     await expect(
       element(by.id('main.buddyList.button.unseenDot')),
-    ).toBeNotVisible();
+    ).not.toBeVisible();
 
     // mentor should not see mentee's name in chats list
-    await expect(element(by.text(mentee.displayName))).toBeNotVisible();
+    await expect(element(by.text(mentee.displayName))).not.toBeVisible();
 
     await forceLogout();
   });
@@ -257,8 +256,8 @@ describe('Banning', () => {
     await element(by.text('OK')).tap();
 
     // mentor should not see mentees' names in banned list
-    await expect(element(by.text(mentee.displayName))).toBeNotVisible();
-    await expect(element(by.text(mentee2.displayName))).toBeNotVisible();
+    await expect(element(by.text(mentee.displayName))).not.toBeVisible();
+    await expect(element(by.text(mentee2.displayName))).not.toBeVisible();
 
     await waitFor(element(by.id('main.folderedlist.back.button')))
       .toBeVisible()
@@ -266,8 +265,8 @@ describe('Banning', () => {
     await element(by.id('main.folderedlist.back.button')).tap();
 
     // mentor should not see mentees' names in chats list
-    await expect(element(by.text(mentee.displayName))).toBeNotVisible();
-    await expect(element(by.text(mentee2.displayName))).toBeNotVisible();
+    await expect(element(by.text(mentee.displayName))).not.toBeVisible();
+    await expect(element(by.text(mentee2.displayName))).not.toBeVisible();
 
     await forceLogout();
   });

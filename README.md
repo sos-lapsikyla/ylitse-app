@@ -132,12 +132,12 @@ npx detox build --configuration {{target}}
 
 Run the steps described below in three separate terminals.
 
-1. Go to Ylitse API repo and start the backend locally (make sure `admin`
+1. Go to Ylitse [API repo](https://gitlab.com/ylitse/ylitse-api) and start the backend locally (make sure `admin`
    user exists):
 
 ```sh
 source env/bin/activate
-make run-standalone
+SAFETY_FEATURE=true make run-standalone
 ```
 
 2. Start the metro bundler 
@@ -146,12 +146,12 @@ make run-standalone
 npx react-native start
 ```
 
-3. And finally run tests (make sure password matches the one configured for
-   the local API, and make sure that config.json _loginUrl_ and _baseUrl_  matches the local API)
+3. And finally run tests (make sure password and the mfa-secret matches the one configured for
+   the local API, and make sure that config.json _loginUrl_ and _baseUrl_  matches the target)
 
 
 ```sh
-YLITSE_API_USER={{userwithadminaccess}} YLITSE_API_PASS={{password}} YLITSE_API_URL="http://127.0.0.1:8080" npx detox test --configuration {{target}}
+YLITSE_API_USER={{userwithadminaccess}} YLITSE_API_PASS={{password}} YLITSE_API_URL="http://127.0.0.1:8080" YLITSE_MFA_SECRET={{mfa_secret}} npx detox test --configuration {{target}}
 ```
 
 Replace the moustached values with your values

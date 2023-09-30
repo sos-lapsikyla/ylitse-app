@@ -8,8 +8,7 @@ import {
   signIn,
   forceLogout,
 } from './helpers';
-
-const accountFixtures = require('./fixtures/accounts.json');
+import accountFixtures from './fixtures/accounts.json';
 
 describe('changeEmail', () => {
   beforeAll(async () => {
@@ -32,7 +31,7 @@ describe('changeEmail', () => {
 
     await element(by.id('main.settings.account.email.input')).clearText();
     await waitAndTypeText('main.settings.account.email.input', newEmail);
-    await expect(element(by.text('Invalid email address'))).toBeNotVisible();
+    await expect(element(by.text('Invalid email address'))).not.toBeVisible();
     await element(by.id('main.settings.account.email.save')).tap();
     await expect(element(by.text(newEmail))).toBeVisible();
   });

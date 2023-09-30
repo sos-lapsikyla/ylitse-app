@@ -7,6 +7,7 @@ import {
   afterEach,
   expect as jestExpect,
 } from '@jest/globals';
+import accountFixtures from './fixtures/accounts.json';
 
 import {
   APISignUpMentee,
@@ -19,8 +20,6 @@ import {
   signIn,
   forceLogout,
 } from './helpers';
-
-const accountFixtures = require('./fixtures/accounts.json');
 
 describe('Browse mentors', () => {
   beforeAll(async () => {

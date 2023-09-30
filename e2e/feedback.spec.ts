@@ -1,5 +1,6 @@
 import { by, element, expect, device } from 'detox';
 import { describe, it, beforeEach, afterAll, afterEach } from '@jest/globals';
+import accountFixtures from './fixtures/accounts.json';
 
 import {
   APISignUpMentee,
@@ -11,8 +12,6 @@ import {
 } from './helpers';
 
 import { questions } from './fixtures/questions';
-
-const accountFixtures = require('./fixtures/accounts.json');
 
 describe('Feedback', () => {
   afterAll(async () => {
