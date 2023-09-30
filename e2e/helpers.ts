@@ -1,8 +1,10 @@
 import { by, element, waitFor, device } from 'detox';
+import { generateToken } from 'node-2fa';
 
 const API_URL = process.env.YLITSE_API_URL || 'http://127.0.0.1:8080';
 const API_USER = process.env.YLITSE_API_USER || 'admin';
 const API_PASS = process.env.YLITSE_API_PASS || '';
+const MFA_SECRET = process.env.YLITSE_MFA_SECRET || '';
 
 /**
  * Scrolls view down if needed and taps the given element
@@ -133,16 +135,25 @@ export async function forceLogout() {
  * Get access_token for admin
  */
 export async function APIAdminAccessToken() {
-  return await APIAccessToken(API_USER, API_PASS);
+  return await APIAccessToken(API_USER, API_PASS, MFA_SECRET);
 }
 
 /**
  * Get access_token
  */
-export async function APIAccessToken(login_name: string, password: string) {
+export async function APIAccessToken(
+  login_name: string,
+  password: string,
+  mfaSecret?: string,
+) {
+  const newSecret = generateToken(mfaSecret ?? '');
   const loginResponse = await fetch(`${API_URL}/login`, {
     method: 'POST',
-    body: JSON.stringify({ login_name: login_name, password: password }),
+    body: JSON.stringify({
+      login_name,
+      password,
+      ...(newSecret && { mfa_token: newSecret.token }),
+    }),
   });
   const tokens: any = await loginResponse.json();
 

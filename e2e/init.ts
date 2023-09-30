@@ -9,7 +9,7 @@ j.beforeAll(async () => {
     await APIAdminAccessToken();
   } catch (error) {
     console.error(
-      'Cannot connect to YLITSE API. YLITSE_API_USER=... YLITSE_API_PASS=... YLITSE_API_URL=...',
+      'Cannot connect to YLITSE API. YLITSE_API_PASS=... YLITSE_MFA_SECRET=...',
     );
     process.exitCode = 1;
     throw error;
