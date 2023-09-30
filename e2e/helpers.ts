@@ -147,6 +147,7 @@ export async function APIAccessToken(
   mfaSecret?: string,
 ) {
   const newSecret = generateToken(mfaSecret ?? '');
+
   const loginResponse = await fetch(`${API_URL}/login`, {
     method: 'POST',
     body: JSON.stringify({
