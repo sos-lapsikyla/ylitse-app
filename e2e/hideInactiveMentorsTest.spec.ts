@@ -6,6 +6,7 @@ import {
   beforeAll,
   expect as jestExpect,
 } from '@jest/globals';
+import accountFixtures from './fixtures/accounts.json';
 
 import {
   APISignUpMentee,
@@ -15,16 +16,14 @@ import {
   forceLogout,
 } from './helpers';
 
-const accountFixtures = require('./fixtures/accounts.json');
-
 const findMentor = async (mentorIndexes: any, mentorsFound: any) => {
   let found = { ...mentorsFound };
   for (let i in mentorIndexes) {
     try {
       await expect(
-        element(by.text(accountFixtures.mentors[i].displayName)),
+        element(by.text(accountFixtures.mentors[Number(i)].displayName)),
       ).toBeVisible();
-      found[accountFixtures.mentors[i].displayName] = true;
+      found[accountFixtures.mentors[Number(i)].displayName] = true;
     } catch (error) {
       continue;
     }

@@ -1,5 +1,6 @@
 import { by, element, expect, device } from 'detox';
 import { describe, it, beforeEach, beforeAll } from '@jest/globals';
+import accountFixtures from './fixtures/accounts.json';
 
 import {
   APISignUpMentee,
@@ -11,8 +12,6 @@ import {
   forceLogout,
   APIBan,
 } from './helpers';
-
-const accountFixtures = require('./fixtures/accounts.json');
 
 describe('Navigate in chat views', () => {
   beforeAll(async () => {
@@ -75,7 +74,7 @@ describe('Navigate in chat views', () => {
 
     await element(by.id('tabs.chats')).tap();
 
-    await expect(element(by.text(mentee.displayName))).toBeNotVisible();
+    await expect(element(by.text(mentee.displayName))).not.toBeVisible();
 
     await element(by.id('main.buddylist.kebabicon')).tap();
     await element(by.text('Banned')).tap();

@@ -1,5 +1,6 @@
 import { by, element, expect, device, waitFor } from 'detox';
 import { describe, it, beforeEach } from '@jest/globals';
+import accountFixtures from './fixtures/accounts.json';
 
 import {
   APISignUpMentee,
@@ -11,8 +12,6 @@ import {
   forceLogout,
   APIBan,
 } from './helpers';
-
-const accountFixtures = require('./fixtures/accounts.json');
 
 describe('Archiving', () => {
   beforeEach(async () => {
@@ -57,7 +56,7 @@ describe('Archiving', () => {
     await element(by.text('Archive chat')).tap();
     await element(by.text('OK')).tap();
 
-    await expect(element(by.text(mentee.displayName))).toBeNotVisible();
+    await expect(element(by.text(mentee.displayName))).not.toBeVisible();
 
     await element(by.id('main.buddylist.kebabicon')).tap();
     await element(by.text('Archived')).tap();
@@ -174,7 +173,7 @@ describe('Archiving', () => {
     await element(by.text('OK')).tap();
 
     // mentor should not see mentee's name in archived list
-    await expect(element(by.text(mentee.displayName))).toBeNotVisible();
+    await expect(element(by.text(mentee.displayName))).not.toBeVisible();
 
     await waitFor(element(by.id('main.folderedlist.back.button')))
       .toBeVisible()
@@ -182,7 +181,7 @@ describe('Archiving', () => {
     await element(by.id('main.folderedlist.back.button')).tap();
 
     // mentor should not see mentee's name in chats list
-    await expect(element(by.text(mentee.displayName))).toBeNotVisible();
+    await expect(element(by.text(mentee.displayName))).not.toBeVisible();
 
     await forceLogout();
 
@@ -196,16 +195,16 @@ describe('Archiving', () => {
 
     // mentor should not see new message indicator
     await signIn(mentor);
-    await expect(element(by.id('main.tabs.unseenDot'))).toBeNotVisible();
+    await expect(element(by.id('main.tabs.unseenDot'))).not.toBeVisible();
     await element(by.id('tabs.chats')).tap();
     await element(by.id('main.buddylist.kebabicon')).tap();
     await element(by.text('Archived')).tap();
     await expect(
       element(by.id('main.buddyList.button.unseenDot')),
-    ).toBeNotVisible();
+    ).not.toBeVisible();
 
     // mentor should not see mentee's name in chats list
-    await expect(element(by.text(mentee.displayName))).toBeNotVisible();
+    await expect(element(by.text(mentee.displayName))).not.toBeVisible();
 
     await forceLogout();
   });

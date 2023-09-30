@@ -6,6 +6,7 @@ import {
   beforeAll,
   expect as jestExpect,
 } from '@jest/globals';
+import accountFixtures from './fixtures/accounts.json';
 
 import {
   APISignUpMentor,
@@ -15,8 +16,6 @@ import {
   forceLogout,
   scrollDownAndTap,
 } from './helpers';
-
-const accountFixtures = require('./fixtures/accounts.json');
 
 describe('Show status message', () => {
   beforeAll(async () => {
@@ -41,6 +40,7 @@ describe('Show status message', () => {
     // Show status message in mentor list...
     await expect(element(by.id('components.mentorList'))).toBeVisible();
 
+    //@ts-ignore
     const statusMessages: Record<string, string> = {
       [mentor1.displayName]: mentor1.status_message,
       [mentor2.displayName]: mentor2.status_message,
@@ -99,6 +99,7 @@ describe('Change status message', () => {
       'main.settings.account.status.title',
       'main.settings.index.view',
     );
+    // @ts-ignore
     await expect(element(by.text(mentor.status_message))).toBeVisible();
 
     await element(by.id('main.settings.account.status.input')).clearText();

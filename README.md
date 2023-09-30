@@ -137,7 +137,7 @@ Run the steps described below in three separate terminals.
 
 ```sh
 source env/bin/activate
-make run-standalone
+SAFETY_FEATURE=true make run-standalone
 ```
 
 2. Start the metro bundler 

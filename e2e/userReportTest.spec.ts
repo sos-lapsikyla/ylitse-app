@@ -1,5 +1,6 @@
 import { by, element, expect, device } from 'detox';
 import { describe, it, beforeEach, beforeAll } from '@jest/globals';
+import accountFixtures from './fixtures/accounts.json';
 
 import {
   APISignUpMentee,
@@ -11,8 +12,6 @@ import {
   forceLogout,
   waitAndTypeText,
 } from './helpers';
-
-const accountFixtures = require('./fixtures/accounts.json');
 
 describe('reportUser', () => {
   beforeAll(async () => {

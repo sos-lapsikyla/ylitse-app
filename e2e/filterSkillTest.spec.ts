@@ -6,6 +6,7 @@ import {
   beforeAll,
   expect as jestExpect,
 } from '@jest/globals';
+import accountFixtures from './fixtures/accounts.json';
 
 import {
   APISignUpMentee,
@@ -15,8 +16,6 @@ import {
   waitAndTypeText,
   forceLogout,
 } from './helpers';
-
-const accountFixtures = require('./fixtures/accounts.json');
 
 describe('Skill filter', () => {
   beforeAll(async () => {
@@ -136,7 +135,7 @@ describe('Skill filter', () => {
       element(
         by.text('python').withAncestor(by.id('main.searchMentor.skills.view')),
       ),
-    ).toBeNotVisible();
+    ).not.toBeVisible();
   });
 
   it('reset search shows all skills', async () => {
@@ -165,7 +164,7 @@ describe('Skill filter', () => {
       element(
         by.text('python').withAncestor(by.id('main.searchMentor.skills.view')),
       ),
-    ).toBeNotVisible();
+    ).not.toBeVisible();
 
     await element(by.id('main.searchMentor.resetButton')).tap();
 
