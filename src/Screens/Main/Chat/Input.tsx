@@ -10,10 +10,10 @@ import * as actions from '../../../state/actions';
 
 import fonts from '../../components/fonts';
 import colors from '../../components/colors';
-import getBuddyColor from '../../components/getBuddyColor';
 
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Spinner from 'src/Screens/components/Spinner';
+import shadow from 'src/Screens/components/shadow';
 
 type Props = {
   buddyId: string;
@@ -30,8 +30,6 @@ export default ({ buddyId }: Props) => {
   const { isPending, isSendingDisabled, messageContent } = useSelector(
     newMessageState.getMessage(buddyId),
   );
-
-  const sendButtonColor = getBuddyColor(buddyId);
 
   const storeMessage = (text: string) => {
     const payload = { text, buddyId };
@@ -73,7 +71,7 @@ export default ({ buddyId }: Props) => {
       <RN.TouchableOpacity
         onPress={onSend}
         disabled={isSendingDisabled}
-        style={[styles.send, { backgroundColor: sendButtonColor }]}
+        style={[styles.send]}
         testID={'main.chat.input.button'}
       >
         {showPending ? (
@@ -101,9 +99,9 @@ const styles = RN.StyleSheet.create({
     marginLeft: 16,
     marginRight: 8,
     backgroundColor: colors.white,
-    borderColor: colors.blueGray,
-    borderWidth: 1,
-    borderRadius: 16,
+    borderColor: colors.formBorderGray,
+    borderWidth: 2,
+    borderRadius: 24,
   },
   inputText: {
     ...fonts.small,
@@ -126,10 +124,11 @@ const styles = RN.StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     marginRight: 16,
+    backgroundColor: colors.purplePale,
+    ...shadow(2),
   },
   sendIcon: {
-    tintColor: colors.darkestBlue,
-    transform: [{ rotate: '45deg' }],
+    tintColor: colors.purple,
     width: 32,
     height: 32,
     marginRight: 4,

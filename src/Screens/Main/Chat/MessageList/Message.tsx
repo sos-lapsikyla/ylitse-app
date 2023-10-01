@@ -49,19 +49,13 @@ const Message = ({ value: message }: MessageProps) => {
 
 const styles = RN.StyleSheet.create({
   leftBubble: {
-    borderTopRightRadius: 24,
-    borderTopLeftRadius: 0,
-    borderBottomRightRadius: 24,
-    borderBottomLeftRadius: 24,
+    borderRadius: 16,
     backgroundColor: colors.white,
     alignSelf: 'flex-start',
   },
   rightBubble: {
-    borderTopRightRadius: 0,
-    borderTopLeftRadius: 24,
-    borderBottomRightRadius: 24,
-    borderBottomLeftRadius: 24,
-    backgroundColor: colors.lightestGray,
+    borderRadius: 16,
+    backgroundColor: colors.almostLightBlue,
     alignSelf: 'flex-end',
   },
   bubble: {
@@ -70,7 +64,7 @@ const styles = RN.StyleSheet.create({
     paddingHorizontal: 16,
     flexDirection: 'row',
     flexWrap: 'wrap',
-    ...shadow(5),
+    ...shadow(2),
   },
   text: {
     ...fonts.regular,

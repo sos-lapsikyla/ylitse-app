@@ -24,6 +24,7 @@ const colors = {
   lightBlue: '#5cc5ed',
   lighterBlue: '#a2daf3',
   iconBlue: '#1A6481',
+  almostLightBlue: '#D3EAFF',
   whiteBlue: '#E4F3FB ',
   accessibleFaintBlue: '#47627B',
 

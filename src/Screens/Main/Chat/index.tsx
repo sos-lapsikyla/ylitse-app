@@ -160,7 +160,7 @@ const Chat = ({ navigation, route }: Props) => {
       />
       {dialogState.dropdownOpen && (
         <DropDown
-          style={[styles.dropdown, { top: height - 8 }]}
+          style={[styles.dropdown, { top: height - 16 }]}
           items={dropDownItems}
           testID={'main.chat.menu'}
           tintColor={colors.black}

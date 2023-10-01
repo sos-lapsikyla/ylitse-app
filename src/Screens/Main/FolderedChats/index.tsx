@@ -90,7 +90,7 @@ export default ({ navigation, route }: Props) => {
       />
       {dialogState.dropdownOpen && (
         <DropDown
-          style={[styles.dropdown, { top: height - 8 }]}
+          style={[styles.dropdown, { top: height - 16 }]}
           items={menuItems}
           testID={'main.chat.menu'}
           tintColor={colors.black}

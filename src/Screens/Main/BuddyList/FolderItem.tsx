@@ -31,7 +31,6 @@ export default FolderItem;
 const styles = RN.StyleSheet.create({
   button: {
     padding: 16,
-    backgroundColor: colors.lightestGray,
     paddingHorizontal: 32,
   },
   text: {

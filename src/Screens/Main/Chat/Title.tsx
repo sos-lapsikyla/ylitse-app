@@ -11,7 +11,6 @@ import { getMentorByUserId } from '../../../state/reducers/mentors';
 import colors from '../../components/colors';
 import { cardBorderRadius } from '../../components/Card';
 import fonts from '../../components/fonts';
-import getBuddyColor from '../../components/getBuddyColor';
 
 type StateProps = {
   name: string;
@@ -39,14 +38,10 @@ const Title: React.FC<Props> = ({
   openDropdown,
   goToMentorCard,
 }) => {
-  const color = getBuddyColor(buddyId);
   const mentor = useSelector(getMentorByUserId(buddyId));
 
   return (
-    <RN.View
-      onLayout={onLayout}
-      style={[styles.blob, { backgroundColor: color }, style]}
-    >
+    <RN.View onLayout={onLayout} style={[styles.blob, style]}>
       <SafeAreaView style={styles.safeArea}>
         {!onPress ? null : (
           <RN.TouchableOpacity
@@ -114,6 +109,7 @@ const styles = RN.StyleSheet.create({
     paddingHorizontal: 8,
     flexDirection: 'row',
     alignItems: 'center',
+    backgroundColor: colors.darkBlue,
   },
   safeArea: {
     flexDirection: 'row',

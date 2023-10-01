@@ -10,7 +10,7 @@ import { getMentorByUserId } from '../../../state/reducers/mentors';
 
 import Card from '../../components/Card';
 import fonts from '../../components/fonts';
-import getBuddyColor from '../../components/getBuddyColor';
+import colors from '../../components/colors';
 
 type Props = {
   buddyId: string;
@@ -21,7 +21,6 @@ type Props = {
 const Button = ({ style, buddyId, name, onPress, ...viewProps }: Props) => {
   const onPressBuddy = () => onPress(buddyId);
   const hasNewMessages = useSelector(hasUnseen(buddyId));
-  const color = getBuddyColor(buddyId);
   const mentor = useSelector(getMentorByUserId(buddyId));
   const lastMessage = useSelector(getLastMessageByBuddyId(buddyId));
 
@@ -44,7 +43,7 @@ const Button = ({ style, buddyId, name, onPress, ...viewProps }: Props) => {
             {lastMessage}
           </RN.Text>
         </RN.View>
-        <RN.View style={[styles.blob, { backgroundColor: color }]}>
+        <RN.View style={[styles.blob]}>
           {hasNewMessages ? (
             <RN.View
               style={styles.newMessage}
@@ -54,10 +53,13 @@ const Button = ({ style, buddyId, name, onPress, ...viewProps }: Props) => {
           {mentor?.is_vacationing ? (
             <RN.Image
               source={require('../../images/umbrella-beach.svg')}
-              style={styles.vacationIcon}
+              style={[styles.icon, styles.vacationIcon]}
             />
           ) : (
-            <RN.Image source={require('../../images/balloon.svg')} />
+            <RN.Image
+              source={require('../../images/balloon.svg')}
+              style={styles.icon}
+            />
           )}
         </RN.View>
       </RN.TouchableOpacity>
@@ -96,6 +98,7 @@ const styles = RN.StyleSheet.create({
     justifyContent: 'center',
     alignSelf: 'stretch',
     minHeight: 80,
+    backgroundColor: colors.purplePale,
   },
   newMessage: {
     zIndex: 2,
@@ -106,6 +109,9 @@ const styles = RN.StyleSheet.create({
     top: 16,
     right: 16,
     backgroundColor: 'yellow',
+  },
+  icon: {
+    tintColor: colors.purple,
   },
   vacationIcon: {
     width: 48,
