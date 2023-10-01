@@ -11,7 +11,6 @@ import { pipe } from 'fp-ts/lib/function';
 import * as RD from '@devexperts/remote-data-ts';
 
 import * as actions from '../../../state/actions';
-import * as selector from '../../../state/selectors';
 import * as state from '../../../state/reducers/changePassword';
 
 import Message from '../../components/Message';
@@ -32,8 +31,6 @@ export type PasswordChangeRoute = {
 type Props = StackScreenProps<StackRoutes, 'Main/Settings/PasswordChange'>;
 
 export default ({ navigation }: Props) => {
-  const account = useSelector(selector.getAccount);
-
   const [currentPassword, setCurrentPassword] = React.useState('');
   const [newPassword, setNewPassword] = React.useState('');
   const [repeatedNewPassword, setRepeatedNewPassword] = React.useState('');
@@ -89,11 +86,6 @@ export default ({ navigation }: Props) => {
             style={styles.title}
             id="main.settings.account.password.title"
           />
-          <Message
-            style={styles.fieldName}
-            id="main.settings.account.userName"
-          />
-          <RN.Text style={styles.fieldValueText}>{account?.userName}</RN.Text>
           {pipe(
             requestState,
             RD.fold(
@@ -142,15 +134,6 @@ const styles = RN.StyleSheet.create({
   },
   title: {
     ...fonts.titleBold,
-    color: colors.darkestBlue,
-  },
-  fieldName: {
-    ...fonts.regular,
-    color: colors.blueGray,
-    marginTop: 16,
-  },
-  fieldValueText: {
-    ...fonts.largeBold,
     color: colors.darkestBlue,
   },
   scrollView: {

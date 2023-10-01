@@ -79,11 +79,6 @@ export default ({ navigation }: Props) => {
             style={styles.title}
             id="main.settings.account.email.title"
           />
-          <Message
-            style={styles.fieldName}
-            id="main.settings.account.userName"
-          />
-          <RN.Text style={styles.fieldValueText}>{account?.userName}</RN.Text>
           {pipe(
             requestState,
             RD.fold(
@@ -133,15 +128,6 @@ const styles = RN.StyleSheet.create({
     ...fonts.titleBold,
     color: colors.darkestBlue,
     marginBottom: 24,
-  },
-  fieldName: {
-    ...fonts.regular,
-    color: colors.blueGray,
-    marginTop: 16,
-  },
-  fieldValueText: {
-    ...fonts.largeBold,
-    color: colors.darkestBlue,
   },
   scrollView: {
     zIndex: 1,

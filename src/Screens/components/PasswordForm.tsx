@@ -6,6 +6,7 @@ import { textShadow } from './shadow';
 import colors from './colors';
 import fonts from './fonts';
 import NamedInputField from './NamedInputField';
+import IconButton from './IconButton';
 
 type Props = {
   currentPassword: string;
@@ -21,74 +22,69 @@ type Props = {
 
 export default (props: Props) => {
   return (
-    <>
-      <NamedInputField
-        style={styles.field}
-        name="main.settings.account.password.current"
-        isPasswordInput={true}
-        value={props.currentPassword}
-        onChangeText={props.setCurrentPassword}
-        testID="main.settings.account.password.current"
-      />
-      <NamedInputField
-        style={styles.field}
-        name="main.settings.account.password.new"
-        isPasswordInput={true}
-        value={props.newPassword}
-        onChangeText={props.setNewPassword}
-        testID="main.settings.account.password.new"
-      />
-      <NamedInputField
-        style={styles.field}
-        name="main.settings.account.password.repeat"
-        isPasswordInput={true}
-        value={props.repeatedNewPassword}
-        onChangeText={props.setRepeatedNewPassword}
-        testID="main.settings.account.password.repeat"
-      />
+    <RN.View style={styles.container}>
+      <RN.View>
+        <NamedInputField
+          style={styles.field}
+          name="main.settings.account.password.current"
+          isPasswordInput={true}
+          value={props.currentPassword}
+          onChangeText={props.setCurrentPassword}
+          testID="main.settings.account.password.current"
+        />
+        <NamedInputField
+          style={styles.field}
+          name="main.settings.account.password.new"
+          isPasswordInput={true}
+          value={props.newPassword}
+          onChangeText={props.setNewPassword}
+          testID="main.settings.account.password.new"
+        />
+        <NamedInputField
+          style={styles.field}
+          name="main.settings.account.password.repeat"
+          isPasswordInput={true}
+          value={props.repeatedNewPassword}
+          onChangeText={props.setRepeatedNewPassword}
+          testID="main.settings.account.password.repeat"
+        />
+      </RN.View>
       <RN.View style={styles.buttonContainer}>
-        <Button
-          style={styles.cancelButton}
-          messageStyle={styles.cancelButtonText}
+        <IconButton
+          badge={require('../images/chevron-left.svg')}
+          badgeStyle={styles.badge}
           onPress={props.onGoBack}
-          messageId="meta.cancel"
           testID="main.settings.account.password.cancel"
         />
         <Button
-          style={styles.changePasswordButton}
-          messageStyle={styles.buttonText}
           onPress={props.onButtonPress}
           messageId="meta.save"
           disabled={!props.isOkay}
           testID="main.settings.account.password.save"
         />
       </RN.View>
-    </>
+    </RN.View>
   );
 };
 
 const styles = RN.StyleSheet.create({
+  container: {
+    display: 'flex',
+    flex: 1,
+    flexDirection: 'column',
+    justifyContent: 'space-between',
+  },
   field: {
     marginVertical: 10,
   },
-  cancelButtonText: {
-    ...fonts.large,
-    color: colors.darkestBlue,
-  },
-  changePasswordButton: {
-    backgroundColor: colors.blue,
-  },
   buttonContainer: {
-    flex: 1,
-    alignSelf: 'stretch',
-    justifyContent: 'flex-end',
-    paddingHorizontal: 24,
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
     marginVertical: 24,
   },
-  buttonText: {
-    ...fonts.largeBold,
-    ...textShadow,
-    color: colors.deepBlue,
+  badge: {
+    width: 32,
+    height: 32,
   },
-  cancelButton: { backgroundColor: colors.gray, marginBottom: 16 },
 });

@@ -9,11 +9,11 @@ import * as userAccountState from '../../../../state/reducers/userAccount';
 import * as actions from '../../../../state/actions';
 
 import RemoteData from '../../../components/RemoteData';
-import Button from '../../../components/Button';
 import Message from '../../../components/Message';
 import colors from '../../../components/colors';
 import fonts from '../../../components/fonts';
 import MentorForm from './MentorForm';
+import IconButton from 'src/Screens/components/IconButton';
 
 type Props = {
   openPasswordForm: () => void;
@@ -42,18 +42,20 @@ export default ({ openPasswordForm, openEmailForm }: Props) => {
       >
         {([{ userId, userName, displayName, email, role }, hasBoth]) => (
           <>
-            <Message
-              style={styles.fieldName}
-              id="main.settings.account.userName"
-            />
-            <RN.Text
-              style={styles.fieldValueText}
-              testID="main.settings.account.userName"
-            >
-              {userName}
-            </RN.Text>
+            <RN.View style={styles.dataContainer}>
+              <Message
+                style={styles.fieldName}
+                id="main.settings.account.userName"
+              />
+              <RN.Text
+                style={styles.fieldValueText}
+                testID="main.settings.account.userName"
+              >
+                {userName}
+              </RN.Text>
+            </RN.View>
             {hasBoth ? (
-              <>
+              <RN.View style={styles.dataContainer}>
                 <Message
                   style={styles.fieldName}
                   id="main.settings.account.displayName"
@@ -64,44 +66,50 @@ export default ({ openPasswordForm, openEmailForm }: Props) => {
                 >
                   {displayName}
                 </RN.Text>
-              </>
+              </RN.View>
             ) : null}
-            <Message
-              style={styles.fieldName}
-              id="main.settings.account.email.title"
-            />
-            {email ? (
-              <RN.Text
-                style={styles.fieldValueText}
-                testID="main.settings.account.email"
-              >
-                {email}
-              </RN.Text>
-            ) : (
-              <Message
-                style={styles.fieldValueText}
-                id="main.settings.account.email.missing"
-              />
-            )}
-            <Button
-              style={styles.changePasswordButton}
-              messageStyle={styles.buttonText}
-              onPress={openEmailForm}
-              messageId="main.settings.account.email.change"
-              testID="main.settings.account.email.change"
-            />
-            <Message
-              style={styles.fieldName}
-              id="main.settings.account.password.title"
-            />
-            <RN.Text style={styles.fieldValueText}>{'********'}</RN.Text>
-            <Button
-              style={styles.changePasswordButton}
-              messageStyle={styles.buttonText}
-              onPress={openPasswordForm}
-              messageId="main.settings.account.password.button"
-              testID="main.settings.account.password.button"
-            />
+            <RN.View style={styles.dataContainer}>
+              <RN.View style={styles.headerContainer}>
+                <Message
+                  style={styles.fieldName}
+                  id="main.settings.account.email.title"
+                />
+                <IconButton
+                  badge={require('../../../images/pen.svg')}
+                  onPress={openEmailForm}
+                  testID="main.settings.account.email.change"
+                  noShadow
+                />
+              </RN.View>
+              {email ? (
+                <RN.Text
+                  style={styles.fieldValueText}
+                  testID="main.settings.account.email"
+                >
+                  {email}
+                </RN.Text>
+              ) : (
+                <Message
+                  style={styles.fieldValueText}
+                  id="main.settings.account.email.missing"
+                />
+              )}
+            </RN.View>
+            <RN.View style={styles.dataContainerLast}>
+              <RN.View style={styles.headerContainer}>
+                <Message
+                  style={styles.fieldName}
+                  id="main.settings.account.password.title"
+                />
+                <IconButton
+                  badge={require('../../../images/pen.svg')}
+                  onPress={openPasswordForm}
+                  testID="main.settings.account.password.change"
+                  noShadow
+                />
+              </RN.View>
+              <RN.Text style={styles.fieldValueText}>{'********'}</RN.Text>
+            </RN.View>
             {role === 'mentor' ? <MentorForm userId={userId} /> : null}
           </>
         )}
@@ -116,28 +124,36 @@ const styles = RN.StyleSheet.create({
     paddingBottom: 32,
     marginBottom: 32,
   },
+  headerContainer: {
+    display: 'flex',
+    flexDirection: 'row',
+    flex: 1,
+    justifyContent: 'space-between',
+    paddingTop: 16,
+  },
+  dataContainer: {
+    paddingVertical: 16,
+    borderBottomColor: colors.formBorderGray,
+    borderBottomWidth: 1,
+  },
+  dataContainerLast: {
+    paddingVertical: 16,
+  },
   accountSettingsText: {
     ...fonts.titleBold,
     color: colors.darkestBlue,
     marginBottom: 24,
   },
   fieldName: {
-    ...fonts.regular,
-    color: colors.blueGray,
-    marginTop: 16,
+    ...fonts.regularBold,
+    color: colors.darkestBlue,
   },
   fieldValueText: {
-    ...fonts.largeBold,
     color: colors.darkestBlue,
   },
   link: {
     marginTop: 8,
     marginBottom: 24,
-  },
-  changePasswordButton: {
-    marginTop: 8,
-    alignSelf: 'flex-start',
-    backgroundColor: colors.blue,
   },
   buttonText: {
     ...fonts.regularBold,

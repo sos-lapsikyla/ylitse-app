@@ -7,11 +7,10 @@ import { ValidEmail } from '../../lib/validators';
 
 import Button from './Button';
 import colors from './colors';
-import fonts from './fonts';
 import NamedInputField from './NamedInputField';
-import { textShadow } from './shadow';
 
 import Message from '../components/Message';
+import IconButton from './IconButton';
 
 type Props = {
   email: string;
@@ -25,42 +24,48 @@ export default (props: Props) => {
   const isValidEmail = isRight(emailParsingResult);
 
   return (
-    <>
-      <NamedInputField
-        style={styles.field}
-        name="main.settings.account.email.title"
-        value={props.email}
-        onChangeText={props.setEmail}
-        testID="main.settings.account.email.input"
-      />
-      {isValidEmail ? null : (
-        <Message
-          style={styles.error}
-          id="main.settings.account.email.invalid"
+    <RN.View style={styles.container}>
+      <RN.View>
+        <NamedInputField
+          style={styles.field}
+          name="main.settings.account.email.title"
+          value={props.email}
+          onChangeText={props.setEmail}
+          testID="main.settings.account.email.input"
         />
-      )}
+        {isValidEmail ? null : (
+          <Message
+            style={styles.error}
+            id="main.settings.account.email.invalid"
+          />
+        )}
+      </RN.View>
       <RN.View style={styles.buttonContainer}>
-        <Button
-          style={styles.cancelButton}
-          messageStyle={styles.cancelButtonText}
+        <IconButton
+          badge={require('../images/chevron-left.svg')}
+          badgeStyle={styles.badge}
           onPress={props.onGoBack}
-          messageId="meta.cancel"
           testID="main.settings.account.email.cancel"
         />
         <Button
-          style={styles.changePasswordButton}
-          messageStyle={styles.buttonText}
+          style={styles.button}
           onPress={props.onButtonPress}
           messageId="meta.save"
           testID="main.settings.account.email.save"
           disabled={!isValidEmail}
         />
       </RN.View>
-    </>
+    </RN.View>
   );
 };
 
 const styles = RN.StyleSheet.create({
+  container: {
+    display: 'flex',
+    flex: 1,
+    flexDirection: 'column',
+    justifyContent: 'space-between',
+  },
   error: {
     color: colors.red,
     textAlign: 'center',
@@ -68,24 +73,17 @@ const styles = RN.StyleSheet.create({
   field: {
     marginVertical: 8,
   },
-  cancelButtonText: {
-    ...fonts.large,
-    color: colors.darkestBlue,
+  badge: {
+    width: 32,
+    height: 32,
   },
-  changePasswordButton: {
-    backgroundColor: colors.blue,
+  button: {
+    paddingHorizontal: 64,
   },
   buttonContainer: {
-    flex: 1,
-    alignSelf: 'stretch',
-    justifyContent: 'flex-end',
-    paddingHorizontal: 24,
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
     marginVertical: 24,
   },
-  buttonText: {
-    ...fonts.largeBold,
-    ...textShadow,
-    color: colors.deepBlue,
-  },
-  cancelButton: { backgroundColor: colors.gray, marginBottom: 16 },
 });
