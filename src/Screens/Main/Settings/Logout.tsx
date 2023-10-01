@@ -50,18 +50,17 @@ export default ({ navigation }: Props) => {
         </RN.View>
         <SafeAreaView style={styles.buttonContainer}>
           <MessageButton
-            style={styles.logoutButton}
-            messageStyle={styles.messageStyle}
+            style={styles.button}
             onPress={onLogout}
             messageId={'main.settings.logout.logout'}
             testID="main.settings.logout.logout"
           />
           <MessageButton
-            style={styles.cancelButton}
-            messageStyle={styles.messageStyle}
+            style={styles.button}
             onPress={onGoBack}
             messageId={'main.settings.logout.cancel'}
             testID="main.settings.logout.cancel"
+            emphasis="low"
           />
           <CreatedBySosBanner />
         </SafeAreaView>
@@ -109,9 +108,5 @@ const styles = RN.StyleSheet.create({
     justifyContent: 'flex-end',
     paddingHorizontal: 40,
   },
-  logoutButton: { marginBottom: 40 },
-  cancelButton: { backgroundColor: colors.gray, marginBottom: 40 },
-  messageStyle: {
-    color: colors.deepBlue,
-  },
+  button: { marginBottom: 40 },
 });

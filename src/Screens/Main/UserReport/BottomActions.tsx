@@ -3,6 +3,7 @@ import RN from 'react-native';
 
 import colors from 'src/Screens/components/colors';
 import Button from 'src/Screens/components/Button';
+import IconButton from 'src/Screens/components/IconButton';
 
 type Props = {
   onBack: () => void;
@@ -12,16 +13,13 @@ type Props = {
 
 export const BottomActions = ({ onBack, onSend, isSendDisabled }: Props) => (
   <RN.View style={styles.bottomActions}>
-    <RN.TouchableOpacity
+    <IconButton
       style={styles.backButtonTouchable}
       onPress={onBack}
       testID="main.userreport.back.button"
-    >
-      <RN.Image
-        source={require('../../images/chevron-left.svg')}
-        style={styles.backButtonIcon}
-      />
-    </RN.TouchableOpacity>
+      badge={require('../../images/chevron-left.svg')}
+      badgeStyle={styles.badge}
+    />
     <Button
       style={styles.sendButton}
       onPress={onSend}
@@ -39,7 +37,6 @@ const styles = RN.StyleSheet.create({
     marginTop: 16,
   },
   backButtonTouchable: {
-    backgroundColor: colors.blue,
     borderRadius: 50,
   },
   backButtonIcon: {
@@ -50,5 +47,9 @@ const styles = RN.StyleSheet.create({
   },
   sendButton: {
     paddingHorizontal: 64,
+  },
+  badge: {
+    width: 32,
+    height: 32,
   },
 });

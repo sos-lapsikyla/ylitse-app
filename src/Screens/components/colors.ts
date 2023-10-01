@@ -45,8 +45,8 @@ const colors = {
   iconYellow: '#A07D00',
 
   // reds
-  danger: '#A8243C',
-  lightDanger: '#F19A9C',
+  danger: '#972232',
+  lightDanger: '#F1C9C6',
   pink: '#FFD3D3',
 
   // greens

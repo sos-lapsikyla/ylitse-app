@@ -87,6 +87,7 @@ export default ({ navigation, route }: Props) => {
         onLayout={onLayout}
         onPressBack={onPressBack}
         headerId={titleId}
+        folderType={folderType}
       />
       {dialogState.dropdownOpen && (
         <DropDown
