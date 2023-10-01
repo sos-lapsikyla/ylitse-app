@@ -9,7 +9,6 @@ import MessageButton from '../../components/MessageButton';
 import Card from '../../components/Card';
 import Link from '../../components/Link';
 import Message from '../../components/Message';
-import { textShadow } from '../../components/shadow';
 import colors from '../../components/colors';
 import fonts from '../../components/fonts';
 

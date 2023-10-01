@@ -2,9 +2,6 @@ import React from 'react';
 import RN from 'react-native';
 
 import Button from './Button';
-import { textShadow } from './shadow';
-import colors from './colors';
-import fonts from './fonts';
 import NamedInputField from './NamedInputField';
 import IconButton from './IconButton';
 

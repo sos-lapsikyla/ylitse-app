@@ -30,7 +30,9 @@ const DropDown: React.FC<Props> = ({ items, style }) => {
     <RN.View style={[styles.dropdown, style]}>
       {items.map((item, index) => {
         const isLastItem = index === items.length - 1;
+
         const isFirstItem = index === 0;
+
         const commonStyles = [
           isFirstItem && {
             borderTopLeftRadius: 16,

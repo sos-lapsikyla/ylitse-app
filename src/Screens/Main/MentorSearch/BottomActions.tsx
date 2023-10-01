@@ -6,7 +6,6 @@ import { useDispatch } from 'react-redux';
 import * as actions from '../../../state/actions';
 
 import MessageButton from '../../components/MessageButton';
-import colors from '../../components/colors';
 
 type Props = {
   selectedSkills: Array<string>;

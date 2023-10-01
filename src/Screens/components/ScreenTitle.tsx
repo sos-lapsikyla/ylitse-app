@@ -39,7 +39,7 @@ const styles = RN.StyleSheet.create({
     borderBottomLeftRadius: 40,
     borderBottomRightRadius: 40,
     zIndex: 2,
-    backgroundColor: colors.lightBlue,
+    backgroundColor: colors.darkBlue,
   },
   content: {
     marginTop: 16,
