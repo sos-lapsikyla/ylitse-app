@@ -3,11 +3,22 @@ import RN from 'react-native';
 
 import colors from './colors';
 
-interface Props extends RN.ViewProps {}
+interface Props extends RN.ViewProps {
+  variant?: 'main' | 'secondary';
+}
 
-const Background: React.FC<Props> = ({ children, ...ViewProps }) => (
+const Background: React.FC<Props> = ({
+  children,
+  variant = 'main',
+  ...ViewProps
+}) => (
   <RN.View style={styles.container} {...ViewProps}>
-    <RN.View style={styles.blob} />
+    <RN.View
+      style={[
+        styles.blob,
+        { backgroundColor: variant === 'main' ? colors.purple : colors.blue },
+      ]}
+    />
     <RN.View style={styles.filler} />
     <RN.View style={styles.child}>{children}</RN.View>
   </RN.View>
@@ -22,7 +33,6 @@ const styles = RN.StyleSheet.create({
     flex: 1,
     borderBottomLeftRadius: 40,
     borderBottomRightRadius: 40,
-    backgroundColor: colors.lightBlue,
   },
   filler: {
     flex: 1,

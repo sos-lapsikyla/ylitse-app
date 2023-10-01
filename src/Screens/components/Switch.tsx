@@ -13,16 +13,21 @@ export interface SwitchProps {
   style?: RN.ViewStyle;
 }
 
-const h = 28;
-const d = (2 / 3) * h;
-const trackLength = d * 2.75;
-const leftPosition = d * 0.3;
-const rightPosition = trackLength - 1.3 * d;
+type SwitchColors = {
+  border: [string, string];
+  knob: [string, string];
+};
+
+const height = 28;
+const delimiter = (2 / 3) * height;
+const trackLength = delimiter * 2.75;
+const leftPosition = delimiter * 0.3;
+const rightPosition = trackLength - 1.3 * delimiter;
 const middlePosition = (leftPosition + rightPosition) / 2;
 const duration = 400;
 
 const itemBorderWidth = 1;
-const loadingKnobBorderWidth = 0.15 * d;
+const loadingKnobBorderWidth = 0.15 * delimiter;
 
 const getPosition = (value: boolean, isLoading: boolean) =>
   isLoading ? middlePosition : value ? rightPosition : leftPosition;
@@ -86,16 +91,13 @@ const Switch: React.FC<SwitchProps> = ({
     }
   }, [showLoading]);
 
-  type SwitchColors = {
-    track: string;
-    knob: [string, string];
-  };
-
   const switchColors: SwitchColors = {
-    track: disabled ? colors.disableGray : colors.lightestGray,
+    border: disabled
+      ? [colors.fadedGray, colors.fadedGray]
+      : [colors.fadedGray, colors.purple],
     knob: disabled
-      ? [colors.disableLightGray, colors.disableLightGray]
-      : [colors.gray, colors.blue],
+      ? [colors.fadedGray, colors.fadedGray]
+      : [colors.fadedGray, colors.purple],
   };
 
   const loadingBorderColor =
@@ -112,19 +114,24 @@ const Switch: React.FC<SwitchProps> = ({
         borderWidth: loadingKnobBorderWidth,
       }
     : {
-        borderColor: colors.formBorderGray,
+        borderColor: disabled ? colors.fadedGray : colors.purple,
         borderWidth: itemBorderWidth,
       };
 
   return (
     <RN.Pressable onPress={press} disabled={disabled} testID={testID}>
-      <RN.View
+      <RN.Animated.View
         style={[
           styles.track,
           {
-            backgroundColor: switchColors.track,
-            borderColor: colors.formBorderGray,
+            backgroundColor: styles.track.backgroundColor,
             borderWidth: itemBorderWidth,
+          },
+          {
+            borderColor: animation.interpolate({
+              inputRange: [leftPosition, rightPosition],
+              outputRange: switchColors.border,
+            }),
           },
           style,
         ]}
@@ -152,24 +159,24 @@ const Switch: React.FC<SwitchProps> = ({
             knobBorder,
           ]}
         />
-      </RN.View>
+      </RN.Animated.View>
     </RN.Pressable>
   );
 };
 
 const styles = RN.StyleSheet.create({
   track: {
-    height: h,
+    height,
     width: trackLength,
-    borderRadius: (d * 1.5) / 2,
-    backgroundColor: colors.lightestGray,
+    borderRadius: (delimiter * 1.5) / 2,
+    backgroundColor: colors.white,
   },
   knob: {
     position: 'absolute',
-    top: d * 0.25 - itemBorderWidth,
-    width: d,
-    height: d,
-    borderRadius: d / 2,
+    top: delimiter * 0.25 - itemBorderWidth,
+    width: delimiter,
+    height: delimiter,
+    borderRadius: delimiter / 2,
     backgroundColor: colors.white,
     zIndex: 1,
   },

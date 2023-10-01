@@ -61,7 +61,7 @@ const LoginCard = ({
         <Message style={styles.title} id={titleMessageId} />
         <NamedInputField
           autoCapitalize="none"
-          style={styles.nickNameInput}
+          style={styles.input}
           name="onboarding.signUp.userName"
           onChangeText={onUserNameChange}
           autoComplete="off"
@@ -69,7 +69,7 @@ const LoginCard = ({
         />
         <NamedInputField
           autoCapitalize="none"
-          style={styles.passwordInput}
+          style={styles.input}
           name="onboarding.signUp.password"
           isPasswordInput={true}
           onChangeText={onPasswordChange}
@@ -89,8 +89,8 @@ const LoginCard = ({
           onPress={onPressBack}
           noShadow={true}
           style={styles.backButton}
+          emphasis="low"
         />
-
         <Button
           style={styles.nextButton}
           badgeStyle={styles.badgeStyle}
@@ -120,10 +120,7 @@ const styles = RN.StyleSheet.create({
     color: colors.darkestBlue,
     marginBottom: 10,
   },
-  nickNameInput: {
-    marginBottom: 10,
-  },
-  passwordInput: {
+  input: {
     marginBottom: 10,
   },
   errorText: {
@@ -135,7 +132,6 @@ const styles = RN.StyleSheet.create({
     justifyContent: 'space-between',
   },
   backButton: {
-    backgroundColor: colors.lightestGray,
     flex: 1.2,
     height: 32,
   },

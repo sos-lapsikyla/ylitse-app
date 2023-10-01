@@ -64,6 +64,7 @@ const DisplayName = ({ navigation, route }: Props) => {
             onPress={goBack}
             noShadow={true}
             style={styles.backButton}
+            emphasis="low"
           />
 
           <Button
@@ -112,14 +113,12 @@ const styles = RN.StyleSheet.create({
     justifyContent: 'space-between',
   },
   backButton: {
-    backgroundColor: colors.lightestGray,
     flex: 1.2,
     marginHorizontal: 4,
     height: 32,
     marginTop: 4,
   },
   notValidButton: {
-    backgroundColor: colors.lightestGray,
     flex: 2,
     height: 32,
     width: 32,

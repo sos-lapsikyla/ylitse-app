@@ -61,7 +61,7 @@ const NamedInputField = ({
 
 const styles = RN.StyleSheet.create({
   nameText: {
-    ...fonts.regular,
+    ...fonts.regularBold,
     color: colors.darkestBlue,
     marginBottom: 8,
   },
@@ -71,16 +71,18 @@ const styles = RN.StyleSheet.create({
     alignItems: 'center',
   },
   inputText: {
-    ...fonts.largeBold,
+    ...fonts.regular,
     color: colors.darkestBlue,
-    backgroundColor: colors.lightestGray,
+    backgroundColor: colors.white,
     alignSelf: 'stretch',
     flex: 1,
     flexGrow: 1,
     paddingVertical: 8,
     paddingLeft: 16,
     paddingRight: 48,
-    borderRadius: 16,
+    borderColor: colors.purple,
+    borderWidth: 1,
+    borderRadius: 4,
   },
   button: {
     position: 'absolute',
@@ -91,7 +93,7 @@ const styles = RN.StyleSheet.create({
     alignSelf: 'center',
     justifyContent: 'center',
   },
-  icon: { height: 24, width: 24, tintColor: colors.blueGray },
+  icon: { height: 24, width: 24, tintColor: colors.purple },
 });
 
 export default NamedInputField;

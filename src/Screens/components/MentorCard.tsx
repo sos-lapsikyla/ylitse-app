@@ -9,7 +9,6 @@ import MentorTitle from './MentorTitle';
 import MentorStory from './MentorStory';
 import Skills from './Skills';
 import colors from './colors';
-import getBuddyColor from './getBuddyColor';
 import fonts from './fonts';
 
 interface Props {
@@ -19,8 +18,6 @@ interface Props {
 }
 
 const MentorCard: React.FC<Props> = ({ onPress, style, mentor }) => {
-  const color = getBuddyColor(mentor.buddyId);
-
   return (
     <Card style={[styles.card, style]}>
       <MentorTitle mentor={mentor} withStatus={true} />
@@ -42,7 +39,7 @@ const MentorCard: React.FC<Props> = ({ onPress, style, mentor }) => {
           story={mentor.story}
           showAll={false}
         />
-        <Skills skills={mentor.skills} color={color} amount={100} />
+        <Skills skills={mentor.skills} color={colors.whiteBlue} amount={100} />
       </RN.ScrollView>
       <RN.Image
         style={styles.bottomGradient}

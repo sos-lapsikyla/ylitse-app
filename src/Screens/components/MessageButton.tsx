@@ -13,25 +13,40 @@ interface Props {
   style?: RN.StyleProp<RN.ViewStyle>;
   messageId: localization.MessageId;
   messageStyle?: RN.StyleProp<RN.TextStyle>;
+  emphasis?: 'high' | 'low';
   testID?: string;
 }
 
-export default ({ onPress, style, messageId, messageStyle, testID }: Props) => {
+export default ({
+  onPress,
+  style,
+  messageId,
+  messageStyle,
+  emphasis = 'high',
+  testID,
+}: Props) => {
   return (
     <ButtonContainer
-      style={[styles.container, style]}
+      style={[styles.commonContainer, styles[`${emphasis}Container`], style]}
       onPress={onPress}
       testID={testID}
     >
-      <Message style={[styles.message, messageStyle]} id={messageId} />
+      <Message
+        style={[
+          styles.commonMessage,
+          styles[`${emphasis}Message`],
+          messageStyle,
+        ]}
+        id={messageId}
+      />
     </ButtonContainer>
   );
 };
 
-const borderRadius = 18;
+const borderRadius = 32;
 
 const styles = RN.StyleSheet.create({
-  container: {
+  commonContainer: {
     minHeight: 40,
     alignSelf: 'stretch',
     borderRadius,
@@ -40,12 +55,25 @@ const styles = RN.StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     flexDirection: 'column',
-    backgroundColor: colors.blue,
   },
-  message: {
-    ...fonts.largeBold,
+  highContainer: {
+    backgroundColor: colors.purple,
+  },
+  lowContainer: {
+    backgroundColor: colors.white,
+    borderColor: colors.purple,
+    borderWidth: 2,
+  },
+  commonMessage: {
     textAlign: 'center',
-    color: colors.white,
     flexDirection: 'column',
+  },
+  highMessage: {
+    ...fonts.largeBold,
+    color: colors.orangeLight,
+  },
+  lowMessage: {
+    ...fonts.large,
+    color: colors.purple,
   },
 });

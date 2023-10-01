@@ -8,7 +8,6 @@ import OnboardingBackground from '../components/OnboardingBackground';
 import Card from '../components/Card';
 import MessageButton from '../components/MessageButton';
 import fonts from '../components/fonts';
-import colors from '../components/colors';
 
 export type SignRoute = {
   'Onboarding/Sign': {};
@@ -51,6 +50,7 @@ export default ({ navigation }: Props) => {
           messageId="meta.back"
           messageStyle={styles.signText}
           onPress={goBack}
+          emphasis="low"
           testID="onboarding.back"
         />
       </Card>
@@ -61,7 +61,6 @@ export default ({ navigation }: Props) => {
 const styles = RN.StyleSheet.create({
   signText: {
     ...fonts.titleBold,
-    color: colors.darkestBlue,
   },
   card: {
     marginVertical: 24,
@@ -78,7 +77,6 @@ const styles = RN.StyleSheet.create({
   },
   backButton: {
     minHeight: 64,
-    backgroundColor: colors.lightestGray,
     marginHorizontal: 32,
   },
 });

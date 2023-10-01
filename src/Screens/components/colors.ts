@@ -9,14 +9,22 @@ const colors = {
   transparentBlack: '#000a',
   faintBackground: '#0002',
 
+  // purples
+  purpleDark: '#37119D',
+  purple: '#4A2ACB',
+  purpleMid: '#5C33FF',
+  purpleHover: '#CDCBFF',
+  purplePale: '#E5E4FF',
+
   // blues
-  blue: '#00b1e6',
-  darkBlue: '#009ee0',
+  blue: '#01A5EC',
+  darkBlue: '#43BFFF',
   darkestBlue: '#123163',
   deepBlue: '#003363',
   lightBlue: '#5cc5ed',
   lighterBlue: '#a2daf3',
   iconBlue: '#1A6481',
+  whiteBlue: '#E4F3FB ',
 
   // searchMentor colors
   cyan: '#00BEEA',
@@ -26,6 +34,7 @@ const colors = {
   green: '#98c679',
   red: '#EB727C',
   orange: '#F1923E',
+  orangeLight: '#F0BA8C',
 
   // yellows
   yellow: '#FFDA17',
@@ -46,6 +55,7 @@ const colors = {
   // others
   teal: '#75C9C3',
   blueGray: '#5A7C9B',
+  fadedGray: '#616161',
   disableGray: '#BDBDBD',
   disableLightGray: '#E0E0E0',
   formBorderGray: '#AFBFCD',

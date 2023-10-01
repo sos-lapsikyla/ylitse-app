@@ -15,6 +15,7 @@ interface Props {
   badgeStyle?: RN.StyleProp<RN.ImageStyle>;
   messageId: localization.MessageId;
   messageStyle?: RN.StyleProp<RN.TextStyle>;
+  emphasis?: 'high' | 'low';
   badge?: RN.ImageSourcePropType;
   disabled?: boolean;
   loading?: boolean;
@@ -31,13 +32,15 @@ const Button = ({
   badge,
   loading,
   disabled,
+  emphasis = 'high',
   noShadow,
   testID,
 }: Props) => {
   return (
     <RN.TouchableOpacity
       style={[
-        styles.container,
+        styles.commonContainer,
+        styles[`${emphasis}Container`],
         disabled ? styles.disabled : undefined,
         !noShadow ? styles.shadow : undefined,
         style,
@@ -46,38 +49,62 @@ const Button = ({
       disabled={disabled || loading}
       testID={testID}
     >
-      <Message style={[styles.message, messageStyle]} id={messageId} />
+      <Message
+        style={[
+          styles.commonMessage,
+          styles[`${emphasis}Message`],
+          messageStyle,
+        ]}
+        id={messageId}
+      />
       {!badge || loading ? null : (
-        <RN.Image style={badgeStyle ?? styles.badge} source={badge} />
+        <RN.Image
+          style={[styles.commonBadge, badgeStyle ?? styles.absoluteBadge]}
+          source={badge}
+        />
       )}
-      {loading ? <Spinner style={badgeStyle ?? styles.badge} /> : null}
+      {loading ? (
+        <Spinner
+          style={[styles.commonBadge, badgeStyle ?? styles.absoluteBadge]}
+        />
+      ) : null}
     </RN.TouchableOpacity>
   );
 };
 
-const borderRadius = 18;
+const borderRadius = 32;
 
 const styles = RN.StyleSheet.create({
-  container: {
+  commonContainer: {
     minHeight: 40,
     alignSelf: 'stretch',
     borderRadius,
-    backgroundColor: colors.lightBlue,
     paddingVertical: 4,
     paddingHorizontal: 16,
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
   },
+  highContainer: {
+    backgroundColor: colors.purple,
+  },
+  lowContainer: {
+    backgroundColor: colors.white,
+    borderColor: colors.purple,
+    borderWidth: 2,
+  },
   shadow: shadow(7),
   disabled: {
-    opacity: 0.3,
+    opacity: 0.7,
   },
-  badge: {
+  absoluteBadge: {
     position: 'absolute',
     right: 22,
+  },
+  commonBadge: {
     width: 48,
     height: 48,
+    tintColor: colors.orangeLight,
   },
   gradient: {
     minHeight: 40,
@@ -93,11 +120,17 @@ const styles = RN.StyleSheet.create({
     flexDirection: 'column',
     flex: 1,
   },
-  message: {
-    ...fonts.largeBold,
+  commonMessage: {
     textAlign: 'center',
-    color: colors.darkestBlue,
     flexDirection: 'column',
+  },
+  highMessage: {
+    ...fonts.largeBold,
+    color: colors.orangeLight,
+  },
+  lowMessage: {
+    ...fonts.large,
+    color: colors.purple,
   },
 });
 

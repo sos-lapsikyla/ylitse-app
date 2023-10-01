@@ -17,8 +17,8 @@ const CreatedBySosBanner = ({ style, ...textProps }: RN.TextProps) => {
 
 const styles = RN.StyleSheet.create({
   banner: {
-    ...fonts.regular,
-    color: colors.gray,
+    ...fonts.small,
+    color: colors.deepBlue,
     textAlign: 'center',
   },
 });

@@ -8,7 +8,6 @@ import Message from './Message';
 import { cardBorderRadius } from './Card';
 import colors from './colors';
 import fonts from './fonts';
-import getBuddyColor from './getBuddyColor';
 
 type Props = {
   style?: RN.StyleProp<RN.ViewStyle>;
@@ -25,17 +24,16 @@ const SafeAreaWrapper: React.FC<{ children: React.ReactNode }> = ({
 const MentorTitle: React.FC<Props> = ({
   onPress,
   style,
-  mentor: { age, name, region, buddyId, is_vacationing, status_message },
+  mentor: { age, name, region, is_vacationing, status_message },
   safeArea,
   withStatus,
 }) => {
   const Wrapper = safeArea ? SafeAreaWrapper : React.Fragment;
-  const color = getBuddyColor(buddyId);
 
   const hasRegion = region.length > 0;
 
   return (
-    <RN.View style={[styles.blob, { backgroundColor: color }, style]}>
+    <RN.View style={[styles.blob, { backgroundColor: colors.purple }, style]}>
       <Wrapper>
         {!onPress ? null : (
           <RN.TouchableOpacity
@@ -110,12 +108,12 @@ const styles = RN.StyleSheet.create({
     marginLeft: 0,
   },
   chevronIcon: {
-    tintColor: colors.black,
+    tintColor: colors.white,
     width: 40,
     height: 40,
   },
   userIcon: {
-    tintColor: colors.black,
+    tintColor: colors.white,
     marginBottom: 16,
     width: 48,
     height: 48,
@@ -133,16 +131,19 @@ const styles = RN.StyleSheet.create({
   },
   name: {
     flex: 1,
+    color: colors.white,
     ...fonts.regularBold,
   },
   status: {
     flex: 1,
+    color: colors.white,
     ...fonts.small,
   },
   infoContainer: { flexGrow: 1, flexDirection: 'row', flexWrap: 'wrap' },
   infoText: {
     textAlign: 'left',
     flex: 1,
+    color: colors.white,
     ...fonts.small,
   },
 });

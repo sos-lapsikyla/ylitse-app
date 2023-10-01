@@ -107,6 +107,7 @@ const PrivacyPolicy = ({ navigation, route }: Props) => {
             messageId="meta.back"
             onPress={goBack}
             noShadow={true}
+            emphasis="low"
           />
 
           <Button
@@ -158,7 +159,6 @@ const styles = RN.StyleSheet.create({
     justifyContent: 'space-between',
   },
   backButton: {
-    backgroundColor: colors.lightestGray,
     flex: 1.2,
     marginHorizontal: 4,
     height: 32,
