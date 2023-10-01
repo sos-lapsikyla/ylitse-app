@@ -129,15 +129,16 @@ const styles = RN.StyleSheet.create({
     bottom: 0,
     left: 0,
     right: 0,
-    borderRadius: 40,
+    borderTopLeftRadius: 40,
+    borderTopRightRadius: 40,
     minHeight: 64,
-    backgroundColor: colors.lightestGray,
+    backgroundColor: colors.white,
     flex: 1,
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',
-    paddingBottom: 16,
     paddingTop: 16,
+    paddingBottom: 8,
   },
   container: {
     flex: 1,
@@ -146,9 +147,9 @@ const styles = RN.StyleSheet.create({
     alignItems: 'center',
   },
   separator: {
-    height: 48,
+    height: 56,
     width: 1,
-    backgroundColor: colors.teal,
+    backgroundColor: colors.whiteBlue,
     opacity: 0.8,
   },
   tab: {
@@ -160,8 +161,8 @@ const styles = RN.StyleSheet.create({
   label: {
     ...fonts.small,
     textAlign: 'center',
-    color: colors.blueGray,
-    marginTop: 8,
+    color: colors.purple,
+    marginTop: 4,
   },
   selectedLabel: {
     ...fonts.smallBold,
@@ -169,6 +170,6 @@ const styles = RN.StyleSheet.create({
     color: colors.darkestBlue,
     marginTop: 8,
   },
-  icon: { tintColor: colors.blueGray },
+  icon: { tintColor: colors.purple },
   selectedIcon: { tintColor: colors.darkestBlue },
 });
