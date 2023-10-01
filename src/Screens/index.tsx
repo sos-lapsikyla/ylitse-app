@@ -10,7 +10,7 @@ import SignUp, { SignUpRoute } from './Onboarding/SignUp';
 import DisplayName, { DisplayNameRoute } from './Onboarding/DisplayName';
 import Email, { EmailRoute } from './Onboarding/Email';
 import PrivacyPolicy, { PrivacyPolicyRoute } from './Onboarding/PrivacyPolicy';
-import SearchMentor, { SearchMentorRoute } from './Main/SearchMentor';
+import SearchMentor, { SearchMentorRoute } from './Main/MentorSearch';
 
 import SignIn, { SignInRoute } from './Onboarding/SignIn';
 import Tabs, { TabsRoute } from './Main/Tabs';

@@ -10,7 +10,6 @@ import MentorTitle from '../components/MentorTitle';
 import MentorStory from '../components/MentorStory';
 import Skills from '../components/Skills';
 import Message from '../components/Message';
-import getBuddyColor from '../components/getBuddyColor';
 import Button from '../components/Button';
 import colors from '../components/colors';
 import fonts from '../components/fonts';
@@ -40,7 +39,6 @@ type Props = OwnProps;
 const MentorCardExpanded = ({ navigation, route }: Props) => {
   const mentor = route.params?.mentor;
   const didNavigateFromChat = route.params?.didNavigateFromChat;
-  const color = getBuddyColor(mentor.buddyId);
   const isBuddy = useSelector(buddyState.getIsBuddy(mentor.buddyId));
   const shouldNavigateBack = didNavigateFromChat && isBuddy;
 
@@ -91,7 +89,11 @@ const MentorCardExpanded = ({ navigation, route }: Props) => {
         )}
         <Message id={'main.mentor.story'} style={styles.subtitle} />
         <MentorStory style={styles.story} story={mentor.story} showAll={true} />
-        <Skills style={styles.skills} color={color} skills={mentor.skills} />
+        <Skills
+          style={styles.skills}
+          color={colors.whiteBlue}
+          skills={mentor.skills}
+        />
         <SafeAreaView style={styles.safeArea}>
           <Button
             style={styles.button}
@@ -108,7 +110,7 @@ const MentorCardExpanded = ({ navigation, route }: Props) => {
 const styles = RN.StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: colors.lightestGray,
+    backgroundColor: colors.white,
   },
   mentorTitle: {
     borderTopLeftRadius: 0,

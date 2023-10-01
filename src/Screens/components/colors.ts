@@ -25,6 +25,7 @@ const colors = {
   lighterBlue: '#a2daf3',
   iconBlue: '#1A6481',
   whiteBlue: '#E4F3FB ',
+  accessibleFaintBlue: '#47627B',
 
   // searchMentor colors
   cyan: '#00BEEA',
