@@ -49,7 +49,7 @@ const Splash = ({ navigation }: Props) => {
 
 const styles = RN.StyleSheet.create({
   background: {
-    backgroundColor: colors.lightBlue,
+    backgroundColor: colors.purple,
     flex: 1,
   },
 });

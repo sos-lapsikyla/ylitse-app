@@ -10,33 +10,43 @@ type Props = { title: string; onClose: () => void };
 
 export const Title: React.FC<Props> = ({ title, onClose }) => (
   <RN.View style={styles.titleContainer}>
+    <RN.Text style={styles.titleText}>{title}</RN.Text>
     <RN.TouchableOpacity
       onPress={onClose}
       style={styles.closeButton}
       testID="questionModal.close.icon"
     >
-      <RN.Image source={require('../../images/close.svg')} />
+      <RN.Image
+        source={require('../../images/close.svg')}
+        style={styles.closeIcon}
+      />
     </RN.TouchableOpacity>
-    <RN.Text style={styles.titleText}>{title}</RN.Text>
   </RN.View>
 );
 
 const styles = RN.StyleSheet.create({
   titleContainer: {
     borderRadius,
-    flexDirection: 'column',
-    backgroundColor: colors.blue,
+    backgroundColor: colors.purple,
+  },
+  closeIcon: {
+    width: 16,
+    height: 16,
+    tintColor: colors.purple,
   },
   closeButton: {
-    alignSelf: 'flex-end',
-    marginRight: 12,
-    marginTop: 12,
+    position: 'absolute',
+    right: 4,
+    top: 4,
+    padding: 10,
+    borderRadius: 32,
+    backgroundColor: colors.purplePale,
   },
   titleText: {
     ...fonts.questionTitle,
     textAlign: 'center',
-    paddingHorizontal: 40,
-    paddingBottom: 24,
-    color: colors.deepBlue,
+    marginHorizontal: 48,
+    paddingVertical: 16,
+    color: colors.white,
   },
 });

@@ -54,6 +54,7 @@ export default (props: Props) => {
           testID="main.settings.account.password.cancel"
         />
         <Button
+          style={styles.button}
           onPress={props.onButtonPress}
           messageId="meta.save"
           disabled={!props.isOkay}
@@ -83,5 +84,8 @@ const styles = RN.StyleSheet.create({
   badge: {
     width: 32,
     height: 32,
+  },
+  button: {
+    paddingHorizontal: 64,
   },
 });
