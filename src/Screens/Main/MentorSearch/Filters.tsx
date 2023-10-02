@@ -39,7 +39,7 @@ export const Filters = ({ skillSearch, setSkillSearch }: Props) => {
           placeholder={localization.trans(
             'main.searchMentor.searchField.placeholder',
           )}
-          placeholderTextColor={colors.accessibleFaintBlue}
+          placeholderTextColor={colors.blueGray}
           testID="main.searchMentor.searchField"
         />
         <RN.Image
@@ -82,7 +82,7 @@ const styles = RN.StyleSheet.create({
   },
   switchMessage: {
     ...fonts.regular,
-    color: colors.accessibleFaintBlue,
+    color: colors.blueGray,
   },
   searchField: {
     flex: 1,

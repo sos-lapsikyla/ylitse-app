@@ -35,14 +35,11 @@ const styles = RN.StyleSheet.create({
     flex: 1,
     flexDirection: 'row',
     alignItems: 'flex-end',
-    backgroundColor: colors.lightestGray,
     borderRadius: 16,
     marginVertical: 8,
   },
   inputText: {
     ...fonts.regular,
-    color: colors.darkestBlue,
-    backgroundColor: colors.lightestGray,
     flex: 1,
     flexGrow: 1,
     flexDirection: 'column',
@@ -52,6 +49,8 @@ const styles = RN.StyleSheet.create({
     paddingVertical: 16,
     borderRadius: 16,
     marginTop: RN.Platform.OS === 'ios' ? 8 : undefined,
+    borderColor: colors.purple,
+    borderWidth: 1,
   },
 });
 

@@ -55,7 +55,7 @@ const styles = RN.StyleSheet.create({
   },
   rightBubble: {
     borderRadius: 16,
-    backgroundColor: colors.almostLightBlue,
+    backgroundColor: colors.whiteBlue,
     alignSelf: 'flex-end',
   },
   bubble: {

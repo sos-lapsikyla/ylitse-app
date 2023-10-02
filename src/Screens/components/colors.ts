@@ -1,19 +1,18 @@
 const colors = {
   // common colors
-  background: '#F4F8FC',
-  lightestGray: '#EBF2F8',
-  lightGray: '#D2D9DE',
   white: '#FFF',
+  background: '#F4F8FC',
+  faintBackground: '#0002',
   gray: '#8F9EAC',
+  lightGray: '#D2D9DE',
+  lightestGray: '#EBF2F8',
+  fadedGray: '#616161',
+  formBorderGray: '#AFBFCD',
   black: '#000',
   transparentBlack: '#000a',
-  faintBackground: '#0002',
 
   // purples
-  purpleDark: '#37119D',
   purple: '#4A2ACB',
-  purpleMid: '#5C33FF',
-  purpleHover: '#CDCBFF',
   purplePale: '#E5E4FF',
 
   // blues
@@ -24,43 +23,27 @@ const colors = {
   lightBlue: '#5cc5ed',
   lighterBlue: '#a2daf3',
   iconBlue: '#1A6481',
-  almostLightBlue: '#D3EAFF',
-  whiteBlue: '#E4F3FB ',
-  accessibleFaintBlue: '#47627B',
-
-  // searchMentor colors
-  cyan: '#00BEEA',
-  lightCyan: '#9FE1F5',
-
-  // buddy colors
-  green: '#98c679',
-  red: '#EB727C',
-  orange: '#F1923E',
-  orangeLight: '#F0BA8C',
+  whiteBlue: '#E4F3FB',
+  blueGray: '#47627B',
 
   // yellows
   yellow: '#FFDA17',
   lightYellow: '#EAB90E',
   lighterYellow: '#FDF3A4',
   iconYellow: '#A07D00',
+  orangeLight: '#F0BA8C',
 
   // reds
+  red: '#EB727C',
   danger: '#972232',
   lightDanger: '#F1C9C6',
   pink: '#FFD3D3',
 
   // greens
+  green: '#98c679',
   lighterGreen: '#E4FDD3',
   iconGreen: '#4B932A',
   buttonGreen: '#75C550',
-
-  // others
-  teal: '#75C9C3',
-  blueGray: '#5A7C9B',
-  fadedGray: '#616161',
-  disableGray: '#BDBDBD',
-  disableLightGray: '#E0E0E0',
-  formBorderGray: '#AFBFCD',
 };
 
 export default colors;

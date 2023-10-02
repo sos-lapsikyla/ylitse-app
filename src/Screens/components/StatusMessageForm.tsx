@@ -1,7 +1,6 @@
 import React from 'react';
 import RN from 'react-native';
 
-import colors from './colors';
 import fonts from './fonts';
 import { textShadow } from './shadow';
 
@@ -60,16 +59,13 @@ const styles = RN.StyleSheet.create({
   saveButton: {
     marginTop: 32,
     alignSelf: 'flex-start',
-    minWidth: '70%',
-    backgroundColor: colors.blue,
+    paddingHorizontal: 40,
   },
   maxCharactersText: {
     alignSelf: 'flex-end',
-    color: colors.blueGray,
   },
   buttonText: {
     ...fonts.largeBold,
     ...textShadow,
-    color: colors.white,
   },
 });
