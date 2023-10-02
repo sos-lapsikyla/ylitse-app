@@ -57,7 +57,7 @@ export default ({ navigation }: Props) => {
       color={colors.blue}
     >
       <RN.View style={styles.contentMargins}>
-        <Filters />
+        <Filters skillSearch={skillSearch} setSkillSearch={setSkillSearch} />
         <SkillList height={skillAreaHeight} filterString={skillSearch} />
         <BottomActions
           selectedSkills={skillFilter}

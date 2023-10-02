@@ -12,10 +12,12 @@ import * as localization from '../../../localization';
 import MessageSwitch from '../../components/MessageSwitch';
 import colors from '../../components/colors';
 
-type Props = {};
+type Props = {
+  skillSearch: string;
+  setSkillSearch: (nextFilter: string) => void;
+};
 
-export const Filters = ({}: Props) => {
-  const [skillSearch, setSkillSearch] = React.useState('');
+export const Filters = ({ skillSearch, setSkillSearch }: Props) => {
   const dispatch = useDispatch<redux.Dispatch<actions.Action>>();
 
   const { shouldHideInactiveMentors } = useSelector(

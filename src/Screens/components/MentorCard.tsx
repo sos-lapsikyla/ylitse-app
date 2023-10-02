@@ -39,7 +39,11 @@ const MentorCard: React.FC<Props> = ({ onPress, style, mentor }) => {
           story={mentor.story}
           showAll={false}
         />
-        <Skills skills={mentor.skills} color={colors.whiteBlue} amount={100} />
+        <Skills
+          skills={mentor.skills}
+          color={colors.almostLightBlue}
+          amount={100}
+        />
       </RN.ScrollView>
       <RN.Image
         style={styles.bottomGradient}

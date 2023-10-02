@@ -91,7 +91,7 @@ const MentorCardExpanded = ({ navigation, route }: Props) => {
         <MentorStory style={styles.story} story={mentor.story} showAll={true} />
         <Skills
           style={styles.skills}
-          color={colors.whiteBlue}
+          color={colors.almostLightBlue}
           skills={mentor.skills}
         />
         <SafeAreaView style={styles.safeArea}>

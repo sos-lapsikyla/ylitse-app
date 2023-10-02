@@ -3,9 +3,6 @@
 export const messages = {
   'buddyList.title': 'Keskustelut',
 
-  'components.appTitle.subTitle': 'MentorApp',
-  'components.appTitle.title': 'YLITSE',
-
   'components.createdBySosBanner': 'Palvelun tarjoaa SOS-Lapsikylä',
 
   'components.mentorCard.readMore': 'Lue lisää',
