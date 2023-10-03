@@ -17,24 +17,28 @@ import QuestionModal from '../components/QuestionModal';
 import { Answer } from '../../api/feedback';
 
 type TabSettings = {
-  icon: RN.ImageSourcePropType;
+  iconSelected: RN.ImageSourcePropType;
+  iconInactive: RN.ImageSourcePropType;
   text: string;
   testID: string;
 };
 
 const TabMap: Array<TabSettings> = [
   {
-    icon: require('../images/cog.svg'),
+    iconSelected: require('../images/cog.svg'),
+    iconInactive: require('../images/cog-thin.svg'),
     text: localization.trans('tabs.settings'),
     testID: 'tabs.settings',
   },
   {
-    icon: require('../images/users.svg'),
+    iconSelected: require('../images/users.svg'),
+    iconInactive: require('../images/users-thin.svg'),
     text: localization.trans('tabs.mentors'),
     testID: 'tabs.mentors',
   },
   {
-    icon: require('../images/balloon.svg'),
+    iconSelected: require('../images/balloon.svg'),
+    iconInactive: require('../images/balloon-thin.svg'),
     text: localization.trans('tabs.chats'),
     testID: 'tabs.chats',
   },
@@ -58,6 +62,7 @@ export const TabBar = ({ state, navigation }: Props) => {
       {state.routes.map((route, index) => {
         const testID = TabMap[index].testID;
         const isFocused = state.index === index;
+        const iconKey = isFocused ? 'iconSelected' : 'iconInactive';
 
         const [iconStyle, labelStyle] = isFocused
           ? [styles.selectedIcon, styles.selectedLabel]
@@ -84,7 +89,7 @@ export const TabBar = ({ state, navigation }: Props) => {
               testID={testID}
             >
               {index === 2 ? <UnseenDot /> : null}
-              <RN.Image style={iconStyle} source={TabMap[index].icon} />
+              <RN.Image style={iconStyle} source={TabMap[index][iconKey]} />
               <RN.Text style={labelStyle}>{TabMap[index].text}</RN.Text>
             </RN.TouchableOpacity>
             {feedbackQuestion && (
@@ -166,6 +171,8 @@ const styles = RN.StyleSheet.create({
   },
   selectedLabel: {
     ...fonts.smallBold,
+    lineHeight: 16,
+    fontWeight: '800',
     textAlign: 'center',
     color: colors.darkestBlue,
     marginTop: 8,
