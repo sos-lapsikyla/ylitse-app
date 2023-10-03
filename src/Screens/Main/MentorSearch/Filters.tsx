@@ -11,6 +11,7 @@ import * as localization from '../../../localization';
 
 import MessageSwitch from '../../components/MessageSwitch';
 import colors from '../../components/colors';
+import InputField from 'src/Screens/components/InputField';
 
 type Props = {
   skillSearch: string;
@@ -30,25 +31,17 @@ export const Filters = ({ skillSearch, setSkillSearch }: Props) => {
 
   return (
     <RN.View>
-      <RN.View style={styles.searchContainer}>
-        <RN.TextInput
-          style={styles.searchField}
-          editable={true}
-          onChangeText={setSkillSearch}
-          value={skillSearch}
-          placeholder={localization.trans(
-            'main.searchMentor.searchField.placeholder',
-          )}
-          placeholderTextColor={colors.blueGray}
-          testID="main.searchMentor.searchField"
-        />
-        <RN.Image
-          style={styles.searchIcon}
-          source={require('../../images/search.svg')}
-          resizeMode="stretch"
-          resizeMethod="scale"
-        />
-      </RN.View>
+      <InputField
+        editable={true}
+        onChangeText={setSkillSearch}
+        value={skillSearch}
+        placeholder={localization.trans(
+          'main.searchMentor.searchField.placeholder',
+        )}
+        placeholderTextColor={colors.blueGray}
+        testID="main.searchMentor.searchField"
+        icon={require('../../images/search.svg')}
+      />
 
       <RN.View style={styles.hideInactiveSwitch}>
         <MessageSwitch
@@ -69,34 +62,11 @@ const styles = RN.StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
   },
-  searchIcon: {
-    tintColor: colors.purple,
-    height: 24,
-    width: 24,
-    position: 'relative',
-    marginLeft: -40,
-    marginTop: 8,
-  },
   hideInactiveSwitch: {
     paddingTop: 16,
   },
   switchMessage: {
     ...fonts.regular,
     color: colors.blueGray,
-  },
-  searchField: {
-    flex: 1,
-    borderColor: colors.purple,
-    borderWidth: 1,
-    backgroundColor: colors.white,
-    height: 40,
-    ...fonts.regular,
-    color: colors.darkestBlue,
-    alignSelf: 'stretch',
-    flexGrow: 1,
-    paddingVertical: 8,
-    paddingLeft: 16,
-    paddingRight: 48,
-    borderRadius: 16,
   },
 });

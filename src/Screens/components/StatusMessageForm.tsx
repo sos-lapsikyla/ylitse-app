@@ -35,6 +35,7 @@ export default (props: Props) => {
   return (
     <>
       <InputField
+        style={styles.input}
         value={props.statusMessage}
         onChangeText={handleTextChange}
         maxLength={props.maxLength}
@@ -56,6 +57,9 @@ export default (props: Props) => {
 };
 
 const styles = RN.StyleSheet.create({
+  input: {
+    marginTop: 8,
+  },
   saveButton: {
     marginTop: 32,
     alignSelf: 'flex-start',

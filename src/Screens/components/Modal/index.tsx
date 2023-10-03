@@ -24,8 +24,7 @@ type Props = {
 };
 
 const Modal: React.FC<Props> = props => {
-  const { backgroundColor, tintColor, icon, secondaryButton, primaryButton } =
-    modalProps[props.modalType];
+  const { backgroundColor, tintColor, icon } = modalProps[props.modalType];
 
   const hasTwoCallbacks =
     typeof props.onSecondaryPress !== 'undefined' &&
@@ -53,25 +52,17 @@ const Modal: React.FC<Props> = props => {
                   onPress={props.onSecondaryPress}
                   messageStyle={styles.secondaryButtonText}
                   messageId={props.secondaryButtonMessage ?? 'meta.ok'}
-                  style={[
-                    styles.button,
-                    styles.secondaryButton,
-                    { backgroundColor: secondaryButton },
-                  ]}
+                  style={[styles.button, styles.secondaryButton]}
+                  emphasis="low"
                 />
               )}
               {props.onPrimaryPress && (
                 <Button
                   onPress={props.onPrimaryPress}
-                  messageStyle={styles.buttonText}
                   messageId={
                     props.primaryButtonMessage ?? 'components.remoteData.retry'
                   }
-                  style={[
-                    styles.button,
-                    styles.primaryButton,
-                    { backgroundColor: primaryButton },
-                  ]}
+                  style={[styles.button, styles.primaryButton]}
                 />
               )}
             </RN.View>
@@ -133,10 +124,6 @@ const styles = RN.StyleSheet.create({
   },
   secondaryButton: { marginRight: 12 },
   primaryButton: { marginLeft: 12 },
-  buttonText: {
-    color: colors.darkestBlue,
-    ...fonts.regularBold,
-  },
   secondaryButtonText: { color: colors.darkestBlue, ...fonts.regular },
 });
 

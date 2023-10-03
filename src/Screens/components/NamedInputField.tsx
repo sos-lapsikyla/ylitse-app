@@ -25,19 +25,31 @@ const NamedInputField = ({
   const [isSecureText, setSecureText] = React.useState(
     false, // secureText will be enabled in the onFocus callback
   );
+  const [isFocused, setIsFocused] = React.useState(false);
   const toggleSecureText = () => setSecureText(!isSecureText);
   const enableSecureText = () => setSecureText(true);
+
+  const handleFocus = () => {
+    isPasswordInput ? enableSecureText : () => {};
+
+    setIsFocused(true);
+  };
 
   return (
     <RN.View style={style}>
       <Message style={[styles.nameText, labelStyle]} id={name} />
       <RN.View>
         <RN.TextInput
-          style={[styles.inputText, inputStyle]}
+          style={[
+            styles.inputText,
+            inputStyle,
+            isFocused && styles.focusedBorder,
+          ]}
           editable={true}
           secureTextEntry={isSecureText}
           {...textInputProps}
-          onFocus={isPasswordInput ? enableSecureText : () => {}}
+          onFocus={handleFocus}
+          onBlur={() => setIsFocused(false)}
         />
         {isPasswordInput ? (
           <RN.TouchableOpacity
@@ -84,6 +96,7 @@ const styles = RN.StyleSheet.create({
     borderWidth: 1,
     borderRadius: 4,
   },
+  focusedBorder: { borderWidth: 2 },
   button: {
     position: 'absolute',
     right: 16,
