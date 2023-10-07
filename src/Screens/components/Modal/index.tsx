@@ -50,7 +50,6 @@ const Modal: React.FC<Props> = props => {
               {props.onSecondaryPress && (
                 <Button
                   onPress={props.onSecondaryPress}
-                  messageStyle={styles.secondaryButtonText}
                   messageId={props.secondaryButtonMessage ?? 'meta.ok'}
                   style={[styles.button, styles.secondaryButton]}
                   emphasis="low"
@@ -124,7 +123,6 @@ const styles = RN.StyleSheet.create({
   },
   secondaryButton: { marginRight: 12 },
   primaryButton: { marginLeft: 12 },
-  secondaryButtonText: { color: colors.darkestBlue, ...fonts.regular },
 });
 
 export default Modal;

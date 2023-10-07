@@ -157,8 +157,7 @@ const styles = RN.StyleSheet.create({
   },
   buttonText: {
     ...fonts.regularBold,
-    // ...textShadow,
-    color: colors.deepBlue,
+    color: colors.darkestBlue,
   },
   errorStyle: { margin: 0 },
 });

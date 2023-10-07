@@ -47,7 +47,7 @@ const styles = RN.StyleSheet.create({
     marginBottom: 8,
     ...fonts.titleLarge,
     ...textShadow,
-    color: colors.deepBlue,
+    color: colors.darkestBlue,
   },
   button: {
     backgroundColor: colors.white,

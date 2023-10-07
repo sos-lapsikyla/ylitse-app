@@ -27,7 +27,7 @@ const Background: React.FC<Props> = ({
 const styles = RN.StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: colors.lightestGray,
+    backgroundColor: colors.background,
   },
   blob: {
     flex: 1,

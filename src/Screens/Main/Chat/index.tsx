@@ -201,7 +201,7 @@ const styles = RN.StyleSheet.create({
   screen: {
     flex: 1,
     paddingBottom: 8,
-    backgroundColor: colors.lightestGray,
+    backgroundColor: colors.background,
   },
   dropdown: {
     position: 'absolute',

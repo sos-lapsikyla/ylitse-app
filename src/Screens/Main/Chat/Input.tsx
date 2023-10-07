@@ -52,7 +52,7 @@ export default ({ buddyId }: Props) => {
     }
   }, [isPending]);
 
-  const inputContainerBg = showPending ? colors.lightestGray : colors.white;
+  const inputContainerBg = showPending ? colors.background : colors.white;
 
   return (
     <SafeAreaView style={styles.container}>

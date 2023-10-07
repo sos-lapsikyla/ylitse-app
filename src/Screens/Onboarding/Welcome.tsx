@@ -101,18 +101,18 @@ const styles = RN.StyleSheet.create({
     ...fonts.titleLargeBold,
     textAlign: 'center',
     marginBottom: 24,
-    color: colors.deepBlue,
+    color: colors.darkestBlue,
   },
   text: {
     ...fonts.regularBold,
     textAlign: 'center',
     marginBottom: 32,
-    color: colors.deepBlue,
+    color: colors.darkestBlue,
   },
   textWithoutMargin: {
     ...fonts.regularBold,
     textAlign: 'center',
-    color: colors.deepBlue,
+    color: colors.darkestBlue,
   },
   button: {
     alignSelf: 'center',

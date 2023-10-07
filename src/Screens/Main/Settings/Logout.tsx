@@ -9,12 +9,12 @@ import { StackScreenProps } from '@react-navigation/stack';
 import { StackRoutes } from 'src/Screens';
 
 import Message from '../../components/Message';
-import { textShadow } from '../../components/shadow';
 import ScreenTitle from '../../components/ScreenTitle';
 import colors from '../../components/colors';
 import fonts from '../../components/fonts';
 import MessageButton from '../../components/MessageButton';
 import CreatedBySosBanner from '../../components/CreatedBySosBanner';
+import IconButton from 'src/Screens/components/IconButton';
 
 export type LogoutRoute = {
   'Main/Settings/Logout': {};
@@ -48,20 +48,22 @@ export default ({ navigation }: Props) => {
           <Message style={styles.text} id={'main.settings.logout.text1'} />
           <Message style={styles.text} id={'main.settings.logout.text2'} />
         </RN.View>
-        <SafeAreaView style={styles.buttonContainer}>
-          <MessageButton
-            style={styles.button}
-            onPress={onLogout}
-            messageId={'main.settings.logout.logout'}
-            testID="main.settings.logout.logout"
-          />
-          <MessageButton
-            style={styles.button}
-            onPress={onGoBack}
-            messageId={'main.settings.logout.cancel'}
-            testID="main.settings.logout.cancel"
-            emphasis="low"
-          />
+        <SafeAreaView style={styles.bottomContainer}>
+          <RN.View style={styles.buttonContainer}>
+            <IconButton
+              style={styles.button}
+              onPress={onGoBack}
+              testID="main.settings.logout.cancel"
+              badge={require('../../images/chevron-left.svg')}
+              badgeStyle={styles.badge}
+            />
+            <MessageButton
+              style={[styles.button, styles.logoutButton]}
+              onPress={onLogout}
+              testID="main.settings.logout.logout"
+              messageId={'main.settings.logout.logout'}
+            />
+          </RN.View>
           <CreatedBySosBanner />
         </SafeAreaView>
       </RN.ScrollView>
@@ -74,17 +76,10 @@ const styles = RN.StyleSheet.create({
     flex: 1,
     backgroundColor: colors.white,
   },
-  screenTitleText: {
-    marginTop: 16,
-    marginBottom: 16,
-    ...fonts.titleLarge,
-    ...textShadow,
-    textAlign: 'center',
-    color: colors.white,
-  },
   scrollView: {
     zIndex: 1,
     marginTop: -32,
+    paddingHorizontal: 24,
   },
   scrollContent: {
     paddingTop: 48,
@@ -103,10 +98,20 @@ const styles = RN.StyleSheet.create({
     textAlign: 'center',
     marginBottom: 40,
   },
-  buttonContainer: {
+  bottomContainer: {
     alignSelf: 'stretch',
     justifyContent: 'flex-end',
-    paddingHorizontal: 40,
+  },
+  buttonContainer: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginTop: 16,
   },
   button: { marginBottom: 40 },
+  logoutButton: { paddingHorizontal: 64 },
+  badge: {
+    width: 32,
+    height: 32,
+  },
 });

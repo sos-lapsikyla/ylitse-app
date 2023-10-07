@@ -59,14 +59,14 @@ const styles = RN.StyleSheet.create({
   },
   leftText: {
     flex: 1,
-    color: colors.deepBlue,
+    color: colors.darkestBlue,
     ...fonts.regular,
   },
   spacer: {
     flex: 1,
   },
   rightText: {
-    color: colors.deepBlue,
+    color: colors.darkestBlue,
     flex: 1,
     ...fonts.regular,
     textAlign: 'right',

@@ -41,7 +41,7 @@ const styles = RN.StyleSheet.create({
     flex: 1,
   },
   backButtonIcon: {
-    tintColor: colors.deepBlue,
+    tintColor: colors.darkestBlue,
     width: 48,
     height: 48,
   },
@@ -51,7 +51,7 @@ const styles = RN.StyleSheet.create({
     ...fonts.titleLarge,
     ...textShadow,
     textAlign: 'center',
-    color: colors.deepBlue,
+    color: colors.darkestBlue,
     flex: 6,
   },
   titleBalancer: {

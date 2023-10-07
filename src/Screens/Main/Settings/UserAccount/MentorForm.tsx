@@ -173,7 +173,7 @@ export default ({ userId }: Props) => {
 const styles = RN.StyleSheet.create({
   fieldName: {
     ...fonts.regularBold,
-    color: colors.deepBlue,
+    color: colors.darkestBlue,
     marginTop: 16,
   },
   dataContainer: {

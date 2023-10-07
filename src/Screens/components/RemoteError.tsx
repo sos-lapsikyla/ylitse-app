@@ -47,7 +47,7 @@ const styles = RN.StyleSheet.create({
     alignSelf: 'stretch',
     justifyContent: 'space-evenly',
     alignItems: 'center',
-    backgroundColor: colors.pink,
+    backgroundColor: colors.lightDanger,
     borderRadius: 16,
   },
   textContainer: {

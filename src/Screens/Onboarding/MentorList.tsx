@@ -59,7 +59,7 @@ const styles = RN.StyleSheet.create({
     marginBottom: 8,
     ...fonts.titleLarge,
     ...textShadow,
-    color: colors.deepBlue,
+    color: colors.darkestBlue,
   },
   bottom: {
     marginTop: 8,

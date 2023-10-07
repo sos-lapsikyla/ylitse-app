@@ -138,6 +138,6 @@ const styles = RN.StyleSheet.create({
     color: colors.white,
   },
   skillPillDefaultText: {
-    color: colors.deepBlue,
+    color: colors.darkestBlue,
   },
 });

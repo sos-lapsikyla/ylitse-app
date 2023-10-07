@@ -77,10 +77,10 @@ const styles = RN.StyleSheet.create({
     ...fonts.titleLarge,
     ...textShadow,
     textAlign: 'center',
-    color: colors.deepBlue,
+    color: colors.darkestBlue,
   },
   backButtonIcon: {
-    tintColor: colors.deepBlue,
+    tintColor: colors.darkestBlue,
     width: 48,
     height: 48,
   },
@@ -92,6 +92,6 @@ const styles = RN.StyleSheet.create({
     alignItems: 'center',
   },
   kebabIcon: {
-    tintColor: colors.deepBlue,
+    tintColor: colors.darkestBlue,
   },
 });

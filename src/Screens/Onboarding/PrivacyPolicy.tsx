@@ -165,7 +165,7 @@ const styles = RN.StyleSheet.create({
     marginTop: 4,
   },
   notValidButton: {
-    backgroundColor: colors.lightestGray,
+    backgroundColor: colors.background,
     flex: 2,
     height: 32,
     width: 32,

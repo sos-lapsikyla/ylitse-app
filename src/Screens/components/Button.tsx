@@ -41,9 +41,9 @@ const Button = ({
       style={[
         styles.commonContainer,
         styles[`${emphasis}Container`],
-        disabled ? styles.disabled : undefined,
-        !noShadow ? styles.shadow : undefined,
+        !noShadow && styles.shadow,
         style,
+        disabled && styles.disabled,
       ]}
       onPress={onPress}
       disabled={disabled || loading}
@@ -54,18 +54,27 @@ const Button = ({
           styles.commonMessage,
           styles[`${emphasis}Message`],
           messageStyle,
+          disabled && styles.disabledMessage,
         ]}
         id={messageId}
       />
       {!badge || loading ? null : (
         <RN.Image
-          style={[styles.commonBadge, badgeStyle ?? styles.absoluteBadge]}
+          style={[
+            styles.commonBadge,
+            badgeStyle ?? styles.absoluteBadge,
+            disabled && styles.disabledIcon,
+          ]}
           source={badge}
         />
       )}
       {loading ? (
         <Spinner
-          style={[styles.commonBadge, badgeStyle ?? styles.absoluteBadge]}
+          style={[
+            styles.commonBadge,
+            badgeStyle ?? styles.absoluteBadge,
+            disabled && styles.disabledIcon,
+          ]}
         />
       ) : null}
     </RN.TouchableOpacity>
@@ -95,7 +104,13 @@ const styles = RN.StyleSheet.create({
   },
   shadow: shadow(7),
   disabled: {
-    opacity: 0.7,
+    backgroundColor: colors.midGray,
+  },
+  disabledMessage: {
+    color: colors.fadedGray,
+  },
+  disabledIcon: {
+    tintColor: colors.fadedGray,
   },
   absoluteBadge: {
     position: 'absolute',
