@@ -10,7 +10,7 @@ import * as T from 'fp-ts/lib/Task';
 import * as userReportApi from '../../api/userReport';
 
 export const initialState = RD.initial;
-export const coolDownDuration = 3000;
+export const coolDownDuration = 5000;
 
 export const reducer: automaton.Reducer<
   RD.RemoteData<string, true>,
