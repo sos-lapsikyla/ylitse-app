@@ -134,17 +134,17 @@ export const messages: { [key in MessageId]: string } = {
   'main.settings.title': 'Settings',
 
   'main.userreport.bodyText1':
-    "Report the user if you suspect or observe the mentor using the service improperly. Such situations include actions contrary to SOS Children's Village values and criminal activities.",
+    'Report a mentor if you detect criminal or wrongful activity violating SOS-Lapsikylä rules or values',
   'main.userreport.bodyText2':
-    "After the report, an SOS Children's Village employee will assess the situation and contact you. The contact information will be used during the investigation and will not be disclosed to outsiders.",
+    'SOS-Lapsikylä representative will contact you after the investigation. Your contact information will be used accordingly and won’t be admitted to outside parties',
   'main.userreport.contact.label': 'Contact information',
   'main.userreport.description.label': 'Reason for reporting *',
   'main.userreport.description.validationerror':
     'The reason for reporting is a mandatory field.',
-  'main.userreport.failure.toast': 'Failed to report user',
+  'main.userreport.failure.toast': 'Sending report failed',
   'main.userreport.send.button': 'Send',
   'main.userreport.success.toast':
-    "You reported a user. An SOS Children's Village employee will assess the situation and get in touch with you.",
+    'SOS-Lapsikylä representative will contact you after the investigation.',
   'main.userreport.title': 'Report',
 
   'meta.back': 'Back',

@@ -144,7 +144,7 @@ export const messages = {
   'main.userreport.failure.toast': 'Käyttäjän ilmianto epäonnistui.',
   'main.userreport.send.button': 'Lähetä',
   'main.userreport.success.toast':
-    'Ilmiannoit käyttäjän. SOS-Lapsikylän työntekijä selvittää tilanteen ja ottaa sinuun yhteyttä.',
+    'SOS-Lapsikylän työntekijä selvittää tilanteen ja ottaa sinuun yhteyttä.',
   'main.userreport.title': 'Ilmianna',
 
   'meta.back': 'Takaisin',
