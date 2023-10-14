@@ -7,6 +7,7 @@ import { selectFirstQuestion } from '../../state/reducers/questions';
 import { BottomTabBarProps } from '@react-navigation/bottom-tabs';
 
 import * as localization from '../../localization';
+import { isDevice } from '../../lib/isDevice';
 import { isAnyMessageUnseen } from '../../state/reducers/messages';
 
 import colors from '../components/colors';
@@ -143,7 +144,7 @@ const styles = RN.StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     paddingTop: 16,
-    paddingBottom: 8,
+    paddingBottom: isDevice('ios') ? 20 : 8,
   },
   container: {
     flex: 1,
