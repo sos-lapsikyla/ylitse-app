@@ -34,7 +34,7 @@ const styles = RN.StyleSheet.create({
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginTop: 16,
+    marginVertical: 16,
   },
   backButtonTouchable: {
     borderRadius: 50,

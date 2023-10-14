@@ -125,18 +125,10 @@ const UserReport = ({ navigation, route }: Props) => {
 };
 
 const styles = RN.StyleSheet.create({
-  container: {
-    flex: 1,
-    marginTop: 16,
-    marginBottom: 16,
-    ...fonts.titleLarge,
-    ...textShadow,
-    textAlign: 'center',
-    color: colors.darkestBlue,
-  },
   scrollView: {
     zIndex: 1,
-    marginTop: -32,
+    marginTop: -16,
+    paddingHorizontal: 8,
   },
   scrollContent: {
     paddingTop: 48,
