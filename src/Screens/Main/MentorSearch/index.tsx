@@ -1,5 +1,6 @@
 import React from 'react';
 import RN from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import * as redux from 'redux';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -56,7 +57,7 @@ export default ({ navigation }: Props) => {
       TitleComponent={<Title handleBackPress={onPressBack} />}
       color={colors.blue}
     >
-      <RN.View style={styles.contentMargins}>
+      <SafeAreaView style={styles.contentMargins}>
         <Filters skillSearch={skillSearch} setSkillSearch={setSkillSearch} />
         <SkillList height={skillAreaHeight} filterString={skillSearch} />
         <BottomActions
@@ -64,8 +65,8 @@ export default ({ navigation }: Props) => {
           resetSkillSearch={() => setSkillSearch('')}
           handleBackPress={navigation.goBack}
         />
-      </RN.View>
-      <CreatedBySosBanner style={styles.banner} />
+        <CreatedBySosBanner style={styles.banner} />
+      </SafeAreaView>
     </TitledContainer>
   );
 };

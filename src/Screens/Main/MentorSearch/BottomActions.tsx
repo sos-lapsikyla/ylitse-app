@@ -57,7 +57,7 @@ export const BottomActions = ({
 
 const styles = RN.StyleSheet.create({
   button: {
-    marginBottom: 40,
+    marginBottom: 24,
     paddingHorizontal: 32,
   },
   searcResetContainer: {
