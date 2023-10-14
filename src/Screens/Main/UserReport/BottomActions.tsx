@@ -35,6 +35,7 @@ const styles = RN.StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     marginVertical: 16,
+    gap: 24,
   },
   backButtonTouchable: {
     borderRadius: 50,
@@ -46,7 +47,7 @@ const styles = RN.StyleSheet.create({
     height: 48,
   },
   sendButton: {
-    paddingHorizontal: 64,
+    minWidth: 200,
   },
   badge: {
     width: 32,

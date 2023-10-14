@@ -126,9 +126,10 @@ const styles = RN.StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     marginTop: 16,
+    gap: 24,
   },
   button: { marginBottom: 40 },
-  deleteButton: { backgroundColor: colors.lightDanger, paddingHorizontal: 24 },
+  deleteButton: { backgroundColor: colors.lightDanger, minWidth: 200 },
   deleteButtonText: {
     color: colors.danger,
   },

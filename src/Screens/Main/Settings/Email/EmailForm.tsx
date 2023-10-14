@@ -78,12 +78,13 @@ const styles = RN.StyleSheet.create({
     height: 32,
   },
   button: {
-    paddingHorizontal: 64,
+    minWidth: 200,
   },
   buttonContainer: {
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'space-between',
     marginVertical: 24,
+    gap: 24,
   },
 });

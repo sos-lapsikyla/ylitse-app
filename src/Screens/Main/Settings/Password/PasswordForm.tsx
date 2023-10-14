@@ -80,12 +80,13 @@ const styles = RN.StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     marginVertical: 24,
+    gap: 24,
   },
   badge: {
     width: 32,
     height: 32,
   },
   button: {
-    paddingHorizontal: 64,
+    minWidth: 200,
   },
 });

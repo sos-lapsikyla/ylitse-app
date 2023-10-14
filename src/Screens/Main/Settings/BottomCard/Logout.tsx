@@ -108,9 +108,10 @@ const styles = RN.StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     marginTop: 16,
+    gap: 24,
   },
   button: { marginBottom: 40 },
-  logoutButton: { paddingHorizontal: 64 },
+  logoutButton: { minWidth: 200 },
   badge: {
     width: 32,
     height: 32,
