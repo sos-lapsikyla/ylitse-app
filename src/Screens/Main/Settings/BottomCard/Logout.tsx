@@ -2,31 +2,32 @@ import React from 'react';
 import RN from 'react-native';
 import * as redux from 'redux';
 import { useDispatch } from 'react-redux';
-import * as actions from '../../../state/actions';
+import * as actions from '../../../../state/actions';
 
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { StackScreenProps } from '@react-navigation/stack';
 import { StackRoutes } from 'src/Screens';
 
-import Message from '../../components/Message';
-import ScreenTitle from '../../components/ScreenTitle';
-import colors from '../../components/colors';
-import fonts from '../../components/fonts';
-import MessageButton from '../../components/MessageButton';
-import CreatedBySosBanner from '../../components/CreatedBySosBanner';
-import IconButton from 'src/Screens/components/IconButton';
+import colors from '../../../components/colors';
+import fonts from '../../../components/fonts';
 
-export type DeleteAccountRoute = {
-  'Main/Settings/DeleteAccount': {};
+import Message from '../../../components/Message';
+import ScreenTitle from '../../../components/ScreenTitle';
+import MessageButton from '../../../components/MessageButton';
+import CreatedBySosBanner from '../../../components/CreatedBySosBanner';
+import IconButton from '../../../components/IconButton';
+
+export type LogoutRoute = {
+  'Main/Settings/Logout': {};
 };
 
-type Props = StackScreenProps<StackRoutes, 'Main/Settings/DeleteAccount'>;
+type Props = StackScreenProps<StackRoutes, 'Main/Settings/Logout'>;
 
 export default ({ navigation }: Props) => {
   const dispatch = useDispatch<redux.Dispatch<actions.Action>>();
 
-  const onDeleteAccount = () => {
-    dispatch(actions.make('deleteAccount/start')(undefined));
+  const onLogout = () => {
+    dispatch(actions.make('logout/logout')(undefined));
     navigation.reset({ routes: [{ name: 'Onboarding/MentorList' }] });
   };
 
@@ -36,47 +37,32 @@ export default ({ navigation }: Props) => {
 
   return (
     <RN.View style={styles.screen}>
-      <ScreenTitle
-        style={styles.title}
-        id="main.settings.deleteAccount.title"
-        onBack={onGoBack}
-      />
+      <ScreenTitle id="main.settings.logout.title" onBack={onGoBack} />
       <RN.ScrollView
         style={styles.scrollView}
         contentContainerStyle={styles.scrollContent}
         showsVerticalScrollIndicator={false}
-        testID={'main.settings.deleteAccount.view'}
+        testID={'main.settings.logout.view'}
       >
         <RN.View />
         <RN.View style={styles.textContainer}>
-          <Message
-            style={styles.text}
-            id={'main.settings.deleteAccount.text1'}
-          />
-          <Message
-            style={styles.text}
-            id={'main.settings.deleteAccount.text2'}
-          />
-          <Message
-            style={styles.text}
-            id={'main.settings.deleteAccount.text3'}
-          />
+          <Message style={styles.text} id={'main.settings.logout.text1'} />
+          <Message style={styles.text} id={'main.settings.logout.text2'} />
         </RN.View>
         <SafeAreaView style={styles.bottomContainer}>
           <RN.View style={styles.buttonContainer}>
             <IconButton
               style={styles.button}
               onPress={onGoBack}
-              badge={require('../../images/chevron-left.svg')}
-              testID={'main.settings.deleteAccount.cancel'}
+              testID="main.settings.logout.cancel"
+              badge={require('../../../images/chevron-left.svg')}
               badgeStyle={styles.badge}
             />
             <MessageButton
-              style={[styles.button, styles.deleteButton]}
-              messageStyle={styles.deleteButtonText}
-              onPress={onDeleteAccount}
-              messageId={'main.settings.deleteAccount.deleteAccount'}
-              testID={'main.settings.deleteAccount.deleteAccount'}
+              style={[styles.button, styles.logoutButton]}
+              onPress={onLogout}
+              testID="main.settings.logout.logout"
+              messageId={'main.settings.logout.logout'}
             />
           </RN.View>
           <CreatedBySosBanner />
@@ -90,9 +76,6 @@ const styles = RN.StyleSheet.create({
   screen: {
     flex: 1,
     backgroundColor: colors.white,
-  },
-  title: {
-    backgroundColor: colors.red,
   },
   scrollView: {
     zIndex: 1,
@@ -127,10 +110,7 @@ const styles = RN.StyleSheet.create({
     marginTop: 16,
   },
   button: { marginBottom: 40 },
-  deleteButton: { backgroundColor: colors.lightDanger, paddingHorizontal: 24 },
-  deleteButtonText: {
-    color: colors.danger,
-  },
+  logoutButton: { paddingHorizontal: 64 },
   badge: {
     width: 32,
     height: 32,

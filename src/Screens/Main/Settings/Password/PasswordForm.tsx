@@ -1,9 +1,9 @@
 import React from 'react';
 import RN from 'react-native';
 
-import Button from './Button';
-import NamedInputField from './NamedInputField';
-import IconButton from './IconButton';
+import Button from '../../../components/Button';
+import NamedInputField from '../../../components/NamedInputField';
+import IconButton from '../../../components/IconButton';
 
 type Props = {
   currentPassword: string;
@@ -48,7 +48,7 @@ export default (props: Props) => {
       </RN.View>
       <RN.View style={styles.buttonContainer}>
         <IconButton
-          badge={require('../images/chevron-left.svg')}
+          badge={require('../../../images/chevron-left.svg')}
           badgeStyle={styles.badge}
           onPress={props.onGoBack}
           testID="main.settings.account.password.cancel"

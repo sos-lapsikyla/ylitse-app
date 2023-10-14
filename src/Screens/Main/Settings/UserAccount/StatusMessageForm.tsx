@@ -1,11 +1,10 @@
 import React from 'react';
 import RN from 'react-native';
 
-import fonts from './fonts';
-import { textShadow } from './shadow';
-
-import InputField from './InputField';
-import Button from './Button';
+import fonts from '../../../components/fonts';
+import { textShadow } from '../../../components/shadow';
+import InputField from '../../../components/InputField';
+import Button from '../../../components/Button';
 
 type Props = {
   statusMessage: string;

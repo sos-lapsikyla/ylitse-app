@@ -5,24 +5,24 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { StackScreenProps } from '@react-navigation/stack';
-import { StackRoutes } from 'src/Screens';
+import { StackRoutes } from '../../../../Screens';
 
 import { pipe } from 'fp-ts/lib/function';
 import * as RD from '@devexperts/remote-data-ts';
 
-import * as actions from '../../../state/actions';
-import * as state from '../../../state/reducers/changePassword';
+import * as actions from '../../../../state/actions';
+import * as state from '../../../../state/reducers/changePassword';
 
-import Message from '../../components/Message';
-import ScreenTitle from '../../components/ScreenTitle';
-import CreatedBySosBanner from '../../components/CreatedBySosBanner';
-import Spinner from '../../components/Spinner';
-import { Toast } from '../../components/Toast';
-import AlertModal from '../../components/Modal';
-import PasswordForm from 'src/Screens/components/PasswordForm';
+import colors from '../../../components/colors';
+import fonts from '../../../components/fonts';
 
-import colors from '../../components/colors';
-import fonts from '../../components/fonts';
+import Message from '../../../components/Message';
+import ScreenTitle from '../../../components/ScreenTitle';
+import CreatedBySosBanner from '../../../components/CreatedBySosBanner';
+import Spinner from '../../../components/Spinner';
+import { Toast } from '../../../components/Toast';
+import AlertModal from '../../../components/Modal';
+import PasswordForm from './PasswordForm';
 
 export type PasswordChangeRoute = {
   'Main/Settings/PasswordChange': {};

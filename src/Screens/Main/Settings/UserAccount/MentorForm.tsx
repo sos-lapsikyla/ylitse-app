@@ -15,8 +15,8 @@ import Message from '../../../components/Message';
 import Spinner from '../../../components/Spinner';
 import { Toast } from '../../../components/Toast';
 import AlertModal from '../../../components/Modal';
-import StatusMessageForm from 'src/Screens/components/StatusMessageForm';
-import MessageSwitch from 'src/Screens/components/MessageSwitch';
+import MessageSwitch from '../../../components/MessageSwitch';
+import StatusMessageForm from './StatusMessageForm';
 
 import colors from '../../../components/colors';
 import fonts from '../../../components/fonts';

@@ -21,12 +21,12 @@ import MentorCardExpanded, {
 import Chat, { ChatRoute } from './Main/Chat';
 import FolderedChats from './Main/FolderedChats';
 import { FolderedChatsRoute } from './Main/FolderedChats/folderedChatProperties';
-import Logout, { LogoutRoute } from './Main/Settings/Logout';
+import Logout, { LogoutRoute } from './Main/Settings/BottomCard/Logout';
 import DeleteAccount, {
   DeleteAccountRoute,
-} from './Main/Settings/DeleteAccount';
+} from './Main/Settings/BottomCard/DeleteAccount';
 import PasswordChange, { PasswordChangeRoute } from './Main/Settings/Password';
-import EmailChange, { EmailChangeRoute } from './Main/Settings/Email';
+import EmailChange, { EmailChangeRoute } from './Main/Settings/Email/Email';
 import UserReport, { UserReportRoute } from './Main/UserReport';
 
 export type StackRoutes = SplashRoute &

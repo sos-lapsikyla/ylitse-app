@@ -2,15 +2,16 @@ import React from 'react';
 import RN from 'react-native';
 import { useSelector } from 'react-redux';
 
-import * as config from '../../../api/config';
-import * as tokenState from '../../../state/reducers/accessToken';
+import * as config from '../../../../api/config';
+import * as tokenState from '../../../../state/reducers/accessToken';
 
-import MessageButton from '../../components/MessageButton';
-import Card from '../../components/Card';
-import Link from '../../components/Link';
-import Message from '../../components/Message';
-import colors from '../../components/colors';
-import fonts from '../../components/fonts';
+import colors from '../../../components/colors';
+import fonts from '../../../components/fonts';
+
+import MessageButton from '../../../components/MessageButton';
+import Card from '../../../components/Card';
+import Link from '../../../components/Link';
+import Message from '../../../components/Message';
 
 type Props = {
   navigateToLogout: () => void | undefined;

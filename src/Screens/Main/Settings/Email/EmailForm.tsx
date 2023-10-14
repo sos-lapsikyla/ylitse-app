@@ -3,14 +3,14 @@ import RN from 'react-native';
 
 import { isRight } from 'fp-ts/lib/Either';
 
-import { ValidEmail } from '../../lib/validators';
+import { ValidEmail } from '../../../../lib/validators';
 
-import Button from './Button';
-import colors from './colors';
-import NamedInputField from './NamedInputField';
+import Button from '../../../components/Button';
+import colors from '../../../components/colors';
+import NamedInputField from '../../../components/NamedInputField';
 
-import Message from '../components/Message';
-import IconButton from './IconButton';
+import Message from '../../../components/Message';
+import IconButton from '../../../components/IconButton';
 
 type Props = {
   email: string;
@@ -42,7 +42,7 @@ export default (props: Props) => {
       </RN.View>
       <RN.View style={styles.buttonContainer}>
         <IconButton
-          badge={require('../images/chevron-left.svg')}
+          badge={require('../../../images/chevron-left.svg')}
           badgeStyle={styles.badge}
           onPress={props.onGoBack}
           testID="main.settings.account.email.cancel"
