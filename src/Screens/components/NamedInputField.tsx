@@ -26,11 +26,11 @@ const NamedInputField = ({
     false, // secureText will be enabled in the onFocus callback
   );
   const [isFocused, setIsFocused] = React.useState(false);
+
   const toggleSecureText = () => setSecureText(!isSecureText);
-  const enableSecureText = () => setSecureText(true);
 
   const handleFocus = () => {
-    isPasswordInput ? enableSecureText : () => {};
+    isPasswordInput ? setSecureText(true) : () => {};
 
     setIsFocused(true);
   };
