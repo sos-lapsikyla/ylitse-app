@@ -18,7 +18,6 @@ import colors from 'src/Screens/components/colors';
 import NamedInputField from 'src/Screens/components/NamedInputField';
 import fonts from 'src/Screens/components/fonts';
 import Message from '../../components/Message';
-import { textShadow } from 'src/Screens/components/shadow';
 import { Toast } from 'src/Screens/components/Toast';
 import { BottomActions } from './BottomActions';
 
@@ -117,7 +116,6 @@ const UserReport = ({ navigation, route }: Props) => {
           toastType="danger"
           duration={coolDownDuration}
           messageId="main.userreport.failure.toast"
-          containerStyle={styles.toastContainer}
         />
       )}
     </TitledContainer>
@@ -166,7 +164,6 @@ const styles = RN.StyleSheet.create({
     marginTop: -8,
     marginBottom: 16,
   },
-  toastContainer: {},
 });
 
 export default UserReport;
