@@ -1,6 +1,8 @@
 import React from 'react';
 import * as RN from 'react-native';
 
+import { isDevice } from '../../../../lib/isDevice';
+
 import fonts from '../../fonts';
 import colors from '../../colors';
 
@@ -48,7 +50,7 @@ export default ({
   );
 };
 
-const isIphone = RN.Platform.OS === 'ios';
+const isIphone = isDevice('ios');
 
 const styles = RN.StyleSheet.create({
   textContainer: {

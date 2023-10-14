@@ -1,6 +1,8 @@
 import React from 'react';
 import RN from 'react-native';
-import { createMiddleColorAsHex } from 'src/lib/colorCalculator';
+
+import { isDevice } from '../../lib/isDevice';
+import { createMiddleColorAsHex } from '../../lib/colorCalculator';
 
 import colors from './colors';
 
@@ -100,10 +102,9 @@ const Switch: React.FC<SwitchProps> = ({
       : [colors.fadedGray, colors.purple],
   };
 
-  const loadingBorderColor =
-    RN.Platform.OS === 'ios'
-      ? 'transparent'
-      : createMiddleColorAsHex(switchColors.knob);
+  const loadingBorderColor = isDevice('ios')
+    ? 'transparent'
+    : createMiddleColorAsHex(switchColors.knob);
 
   const knobBorder = showLoading
     ? {

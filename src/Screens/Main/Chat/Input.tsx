@@ -5,8 +5,9 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import * as messageApi from '../../../api/messages';
 import * as newMessageState from '../../../state/reducers/newMessage';
-
 import * as actions from '../../../state/actions';
+
+import { isDevice } from '../../../lib/isDevice';
 
 import fonts from '../../components/fonts';
 import colors from '../../components/colors';
@@ -112,7 +113,7 @@ const styles = RN.StyleSheet.create({
     flexDirection: 'column',
     flexWrap: 'wrap',
     textAlignVertical: 'top', // IOS/ANDROID
-    marginTop: RN.Platform.OS === 'ios' ? 14 : undefined,
+    marginTop: isDevice('ios') ? 14 : undefined,
     marginBottom: 0,
     maxHeight: 300,
     padding: 16,

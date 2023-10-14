@@ -1,6 +1,5 @@
 import React from 'react';
 import RN from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
 import * as redux from 'redux';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -11,6 +10,7 @@ import { StackScreenProps } from '@react-navigation/stack';
 import { StackRoutes } from '../..';
 
 import useLayout from '../../../lib/use-layout';
+import { isDevice } from '../../../lib/isDevice';
 
 import TitledContainer from '../../components/TitledContainer';
 import colors from '../../components/colors';
@@ -47,8 +47,10 @@ export default ({ navigation }: Props) => {
   const [{ height }, onLayout] = useLayout();
 
   // Make sure skill area has enough height even when keyboard is showing.
+  const padding = isDevice('ios') ? 50 : 0;
+  const some = 350 + padding;
   const min = 250;
-  const max = (height || 350) - 350;
+  const max = (height || some) - some;
   const skillAreaHeight = max >= min ? max : min;
 
   return (
@@ -57,7 +59,7 @@ export default ({ navigation }: Props) => {
       TitleComponent={<Title handleBackPress={onPressBack} />}
       color={colors.blue}
     >
-      <SafeAreaView style={styles.contentMargins}>
+      <RN.View style={styles.contentMargins}>
         <Filters skillSearch={skillSearch} setSkillSearch={setSkillSearch} />
         <SkillList height={skillAreaHeight} filterString={skillSearch} />
         <BottomActions
@@ -66,13 +68,14 @@ export default ({ navigation }: Props) => {
           handleBackPress={navigation.goBack}
         />
         <CreatedBySosBanner style={styles.banner} />
-      </SafeAreaView>
+      </RN.View>
     </TitledContainer>
   );
 };
 
 const styles = RN.StyleSheet.create({
   contentMargins: {
+    flex: 1,
     marginTop: 30,
     marginLeft: 30,
     marginRight: 30,

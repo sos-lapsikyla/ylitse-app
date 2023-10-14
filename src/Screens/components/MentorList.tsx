@@ -4,18 +4,17 @@ import * as redux from 'redux';
 import { useSelector, useDispatch } from 'react-redux';
 import * as RD from '@devexperts/remote-data-ts';
 
-import useLayout from '../../lib/use-layout';
-
-import MentorCard from '../components/MentorCard';
-import RemoteData from '../components/RemoteData';
-
 import * as mentorApi from '../../api/mentors';
-
+import * as actions from '../../state/actions';
 import * as mentorState from '../../state/reducers/mentors';
 import * as filterMentorState from '../../state/reducers/filterMentors';
 import * as tokenState from '../../state/reducers/accessToken';
 
-import * as actions from '../../state/actions';
+import useLayout from '../../lib/use-layout';
+import { isDevice } from '../../lib/isDevice';
+
+import MentorCard from '../components/MentorCard';
+import RemoteData from '../components/RemoteData';
 
 type Props = {
   onPress?: (mentor: mentorApi.Mentor) => void | undefined;
@@ -62,7 +61,7 @@ export default ({ onPress, testID }: Props) => {
 
   const interval = measuredWidth * (0.85 + 0.15 / 4);
 
-  const deccelerationRate = RN.Platform.OS === 'ios' ? 0.99 : 0.8;
+  const deccelerationRate = isDevice('ios') ? 0.99 : 0.8;
 
   return (
     <RN.View

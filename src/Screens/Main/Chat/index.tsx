@@ -12,6 +12,7 @@ import { StackScreenProps } from '@react-navigation/stack';
 import { StackRoutes } from 'src/Screens';
 
 import useLayout from '../../../lib/use-layout';
+import { isDevice } from '../../../lib/isDevice';
 
 import Title from './Title';
 import Input from './Input';
@@ -62,8 +63,7 @@ const Chat = ({ navigation, route }: Props) => {
 
   const [{ height }, onLayout] = useLayout();
 
-  const keyboardViewBehaviour =
-    RN.Platform.OS === 'ios' ? 'padding' : undefined;
+  const keyboardViewBehaviour = isDevice('ios') ? 'padding' : undefined;
 
   const getPreviousMessages = (messageId: string) => {
     dispatch({

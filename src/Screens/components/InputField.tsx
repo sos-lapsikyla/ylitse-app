@@ -1,6 +1,8 @@
 import React from 'react';
 import RN from 'react-native';
 
+import { isDevice } from '../../lib/isDevice';
+
 import fonts from './fonts';
 import colors from './colors';
 
@@ -52,6 +54,7 @@ const styles = RN.StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
+    textAlignVertical: 'center',
     borderColor: colors.purple,
     borderWidth: 1,
     borderRadius: 16,
@@ -59,7 +62,7 @@ const styles = RN.StyleSheet.create({
   },
   inputText: {
     ...fonts.regular,
-    marginTop: RN.Platform.OS === 'ios' ? 8 : undefined,
+    paddingVertical: isDevice('ios') ? 12 : 8,
     marginLeft: 16,
     flexGrow: 1,
   },
