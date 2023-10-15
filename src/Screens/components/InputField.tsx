@@ -66,7 +66,7 @@ const styles = RN.StyleSheet.create({
     marginLeft: 16,
     flexGrow: 1,
   },
-  focusedBorder: { borderWidth: 2 },
+  focusedBorder: { borderWidth: 2, backgroundColor: colors.whiteBlue },
   icon: {
     tintColor: colors.purple,
     height: 24,

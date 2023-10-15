@@ -58,10 +58,6 @@ export const Filters = ({ skillSearch, setSkillSearch }: Props) => {
 };
 
 const styles = RN.StyleSheet.create({
-  searchContainer: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-  },
   hideInactiveSwitch: {
     paddingTop: 16,
   },

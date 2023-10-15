@@ -96,7 +96,7 @@ const styles = RN.StyleSheet.create({
     borderWidth: 1,
     borderRadius: 4,
   },
-  focusedBorder: { borderWidth: 2 },
+  focusedBorder: { borderWidth: 2, backgroundColor: colors.whiteBlue },
   button: {
     position: 'absolute',
     right: 16,
