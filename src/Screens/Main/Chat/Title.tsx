@@ -8,10 +8,11 @@ import * as state from '../../../state';
 import * as selectors from '../../../state/selectors';
 import { getMentorByUserId } from '../../../state/reducers/mentors';
 
+import { isDevice } from '../../../lib/isDevice';
+
 import colors from '../../components/colors';
-import { cardBorderRadius } from '../../components/Card';
 import fonts from '../../components/fonts';
-import { isDevice } from 'src/lib/isDevice';
+import { cardBorderRadius } from '../../components/Card';
 
 type StateProps = {
   name: string;
