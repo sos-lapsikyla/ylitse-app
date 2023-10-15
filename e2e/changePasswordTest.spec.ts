@@ -31,7 +31,7 @@ describe('changePassword', () => {
     await element(by.id('tabs.settings')).tap();
 
     await scrollDownAndTap(
-      'main.settings.account.password.button',
+      'main.settings.account.password.change',
       'main.settings.index.view',
     );
 
