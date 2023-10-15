@@ -11,6 +11,7 @@ import { getMentorByUserId } from '../../../state/reducers/mentors';
 import colors from '../../components/colors';
 import { cardBorderRadius } from '../../components/Card';
 import fonts from '../../components/fonts';
+import { isDevice } from 'src/lib/isDevice';
 
 type StateProps = {
   name: string;
@@ -41,7 +42,14 @@ const Title: React.FC<Props> = ({
   const mentor = useSelector(getMentorByUserId(buddyId));
 
   return (
-    <RN.View onLayout={onLayout} style={[styles.blob, style]}>
+    <RN.View
+      onLayout={onLayout}
+      style={[
+        styles.blob,
+        isDevice('ios') ? styles.iosPadding : styles.androidPadding,
+        style,
+      ]}
+    >
       <SafeAreaView style={styles.safeArea}>
         {!onPress ? null : (
           <RN.TouchableOpacity
@@ -105,11 +113,16 @@ const styles = RN.StyleSheet.create({
     minHeight: 80,
     borderBottomRightRadius: cardBorderRadius,
     borderBottomLeftRadius: cardBorderRadius,
-    paddingVertical: 16,
     paddingHorizontal: 8,
     flexDirection: 'row',
     alignItems: 'center',
     backgroundColor: colors.darkBlue,
+  },
+  androidPadding: {
+    paddingVertical: 16,
+  },
+  iosPadding: {
+    paddingTop: 16,
   },
   safeArea: {
     flexDirection: 'row',
@@ -139,6 +152,7 @@ const styles = RN.StyleSheet.create({
   name: {
     ...fonts.regularBold,
     flex: 1,
+    textAlignVertical: 'center',
     flexWrap: 'wrap',
   },
   nameContainer: {
