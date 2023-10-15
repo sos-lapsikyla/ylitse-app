@@ -47,9 +47,9 @@ const NamedInputField = ({
           ]}
           editable={true}
           secureTextEntry={isSecureText}
-          {...textInputProps}
           onFocus={handleFocus}
           onBlur={() => setIsFocused(false)}
+          {...textInputProps}
         />
         {isPasswordInput ? (
           <RN.TouchableOpacity
