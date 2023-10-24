@@ -17,29 +17,18 @@ interface Props extends RN.TextProps {
 }
 
 const MentorsTitleAndSearchButton = ({ id, onPress }: Props) => {
-  const { kind, message } = useSelector(mentorState.getActiveFilters);
-
-  const { buttonStyle, messageStyle } = {
-    NoFilters: {
-      buttonStyle: styles.noFilterButton,
-      messageStyle: styles.noFilterMessage,
-    },
-    FiltersActive: {
-      buttonStyle: styles.filterButton,
-      messageStyle: styles.filterMessage,
-    },
-  }[kind];
+  const { message } = useSelector(mentorState.getActiveFilters);
 
   return (
     <RN.View style={styles.container}>
       <RN.Text style={styles.mentorsTitle}>{localization.trans(id)}</RN.Text>
       <MessageButtonWithIcon
-        style={buttonStyle}
+        style={styles.button}
         messageStyle={styles.searchMessage}
         onPress={onPress}
         testID={'main.mentorsTitleAndSearchButton'}
       >
-        <RN.Text style={messageStyle}>{message}</RN.Text>
+        <RN.Text style={styles.message}>{message}</RN.Text>
       </MessageButtonWithIcon>
     </RN.View>
   );
@@ -53,45 +42,30 @@ const styles = RN.StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
   },
-  filterButton: {
-    backgroundColor: colors.darkestBlue,
-    marginTop: 24,
-    marginBottom: 8,
-    height: '50%',
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-  },
-  noFilterButton: {
-    backgroundColor: colors.lightestGray,
-    marginTop: 24,
-    marginBottom: 8,
-    height: '50%',
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-  },
-  searchMessage: {
-    color: colors.darkestBlue,
-  },
-
   mentorsTitle: {
     marginTop: 24,
     marginBottom: 8,
     ...fonts.titleLarge,
     ...textShadow,
-    color: colors.deepBlue,
-  },
-  filterMessage: {
-    ...fonts.regularBold,
-
-    textAlign: 'center',
-    color: colors.white,
-    flexDirection: 'column',
-    paddingLeft: 5,
-  },
-  noFilterMessage: {
-    ...fonts.regularBold,
-    textAlign: 'center',
     color: colors.darkestBlue,
+  },
+  button: {
+    backgroundColor: colors.white,
+    marginTop: 24,
+    marginBottom: 8,
+    height: '50%',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    borderColor: colors.purple,
+    borderWidth: 2,
+  },
+  searchMessage: {
+    color: colors.purple,
+  },
+  message: {
+    ...fonts.regularBold,
+    textAlign: 'center',
+    color: colors.purple,
     flexDirection: 'column',
     paddingLeft: 5,
   },

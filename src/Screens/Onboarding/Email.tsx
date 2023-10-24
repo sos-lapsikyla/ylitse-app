@@ -66,6 +66,7 @@ const Email = ({ navigation, route }: Props) => {
             onPress={goBack}
             noShadow={true}
             style={styles.backButton}
+            emphasis="low"
           />
           <Button
             style={styles.nextButton}
@@ -111,7 +112,6 @@ const styles = RN.StyleSheet.create({
     marginBottom: 40,
   },
   backButton: {
-    backgroundColor: colors.lightestGray,
     flex: 1.2,
     marginHorizontal: 4,
     height: 32,

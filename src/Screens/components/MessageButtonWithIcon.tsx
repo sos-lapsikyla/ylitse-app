@@ -41,7 +41,7 @@ const borderRadius = 18;
 
 const styles = RN.StyleSheet.create({
   icon: {
-    tintColor: colors.blueGray,
+    tintColor: colors.purple,
     height: 20,
     width: 20,
   },

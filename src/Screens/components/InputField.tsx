@@ -1,11 +1,14 @@
 import React from 'react';
 import RN from 'react-native';
 
+import { isDevice } from '../../lib/isDevice';
+
 import fonts from './fonts';
 import colors from './colors';
 
 export interface Props extends RN.TextInputProps {
   inputStyle?: RN.StyleProp<RN.TextStyle>;
+  icon?: RN.ImageSourcePropType;
 }
 
 const InputField = ({
@@ -14,44 +17,61 @@ const InputField = ({
   maxLength,
   multiline,
   numberOfLines,
+  icon,
   ...textInputProps
 }: Props) => {
+  const [isFocused, setIsFocused] = React.useState(false);
+
   return (
-    <RN.View style={[styles.container, style]}>
+    <RN.View
+      style={[styles.container, style, isFocused && styles.focusedBorder]}
+    >
       <RN.TextInput
         style={[styles.inputText, inputStyle]}
         maxLength={maxLength}
         multiline={multiline}
         numberOfLines={numberOfLines}
         editable={true}
+        onFocus={() => setIsFocused(true)}
+        onBlur={() => setIsFocused(false)}
         {...textInputProps}
       />
+
+      {icon && (
+        <RN.Image
+          style={styles.icon}
+          source={icon}
+          resizeMode="stretch"
+          resizeMethod="scale"
+        />
+      )}
     </RN.View>
   );
 };
 
 const styles = RN.StyleSheet.create({
   container: {
-    flex: 1,
     flexDirection: 'row',
-    alignItems: 'flex-end',
-    backgroundColor: colors.lightestGray,
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    textAlignVertical: 'center',
+    borderColor: colors.purple,
+    borderWidth: 1,
     borderRadius: 16,
-    marginVertical: 8,
+    backgroundColor: colors.white,
   },
   inputText: {
     ...fonts.regular,
-    color: colors.darkestBlue,
-    backgroundColor: colors.lightestGray,
-    flex: 1,
+    paddingVertical: isDevice('ios') ? 12 : 8,
+    marginLeft: 16,
     flexGrow: 1,
-    flexDirection: 'column',
-    flexWrap: 'wrap',
-    alignSelf: 'stretch',
-    paddingHorizontal: 16,
-    paddingVertical: 16,
-    borderRadius: 16,
-    marginTop: RN.Platform.OS === 'ios' ? 8 : undefined,
+  },
+  focusedBorder: { borderWidth: 2, backgroundColor: colors.whiteBlue },
+  icon: {
+    tintColor: colors.purple,
+    height: 24,
+    width: 24,
+    marginRight: 16,
   },
 });
 

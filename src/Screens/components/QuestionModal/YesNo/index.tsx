@@ -46,7 +46,7 @@ const styles = RN.StyleSheet.create({
     textAlign: 'center',
   },
   yesButton: {
-    backgroundColor: colors.buttonGreen,
+    backgroundColor: colors.green,
     marginLeft: 16,
   },
 });

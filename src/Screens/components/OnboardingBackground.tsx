@@ -2,6 +2,8 @@ import React from 'react';
 import RN from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
+import { isDevice } from '../../lib/isDevice';
+
 import Background from './Background';
 import CreatedBySosBanner from '../components/CreatedBySosBanner';
 import AppTitle from '../components/AppTitle';
@@ -32,7 +34,7 @@ const OnboardinBackground: React.FC<Props> = ({
 const styles = RN.StyleSheet.create({
   appTitle: {
     position: 'absolute',
-    top: 40,
+    top: isDevice('ios') ? 64 : 40,
     alignSelf: 'center',
     zIndex: 1,
   },

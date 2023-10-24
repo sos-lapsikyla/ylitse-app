@@ -25,19 +25,31 @@ const NamedInputField = ({
   const [isSecureText, setSecureText] = React.useState(
     false, // secureText will be enabled in the onFocus callback
   );
+  const [isFocused, setIsFocused] = React.useState(false);
+
   const toggleSecureText = () => setSecureText(!isSecureText);
-  const enableSecureText = () => setSecureText(true);
+
+  const handleFocus = () => {
+    isPasswordInput ? setSecureText(true) : () => {};
+
+    setIsFocused(true);
+  };
 
   return (
     <RN.View style={style}>
       <Message style={[styles.nameText, labelStyle]} id={name} />
       <RN.View>
         <RN.TextInput
-          style={[styles.inputText, inputStyle]}
+          style={[
+            styles.inputText,
+            inputStyle,
+            isFocused && styles.focusedBorder,
+          ]}
           editable={true}
           secureTextEntry={isSecureText}
+          onFocus={handleFocus}
+          onBlur={() => setIsFocused(false)}
           {...textInputProps}
-          onFocus={isPasswordInput ? enableSecureText : () => {}}
         />
         {isPasswordInput ? (
           <RN.TouchableOpacity
@@ -61,7 +73,7 @@ const NamedInputField = ({
 
 const styles = RN.StyleSheet.create({
   nameText: {
-    ...fonts.regular,
+    ...fonts.regularBold,
     color: colors.darkestBlue,
     marginBottom: 8,
   },
@@ -71,17 +83,20 @@ const styles = RN.StyleSheet.create({
     alignItems: 'center',
   },
   inputText: {
-    ...fonts.largeBold,
+    ...fonts.regular,
     color: colors.darkestBlue,
-    backgroundColor: colors.lightestGray,
+    backgroundColor: colors.white,
     alignSelf: 'stretch',
     flex: 1,
     flexGrow: 1,
     paddingVertical: 8,
     paddingLeft: 16,
     paddingRight: 48,
-    borderRadius: 16,
+    borderColor: colors.purple,
+    borderWidth: 1,
+    borderRadius: 4,
   },
+  focusedBorder: { borderWidth: 2, backgroundColor: colors.whiteBlue },
   button: {
     position: 'absolute',
     right: 16,
@@ -91,7 +106,7 @@ const styles = RN.StyleSheet.create({
     alignSelf: 'center',
     justifyContent: 'center',
   },
-  icon: { height: 24, width: 24, tintColor: colors.blueGray },
+  icon: { height: 24, width: 24, tintColor: colors.purple },
 });
 
 export default NamedInputField;

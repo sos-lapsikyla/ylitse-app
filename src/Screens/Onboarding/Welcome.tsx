@@ -67,7 +67,7 @@ export default ({ navigation }: Props) => {
 
 const styles = RN.StyleSheet.create({
   background: {
-    backgroundColor: colors.lightBlue,
+    backgroundColor: colors.purple,
     flex: 1,
     alignItems: 'center',
     justifyContent: 'space-between',
@@ -101,29 +101,27 @@ const styles = RN.StyleSheet.create({
     ...fonts.titleLargeBold,
     textAlign: 'center',
     marginBottom: 24,
-    color: colors.blue,
+    color: colors.darkestBlue,
   },
   text: {
     ...fonts.regularBold,
     textAlign: 'center',
     marginBottom: 32,
-    color: colors.deepBlue,
+    color: colors.darkestBlue,
   },
   textWithoutMargin: {
     ...fonts.regularBold,
     textAlign: 'center',
-    color: colors.deepBlue,
+    color: colors.darkestBlue,
   },
   button: {
     alignSelf: 'center',
     paddingHorizontal: 60,
     marginBottom: 32,
     marginTop: 12,
-    backgroundColor: colors.lightBlue,
   },
   buttonText: {
     ...fonts.largeBold,
-    color: colors.deepBlue,
     textAlign: 'center',
   },
   link: { alignSelf: 'center', marginBottom: 32, fontSize: 10 },

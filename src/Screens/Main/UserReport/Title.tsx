@@ -41,7 +41,7 @@ const styles = RN.StyleSheet.create({
     left: 8,
   },
   backButtonIcon: {
-    tintColor: colors.deepBlue,
+    tintColor: colors.darkestBlue,
     width: 48,
     height: 48,
   },
@@ -49,6 +49,6 @@ const styles = RN.StyleSheet.create({
     ...fonts.titleLarge,
     ...textShadow,
     textAlign: 'center',
-    color: colors.deepBlue,
+    color: colors.darkestBlue,
   },
 });

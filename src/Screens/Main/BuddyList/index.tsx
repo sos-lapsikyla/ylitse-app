@@ -99,7 +99,7 @@ export default ({ navigation }: Props) => {
       />
       {isDropdownOpen && (
         <DropDown
-          style={[styles.dropdown, { top: height - 8 }]}
+          style={[styles.dropdown, { top: height - 16 }]}
           items={dropdownItems}
           testID={'main.chat.menu'}
           tintColor={colors.black}

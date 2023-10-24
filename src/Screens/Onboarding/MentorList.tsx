@@ -26,7 +26,7 @@ const MentorList = (props: Props) => {
   };
 
   return (
-    <Background>
+    <Background variant="secondary">
       <SafeAreaView
         style={styles.container}
         testID="onboarding.mentorlist.view"
@@ -59,7 +59,7 @@ const styles = RN.StyleSheet.create({
     marginBottom: 8,
     ...fonts.titleLarge,
     ...textShadow,
-    color: colors.deepBlue,
+    color: colors.darkestBlue,
   },
   bottom: {
     marginTop: 8,
@@ -69,7 +69,6 @@ const styles = RN.StyleSheet.create({
   button: { marginHorizontal: 24, alignSelf: 'stretch' },
   buttonMessage: {
     textAlign: 'center',
-    color: colors.darkestBlue,
     ...fonts.titleBold,
     marginRight: 16,
   },

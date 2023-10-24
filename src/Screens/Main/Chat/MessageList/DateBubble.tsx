@@ -19,12 +19,12 @@ const DateBubble = ({ value }: DateBubbleProps) => {
 const styles = RN.StyleSheet.create({
   bubble: {
     borderRadius: 8,
-    backgroundColor: colors.lightestGray,
+    backgroundColor: colors.background,
     alignSelf: 'center',
     marginVertical: 16,
     padding: 8,
     paddingHorizontal: 16,
-    ...shadow(6),
+    ...shadow(2),
   },
   text: {
     ...fonts.regular,

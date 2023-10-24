@@ -15,8 +15,8 @@ import Message from '../../../components/Message';
 import Spinner from '../../../components/Spinner';
 import { Toast } from '../../../components/Toast';
 import AlertModal from '../../../components/Modal';
-import StatusMessageForm from 'src/Screens/components/StatusMessageForm';
-import MessageSwitch from 'src/Screens/components/MessageSwitch';
+import MessageSwitch from '../../../components/MessageSwitch';
+import StatusMessageForm from './StatusMessageForm';
 
 import colors from '../../../components/colors';
 import fonts from '../../../components/fonts';
@@ -87,98 +87,103 @@ export default ({ userId }: Props) => {
   }, [mentor?.status_message]);
 
   return (
-    <>
-      <Message
-        style={styles.fieldName}
-        id="main.settings.account.profile.title"
-      />
-      <Button
-        style={styles.changePasswordButton}
-        messageStyle={styles.buttonText}
-        onPress={openProfile}
-        messageId="main.settings.account.profile.button"
-      />
-      <Message
-        style={styles.fieldName}
-        id="main.settings.account.vacation.title"
-      />
-      <MessageSwitch
-        containerStyle={styles.vacationSwitch}
-        value={mentor?.is_vacationing ?? false}
-        isLoading={RD.isPending(vacationStatusState)}
-        messageOn="main.settings.account.vacation.on"
-        messageOff="main.settings.account.vacation.off"
-        onPress={() =>
-          updateMentorData(
-            { is_vacationing: !mentor?.is_vacationing },
-            'is_vacationing',
-          )
-        }
-        testID="main.settings.
+    <RN.View>
+      <RN.View style={styles.dataContainer}>
+        <Message
+          style={styles.fieldName}
+          id="main.settings.account.profile.title"
+        />
+        <Button
+          style={styles.button}
+          onPress={openProfile}
+          messageId="main.settings.account.profile.button"
+        />
+      </RN.View>
+      <RN.View style={styles.dataContainer}>
+        <Message
+          style={styles.fieldName}
+          id="main.settings.account.vacation.title"
+        />
+        <MessageSwitch
+          containerStyle={styles.vacationSwitch}
+          value={mentor?.is_vacationing ?? false}
+          isLoading={RD.isPending(vacationStatusState)}
+          messageOn="main.settings.account.vacation.on"
+          messageOff="main.settings.account.vacation.off"
+          onPress={() =>
+            updateMentorData(
+              { is_vacationing: !mentor?.is_vacationing },
+              'is_vacationing',
+            )
+          }
+          testID="main.settings.
           account.vacation.switch"
-      />
-      <Message
-        style={styles.fieldName}
-        id="main.settings.account.status.title"
-        testID="main.settings.account.status.title"
-      />
-      {pipe(
-        statusMessageState,
-        RD.fold(
-          () => (
-            <StatusMessageForm
-              statusMessage={statusMessage}
-              setStatusMessage={setStatusMessage}
-              onButtonPress={() =>
-                updateMentorData(
-                  { status_message: statusMessage },
-                  'status_message',
-                )
-              }
-              maxLength={30}
-            />
+        />
+      </RN.View>
+      <RN.View style={styles.dataContainer}>
+        <Message
+          style={styles.fieldName}
+          id="main.settings.account.status.title"
+          testID="main.settings.account.status.title"
+        />
+        {pipe(
+          statusMessageState,
+          RD.fold(
+            () => (
+              <StatusMessageForm
+                statusMessage={statusMessage}
+                setStatusMessage={setStatusMessage}
+                onButtonPress={() =>
+                  updateMentorData(
+                    { status_message: statusMessage },
+                    'status_message',
+                  )
+                }
+                maxLength={30}
+              />
+            ),
+            () => <Spinner />,
+            () => (
+              <AlertModal
+                modalType="danger"
+                messageId="main.settings.account.status.fail"
+                onSecondaryPress={resetStatusMessage}
+                onPrimaryPress={() =>
+                  updateMentorData(
+                    { status_message: statusMessage },
+                    'status_message',
+                  )
+                }
+              />
+            ),
+            () => (
+              <Toast
+                toastType="success"
+                duration={mentorUpdate.successResetDuration}
+                messageId="main.settings.account.status.success"
+              />
+            ),
           ),
-          () => <Spinner />,
-          () => (
-            <AlertModal
-              modalType="danger"
-              messageId="main.settings.account.status.fail"
-              onSecondaryPress={resetStatusMessage}
-              onPrimaryPress={() =>
-                updateMentorData(
-                  { status_message: statusMessage },
-                  'status_message',
-                )
-              }
-            />
-          ),
-          () => (
-            <Toast
-              toastType="success"
-              duration={mentorUpdate.successResetDuration}
-              messageId="main.settings.account.status.success"
-            />
-          ),
-        ),
-      )}
-    </>
+        )}
+      </RN.View>
+    </RN.View>
   );
 };
 
 const styles = RN.StyleSheet.create({
   fieldName: {
-    ...fonts.regular,
-    color: colors.blueGray,
+    ...fonts.regularBold,
+    color: colors.darkestBlue,
     marginTop: 16,
   },
-  changePasswordButton: {
+  dataContainer: {
+    paddingVertical: 16,
+    borderTopColor: colors.formBorderGray,
+    borderTopWidth: 1,
+  },
+  button: {
     marginTop: 8,
     alignSelf: 'flex-start',
-    backgroundColor: colors.blue,
-  },
-  buttonText: {
-    ...fonts.regularBold,
-    color: colors.white,
   },
   failBox: {
     tintColor: colors.danger,

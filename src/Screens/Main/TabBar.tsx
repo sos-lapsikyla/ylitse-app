@@ -7,6 +7,7 @@ import { selectFirstQuestion } from '../../state/reducers/questions';
 import { BottomTabBarProps } from '@react-navigation/bottom-tabs';
 
 import * as localization from '../../localization';
+import { isDevice } from '../../lib/isDevice';
 import { isAnyMessageUnseen } from '../../state/reducers/messages';
 
 import colors from '../components/colors';
@@ -17,24 +18,28 @@ import QuestionModal from '../components/QuestionModal';
 import { Answer } from '../../api/feedback';
 
 type TabSettings = {
-  icon: RN.ImageSourcePropType;
+  iconSelected: RN.ImageSourcePropType;
+  iconInactive: RN.ImageSourcePropType;
   text: string;
   testID: string;
 };
 
 const TabMap: Array<TabSettings> = [
   {
-    icon: require('../images/cog.svg'),
+    iconSelected: require('../images/cog.svg'),
+    iconInactive: require('../images/cog-thin.svg'),
     text: localization.trans('tabs.settings'),
     testID: 'tabs.settings',
   },
   {
-    icon: require('../images/users.svg'),
+    iconSelected: require('../images/users.svg'),
+    iconInactive: require('../images/users-thin.svg'),
     text: localization.trans('tabs.mentors'),
     testID: 'tabs.mentors',
   },
   {
-    icon: require('../images/balloon.svg'),
+    iconSelected: require('../images/balloon.svg'),
+    iconInactive: require('../images/balloon-thin.svg'),
     text: localization.trans('tabs.chats'),
     testID: 'tabs.chats',
   },
@@ -58,6 +63,7 @@ export const TabBar = ({ state, navigation }: Props) => {
       {state.routes.map((route, index) => {
         const testID = TabMap[index].testID;
         const isFocused = state.index === index;
+        const iconKey = isFocused ? 'iconSelected' : 'iconInactive';
 
         const [iconStyle, labelStyle] = isFocused
           ? [styles.selectedIcon, styles.selectedLabel]
@@ -84,7 +90,7 @@ export const TabBar = ({ state, navigation }: Props) => {
               testID={testID}
             >
               {index === 2 ? <UnseenDot /> : null}
-              <RN.Image style={iconStyle} source={TabMap[index].icon} />
+              <RN.Image style={iconStyle} source={TabMap[index][iconKey]} />
               <RN.Text style={labelStyle}>{TabMap[index].text}</RN.Text>
             </RN.TouchableOpacity>
             {feedbackQuestion && (
@@ -129,15 +135,16 @@ const styles = RN.StyleSheet.create({
     bottom: 0,
     left: 0,
     right: 0,
-    borderRadius: 40,
+    borderTopLeftRadius: 40,
+    borderTopRightRadius: 40,
     minHeight: 64,
-    backgroundColor: colors.lightestGray,
+    backgroundColor: colors.white,
     flex: 1,
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',
-    paddingBottom: 16,
     paddingTop: 16,
+    paddingBottom: isDevice('ios') ? 20 : 8,
   },
   container: {
     flex: 1,
@@ -146,9 +153,9 @@ const styles = RN.StyleSheet.create({
     alignItems: 'center',
   },
   separator: {
-    height: 48,
+    height: 56,
     width: 1,
-    backgroundColor: colors.teal,
+    backgroundColor: colors.whiteBlue,
     opacity: 0.8,
   },
   tab: {
@@ -160,15 +167,17 @@ const styles = RN.StyleSheet.create({
   label: {
     ...fonts.small,
     textAlign: 'center',
-    color: colors.blueGray,
-    marginTop: 8,
+    color: colors.purple,
+    marginTop: 4,
   },
   selectedLabel: {
     ...fonts.smallBold,
+    lineHeight: 16,
+    fontWeight: '800',
     textAlign: 'center',
     color: colors.darkestBlue,
     marginTop: 8,
   },
-  icon: { tintColor: colors.blueGray },
+  icon: { tintColor: colors.purple },
   selectedIcon: { tintColor: colors.darkestBlue },
 });

@@ -8,10 +8,11 @@ import * as state from '../../../state';
 import * as selectors from '../../../state/selectors';
 import { getMentorByUserId } from '../../../state/reducers/mentors';
 
+import { isDevice } from '../../../lib/isDevice';
+
 import colors from '../../components/colors';
-import { cardBorderRadius } from '../../components/Card';
 import fonts from '../../components/fonts';
-import getBuddyColor from '../../components/getBuddyColor';
+import { cardBorderRadius } from '../../components/Card';
 
 type StateProps = {
   name: string;
@@ -39,13 +40,16 @@ const Title: React.FC<Props> = ({
   openDropdown,
   goToMentorCard,
 }) => {
-  const color = getBuddyColor(buddyId);
   const mentor = useSelector(getMentorByUserId(buddyId));
 
   return (
     <RN.View
       onLayout={onLayout}
-      style={[styles.blob, { backgroundColor: color }, style]}
+      style={[
+        styles.blob,
+        isDevice('ios') ? styles.iosPadding : styles.androidPadding,
+        style,
+      ]}
     >
       <SafeAreaView style={styles.safeArea}>
         {!onPress ? null : (
@@ -110,10 +114,16 @@ const styles = RN.StyleSheet.create({
     minHeight: 80,
     borderBottomRightRadius: cardBorderRadius,
     borderBottomLeftRadius: cardBorderRadius,
-    paddingVertical: 16,
     paddingHorizontal: 8,
     flexDirection: 'row',
     alignItems: 'center',
+    backgroundColor: colors.darkBlue,
+  },
+  androidPadding: {
+    paddingVertical: 16,
+  },
+  iosPadding: {
+    paddingTop: 16,
   },
   safeArea: {
     flexDirection: 'row',
@@ -143,6 +153,7 @@ const styles = RN.StyleSheet.create({
   name: {
     ...fonts.regularBold,
     flex: 1,
+    textAlignVertical: 'center',
     flexWrap: 'wrap',
   },
   nameContainer: {

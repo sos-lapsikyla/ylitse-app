@@ -10,7 +10,7 @@ import SignUp, { SignUpRoute } from './Onboarding/SignUp';
 import DisplayName, { DisplayNameRoute } from './Onboarding/DisplayName';
 import Email, { EmailRoute } from './Onboarding/Email';
 import PrivacyPolicy, { PrivacyPolicyRoute } from './Onboarding/PrivacyPolicy';
-import SearchMentor, { SearchMentorRoute } from './Main/SearchMentor';
+import SearchMentor, { SearchMentorRoute } from './Main/MentorSearch';
 
 import SignIn, { SignInRoute } from './Onboarding/SignIn';
 import Tabs, { TabsRoute } from './Main/Tabs';
@@ -21,12 +21,12 @@ import MentorCardExpanded, {
 import Chat, { ChatRoute } from './Main/Chat';
 import FolderedChats from './Main/FolderedChats';
 import { FolderedChatsRoute } from './Main/FolderedChats/folderedChatProperties';
-import Logout, { LogoutRoute } from './Main/Settings/Logout';
+import Logout, { LogoutRoute } from './Main/Settings/BottomCard/Logout';
 import DeleteAccount, {
   DeleteAccountRoute,
-} from './Main/Settings/DeleteAccount';
+} from './Main/Settings/BottomCard/DeleteAccount';
 import PasswordChange, { PasswordChangeRoute } from './Main/Settings/Password';
-import EmailChange, { EmailChangeRoute } from './Main/Settings/Email';
+import EmailChange, { EmailChangeRoute } from './Main/Settings/Email/Email';
 import UserReport, { UserReportRoute } from './Main/UserReport';
 
 export type StackRoutes = SplashRoute &

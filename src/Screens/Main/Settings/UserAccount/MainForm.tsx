@@ -8,12 +8,13 @@ import { tuple } from 'fp-ts/lib/function';
 import * as userAccountState from '../../../../state/reducers/userAccount';
 import * as actions from '../../../../state/actions';
 
-import RemoteData from '../../../components/RemoteData';
-import Button from '../../../components/Button';
-import Message from '../../../components/Message';
 import colors from '../../../components/colors';
 import fonts from '../../../components/fonts';
+
+import RemoteData from '../../../components/RemoteData';
+import Message from '../../../components/Message';
 import MentorForm from './MentorForm';
+import { FormItem } from './FormItem';
 
 type Props = {
   openPasswordForm: () => void;
@@ -42,66 +43,56 @@ export default ({ openPasswordForm, openEmailForm }: Props) => {
       >
         {([{ userId, userName, displayName, email, role }, hasBoth]) => (
           <>
-            <Message
-              style={styles.fieldName}
-              id="main.settings.account.userName"
-            />
-            <RN.Text
-              style={styles.fieldValueText}
-              testID="main.settings.account.userName"
-            >
-              {userName}
-            </RN.Text>
-            {hasBoth ? (
-              <>
-                <Message
-                  style={styles.fieldName}
-                  id="main.settings.account.displayName"
-                />
+            <FormItem labelMessageId="main.settings.account.userName">
+              <RN.Text
+                style={styles.fieldValueText}
+                testID="main.settings.account.userName"
+              >
+                {userName}
+              </RN.Text>
+            </FormItem>
+
+            {hasBoth && (
+              <FormItem labelMessageId="main.settings.account.displayName">
                 <RN.Text
                   style={styles.fieldValueText}
                   testID="main.settings.account.displayName"
                 >
                   {displayName}
                 </RN.Text>
-              </>
-            ) : null}
-            <Message
-              style={styles.fieldName}
-              id="main.settings.account.email.title"
-            />
-            {email ? (
-              <RN.Text
-                style={styles.fieldValueText}
-                testID="main.settings.account.email"
-              >
-                {email}
-              </RN.Text>
-            ) : (
-              <Message
-                style={styles.fieldValueText}
-                id="main.settings.account.email.missing"
-              />
+              </FormItem>
             )}
-            <Button
-              style={styles.changePasswordButton}
-              messageStyle={styles.buttonText}
-              onPress={openEmailForm}
-              messageId="main.settings.account.email.change"
-              testID="main.settings.account.email.change"
-            />
-            <Message
-              style={styles.fieldName}
-              id="main.settings.account.password.title"
-            />
-            <RN.Text style={styles.fieldValueText}>{'********'}</RN.Text>
-            <Button
-              style={styles.changePasswordButton}
-              messageStyle={styles.buttonText}
-              onPress={openPasswordForm}
-              messageId="main.settings.account.password.button"
-              testID="main.settings.account.password.button"
-            />
+            <FormItem
+              labelMessageId="main.settings.account.email.title"
+              button={{
+                testID: 'main.settings.account.email.change',
+                onClick: openEmailForm,
+              }}
+            >
+              {email ? (
+                <RN.Text
+                  style={styles.fieldValueText}
+                  testID="main.settings.account.email"
+                >
+                  {email}
+                </RN.Text>
+              ) : (
+                <Message
+                  style={styles.fieldValueText}
+                  id="main.settings.account.email.missing"
+                />
+              )}
+            </FormItem>
+            <FormItem
+              labelMessageId="main.settings.account.password.title"
+              button={{
+                testID: 'main.settings.account.password.change',
+                onClick: openPasswordForm,
+              }}
+              style={styles.dataContainerLast}
+            >
+              <RN.Text style={styles.fieldValueText}>{'********'}</RN.Text>
+            </FormItem>
             {role === 'mentor' ? <MentorForm userId={userId} /> : null}
           </>
         )}
@@ -116,33 +107,16 @@ const styles = RN.StyleSheet.create({
     paddingBottom: 32,
     marginBottom: 32,
   },
+  dataContainerLast: {
+    paddingVertical: 16,
+  },
   accountSettingsText: {
     ...fonts.titleBold,
     color: colors.darkestBlue,
     marginBottom: 24,
   },
-  fieldName: {
-    ...fonts.regular,
-    color: colors.blueGray,
-    marginTop: 16,
-  },
   fieldValueText: {
-    ...fonts.largeBold,
     color: colors.darkestBlue,
-  },
-  link: {
-    marginTop: 8,
-    marginBottom: 24,
-  },
-  changePasswordButton: {
-    marginTop: 8,
-    alignSelf: 'flex-start',
-    backgroundColor: colors.blue,
-  },
-  buttonText: {
-    ...fonts.regularBold,
-    // ...textShadow,
-    color: colors.deepBlue,
   },
   errorStyle: { margin: 0 },
 });

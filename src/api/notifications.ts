@@ -5,6 +5,7 @@ import * as TE from 'fp-ts/lib/TaskEither';
 import messaging from '@react-native-firebase/messaging';
 
 import * as http from '../lib/http';
+import { isDevice } from '../lib/isDevice';
 
 import * as config from './config';
 import * as authApi from './auth';
@@ -37,7 +38,7 @@ const getAndroidPermission = async () => {
 
 const requestPermission = TE.tryCatch(
   () =>
-    RN.Platform.OS === 'android'
+    isDevice('android')
       ? getAndroidPermission()
       : messaging().requestPermission(),
   () => 'Permissions requesting threw.',

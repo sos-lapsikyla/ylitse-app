@@ -4,9 +4,6 @@ import { MessageId } from './fi';
 export const messages: { [key in MessageId]: string } = {
   'buddyList.title': 'Chats',
 
-  'components.appTitle.subTitle': 'MentorApp',
-  'components.appTitle.title': 'YLITSE',
-
   'components.createdBySosBanner': 'Brought to you by SOS-Lapsikylä',
 
   'components.mentorCard.readMore': 'Read more',

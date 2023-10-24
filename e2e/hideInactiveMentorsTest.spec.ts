@@ -37,6 +37,9 @@ describe('Hide inactive mentors', () => {
   });
   beforeEach(async () => {
     await APIDeleteAccounts();
+    await device.reloadReactNative();
+  });
+  afterEach(async () => {
     await forceLogout();
   });
 

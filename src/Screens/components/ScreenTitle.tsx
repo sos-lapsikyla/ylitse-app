@@ -39,7 +39,7 @@ const styles = RN.StyleSheet.create({
     borderBottomLeftRadius: 40,
     borderBottomRightRadius: 40,
     zIndex: 2,
-    backgroundColor: colors.lightBlue,
+    backgroundColor: colors.darkBlue,
   },
   content: {
     marginTop: 16,
@@ -52,12 +52,12 @@ const styles = RN.StyleSheet.create({
     zIndex: 3,
   },
   chevron: {
-    tintColor: colors.deepBlue,
+    tintColor: colors.darkestBlue,
   },
   screenTitleText: {
     ...fonts.titleLarge,
     textAlign: 'center',
-    color: colors.deepBlue,
+    color: colors.darkestBlue,
   },
   scrollView: {
     zIndex: 1,

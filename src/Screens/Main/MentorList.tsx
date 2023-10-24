@@ -55,7 +55,7 @@ const MentorList = (props: Props) => {
   };
 
   return (
-    <Background>
+    <Background variant="secondary">
       <SafeAreaView style={styles.container}>
         <MentorsTitleAndSearchButton
           id="main.mentorList.title"

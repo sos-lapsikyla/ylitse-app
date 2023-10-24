@@ -35,6 +35,6 @@ const styles = RN.StyleSheet.create({
   text: {
     ...fonts.regularBold,
     textAlign: 'center',
-    color: colors.deepBlue,
+    color: colors.darkestBlue,
   },
 });

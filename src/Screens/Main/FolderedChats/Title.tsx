@@ -6,16 +6,14 @@ import fonts from '../../components/fonts';
 import { textShadow } from '../../components/shadow';
 import Message from '../../components/Message';
 import { MessageId } from 'src/localization/fi';
-
-export type BannedListRoute = {
-  'Main/BannedList': {};
-};
+import { FolderType } from './folderedChatProperties';
 
 type Props = {
   openDropdown: () => void | undefined;
   onLayout: (e: RN.LayoutChangeEvent) => void | undefined;
   onPressBack: () => void | undefined;
   headerId: MessageId;
+  folderType: FolderType;
 };
 
 export const Title: React.FC<Props> = ({
@@ -23,9 +21,19 @@ export const Title: React.FC<Props> = ({
   onLayout,
   onPressBack,
   headerId,
+  folderType,
 }) => {
   return (
-    <RN.SafeAreaView style={[styles.shadow]} onLayout={onLayout}>
+    <RN.SafeAreaView
+      style={[
+        styles.shadow,
+        {
+          backgroundColor:
+            folderType === 'banned' ? colors.red : colors.orangeLight,
+        },
+      ]}
+      onLayout={onLayout}
+    >
       <RN.TouchableOpacity
         onPress={onPressBack}
         testID={'main.folderedlist.back.button'}
@@ -53,7 +61,6 @@ export const Title: React.FC<Props> = ({
 
 const styles = RN.StyleSheet.create({
   shadow: {
-    backgroundColor: colors.blue,
     borderBottomLeftRadius: 40,
     borderBottomRightRadius: 40,
     zIndex: 2,
@@ -70,10 +77,10 @@ const styles = RN.StyleSheet.create({
     ...fonts.titleLarge,
     ...textShadow,
     textAlign: 'center',
-    color: colors.deepBlue,
+    color: colors.darkestBlue,
   },
   backButtonIcon: {
-    tintColor: colors.deepBlue,
+    tintColor: colors.darkestBlue,
     width: 48,
     height: 48,
   },
@@ -85,6 +92,6 @@ const styles = RN.StyleSheet.create({
     alignItems: 'center',
   },
   kebabIcon: {
-    tintColor: colors.deepBlue,
+    tintColor: colors.darkestBlue,
   },
 });

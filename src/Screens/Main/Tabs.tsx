@@ -17,6 +17,8 @@ import QuestionModal from '../components/QuestionModal';
 import { Answer } from '../../api/feedback';
 import { TabBar } from './TabBar';
 
+// import { questions } from 'e2e/fixtures/questions';
+
 export type TabsRoute = {
   'Main/Tabs': {
     initial?: 'Main/Settings' | 'Main/BuddyList' | 'Main/MentorList';
@@ -40,6 +42,12 @@ const Main = ({ navigation, route }: Props) => {
   };
 
   const feedbackQuestion = ReactRedux.useSelector(selectFirstQuestion);
+  // const feedbackQuestion = {
+  //   answer_id: 'moi',
+  //   id: 'moi',
+  //   titles: questions[1].rules.titles,
+  //   answer: questions[1].rules.answer,
+  // };
 
   const handleCloseQuestion = () => {
     dispatch({ type: 'feedback/reset/', payload: undefined });

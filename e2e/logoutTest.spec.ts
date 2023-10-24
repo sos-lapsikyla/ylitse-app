@@ -10,7 +10,7 @@ import {
   signIn,
 } from './helpers';
 
-describe('Delete', () => {
+describe('Logout', () => {
   beforeAll(async () => {
     await device.launchApp();
   });
