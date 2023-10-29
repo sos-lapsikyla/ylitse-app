@@ -5,8 +5,7 @@ export const messages = {
 
   'components.createdBySosBanner': 'Palvelun tarjoaa SOS-Lapsikylä',
 
-  'components.mentorCard.readMore': 'Lue lisää',
-  'components.mentorCard.showMore': 'Näytä lisää...',
+  'components.mentorCard.readMore': 'Näytä mentori',
   'components.mentorCard.yearsAbbrev': 'v.',
 
   'components.mentorSkills.other': 'Pystyn auttamaan näissä:',

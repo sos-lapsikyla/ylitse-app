@@ -6,8 +6,7 @@ export const messages: { [key in MessageId]: string } = {
 
   'components.createdBySosBanner': 'Brought to you by SOS-Lapsikylä',
 
-  'components.mentorCard.readMore': 'Read more',
-  'components.mentorCard.showMore': 'Show more...',
+  'components.mentorCard.readMore': 'Show mentor',
   'components.mentorCard.yearsAbbrev': ' y/o',
 
   'components.mentorSkills.other': 'I can also help with:',
