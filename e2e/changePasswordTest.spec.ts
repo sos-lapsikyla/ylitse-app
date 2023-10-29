@@ -23,7 +23,7 @@ describe('changePassword', () => {
 
   it('for a mentee succesfully', async () => {
     const mentee = accountFixtures.mentees[0];
-    const newPassword = 'newpass';
+    const newPassword = 'newpass1';
     await APISignUpMentee(mentee);
 
     await signIn(mentee);

@@ -95,7 +95,7 @@ export default (props: Props) => {
         />
         <Button
           style={styles.button}
-          onPress={() => console.log('asdd')}
+          onPress={props.onButtonPress}
           messageId="main.settings.account.password.button"
           disabled={!passwordState.isOkay}
           testID="main.settings.account.password.save"
