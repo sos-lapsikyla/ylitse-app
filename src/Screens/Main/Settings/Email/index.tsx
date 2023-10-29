@@ -89,11 +89,7 @@ export default ({ navigation }: Props) => {
                   onButtonPress={changeEmail}
                 />
               ),
-              () => (
-                <RN.View style={styles.spinnerContainer}>
-                  <Spinner style={styles.spinner} />
-                </RN.View>
-              ),
+              () => <Spinner style={styles.spinner} />,
               () => (
                 <AlertModal
                   modalType="danger"
@@ -132,20 +128,11 @@ const styles = RN.StyleSheet.create({
     zIndex: 1,
   },
   scrollContent: {
-    paddingTop: 48,
     paddingHorizontal: 24,
     flexGrow: 1,
-    justifyContent: 'space-between',
   },
-  spinnerContainer: { flexGrow: 1 },
   spinner: {
     alignSelf: 'center',
-  },
-  failBox: {
-    tintColor: colors.danger,
-  },
-  successBox: {
-    tintColor: colors.darkBlue,
   },
   buttonContainer: {
     flex: 1,

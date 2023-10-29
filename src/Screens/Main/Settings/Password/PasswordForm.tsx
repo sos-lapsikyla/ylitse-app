@@ -56,7 +56,7 @@ export default (props: Props) => {
         <Button
           style={styles.button}
           onPress={props.onButtonPress}
-          messageId="meta.save"
+          messageId="main.settings.account.password.button"
           disabled={!props.isOkay}
           testID="main.settings.account.password.save"
         />

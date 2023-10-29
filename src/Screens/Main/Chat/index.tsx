@@ -169,7 +169,6 @@ const Chat = ({ navigation, route }: Props) => {
       {dialogState.dialogOpen && changeChatStatusAction && (
         <Modal
           {...dialogProperties[changeChatStatusAction]}
-          primaryButtonMessage={'meta.ok'}
           secondaryButtonMessage={'meta.back'}
           onPrimaryPress={() => handleChangeChatStatus(changeChatStatusAction)}
           onSecondaryPress={() => setDialogs('dialogOpen', false)}

@@ -140,7 +140,6 @@ const styles = RN.StyleSheet.create({
     zIndex: 1,
   },
   scrollContent: {
-    paddingTop: 48,
     paddingHorizontal: 24,
     flexGrow: 1,
   },

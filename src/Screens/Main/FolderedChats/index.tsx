@@ -100,7 +100,7 @@ export default ({ navigation, route }: Props) => {
       {dialogState.dialogOpen && (
         <Modal
           messageId={'main.chat.deleteAll.confirmation'}
-          primaryButtonMessage={'meta.ok'}
+          primaryButtonMessage={'main.chat.delete.confirmation.button'}
           secondaryButtonMessage={'meta.cancel'}
           onPrimaryPress={handleBatchBan}
           modalType={'danger'}

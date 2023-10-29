@@ -50,7 +50,7 @@ export default (props: Props) => {
         <Button
           style={styles.button}
           onPress={props.onButtonPress}
-          messageId="meta.save"
+          messageId="main.settings.account.email.change"
           testID="main.settings.account.email.save"
           disabled={!isValidEmail}
         />
