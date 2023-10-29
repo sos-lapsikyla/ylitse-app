@@ -127,7 +127,6 @@ const styles = RN.StyleSheet.create({
   },
   title: {
     ...fonts.titleBold,
-    color: colors.darkestBlue,
   },
   scrollView: {
     zIndex: 1,

@@ -2,6 +2,7 @@ const colors = {
   // common colors
   white: '#FFF',
   background: '#EBF2F8',
+  chatBackground: '#F5F8FC',
   faintBackground: '#0002',
   gray: '#8F9EAC',
   midGray: '#DBDBDB',

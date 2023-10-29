@@ -121,7 +121,7 @@ const unseenDotStyles = RN.StyleSheet.create({
     borderRadius: 8,
     width: 16,
     height: 16,
-    backgroundColor: 'yellow',
+    backgroundColor: colors.yellow,
     position: 'absolute',
     transform: [{ translateX: 16 }, { translateY: -32 }],
   },

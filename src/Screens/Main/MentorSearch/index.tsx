@@ -57,7 +57,7 @@ export default ({ navigation }: Props) => {
     <TitledContainer
       onLayout={onLayout}
       TitleComponent={<Title handleBackPress={onPressBack} />}
-      color={colors.blue}
+      color={colors.darkBlue}
     >
       <RN.View style={styles.contentMargins}>
         <Filters skillSearch={skillSearch} setSkillSearch={setSkillSearch} />
