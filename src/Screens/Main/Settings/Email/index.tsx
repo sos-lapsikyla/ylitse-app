@@ -73,7 +73,7 @@ export default ({ navigation }: Props) => {
         showsVerticalScrollIndicator={false}
         testID={'main.settings.email.view'}
       >
-        <SafeAreaView style={styles.buttonContainer}>
+        <SafeAreaView style={styles.viewContainer}>
           <Message
             style={styles.title}
             id="main.settings.account.email.title"
@@ -122,7 +122,6 @@ const styles = RN.StyleSheet.create({
   title: {
     ...fonts.titleBold,
     color: colors.darkestBlue,
-    marginBottom: 24,
   },
   scrollView: {
     zIndex: 1,
@@ -134,7 +133,7 @@ const styles = RN.StyleSheet.create({
   spinner: {
     alignSelf: 'center',
   },
-  buttonContainer: {
+  viewContainer: {
     flex: 1,
     alignSelf: 'stretch',
     justifyContent: 'flex-end',

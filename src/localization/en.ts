@@ -88,6 +88,10 @@ export const messages: { [key in MessageId]: string } = {
   'main.settings.account.password.current': 'Current password',
   'main.settings.account.password.failure':
     'Password change failed: check your password!',
+  'main.settings.account.password.invalid.length':
+    'Passwords should be a minimum of eight characters in length',
+  'main.settings.account.password.invalid.same':
+    'Both new passwords should match',
   'main.settings.account.password.new': 'New Password',
   'main.settings.account.password.repeat': 'Repeat new password',
   'main.settings.account.password.success': 'Password change succeeded',

@@ -88,6 +88,10 @@ export const messages = {
   'main.settings.account.password.current': 'nykyinen salasana',
   'main.settings.account.password.failure':
     'Salasanan vaihto epäonnistui: tarkista salasana!',
+  'main.settings.account.password.invalid.length':
+    'Salasanan tulee olla vähintään kahdeksan merkkiä pitkä',
+  'main.settings.account.password.invalid.same':
+    'Molempien uusien salasanojen on oltava samat',
   'main.settings.account.password.new': 'uusi salasana',
   'main.settings.account.password.repeat': 'toista uusi salasana',
   'main.settings.account.password.success': 'Salasanan vaihto onnistui!',

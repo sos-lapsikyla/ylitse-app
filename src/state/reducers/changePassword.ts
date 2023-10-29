@@ -32,6 +32,7 @@ export const reducer: automaton.Reducer<
       );
 
     case 'changePassword/completed':
+      console.log(action.payload);
       return remoteData.fromEither(action.payload);
 
     case 'changePassword/reset':
