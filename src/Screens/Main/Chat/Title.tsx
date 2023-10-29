@@ -8,7 +8,7 @@ import * as state from '../../../state';
 import * as selectors from '../../../state/selectors';
 import { getMentorByUserId } from '../../../state/reducers/mentors';
 
-import { isDevice } from '../../../lib/isDevice';
+import { hasNotch } from '../../../lib/isDevice';
 
 import colors from '../../components/colors';
 import fonts from '../../components/fonts';
@@ -47,7 +47,7 @@ const Title: React.FC<Props> = ({
       onLayout={onLayout}
       style={[
         styles.blob,
-        isDevice('ios') ? styles.iosPadding : styles.androidPadding,
+        hasNotch() ? styles.notchPadding : styles.padding,
         style,
       ]}
     >
@@ -119,10 +119,10 @@ const styles = RN.StyleSheet.create({
     alignItems: 'center',
     backgroundColor: colors.darkBlue,
   },
-  androidPadding: {
+  padding: {
     paddingVertical: 16,
   },
-  iosPadding: {
+  notchPadding: {
     paddingTop: 16,
   },
   safeArea: {

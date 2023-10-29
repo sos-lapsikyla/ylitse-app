@@ -2,7 +2,7 @@ import React from 'react';
 import RN from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
-import { isDevice } from '../../lib/isDevice';
+import { hasNotch } from '../../lib/isDevice';
 
 import Background from './Background';
 import CreatedBySosBanner from '../components/CreatedBySosBanner';
@@ -34,7 +34,7 @@ const OnboardinBackground: React.FC<Props> = ({
 const styles = RN.StyleSheet.create({
   appTitle: {
     position: 'absolute',
-    top: isDevice('ios') ? 64 : 40,
+    top: hasNotch() ? 64 : 40,
     alignSelf: 'center',
     zIndex: 1,
   },
