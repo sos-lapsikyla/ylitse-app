@@ -54,7 +54,7 @@ describe('Banning', () => {
     await element(by.text(mentee.displayName)).atIndex(0).tap();
     await element(by.id('main.chat.title.kebabicon')).tap();
     await element(by.text('Ban chat')).tap();
-    await element(by.text('OK')).tap();
+    await element(by.text('Ban')).tap();
 
     await expect(element(by.text(mentee.displayName))).not.toBeVisible();
 
@@ -122,7 +122,7 @@ describe('Banning', () => {
     await element(by.id('main.chat.title.kebabicon')).tap();
     await element(by.text('Restore chat')).tap();
 
-    await element(by.text('OK')).tap();
+    await element(by.text('Restore')).tap();
 
     await waitFor(element(by.id('main.folderedlist.back.button')))
       .toBeVisible()
@@ -167,7 +167,7 @@ describe('Banning', () => {
     await element(by.id('main.chat.title.kebabicon')).tap();
     await element(by.text('Delete chat')).tap();
 
-    await element(by.text('OK')).tap();
+    await element(by.text('Delete')).tap();
 
     // mentor should not see mentee's name in banned list
     await expect(element(by.text(mentee.displayName))).not.toBeVisible();
@@ -253,7 +253,7 @@ describe('Banning', () => {
     await element(by.id('main.folderedlist.kebabicon')).tap();
     await element(by.text('Delete all')).tap();
 
-    await element(by.text('OK')).tap();
+    await element(by.text('Delete')).tap();
 
     // mentor should not see mentees' names in banned list
     await expect(element(by.text(mentee.displayName))).not.toBeVisible();

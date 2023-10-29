@@ -64,7 +64,7 @@ const styles = RN.StyleSheet.create({
     paddingHorizontal: 16,
     flexDirection: 'row',
     flexWrap: 'wrap',
-    ...shadow(2),
+    ...shadow(4),
   },
   text: {
     ...fonts.regular,

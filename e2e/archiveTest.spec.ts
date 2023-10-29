@@ -54,7 +54,7 @@ describe('Archiving', () => {
     await element(by.text(mentee.displayName)).atIndex(0).tap();
     await element(by.id('main.chat.title.kebabicon')).tap();
     await element(by.text('Archive chat')).tap();
-    await element(by.text('OK')).tap();
+    await element(by.text('Archive')).tap();
 
     await expect(element(by.text(mentee.displayName))).not.toBeVisible();
 
@@ -126,7 +126,7 @@ describe('Archiving', () => {
     await element(by.id('main.chat.title.kebabicon')).tap();
     await element(by.text('Restore chat')).tap();
 
-    await element(by.text('OK')).tap();
+    await element(by.text('Restore')).tap();
 
     await waitFor(element(by.id('main.folderedlist.back.button')))
       .toBeVisible()
@@ -170,7 +170,7 @@ describe('Archiving', () => {
     await element(by.id('main.chat.title.kebabicon')).tap();
     await element(by.text('Delete chat')).tap();
 
-    await element(by.text('OK')).tap();
+    await element(by.text('Delete')).tap();
 
     // mentor should not see mentee's name in archived list
     await expect(element(by.text(mentee.displayName))).not.toBeVisible();

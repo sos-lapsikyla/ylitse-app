@@ -108,7 +108,7 @@ const styles = RN.StyleSheet.create({
     position: 'absolute',
     top: 16,
     right: 16,
-    backgroundColor: 'yellow',
+    backgroundColor: colors.yellow,
   },
   icon: {
     tintColor: colors.purple,

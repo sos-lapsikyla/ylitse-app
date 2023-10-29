@@ -31,7 +31,7 @@ describe('Chat', () => {
 
     await signIn(mentee);
 
-    await element(by.text('Read more')).tap();
+    await element(by.text('Show mentor')).tap();
     await element(by.text('Chat')).tap();
 
     await waitAndTypeText('main.chat.input.input', message_from_mentee, true);

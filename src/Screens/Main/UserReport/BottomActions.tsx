@@ -24,6 +24,7 @@ export const BottomActions = ({ onBack, onSend, isSendDisabled }: Props) => (
       style={styles.sendButton}
       onPress={onSend}
       messageId="main.userreport.send.button"
+      testID="main.userreport.send.button"
       disabled={isSendDisabled}
     />
   </RN.View>

@@ -107,7 +107,7 @@ describe('Browse mentors', () => {
     await signIn(mentee);
 
     await expect(element(by.text(mentor1.displayName))).toBeVisible();
-    await element(by.text('Read more')).tap();
+    await element(by.text('Show mentor')).tap();
     await element(by.id('components.mentorTitle.chevronLeft')).tap();
 
     await expect(element(by.id('components.mentorList'))).toBeVisible();
