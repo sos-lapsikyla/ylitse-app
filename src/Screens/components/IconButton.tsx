@@ -53,7 +53,7 @@ const borderRadius = 32;
 
 const styles = RN.StyleSheet.create({
   commonContainer: {
-    minHeight: 24,
+    minHeight: 32,
     alignSelf: 'stretch',
     borderRadius,
     padding: 8,

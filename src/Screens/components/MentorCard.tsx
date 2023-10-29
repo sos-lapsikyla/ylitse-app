@@ -114,7 +114,7 @@ const styles = RN.StyleSheet.create({
     borderRadius: cardBorderRadius,
     marginBottom: 8,
   },
-  button: {},
+  button: { minHeight: 40 },
 });
 
 export default MentorCard;
