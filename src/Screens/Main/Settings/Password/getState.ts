@@ -1,4 +1,6 @@
 import { MessageId } from '../../../../localization';
+import { ValidPassword } from '../../../../lib/validators';
+import { isRight } from 'fp-ts/lib/Either';
 
 export type PasswordState = { isOkay: boolean; messageId: MessageId };
 
@@ -11,9 +13,12 @@ export const getPasswordState = (
   newPassword: string,
   repeatedNewPassword: string,
 ): PasswordState => {
+  const passwordParsingResult = ValidPassword.decode(newPassword);
+  const isValidPassword = isRight(passwordParsingResult);
+
   if (
     currentPassword.length > 0 &&
-    newPassword.length >= 8 &&
+    isValidPassword &&
     newPassword === repeatedNewPassword
   )
     return {
@@ -30,6 +35,6 @@ export const getPasswordState = (
 
   return {
     isOkay: false,
-    messageId: 'main.settings.account.password.invalid.length',
+    ...passwordRequirementsMessage,
   };
 };

@@ -93,3 +93,30 @@ describe('Validate The invalid displayName to be true', () => {
     });
   });
 });
+
+describe('Validate The valid password to be true', () => {
+  [
+    'p5%Kyopup2',
+    '40kvR#;rrvaaA',
+    'ÄteritsiputeRitsipuolilautatsijänk*ä',
+    'Pf0)k30kfx',
+    'PassPass!',
+  ].forEach(password => {
+    it(`decodes valid password ${password}`, () => {
+      expect(isRight(validators.ValidPassword.decode(password))).toEqual(true);
+    });
+  });
+});
+
+describe('Validate The invalid password to be true', () => {
+  [
+    '',
+    'password22',
+    'PasswordSalasana',
+    'ÄteritsiputeRitsipuolilautatsijänk',
+  ].forEach(password => {
+    it(`decodes valid password ${password}`, () => {
+      expect(isLeft(validators.ValidPassword.decode(password))).toEqual(true);
+    });
+  });
+});
