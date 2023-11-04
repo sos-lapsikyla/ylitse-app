@@ -64,6 +64,7 @@ const SignUp = ({ navigation }: Props) => {
         onPressNext={onSignUp}
         remoteAction={credentialsCheck}
         onChange={resetCredentialsCheck}
+        isSignup
       />
     </OnboardingBackground>
   );
