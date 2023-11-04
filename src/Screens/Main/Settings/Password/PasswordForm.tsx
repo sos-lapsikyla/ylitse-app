@@ -1,7 +1,11 @@
 import React from 'react';
 import RN from 'react-native';
 
-import { getPasswordState, PasswordState } from './getState';
+import {
+  getPasswordState,
+  passwordRequirementsMessage,
+  PasswordState,
+} from './getState';
 
 import fonts from '../../../components/fonts';
 import colors from '../../../components/colors';
@@ -10,7 +14,6 @@ import Button from '../../../components/Button';
 import NamedInputField from '../../../components/NamedInputField';
 import IconButton from '../../../components/IconButton';
 import Message from '../../../components/Message';
-import { isDevice } from 'src/lib/isDevice';
 
 type Props = {
   currentPassword: string;
@@ -26,10 +29,7 @@ type Props = {
 export default (props: Props) => {
   const [passwordState, setNewPasswordState] = React.useState<
     PasswordState & { hasBeenValidated: boolean }
-  >({
-    isOkay: false,
-    hasBeenValidated: false,
-  });
+  >({ hasBeenValidated: false, isOkay: true, ...passwordRequirementsMessage });
 
   const handlePasswordValidate = () => {
     const nextState = getPasswordState(
@@ -83,9 +83,13 @@ export default (props: Props) => {
           testID="main.settings.account.password.repeat"
         />
       </RN.View>
-      {!passwordState.isOkay && passwordState.messageId && (
-        <Message style={styles.errorMessage} id={passwordState.messageId} />
-      )}
+      <Message
+        style={[
+          styles.commonMessage,
+          !passwordState.isOkay && styles.errorMessage,
+        ]}
+        id={passwordState.messageId}
+      />
       <RN.View style={styles.buttonContainer}>
         <IconButton
           badge={require('../../../images/chevron-left.svg')}
@@ -123,10 +127,12 @@ const styles = RN.StyleSheet.create({
     marginVertical: 24,
     gap: 24,
   },
-  errorMessage: {
+  commonMessage: {
     ...fonts.regular,
-    color: colors.danger,
     marginBottom: -24,
+  },
+  errorMessage: {
+    color: colors.danger,
   },
   badge: {
     width: 32,

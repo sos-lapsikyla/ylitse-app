@@ -94,6 +94,8 @@ export const messages: { [key in MessageId]: string } = {
     'Both new passwords should match',
   'main.settings.account.password.new': 'New Password',
   'main.settings.account.password.repeat': 'Repeat new password',
+  'main.settings.account.password.requirements':
+    'Password should be a minimum of eight characters in length',
   'main.settings.account.password.success': 'Password change succeeded',
   'main.settings.account.password.title': 'Password',
 

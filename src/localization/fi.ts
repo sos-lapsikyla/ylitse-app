@@ -94,6 +94,8 @@ export const messages = {
     'Molempien uusien salasanojen on oltava samat',
   'main.settings.account.password.new': 'uusi salasana',
   'main.settings.account.password.repeat': 'toista uusi salasana',
+  'main.settings.account.password.requirements':
+    'Salasanan tulee olla vähintään 8 merkkiä pitkä',
   'main.settings.account.password.success': 'Salasanan vaihto onnistui!',
   'main.settings.account.password.title': 'Salasana',
 

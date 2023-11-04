@@ -1,6 +1,10 @@
 import { MessageId } from '../../../../localization';
 
-export type PasswordState = { isOkay: boolean; messageId?: MessageId };
+export type PasswordState = { isOkay: boolean; messageId: MessageId };
+
+export const passwordRequirementsMessage = {
+  messageId: 'main.settings.account.password.requirements',
+} as const;
 
 export const getPasswordState = (
   currentPassword: string,
@@ -12,7 +16,10 @@ export const getPasswordState = (
     newPassword.length >= 8 &&
     newPassword === repeatedNewPassword
   )
-    return { isOkay: true };
+    return {
+      isOkay: true,
+      ...passwordRequirementsMessage,
+    };
 
   if (newPassword !== repeatedNewPassword) {
     return {
