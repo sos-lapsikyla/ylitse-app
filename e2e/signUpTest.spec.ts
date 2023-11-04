@@ -17,6 +17,9 @@ describe('SignUp', () => {
     await APIDeleteAccounts();
     await device.reloadReactNative();
   });
+  afterEach(async () => {
+    await forceLogout();
+  });
 
   it('mentee succesfully', async () => {
     const mentee = accountFixtures.mentees[0];
@@ -81,7 +84,38 @@ describe('SignUp', () => {
     await expect(element(by.id('main.settings.account.email'))).toHaveText(
       mentee.email,
     );
-    await forceLogout();
+  });
+
+  it('password is validated by rules', async () => {
+    const mentee = accountFixtures.mentees[0];
+    await scrollDownAndTap(
+      'onboarding.welcome.button',
+      'onboarding.welcome.view',
+    );
+    await scrollDownAndTap(
+      'onboarding.mentorlist.start',
+      'onboarding.mentorlist.view',
+    );
+    await scrollDownAndTap('onboarding.sign.up', 'onboarding.mentorlist.view');
+
+    await waitAndTypeText(
+      'onboarding.signUp.userName',
+      `${mentee.loginName}\n`,
+    );
+    await waitAndTypeText('onboarding.signUp.password', `menteementee!\n`);
+
+    await scrollDownAndTap(
+      'onboarding.signUp.button',
+      'onboarding.signUp.view',
+    );
+
+    await expect(
+      element(
+        by.text(
+          'New password should be a minimum of eight characters in length, include one uppercase letter, one lowercase letter and a special character',
+        ),
+      ),
+    ).toBeVisible();
   });
 
   it('cannot go past displayname if display_name is erased', async () => {
@@ -115,6 +149,5 @@ describe('SignUp', () => {
     await expect(
       element(by.id('onboarding.displayName.inputTitle')),
     ).toBeVisible();
-    await forceLogout();
   });
 });
