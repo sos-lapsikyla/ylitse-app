@@ -37,10 +37,12 @@ export const isMentor = flow(
   O.toUndefined,
   id => !!id,
 );
-export const isMe = (mentorId: string) => (appState: AppState) => {
-  const userId = getUserId(appState);
-  return userId === mentorId;
-};
+
+export const isMe = (mentorId: string) => (appState: AppState) =>
+  pipe(getUserId(appState), compareIds(mentorId));
+
+const compareIds = (mentorId: string) => (userId: string | undefined) =>
+  mentorId === userId;
 
 export function withToken<A>(
   task: (token: authApi.AccessToken) => T.Task<A>,

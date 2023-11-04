@@ -121,7 +121,7 @@ const withVacationing =
 
 export const selectMentorList = (appState: types.AppState) => {
   const remoteMentors = get(appState);
-  const { skillFilter, shouldHideInactiveMentors } = appState['filterMentors'];
+  const { skillFilter, shouldHideInactiveMentors } = appState.filterMentors;
 
   return RD.remoteData.map(remoteMentors, mentors =>
     mentors
