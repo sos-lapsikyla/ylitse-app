@@ -51,7 +51,7 @@ export default (props: Props) => {
   return (
     <RN.KeyboardAvoidingView
       style={styles.keyboardAvoider}
-      behavior={isDevice('ios') ? 'padding' : 'height'}
+      behavior={'padding'}
     >
       <RN.View>
         <NamedInputField
