@@ -110,14 +110,14 @@ export const get = ({ mentors }: types.AppState) =>
   RD.remoteData.map(mentors, mentorRecord => Object.values(mentorRecord));
 
 const withSelectedSkills =
-  (skills: Array<string>) => (mentor: mentorsApi.Mentor) =>
-    skills.length > 0
-      ? mentor.skills.filter(e => skills.includes(e)).length > 0
+  (selectedSkills: Array<string>) => (mentor: mentorsApi.Mentor) =>
+    selectedSkills.length > 0
+      ? mentor.skills.some(skill => selectedSkills.includes(skill))
       : true;
 
 const withVacationing =
-  (showVacation: boolean) => (mentor: mentorsApi.Mentor) =>
-    showVacation ? !mentor.is_vacationing : true;
+  (hideVacationing: boolean) => (mentor: mentorsApi.Mentor) =>
+    hideVacationing ? !mentor.is_vacationing : true;
 
 export const selectMentorList = (appState: types.AppState) => {
   const remoteMentors = get(appState);
