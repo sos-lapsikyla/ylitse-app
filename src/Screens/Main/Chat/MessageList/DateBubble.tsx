@@ -24,7 +24,7 @@ const styles = RN.StyleSheet.create({
     marginVertical: 16,
     padding: 8,
     paddingHorizontal: 16,
-    ...shadow(2),
+    ...shadow(4),
   },
   text: {
     ...fonts.regular,

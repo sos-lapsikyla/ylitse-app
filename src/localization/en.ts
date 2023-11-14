@@ -6,8 +6,7 @@ export const messages: { [key in MessageId]: string } = {
 
   'components.createdBySosBanner': 'Brought to you by SOS-Lapsikylä',
 
-  'components.mentorCard.readMore': 'Read more',
-  'components.mentorCard.showMore': 'Show more...',
+  'components.mentorCard.readMore': 'Show mentor',
   'components.mentorCard.yearsAbbrev': ' y/o',
 
   'components.mentorSkills.other': 'I can also help with:',
@@ -38,11 +37,16 @@ export const messages: { [key in MessageId]: string } = {
   'main.chat.archive': 'Archive chat',
   'main.chat.archive.confirmation':
     'Are you sure you want to archive this chat?',
+  'main.chat.archive.confirmation.button': 'Archive',
+
   'main.chat.ban': 'Ban chat',
   'main.chat.ban.confirmation': 'Are you sure you want to ban this user?',
+  'main.chat.ban.confirmation.button': 'Ban',
+
   'main.chat.delete': 'Delete chat',
   'main.chat.delete.confirmation':
     'Are you sure you want to delete this chat? This action cannot be undone.',
+  'main.chat.delete.confirmation.button': 'Delete',
   'main.chat.deleteAll': 'Delete all',
   'main.chat.deleteAll.confirmation':
     'Are you sure you want to delete all banned chats? This action cannot be undone.',
@@ -53,6 +57,7 @@ export const messages: { [key in MessageId]: string } = {
   'main.chat.send.failure': 'Sending message failed',
   'main.chat.unban': 'Restore chat',
   'main.chat.unban.confirmation': 'Are you sure you want to restore this user?',
+  'main.chat.unban.confirmation.button': 'Restore',
 
   'main.mentor.other': 'I can also support with:',
   'main.mentor.story': 'My story',
@@ -82,9 +87,13 @@ export const messages: { [key in MessageId]: string } = {
   'main.settings.account.password.button': 'Change password',
   'main.settings.account.password.current': 'Current password',
   'main.settings.account.password.failure':
-    'Password change failed: check your password!',
+    'Password change failed: check current password!',
+  'main.settings.account.password.invalid.same':
+    'Both new passwords should match',
   'main.settings.account.password.new': 'New Password',
   'main.settings.account.password.repeat': 'Repeat new password',
+  'main.settings.account.password.requirements':
+    'New password should be a minimum of eight characters in length, include one uppercase letter, one lowercase letter and a special character',
   'main.settings.account.password.success': 'Password change succeeded',
   'main.settings.account.password.title': 'Password',
 
@@ -110,7 +119,7 @@ export const messages: { [key in MessageId]: string } = {
     'All your data will be destroyed from the system.',
   'main.settings.deleteAccount.text3':
     'Your account or conversations cannot be returned.',
-  'main.settings.deleteAccount.title': 'Account deletion',
+  'main.settings.deleteAccount.title': 'Delete account',
 
   'main.settings.logout.cancel': 'Cancel',
   'main.settings.logout.logout': 'Logout',
@@ -139,7 +148,7 @@ export const messages: { [key in MessageId]: string } = {
   'main.userreport.description.validationerror':
     'The reason for reporting is a mandatory field.',
   'main.userreport.failure.toast': 'Sending report failed',
-  'main.userreport.send.button': 'Send',
+  'main.userreport.send.button': 'Report',
   'main.userreport.success.toast':
     'SOS-Lapsikylä representative will contact you after the investigation.',
   'main.userreport.title': 'Report',

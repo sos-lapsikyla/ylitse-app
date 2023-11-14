@@ -122,6 +122,14 @@ const compareIds = (userId: string | undefined, a: Mentor, b: Mentor) => {
   return Math.abs(x - z) - Math.abs(x - y);
 };
 
+const sortMe = (myUserId: string | undefined, a: Mentor, _b: Mentor) => {
+  if (a.buddyId === myUserId) {
+    return -1;
+  }
+
+  return 1;
+};
+
 const sortVacationing = (a: Mentor, b: Mentor) => {
   if (a.is_vacationing && !b.is_vacationing) {
     return 1;
@@ -137,6 +145,9 @@ const sortVacationing = (a: Mentor, b: Mentor) => {
 export const compare =
   (userId: string | undefined) => (a: Mentor, b: Mentor) => {
     return (
-      sortVacationing(a, b) || compareLang(a, b) || compareIds(userId, a, b)
+      sortMe(userId, a, b) ||
+      sortVacationing(a, b) ||
+      compareLang(a, b) ||
+      compareIds(userId, a, b)
     );
   };

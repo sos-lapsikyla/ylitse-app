@@ -2,13 +2,11 @@ import React from 'react';
 import RN from 'react-native';
 import * as redux from 'redux';
 import { useSelector, useDispatch } from 'react-redux';
-import * as RD from '@devexperts/remote-data-ts';
 
 import * as mentorApi from '../../api/mentors';
 import * as actions from '../../state/actions';
-import * as mentorState from '../../state/reducers/mentors';
-import * as filterMentorState from '../../state/reducers/filterMentors';
 import * as tokenState from '../../state/reducers/accessToken';
+import * as mentorsState from '../../state/reducers/mentors';
 
 import useLayout from '../../lib/use-layout';
 import { isDevice } from '../../lib/isDevice';
@@ -23,39 +21,14 @@ type Props = {
 
 export default ({ onPress, testID }: Props) => {
   const userId = useSelector(tokenState.getUserId);
+  const mentorList = useSelector(mentorsState.selectMentorList);
 
-  const { shouldHideInactiveMentors, skillFilter } = useSelector(
-    filterMentorState.selectSearchParams,
-  );
   const dispatch = useDispatch<redux.Dispatch<actions.Action>>();
 
   const fetchMentors = () => {
     dispatch({ type: 'mentors/start', payload: undefined });
   };
 
-  const filterSameIdAndSelectedSkills = (
-    mentor: mentorApi.Mentor,
-    skills: string[],
-  ) => {
-    return skills.length > 0 && mentor.buddyId !== userId
-      ? mentor.skills.filter(e => skills.includes(e)).length > 0
-      : mentor.buddyId !== userId;
-  };
-
-  const filterOutVacationingIfNeeded = (
-    mentor: mentorApi.Mentor,
-    showVacation: boolean,
-  ) => {
-    return showVacation ? !mentor.is_vacationing : true;
-  };
-
-  const mentorList = RD.remoteData.map(useSelector(mentorState.get), mentors =>
-    mentors
-      .filter(mentor => filterSameIdAndSelectedSkills(mentor, skillFilter))
-      .filter(mentor =>
-        filterOutVacationingIfNeeded(mentor, shouldHideInactiveMentors),
-      ),
-  );
   const [{ width, height }, onLayout] = useLayout();
   const measuredWidth = width || RN.Dimensions.get('window').width;
 

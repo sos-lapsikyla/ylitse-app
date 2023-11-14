@@ -36,12 +36,6 @@ export default ({ navigation }: Props) => {
   const [repeatedNewPassword, setRepeatedNewPassword] = React.useState('');
   const dispatch = useDispatch<redux.Dispatch<actions.Action>>();
 
-  const isOkay =
-    currentPassword.length > 0 &&
-    newPassword.length > 0 &&
-    repeatedNewPassword.length > 0 &&
-    newPassword === repeatedNewPassword;
-
   const changePassword = () => {
     dispatch(state.changePassword({ currentPassword, newPassword }));
   };
@@ -81,7 +75,7 @@ export default ({ navigation }: Props) => {
         showsVerticalScrollIndicator={false}
         testID={'main.settings.password.view'}
       >
-        <SafeAreaView style={styles.buttonContainer}>
+        <SafeAreaView style={styles.viewContainer}>
           <Message
             style={styles.title}
             id="main.settings.account.password.title"
@@ -99,7 +93,6 @@ export default ({ navigation }: Props) => {
                   setRepeatedNewPassword={setRepeatedNewPassword}
                   onGoBack={onGoBack}
                   onButtonPress={changePassword}
-                  isOkay={isOkay}
                 />
               ),
               () => <Spinner style={styles.spinner} />,
@@ -134,30 +127,22 @@ const styles = RN.StyleSheet.create({
   },
   title: {
     ...fonts.titleBold,
-    color: colors.darkestBlue,
   },
   scrollView: {
     zIndex: 1,
   },
   scrollContent: {
-    paddingTop: 48,
     paddingHorizontal: 24,
     flexGrow: 1,
   },
   spinner: {
     alignSelf: 'center',
   },
-  failBox: {
-    tintColor: colors.danger,
-  },
-  successBox: {
-    tintColor: colors.darkBlue,
-  },
-  buttonContainer: {
+  viewContainer: {
     flex: 1,
     alignSelf: 'stretch',
     justifyContent: 'flex-end',
     paddingHorizontal: 24,
-    marginVertical: 24,
+    marginBottom: 24,
   },
 });

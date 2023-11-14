@@ -3,6 +3,7 @@ import RN from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { MessageId } from '../../localization';
+import { hasNotch } from '../../lib/isDevice';
 
 import Message from './Message';
 import shadow from './shadow';
@@ -42,8 +43,7 @@ const styles = RN.StyleSheet.create({
     backgroundColor: colors.darkBlue,
   },
   content: {
-    marginTop: 16,
-    marginBottom: 16,
+    marginVertical: hasNotch() ? 0 : 16,
     alignSelf: 'stretch',
   },
   button: {
@@ -58,14 +58,5 @@ const styles = RN.StyleSheet.create({
     ...fonts.titleLarge,
     textAlign: 'center',
     color: colors.darkestBlue,
-  },
-  scrollView: {
-    zIndex: 1,
-    marginTop: -32,
-  },
-  scrollContent: {
-    paddingTop: 48,
-    paddingBottom: 320,
-    paddingHorizontal: 16,
   },
 });

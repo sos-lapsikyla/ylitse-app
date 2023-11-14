@@ -4,6 +4,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 
 import * as mentorApi from '../../api/mentors';
 import * as buddyState from '../../state/reducers/buddies';
+import * as tokenState from '../../state/reducers/accessToken';
 import { useSelector } from 'react-redux';
 
 import MentorTitle from '../components/MentorTitle';
@@ -38,6 +39,7 @@ type Props = OwnProps;
 
 const MentorCardExpanded = ({ navigation, route }: Props) => {
   const mentor = route.params?.mentor;
+  const isMe = useSelector(tokenState.isMe(mentor.buddyId));
   const didNavigateFromChat = route.params?.didNavigateFromChat;
   const isBuddy = useSelector(buddyState.getIsBuddy(mentor.buddyId));
   const shouldNavigateBack = didNavigateFromChat && isBuddy;
@@ -99,7 +101,7 @@ const MentorCardExpanded = ({ navigation, route }: Props) => {
             style={styles.button}
             onPress={shouldNavigateBack ? goBack : navigateToChat}
             messageId="main.mentorCardExpanded.button"
-            disabled={isChatDisabled}
+            disabled={isChatDisabled || isMe}
           />
         </SafeAreaView>
       </RN.ScrollView>

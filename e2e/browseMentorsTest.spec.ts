@@ -107,7 +107,7 @@ describe('Browse mentors', () => {
     await signIn(mentee);
 
     await expect(element(by.text(mentor1.displayName))).toBeVisible();
-    await element(by.text('Read more')).tap();
+    await element(by.text('Show mentor')).tap();
     await element(by.id('components.mentorTitle.chevronLeft')).tap();
 
     await expect(element(by.id('components.mentorList'))).toBeVisible();
@@ -176,5 +176,23 @@ describe('Browse mentors', () => {
 
     // Name is changed in mentorList
     await expect(element(by.text(newDisplayname)).atIndex(0)).toBeVisible();
+  });
+
+  it('mentor can see own profile as first item in list of mentors, but cannot chat with yourself', async () => {
+    const mentor = accountFixtures.mentors[0];
+    await APISignUpMentor(mentor);
+    await APISignUpMentor(accountFixtures.mentors[1]);
+    await APISignUpMentor(accountFixtures.mentors[2]);
+
+    await signIn(mentor);
+
+    await expect(element(by.text(mentor.displayName))).toBeVisible();
+    await element(by.text('Show mentor')).atIndex(0).tap();
+
+    await element(by.text('Chat')).tap();
+    await expect(element(by.id('main.chat.title.kebabicon'))).not.toBeVisible();
+
+    await element(by.id('components.mentorTitle.chevronLeft')).tap();
+    await expect(element(by.id('components.mentorList'))).toBeVisible();
   });
 });

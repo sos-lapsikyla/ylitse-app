@@ -38,6 +38,12 @@ export const isMentor = flow(
   id => !!id,
 );
 
+export const isMe = (mentorId: string) => (appState: AppState) =>
+  pipe(getUserId(appState), compareIds(mentorId));
+
+const compareIds = (mentorId: string) => (userId: string | undefined) =>
+  mentorId === userId;
+
 export function withToken<A>(
   task: (token: authApi.AccessToken) => T.Task<A>,
   action: (result: A) => actions.RegularAction,

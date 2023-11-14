@@ -169,7 +169,6 @@ const Chat = ({ navigation, route }: Props) => {
       {dialogState.dialogOpen && changeChatStatusAction && (
         <Modal
           {...dialogProperties[changeChatStatusAction]}
-          primaryButtonMessage={'meta.ok'}
           secondaryButtonMessage={'meta.back'}
           onPrimaryPress={() => handleChangeChatStatus(changeChatStatusAction)}
           onSecondaryPress={() => setDialogs('dialogOpen', false)}
@@ -201,7 +200,7 @@ const styles = RN.StyleSheet.create({
   screen: {
     flex: 1,
     paddingBottom: 8,
-    backgroundColor: colors.background,
+    backgroundColor: colors.chatBackground,
   },
   dropdown: {
     position: 'absolute',

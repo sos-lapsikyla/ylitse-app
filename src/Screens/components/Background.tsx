@@ -16,7 +16,9 @@ const Background: React.FC<Props> = ({
     <RN.View
       style={[
         styles.blob,
-        { backgroundColor: variant === 'main' ? colors.purple : colors.blue },
+        {
+          backgroundColor: variant === 'main' ? colors.purple : colors.darkBlue,
+        },
       ]}
     />
     <RN.View style={styles.filler} />

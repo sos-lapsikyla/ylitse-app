@@ -10,7 +10,7 @@ import { StackScreenProps } from '@react-navigation/stack';
 import { StackRoutes } from '../..';
 
 import useLayout from '../../../lib/use-layout';
-import { isDevice } from '../../../lib/isDevice';
+import { hasNotch } from '../../../lib/isDevice';
 
 import TitledContainer from '../../components/TitledContainer';
 import colors from '../../components/colors';
@@ -47,8 +47,8 @@ export default ({ navigation }: Props) => {
   const [{ height }, onLayout] = useLayout();
 
   // Make sure skill area has enough height even when keyboard is showing.
-  const padding = isDevice('ios') ? 50 : 0;
-  const some = 350 + padding;
+  const padding = hasNotch() ? 50 : 0;
+  const some = 380 + padding;
   const min = 250;
   const max = (height || some) - some;
   const skillAreaHeight = max >= min ? max : min;
@@ -57,7 +57,7 @@ export default ({ navigation }: Props) => {
     <TitledContainer
       onLayout={onLayout}
       TitleComponent={<Title handleBackPress={onPressBack} />}
-      color={colors.blue}
+      color={colors.darkBlue}
     >
       <RN.View style={styles.contentMargins}>
         <Filters skillSearch={skillSearch} setSkillSearch={setSkillSearch} />

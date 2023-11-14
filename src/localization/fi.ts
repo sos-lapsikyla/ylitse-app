@@ -5,8 +5,7 @@ export const messages = {
 
   'components.createdBySosBanner': 'Palvelun tarjoaa SOS-Lapsikylä',
 
-  'components.mentorCard.readMore': 'Lue lisää',
-  'components.mentorCard.showMore': 'Näytä lisää...',
+  'components.mentorCard.readMore': 'Näytä mentori',
   'components.mentorCard.yearsAbbrev': 'v.',
 
   'components.mentorSkills.other': 'Pystyn auttamaan näissä:',
@@ -37,11 +36,16 @@ export const messages = {
   'main.chat.archive': 'Arkistoi keskustelu',
   'main.chat.archive.confirmation':
     'Haluatko varmasti arkistoida tämän keskustelun?',
+  'main.chat.archive.confirmation.button': 'Arkistoi',
+
   'main.chat.ban': 'Estä keskustelu',
   'main.chat.ban.confirmation': 'Haluatko varmasti estää tämän keskustelun?',
+  'main.chat.ban.confirmation.button': 'Estä',
+
   'main.chat.delete': 'Poista keskustelu',
   'main.chat.delete.confirmation':
     'Haluatko varmasti poistaa tämän keskustelun? Tätä toimintoa ei voi kumota.',
+  'main.chat.delete.confirmation.button': 'Poista',
   'main.chat.deleteAll': 'Poista kaikki',
   'main.chat.deleteAll.confirmation':
     'Haluatko varmasti poistaa kaikki estetyt keskustelut? Tätä toimintoa ei voi kumota.',
@@ -52,6 +56,7 @@ export const messages = {
   'main.chat.send.failure': 'Viestin lähettäminen epäonnistui',
   'main.chat.unban': 'Palauta keskustelu',
   'main.chat.unban.confirmation': 'Haluatko palauttaa tämän keskustelun?',
+  'main.chat.unban.confirmation.button': 'Palauta',
 
   'main.mentor.other': 'Pystyn auttamaan näissä:',
   'main.mentor.story': 'Tarinani',
@@ -82,9 +87,13 @@ export const messages = {
   'main.settings.account.password.button': 'Vaihda salasana',
   'main.settings.account.password.current': 'nykyinen salasana',
   'main.settings.account.password.failure':
-    'Salasanan vaihto epäonnistui: tarkista salasana!',
+    'Salasanan vaihto epäonnistui: tarkista nykyinen salasana!',
+  'main.settings.account.password.invalid.same':
+    'Molempien uusien salasanojen on oltava samat',
   'main.settings.account.password.new': 'uusi salasana',
   'main.settings.account.password.repeat': 'toista uusi salasana',
+  'main.settings.account.password.requirements':
+    'Uuden salasanan tulee olla vähintään kahdeksan merkkiä pitkä, sisältää yhden ison kirjaimen, yhden pienen kirjaimen sekä erikoismerkin',
   'main.settings.account.password.success': 'Salasanan vaihto onnistui!',
   'main.settings.account.password.title': 'Salasana',
 
@@ -139,7 +148,7 @@ export const messages = {
   'main.userreport.description.validationerror':
     'Syy ilmiantoon on pakollinen kenttä.',
   'main.userreport.failure.toast': 'Käyttäjän ilmianto epäonnistui.',
-  'main.userreport.send.button': 'Lähetä',
+  'main.userreport.send.button': 'Ilmianna',
   'main.userreport.success.toast':
     'SOS-Lapsikylän työntekijä selvittää tilanteen ja ottaa sinuun yhteyttä.',
   'main.userreport.title': 'Ilmianna',

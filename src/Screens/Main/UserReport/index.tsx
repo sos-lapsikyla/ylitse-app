@@ -65,7 +65,7 @@ const UserReport = ({ navigation, route }: Props) => {
   return (
     <TitledContainer
       TitleComponent={<Title onBack={handleBackPress} />}
-      color={colors.blue}
+      color={colors.darkBlue}
     >
       <RN.ScrollView
         style={styles.scrollView}

@@ -109,6 +109,27 @@ export const getMentorByUserId = (userId: string) =>
 export const get = ({ mentors }: types.AppState) =>
   RD.remoteData.map(mentors, mentorRecord => Object.values(mentorRecord));
 
+const withSelectedSkills =
+  (selectedSkills: Array<string>) => (mentor: mentorsApi.Mentor) =>
+    selectedSkills.length > 0
+      ? mentor.skills.some(skill => selectedSkills.includes(skill))
+      : true;
+
+const withVacationing =
+  (hideVacationing: boolean) => (mentor: mentorsApi.Mentor) =>
+    hideVacationing ? !mentor.is_vacationing : true;
+
+export const selectMentorList = (appState: types.AppState) => {
+  const remoteMentors = get(appState);
+  const { skillFilter, shouldHideInactiveMentors } = appState.filterMentors;
+
+  return RD.remoteData.map(remoteMentors, mentors =>
+    mentors
+      .filter(withSelectedSkills(skillFilter))
+      .filter(withVacationing(shouldHideInactiveMentors)),
+  );
+};
+
 export const select = ({ mentors: state }: types.AppState) => state;
 
 export const getMentorFormData =

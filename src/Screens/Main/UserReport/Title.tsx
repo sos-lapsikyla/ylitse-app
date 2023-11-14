@@ -25,7 +25,7 @@ export const Title: React.FC<Props> = ({ onBack }) => {
 
 const styles = RN.StyleSheet.create({
   shadow: {
-    backgroundColor: colors.blue,
+    backgroundColor: colors.darkBlue,
     borderBottomLeftRadius: 40,
     borderBottomRightRadius: 40,
     zIndex: 2,

@@ -71,7 +71,7 @@ describe('reportUser', () => {
     await waitAndTypeText(descriptionTestId, reportReason);
     await waitAndTypeText(contactTestId, contactInfo);
 
-    await element(by.text('Send')).tap();
+    await element(by.id('main.userreport.send.button')).tap();
 
     // After sending we are back at the chat-view
     await expect(element(by.text(mentor.displayName))).toBeVisible();
@@ -171,7 +171,7 @@ describe('reportUser', () => {
     ).toBeVisible();
 
     // If no reason, sending is disabled
-    await element(by.text('Send')).tap();
+    await element(by.id('main.userreport.send.button')).tap();
     await expect(element(by.text('Reason for reporting *'))).toBeVisible();
   });
 

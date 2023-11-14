@@ -28,6 +28,10 @@ const isValidEmail = (value: string): boolean => {
   );
 };
 
+const isValidPassword = (value: string): boolean => {
+  return /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[()#?!@$%^&*-]).{8,}$/.test(value);
+};
+
 export const isValidName = (value: string): boolean => {
   if (value === '') {
     return false;
@@ -73,6 +77,16 @@ export const ValidDescription = new t.Type<string, string, unknown>(
   (input: unknown): input is string => typeof input === 'string',
   (input, context) =>
     typeof input === 'string' && isValidDescription(input)
+      ? t.success(input)
+      : t.failure(input, context),
+  t.identity,
+);
+
+export const ValidPassword = new t.Type<string, string, unknown>(
+  'ValidPassword',
+  (input: unknown): input is string => typeof input === 'string',
+  (input, context) =>
+    typeof input === 'string' && isValidPassword(input)
       ? t.success(input)
       : t.failure(input, context),
   t.identity,

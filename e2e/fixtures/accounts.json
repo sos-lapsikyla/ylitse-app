@@ -3,14 +3,14 @@
         {
             "loginName": "mentee",
             "displayName": "mentee_nick",
-            "password": "menteementee",
+            "password": "Menteementee!",
             "email": "mentee@mentee.mentee",
             "role": "mentee"
         },
         {
             "loginName": "mentee1",
             "displayName": "mentee1_nick",
-            "password": "menteementee",
+            "password": "Menteementee!",
             "email": "mentee1@mentee.mentee",
             "role": "mentee"
         }
