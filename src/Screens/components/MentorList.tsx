@@ -9,7 +9,6 @@ import * as tokenState from '../../state/reducers/accessToken';
 import * as mentorsState from '../../state/reducers/mentors';
 
 import useLayout from '../../lib/use-layout';
-import { isDevice } from '../../lib/isDevice';
 
 import MentorCard from '../components/MentorCard';
 import RemoteData from '../components/RemoteData';
@@ -18,6 +17,9 @@ type Props = {
   onPress?: (mentor: mentorApi.Mentor) => void | undefined;
   testID?: string;
 };
+
+const PADDING = 0.15;
+const CARD_WIDTH = 0.85;
 
 export default ({ onPress, testID }: Props) => {
   const userId = useSelector(tokenState.getUserId);
@@ -32,9 +34,7 @@ export default ({ onPress, testID }: Props) => {
   const [{ width, height }, onLayout] = useLayout();
   const measuredWidth = width || RN.Dimensions.get('window').width;
 
-  const interval = measuredWidth * (0.85 + 0.15 / 4);
-
-  const deccelerationRate = isDevice('ios') ? 0.99 : 0.8;
+  const interval = measuredWidth * (CARD_WIDTH + PADDING / (4 - PADDING));
 
   return (
     <RN.View
@@ -49,10 +49,10 @@ export default ({ onPress, testID }: Props) => {
               showsHorizontalScrollIndicator={false}
               showsVerticalScrollIndicator={false}
               initialNumToRender={2}
-              decelerationRate={deccelerationRate}
+              decelerationRate={'fast'}
               snapToInterval={interval}
               contentContainerStyle={{
-                paddingLeft: (0.15 / 2) * measuredWidth,
+                paddingLeft: (PADDING / 2) * measuredWidth,
               }}
               data={[...mentors].sort(mentorApi.compare(userId))}
               renderItem={renderMentorCard(height, measuredWidth, onPress)}
@@ -82,8 +82,8 @@ const renderMentorCard =
           styles.card,
           {
             maxHeight: maxHeight - mentorCardBottomMargin,
-            width: screenWidth * 0.85,
-            marginRight: (0.15 / 4) * screenWidth,
+            width: screenWidth * CARD_WIDTH,
+            marginRight: (PADDING / 4) * screenWidth,
           },
         ]}
         mentor={item}
