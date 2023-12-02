@@ -127,7 +127,7 @@ const sortMe = (myUserId: string | undefined, a: Mentor, _b: Mentor) => {
     return -1;
   }
 
-  return 1;
+  return 0;
 };
 
 const sortVacationing = (a: Mentor, b: Mentor) => {
