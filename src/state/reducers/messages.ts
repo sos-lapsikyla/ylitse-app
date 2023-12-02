@@ -213,6 +213,7 @@ export const getLastMessageByBuddyId =
       O.chain(r => record.lookup(buddyId, r)),
       O.map(r => Object.values(r)),
       O.fold(() => [], identity),
+      array.sort(ordMessage),
     );
 
     return messages[messages.length - 1]?.content ?? '';
