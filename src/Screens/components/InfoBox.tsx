@@ -34,6 +34,7 @@ const styles = RN.StyleSheet.create({
   infoBox: {
     padding: 16,
     backgroundColor: colors.whiteBlue,
+    flex: 1,
   },
   infoText: {
     ...fonts.subtitle,
