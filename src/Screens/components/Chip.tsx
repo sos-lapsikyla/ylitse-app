@@ -3,7 +3,7 @@ import RN from 'react-native';
 
 import colors from './colors';
 import fonts from './fonts';
-import shadow, { textShadow } from './shadow';
+import shadow from './shadow';
 
 interface ChipProps extends RN.ViewProps {
   name: string;
@@ -25,7 +25,7 @@ export default ({ name, style, color, ...viewProps }: ChipProps) => (
 
 const chipStyles = RN.StyleSheet.create({
   chip: {
-    ...shadow(),
+    ...shadow(2),
     backgroundColor: colors.whiteBlue,
     borderRadius: 20,
     justifyContent: 'center',
@@ -39,7 +39,6 @@ const chipStyles = RN.StyleSheet.create({
     marginBottom: 8,
   },
   nameText: {
-    ...textShadow,
     ...fonts.small,
     color: colors.darkestBlue,
   },
