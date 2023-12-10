@@ -8,14 +8,15 @@ import * as localization from '../../localization';
 import { ValidPassword } from '../../lib/validators';
 import { isLeft } from 'fp-ts/lib/Either';
 
-import fonts from '../components/fonts';
-import colors from '../components/colors';
+import fonts from './fonts';
+import colors from './colors';
 
-import Card from '../components/Card';
-import Message from '../components/Message';
-import NamedInputField from '../components/NamedInputField';
-import Button from '../components/Button';
-import ErrorMessage from '../components/ErrorMessage';
+import Card from './Card';
+import Message from './Message';
+import NamedInputField from './NamedInputField';
+import Button from './Button';
+import ErrorMessage from './ErrorMessage';
+import InfoBox from './InfoBox';
 
 interface Props extends RN.ViewProps {
   onPressBack: () => void | undefined;
@@ -92,15 +93,10 @@ const LoginCard = ({
           testID="onboarding.signUp.password"
           onBlur={handlePasswordValidate}
           onSubmitEditing={handlePasswordValidate}
+          isError={isInvalidPassword}
         />
         {isSignup && (
-          <Message
-            style={[
-              styles.commonMessage,
-              isInvalidPassword && styles.passwordErrorMessage,
-            ]}
-            id={'main.settings.account.password.requirements'}
-          />
+          <InfoBox messageId="main.settings.account.password.requirements" />
         )}
       </RN.View>
       <ErrorMessage
@@ -149,12 +145,6 @@ const styles = RN.StyleSheet.create({
   },
   input: {
     marginBottom: 10,
-  },
-  commonMessage: {
-    ...fonts.regular,
-  },
-  passwordErrorMessage: {
-    color: colors.danger,
   },
   errorText: {
     marginBottom: 16,

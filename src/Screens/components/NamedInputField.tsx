@@ -12,6 +12,7 @@ export interface Props extends RN.TextInputProps {
   isPasswordInput?: boolean;
   inputStyle?: RN.StyleProp<RN.ViewStyle>;
   labelStyle?: RN.StyleProp<RN.TextStyle>;
+  isError?: boolean;
 }
 
 const NamedInputField = ({
@@ -20,6 +21,7 @@ const NamedInputField = ({
   style,
   inputStyle,
   labelStyle,
+  isError = false,
   ...textInputProps
 }: Props) => {
   const [isSecureText, setSecureText] = React.useState(
@@ -44,6 +46,7 @@ const NamedInputField = ({
             styles.inputText,
             inputStyle,
             isFocused && styles.focusedBorder,
+            isError && styles.errorBorder,
           ]}
           editable={true}
           secureTextEntry={isSecureText}
@@ -97,6 +100,11 @@ const styles = RN.StyleSheet.create({
     borderRadius: 4,
   },
   focusedBorder: { borderWidth: 2, backgroundColor: colors.whiteBlue },
+  errorBorder: {
+    borderWidth: 2,
+    borderColor: colors.danger,
+    backgroundColor: colors.white,
+  },
   button: {
     position: 'absolute',
     right: 16,
