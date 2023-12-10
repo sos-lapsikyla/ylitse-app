@@ -14,7 +14,7 @@ interface InfoBoxProps extends RN.ViewProps {
 
 export default ({ style, color, messageId, ...viewProps }: InfoBoxProps) => (
   <RN.View {...viewProps} style={styles.container}>
-    <RN.View style={styles.pillar}></RN.View>
+    <RN.View style={styles.pillar} />
     <RN.View style={styles.infoBox}>
       <Message id={messageId} style={styles.infoText} />
     </RN.View>
