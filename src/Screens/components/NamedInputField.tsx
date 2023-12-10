@@ -75,15 +75,13 @@ const NamedInputField = ({
 };
 
 const styles = RN.StyleSheet.create({
+  container: {
+    marginVertical: 2,
+  },
   nameText: {
     ...fonts.regularBold,
     color: colors.darkestBlue,
     marginBottom: 8,
-  },
-  inputContainer: {
-    justifyContent: 'center',
-    alignContent: 'center',
-    alignItems: 'center',
   },
   inputText: {
     ...fonts.regular,
@@ -99,7 +97,11 @@ const styles = RN.StyleSheet.create({
     borderWidth: 1,
     borderRadius: 4,
   },
-  focusedBorder: { borderWidth: 2, backgroundColor: colors.whiteBlue },
+  focusedBorder: {
+    borderWidth: 2,
+    margin: -1,
+    backgroundColor: colors.whiteBlue,
+  },
   errorBorder: {
     borderWidth: 2,
     borderColor: colors.danger,
