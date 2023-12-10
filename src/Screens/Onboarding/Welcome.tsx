@@ -6,6 +6,7 @@ import { StackScreenProps } from '@react-navigation/stack';
 import { StackRoutes } from '..';
 
 import * as config from '../../api/config';
+import useLayout from '../../lib/use-layout';
 
 import Card from '../components/Card';
 import SosBanner from '../components/CreatedBySosBanner';
@@ -27,8 +28,10 @@ export default ({ navigation }: Props) => {
     navigation.navigate('Onboarding/MentorList', {});
   };
 
+  const [{ width, height }, onLayout] = useLayout();
+
   return (
-    <SafeAreaView style={styles.background}>
+    <SafeAreaView style={styles.background} onLayout={onLayout}>
       <RN.ScrollView
         style={styles.scroll}
         contentContainerStyle={styles.scrollContent}
@@ -36,7 +39,7 @@ export default ({ navigation }: Props) => {
         showsHorizontalScrollIndicator={false}
         testID={'onboarding.welcome.view'}
       >
-        <AppTitle style={styles.appTitle} />
+        <AppTitle style={[styles.appTitle, { width, height: height / 6 }]} />
         <Card style={styles.card}>
           <Message style={styles.titleText} id={'onboarding.welcome.title'} />
           <Message style={styles.text} id={'onboarding.welcome.text1'} />

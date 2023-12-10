@@ -63,7 +63,7 @@ const styles = RN.StyleSheet.create({
     ...fonts.titleBold,
   },
   card: {
-    marginVertical: 48,
+    marginTop: 64,
     display: 'flex',
     flexDirection: 'column',
     gap: 64,
