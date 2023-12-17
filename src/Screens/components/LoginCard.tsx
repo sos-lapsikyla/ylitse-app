@@ -73,34 +73,29 @@ const LoginCard = ({
 
   return (
     <Card style={[styles.card, style]} {...viewProps}>
-      <RN.View>
-        <Message style={styles.title} id={titleMessageId} />
-        <NamedInputField
-          autoCapitalize="none"
-          style={styles.input}
-          name="onboarding.signUp.userName"
-          onChangeText={onUserNameChange}
-          autoComplete="off"
-          testID="onboarding.signUp.userName"
-        />
-        <NamedInputField
-          autoCapitalize="none"
-          style={styles.input}
-          name="onboarding.signUp.password"
-          isPasswordInput={true}
-          onChangeText={onPasswordChange}
-          autoComplete="off"
-          testID="onboarding.signUp.password"
-          onBlur={handlePasswordValidate}
-          onSubmitEditing={handlePasswordValidate}
-          isError={isInvalidPassword}
-        />
-        {isSignup && (
-          <InfoBox messageId="main.settings.account.password.requirements" />
-        )}
-      </RN.View>
+      <Message style={styles.title} id={titleMessageId} />
+      <NamedInputField
+        autoCapitalize="none"
+        name="onboarding.signUp.userName"
+        onChangeText={onUserNameChange}
+        autoComplete="off"
+        testID="onboarding.signUp.userName"
+      />
+      <NamedInputField
+        autoCapitalize="none"
+        name="onboarding.signUp.password"
+        isPasswordInput={true}
+        onChangeText={onPasswordChange}
+        autoComplete="off"
+        testID="onboarding.signUp.password"
+        onBlur={handlePasswordValidate}
+        onSubmitEditing={handlePasswordValidate}
+        isError={isInvalidPassword}
+      />
+      {isSignup && (
+        <InfoBox messageId="main.settings.account.password.requirements" />
+      )}
       <ErrorMessage
-        style={styles.errorText}
         getMessageId={getErrorMessageId}
         data={remoteAction}
         testID={'components.loginCard.errorMessage'}
@@ -133,6 +128,7 @@ const styles = RN.StyleSheet.create({
   card: {
     flexDirection: 'column',
     justifyContent: 'space-between',
+    gap: 24,
     marginVertical: 20,
     padding: 24,
     alignSelf: 'stretch',
@@ -141,18 +137,12 @@ const styles = RN.StyleSheet.create({
     ...fonts.titleBold,
     textAlign: 'center',
     color: colors.darkestBlue,
-    marginBottom: 10,
-  },
-  input: {
-    marginBottom: 10,
-  },
-  errorText: {
-    marginBottom: 16,
   },
   buttonContainer: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
+    gap: 24,
   },
   backButton: {
     flex: 1.2,
@@ -161,7 +151,6 @@ const styles = RN.StyleSheet.create({
   nextButton: {
     flex: 2,
     height: 32,
-    marginLeft: 24,
   },
   badgeStyle: {
     height: 32,

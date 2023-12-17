@@ -3,6 +3,7 @@ import RN from 'react-native';
 
 import { StackScreenProps } from '@react-navigation/stack';
 import { StackRoutes } from '..';
+import { hasNotch } from '../../lib/isDevice';
 
 import OnboardingBackground from '../components/OnboardingBackground';
 import Card from '../components/Card';
@@ -63,7 +64,7 @@ const styles = RN.StyleSheet.create({
     ...fonts.titleBold,
   },
   card: {
-    marginTop: 64,
+    marginTop: hasNotch() ? 64 : 0,
     display: 'flex',
     flexDirection: 'column',
     gap: 64,
