@@ -60,6 +60,8 @@ export const messages: { [key in MessageId]: string } = {
   'main.chat.unban.confirmation.button': 'Restore',
 
   'main.mentor.other': 'I can also support with:',
+  'main.mentor.special.notAvailable': 'Not available',
+  'main.mentor.special.you': 'You',
   'main.mentor.story': 'My story',
   'main.mentor.subject': 'Subject:',
 

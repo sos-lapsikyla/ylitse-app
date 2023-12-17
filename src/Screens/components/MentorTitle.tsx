@@ -1,7 +1,6 @@
 import React from 'react';
 import RN from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-
 import * as mentorApi from '../../api/mentors';
 
 import Message from './Message';
@@ -33,7 +32,13 @@ const MentorTitle: React.FC<Props> = ({
   const hasRegion = region.length > 0;
 
   return (
-    <RN.View style={[styles.blob, { backgroundColor: colors.purple }, style]}>
+    <RN.View
+      style={[
+        styles.blob,
+        { backgroundColor: is_vacationing ? colors.blueGray : colors.purple },
+        style,
+      ]}
+    >
       <Wrapper>
         {!onPress ? null : (
           <RN.TouchableOpacity

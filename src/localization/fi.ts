@@ -59,6 +59,8 @@ export const messages = {
   'main.chat.unban.confirmation.button': 'Palauta',
 
   'main.mentor.other': 'Pystyn auttamaan näissä:',
+  'main.mentor.special.notAvailable': 'Ei tavoitettavissa',
+  'main.mentor.special.you': 'Sinä',
   'main.mentor.story': 'Tarinani',
   'main.mentor.subject': 'Aihealue:',
 

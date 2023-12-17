@@ -1,15 +1,15 @@
 import React from 'react';
 import RN from 'react-native';
-
 import * as api from '../../api/mentors';
+
+import colors from './colors';
+import fonts from './fonts';
 
 import Button from './Button';
 import Card, { cardBorderRadius } from './Card';
 import MentorTitle from './MentorTitle';
 import MentorStory from './MentorStory';
 import Skills from './Skills';
-import colors from './colors';
-import fonts from './fonts';
 
 interface Props {
   style?: RN.StyleProp<RN.ViewStyle>;
