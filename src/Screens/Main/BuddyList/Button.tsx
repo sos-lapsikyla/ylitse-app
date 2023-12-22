@@ -11,6 +11,7 @@ import { getMentorByUserId } from '../../../state/reducers/mentors';
 import Card from '../../components/Card';
 import fonts from '../../components/fonts';
 import colors from '../../components/colors';
+import { UnseenDot } from '../../components/UnseenDot';
 
 type Props = {
   buddyId: string;
@@ -43,13 +44,8 @@ const Button = ({ style, buddyId, name, onPress, ...viewProps }: Props) => {
             {lastMessage}
           </RN.Text>
         </RN.View>
-        <RN.View style={[styles.blob]}>
-          {hasNewMessages ? (
-            <RN.View
-              style={styles.newMessage}
-              testID={'main.buddyList.button.unseenDot'}
-            />
-          ) : null}
+        <RN.View style={styles.blob}>
+          <UnseenDot hasUnseen={hasNewMessages} style={styles.dot} />
           {mentor?.is_vacationing ? (
             <RN.Image
               source={require('../../images/umbrella-beach.svg')}
@@ -100,15 +96,9 @@ const styles = RN.StyleSheet.create({
     minHeight: 80,
     backgroundColor: colors.purplePale,
   },
-  newMessage: {
-    zIndex: 2,
-    borderRadius: 8,
-    width: 16,
-    height: 16,
-    position: 'absolute',
-    top: 16,
-    right: 16,
-    backgroundColor: colors.yellow,
+  dot: {
+    borderColor: colors.purple,
+    transform: [{ translateX: 14 }, { translateY: -12 }],
   },
   icon: {
     tintColor: colors.purple,

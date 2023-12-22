@@ -5,6 +5,7 @@ import * as ReactRedux from 'react-redux';
 import { selectFirstQuestion } from '../../state/reducers/questions';
 
 import { BottomTabBarProps } from '@react-navigation/bottom-tabs';
+import { Answer } from '../../api/feedback';
 
 import * as localization from '../../localization';
 import { isDevice } from '../../lib/isDevice';
@@ -15,7 +16,7 @@ import fonts from '../components/fonts';
 import shadow from '../components/shadow';
 
 import QuestionModal from '../components/QuestionModal';
-import { Answer } from '../../api/feedback';
+import { UnseenDot } from '../components/UnseenDot';
 
 type TabSettings = {
   iconSelected: RN.ImageSourcePropType;
@@ -52,6 +53,8 @@ export const TabBar = ({ state, navigation }: Props) => {
 
   const feedbackQuestion = ReactRedux.useSelector(selectFirstQuestion);
 
+  const hasUnseen = ReactRedux.useSelector(isAnyMessageUnseen);
+
   const handleCloseQuestion = () =>
     dispatch({ type: 'feedback/reset/', payload: undefined });
 
@@ -65,9 +68,9 @@ export const TabBar = ({ state, navigation }: Props) => {
         const isFocused = state.index === index;
         const iconKey = isFocused ? 'iconSelected' : 'iconInactive';
 
-        const [iconStyle, labelStyle] = isFocused
-          ? [styles.selectedIcon, styles.selectedLabel]
-          : [styles.icon, styles.label];
+        const [iconStyle, labelStyle, dotStyle] = isFocused
+          ? [styles.selectedIcon, styles.selectedLabel, undefined]
+          : [styles.icon, styles.label, styles.dot];
 
         const onTabPress = () => {
           const event = navigation.emit({
@@ -89,7 +92,13 @@ export const TabBar = ({ state, navigation }: Props) => {
               onPress={onTabPress}
               testID={testID}
             >
-              {index === 2 ? <UnseenDot /> : null}
+              {index === 2 ? (
+                <UnseenDot
+                  hasUnseen={hasUnseen}
+                  style={dotStyle}
+                  testID="main.tabs.unseenDot"
+                />
+              ) : null}
               <RN.Image style={iconStyle} source={TabMap[index][iconKey]} />
               <RN.Text style={labelStyle}>{TabMap[index].text}</RN.Text>
             </RN.TouchableOpacity>
@@ -106,26 +115,6 @@ export const TabBar = ({ state, navigation }: Props) => {
     </RN.View>
   );
 };
-
-const UnseenDot = () => {
-  const isUnseen = ReactRedux.useSelector(isAnyMessageUnseen);
-
-  return isUnseen ? (
-    <RN.View style={unseenDotStyles.dot} testID={'main.tabs.unseenDot'} />
-  ) : null;
-};
-
-const unseenDotStyles = RN.StyleSheet.create({
-  dot: {
-    zIndex: 2,
-    borderRadius: 8,
-    width: 16,
-    height: 16,
-    backgroundColor: colors.yellow,
-    position: 'absolute',
-    transform: [{ translateX: 16 }, { translateY: -32 }],
-  },
-});
 
 const styles = RN.StyleSheet.create({
   tabBar: {
@@ -180,4 +169,5 @@ const styles = RN.StyleSheet.create({
   },
   icon: { tintColor: colors.purple },
   selectedIcon: { tintColor: colors.darkestBlue },
+  dot: { borderColor: colors.purple, borderWidth: 2, width: 14, height: 14 },
 });

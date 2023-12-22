@@ -22,9 +22,6 @@ const colors = {
   darkBlue: '#43BFFF',
   darkestBlue: '#1C325D',
 
-  // yellows
-  yellow: '#FFDA17',
-
   // reds
   red: '#EB727C',
   danger: '#972232',
