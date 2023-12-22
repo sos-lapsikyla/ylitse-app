@@ -73,33 +73,35 @@ const LoginCard = ({
 
   return (
     <Card style={[styles.card, style]} {...viewProps}>
-      <Message style={styles.title} id={titleMessageId} />
-      <NamedInputField
-        autoCapitalize="none"
-        name="onboarding.signUp.userName"
-        onChangeText={onUserNameChange}
-        autoComplete="off"
-        testID="onboarding.signUp.userName"
-      />
-      <NamedInputField
-        autoCapitalize="none"
-        name="onboarding.signUp.password"
-        isPasswordInput={true}
-        onChangeText={onPasswordChange}
-        autoComplete="off"
-        testID="onboarding.signUp.password"
-        onBlur={handlePasswordValidate}
-        onSubmitEditing={handlePasswordValidate}
-        isError={isInvalidPassword}
-      />
-      {isSignup && (
-        <InfoBox messageId="main.settings.account.password.requirements" />
-      )}
-      <ErrorMessage
-        getMessageId={getErrorMessageId}
-        data={remoteAction}
-        testID={'components.loginCard.errorMessage'}
-      />
+      <RN.View style={styles.formFields}>
+        <Message style={styles.title} id={titleMessageId} />
+        <NamedInputField
+          autoCapitalize="none"
+          name="onboarding.signUp.userName"
+          onChangeText={onUserNameChange}
+          autoComplete="off"
+          testID="onboarding.signUp.userName"
+        />
+        <NamedInputField
+          autoCapitalize="none"
+          name="onboarding.signUp.password"
+          isPasswordInput={true}
+          onChangeText={onPasswordChange}
+          autoComplete="off"
+          testID="onboarding.signUp.password"
+          onBlur={handlePasswordValidate}
+          onSubmitEditing={handlePasswordValidate}
+          isError={isInvalidPassword}
+        />
+        {isSignup && (
+          <InfoBox messageId="main.settings.account.password.requirements" />
+        )}
+        <ErrorMessage
+          getMessageId={getErrorMessageId}
+          data={remoteAction}
+          testID={'components.loginCard.errorMessage'}
+        />
+      </RN.View>
 
       <RN.View style={styles.buttonContainer}>
         <Button
@@ -128,7 +130,6 @@ const styles = RN.StyleSheet.create({
   card: {
     flexDirection: 'column',
     justifyContent: 'space-between',
-    gap: 24,
     marginVertical: 20,
     padding: 24,
     alignSelf: 'stretch',
@@ -137,6 +138,11 @@ const styles = RN.StyleSheet.create({
     ...fonts.titleBold,
     textAlign: 'center',
     color: colors.darkestBlue,
+  },
+  formFields: {
+    flexDirection: 'column',
+    justifyContent: 'space-between',
+    gap: 24,
   },
   buttonContainer: {
     flexDirection: 'row',
