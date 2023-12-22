@@ -145,6 +145,7 @@ export default ({ userId }: Props) => {
             () => <Spinner />,
             () => (
               <AlertModal
+                title="meta.error"
                 modalType="danger"
                 messageId="main.settings.account.status.fail"
                 onSecondaryPress={resetStatusMessage}

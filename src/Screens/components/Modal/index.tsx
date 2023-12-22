@@ -15,6 +15,7 @@ import { props as modalProps } from './modalProps';
 
 type Props = {
   style?: RN.StyleProp<RN.ViewStyle>;
+  title: localization.MessageId;
   messageId: localization.MessageId;
   modalType: AlertVariant;
   primaryButtonMessage?: localization.MessageId;
@@ -24,7 +25,7 @@ type Props = {
 };
 
 const Modal: React.FC<Props> = props => {
-  const { backgroundColor, tintColor, icon } = modalProps[props.modalType];
+  const { backgroundColor, icon } = modalProps[props.modalType];
 
   const hasTwoCallbacks =
     typeof props.onSecondaryPress !== 'undefined' &&
@@ -38,11 +39,13 @@ const Modal: React.FC<Props> = props => {
     <RN.View style={styles.container}>
       <RN.Modal animationType="fade" transparent={true} visible={true}>
         <RN.View style={styles.background}>
-          <RN.View
-            style={[props.style, styles.modalContainer, { backgroundColor }]}
-          >
+          <RN.View style={[props.style, styles.modalContainer]}>
+            <RN.View style={[styles.titleContainer, { backgroundColor }]}>
+              <RN.Image style={styles.image} source={icon} />
+              <Message id={props.title} style={styles.title} />
+            </RN.View>
+
             <RN.View style={styles.textContainer}>
-              <RN.Image style={[styles.image, { tintColor }]} source={icon} />
               <Message id={props.messageId} style={styles.text} />
             </RN.View>
 
@@ -85,38 +88,52 @@ const styles = RN.StyleSheet.create({
   },
   modalContainer: {
     marginHorizontal: 24,
+    backgroundColor: colors.white,
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'space-around',
     borderRadius: 16,
-    padding: 24,
-    marginTop: 24,
     ...shadow(7),
   },
-  textContainer: {
+  titleContainer: {
     width: '100%',
+    display: 'flex',
+    flexDirection: 'row',
+    gap: 16,
+    alignItems: 'center',
+    justifyContent: 'flex-start',
+    borderTopLeftRadius: 16,
+    borderTopRightRadius: 16,
+    padding: 16,
+  },
+  textContainer: {
+    padding: 16,
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'flex-start',
   },
+  title: {
+    color: colors.darkestBlue,
+    ...fonts.titleBold,
+  },
   text: {
     color: colors.darkestBlue,
     ...fonts.large,
-    marginLeft: 24,
     flex: 1,
     flexWrap: 'wrap',
   },
   buttonContainer: {
     width: '100%',
     flexDirection: 'row',
-    marginTop: 24,
     alignItems: 'center',
+    padding: 24,
   },
   image: {
-    width: 40,
-    height: 40,
+    tintColor: colors.darkestBlue,
+    width: 32,
+    height: 32,
   },
   button: {
     flex: 1,

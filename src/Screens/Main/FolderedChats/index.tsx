@@ -99,6 +99,7 @@ export default ({ navigation, route }: Props) => {
       )}
       {dialogState.dialogOpen && (
         <Modal
+          title={'main.chat.deleteAll'}
           messageId={'main.chat.deleteAll.confirmation'}
           primaryButtonMessage={'main.chat.delete.confirmation.button'}
           secondaryButtonMessage={'meta.cancel'}
@@ -109,6 +110,7 @@ export default ({ navigation, route }: Props) => {
       )}
       {isBanRequestFailed ? (
         <Modal
+          title="meta.error"
           modalType="danger"
           messageId="main.chat.deleteAll.error"
           onSecondaryPress={resetBanRequestState}

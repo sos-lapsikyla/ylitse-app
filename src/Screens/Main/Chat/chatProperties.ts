@@ -3,21 +3,25 @@ import { DropDownItem } from 'src/Screens/components/DropDownMenu';
 
 export const dialogProperties = {
   deleted: {
+    title: 'main.chat.delete',
     messageId: 'main.chat.delete.confirmation',
     primaryButtonMessage: 'main.chat.delete.confirmation.button',
     modalType: 'danger',
   },
   ok: {
+    title: 'main.chat.unban',
     messageId: 'main.chat.unban.confirmation',
     primaryButtonMessage: 'main.chat.unban.confirmation.button',
     modalType: 'info',
   },
   banned: {
+    title: 'main.chat.ban',
     messageId: 'main.chat.ban.confirmation',
     primaryButtonMessage: 'main.chat.ban.confirmation.button',
     modalType: 'warning',
   },
   archived: {
+    title: 'main.chat.archive',
     messageId: 'main.chat.archive.confirmation',
     primaryButtonMessage: 'main.chat.archive.confirmation.button',
     modalType: 'info',

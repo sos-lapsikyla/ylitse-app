@@ -29,7 +29,7 @@ export const Toast: React.FC<Props> = ({
 }) => {
   const opacity = React.useRef(new RN.Animated.Value(0)).current;
 
-  const { backgroundColor, tintColor, icon } = toastProps[toastType];
+  const { backgroundColor, icon } = toastProps[toastType];
 
   const fadeInAndOut = () =>
     RN.Animated.sequence([
@@ -60,7 +60,7 @@ export const Toast: React.FC<Props> = ({
         <RN.Animated.View
           style={[styles.toastContainer, style, { opacity, backgroundColor }]}
         >
-          <RN.Image style={[styles.image, { tintColor }]} source={icon} />
+          <RN.Image style={styles.image} source={icon} />
           <Message id={messageId} style={styles.text} />
         </RN.Animated.View>
       </RN.Modal>
@@ -84,6 +84,7 @@ const styles = RN.StyleSheet.create({
     ...shadow(7),
   },
   image: {
+    tintColor: colors.darkestBlue,
     width: 40,
     height: 40,
     marginRight: 24,
