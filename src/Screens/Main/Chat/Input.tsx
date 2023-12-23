@@ -72,7 +72,7 @@ export default ({ buddyId }: Props) => {
       <RN.TouchableOpacity
         onPress={onSend}
         disabled={isSendingDisabled}
-        style={[styles.send]}
+        style={styles.send}
         testID={'main.chat.input.button'}
       >
         {showPending ? (
@@ -119,6 +119,7 @@ const styles = RN.StyleSheet.create({
     padding: 16,
   },
   send: {
+    display: 'flex',
     width: 64,
     height: 64,
     borderRadius: 32,
@@ -129,9 +130,9 @@ const styles = RN.StyleSheet.create({
     ...shadow(2),
   },
   sendIcon: {
+    marginLeft: 4,
     tintColor: colors.purple,
-    width: 32,
-    height: 32,
-    marginRight: 4,
+    width: 36,
+    height: 36,
   },
 });
