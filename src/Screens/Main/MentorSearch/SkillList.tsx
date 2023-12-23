@@ -34,7 +34,7 @@ export const SkillList = ({ filterString, height }: Props) => {
     <RN.View testID="main.searchMentor.skills.view">
       <RN.View>
         <RN.Image
-          style={styles.topGradient}
+          style={styles.gradient}
           source={require('../../images/gradient.svg')}
           resizeMode="stretch"
           resizeMethod="scale"
@@ -71,7 +71,7 @@ export const SkillList = ({ filterString, height }: Props) => {
           </RN.View>
         </RN.ScrollView>
         <RN.Image
-          style={styles.bottomGradient}
+          style={[styles.gradient, styles.bottomGradient]}
           source={require('../../images/gradient.svg')}
           resizeMode="stretch"
           resizeMethod="scale"
@@ -82,21 +82,12 @@ export const SkillList = ({ filterString, height }: Props) => {
 };
 
 const styles = RN.StyleSheet.create({
-  topGradient: {
+  gradient: {
     height: 40,
-    tintColor: colors.background,
+    tintColor: colors.white,
     marginBottom: -40,
     width: '100%',
     alignSelf: 'stretch',
-    zIndex: 1,
-  },
-  bottomGradient: {
-    height: 40,
-    tintColor: colors.background,
-    marginTop: -40,
-    width: '100%',
-    alignSelf: 'stretch',
-    transform: [{ rotate: '180deg' }],
     zIndex: 1,
   },
   chipContainer: {
@@ -139,5 +130,8 @@ const styles = RN.StyleSheet.create({
   },
   skillPillDefaultText: {
     color: colors.darkestBlue,
+  },
+  bottomGradient: {
+    transform: [{ rotate: '180deg' }],
   },
 });
