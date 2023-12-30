@@ -60,7 +60,10 @@ const NamedInputField = ({
             onPress={toggleSecureText}
           >
             <RN.Image
-              style={styles.icon}
+              style={[
+                styles.icon,
+                { tintColor: isError ? colors.danger : colors.purple },
+              ]}
               source={
                 isSecureText
                   ? require('../images/eye-off-outline.svg')
@@ -116,7 +119,7 @@ const styles = RN.StyleSheet.create({
     alignSelf: 'center',
     justifyContent: 'center',
   },
-  icon: { height: 24, width: 24, tintColor: colors.purple },
+  icon: { height: 24, width: 24 },
 });
 
 export default NamedInputField;
