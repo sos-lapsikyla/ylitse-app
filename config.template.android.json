@@ -5,5 +5,6 @@
   "termsUrl": "http://10.0.2.2:3000",
   "userGuideUrl": "http://10.0.2.2:3000",
   "apuuUrl": "http://10.0.2.2:3000",
+  "sekasinUrl": "http://10.0.2.2:3000",
   "messageFetchDelay": 2000
 }

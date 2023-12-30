@@ -61,7 +61,7 @@ export default ({ navigation }: Props) => {
           <Link
             style={styles.link}
             linkName="onboarding.welcome.sekasin.link"
-            url={config.apuuUrl}
+            url={config.sekasinUrl}
           />
           <Message style={styles.text} id={'onboarding.welcome.text6'} />
           <MessageButton
