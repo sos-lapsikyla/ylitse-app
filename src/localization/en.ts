@@ -138,7 +138,8 @@ export const messages: { [key in MessageId]: string } = {
   'main.settings.other.termsLink': 'Terms and conditions',
   'main.settings.other.title': 'Other',
   'main.settings.other.userGuide': 'Mentoring guide (in Finnish)',
-  'main.settings.other.whatToAgree': 'What do I agree when using this app?',
+  'main.settings.other.whatToAgree':
+    'What do I agree when using Ylitse MentorApp?',
   'main.settings.title': 'Settings',
 
   'main.userreport.bodyText1':
@@ -163,8 +164,8 @@ export const messages: { [key in MessageId]: string } = {
   'meta.save': 'Save',
   'onboarding.age.switch': 'I am over 17 years old',
   'onboarding.displayName.bodyText':
-    'If you want to remain anonymous, do not use your real name',
-  'onboarding.displayName.inputTitle': 'Display name*',
+    'Choose a nickname for yourself that you are not recognizable by. Your nickname will be visible in the application to other users.',
+  'onboarding.displayName.inputTitle': 'Nickname',
   'onboarding.displayName.nextButton': 'Continue',
   'onboarding.displayName.title': 'Almost ready',
 
@@ -214,11 +215,14 @@ export const messages: { [key in MessageId]: string } = {
 
   'onboarding.welcome.apuu.link': 'Apuu-chat',
   'onboarding.welcome.button': 'Start',
-  'onboarding.welcome.text1': 'Thank you for using our service',
+  'onboarding.welcome.sekasin.link': 'Sekasin-chat',
+  'onboarding.welcome.text1': 'Thank you for using Ylitse MentorApp',
   'onboarding.welcome.text2': 'Start a confidential conversation with a mentor',
   'onboarding.welcome.text3':
-    'The service is intended for people over 17 years of age. If you are under 17, visit Apuu-chat.',
-  'onboarding.welcome.text4': 'We hope you will enjoy the service',
+    'The service is intended for people over 17 years of age',
+  'onboarding.welcome.text4': 'If you are under 15, visit:',
+  'onboarding.welcome.text5': 'If you are under 17, visit:',
+  'onboarding.welcome.text6': 'We hope you will enjoy the service',
   'onboarding.welcome.title': 'Hello!',
 
   'tabs.chats': 'Chats',

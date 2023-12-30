@@ -44,16 +44,26 @@ export default ({ navigation }: Props) => {
           <Message style={styles.titleText} id={'onboarding.welcome.title'} />
           <Message style={styles.text} id={'onboarding.welcome.text1'} />
           <Message style={styles.text} id={'onboarding.welcome.text2'} />
+          <Message style={styles.text} id={'onboarding.welcome.text3'} />
           <Message
             style={styles.textWithoutMargin}
-            id={'onboarding.welcome.text3'}
+            id={'onboarding.welcome.text4'}
           />
           <Link
             style={styles.link}
             linkName="onboarding.welcome.apuu.link"
             url={config.apuuUrl}
           />
-          <Message style={styles.text} id={'onboarding.welcome.text4'} />
+          <Message
+            style={styles.textWithoutMargin}
+            id={'onboarding.welcome.text5'}
+          />
+          <Link
+            style={styles.link}
+            linkName="onboarding.welcome.sekasin.link"
+            url={config.apuuUrl}
+          />
+          <Message style={styles.text} id={'onboarding.welcome.text6'} />
           <MessageButton
             style={styles.button}
             messageStyle={styles.buttonText}

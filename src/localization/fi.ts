@@ -95,7 +95,7 @@ export const messages = {
   'main.settings.account.password.new': 'uusi salasana',
   'main.settings.account.password.repeat': 'toista uusi salasana',
   'main.settings.account.password.requirements':
-    'Uuden salasanan tulee olla vähintään kahdeksan merkkiä pitkä, sisältää yhden ison kirjaimen, yhden pienen kirjaimen sekä erikoismerkin',
+    'Uuden salasanan tulee olla vähintään kahdeksan merkkiä pitkä. Salasanan tulee sisältää ainakin yksi iso kirjain, yksi pieni kirjain sekä erikoismerkki.',
   'main.settings.account.password.success': 'Salasanan vaihto onnistui!',
   'main.settings.account.password.title': 'Salasana',
 
@@ -138,13 +138,14 @@ export const messages = {
   'main.settings.other.termsLink': 'Yksityisyydensuoja',
   'main.settings.other.title': 'Muuta',
   'main.settings.other.userGuide': 'Opas mentoreille',
-  'main.settings.other.whatToAgree': 'Mihin suostun, kun käytän tätä?',
+  'main.settings.other.whatToAgree':
+    'Mihin suostun, kun käytän Ylitse MentorAppia?',
   'main.settings.title': 'Asetukset',
 
   'main.userreport.bodyText1':
     'Ilmianna käyttäjä, jos epäilet tai havaitset mentorin käyttävän palvelua väärin. Tällaisia tilanteita ovat esimerkiksi SOS-Lapsikylän arvojen vastainen toiminta ja rikollinen toiminta.',
   'main.userreport.bodyText2':
-    'Ilmiantamisen jälkeen SOS-Lapsikylän työntekijä selvittää tilanteen ja ottaa sinuun yhteyttä. Yhteystietoja käytetään selvityksen ajan eikä niitä luovuteta ulkopuolisille.',
+    'Ilmiantamisen jälkeen SOS-Lapsikylän työntekijä käy tilanteen läpi ja ottaa sinuun tarvittaessa yhteyttä. Yhteystietoja käytetään tilanteen selvittämiseen. Yhteystietoja ei luovuteta ulkopuolisille.',
   'main.userreport.contact.label': 'Yhteystietosi',
   'main.userreport.description.label': 'Syy ilmiantoon *',
   'main.userreport.description.validationerror':
@@ -163,8 +164,8 @@ export const messages = {
   'meta.save': 'Tallenna',
   'onboarding.age.switch': 'Olen yli 17-vuotias',
   'onboarding.displayName.bodyText':
-    '*Jos haluat pysyä nimettömänä, valitse itsellesi nimimerkki, josta et ole tunnistettavissa.',
-  'onboarding.displayName.inputTitle': 'Valitse itsellesi nimimerkki*',
+    'Valitse itsellesi nimimerkki, josta et ole tunnistettavissa. Nimimerkkisi näkyy sovelluksessa muille käyttäjille.',
+  'onboarding.displayName.inputTitle': 'Nimimerkki',
   'onboarding.displayName.nextButton': 'Seuraava',
   'onboarding.displayName.title': 'Melkein valmista',
 
@@ -179,11 +180,11 @@ export const messages = {
 
   'onboarding.privacyPolicy.agreeButton': 'Hyväksy',
   'onboarding.privacyPolicy.bodyText1':
-    'Käytämme tietojasi ainoastaan tämän palvelun mahdollistamiseksi. Noudatamme tarkkoja tietoturvastandardeja ja teemme parhaamme, jotta tietosi säilyvät turvassa ja yksityisinä.',
+    'Käytämme tietojasi ainoastaan tämän palvelun mahdollistamiseksi. Noudatamme tarkkoja tietoturvastandardeja, jotta tietosi säilyvät turvassa ja yksityisinä.',
   'onboarding.privacyPolicy.bodyText2':
     'Huomaathan, että keräämme anonyymejä tilastoja, jotta voimme kehittää palvelua entistä paremmaksi.',
   'onboarding.privacyPolicy.bodyText3':
-    'Rekisteröitymällä palvelun käyttäjäksi hyväksyt, että käsittelemme sinua koskevia tietoja. Voit lukea lisää seuraavista linkeistä:',
+    'Rekisteröitymällä Ylitse MentorApin käyttäjäksi hyväksyt, että käsittelemme tietojasi. Seuraavasta linkistä löydät aiheesta lisää',
   'onboarding.privacyPolicy.link': 'Tietoja yksityisyydensuojasta',
   'onboarding.privacyPolicy.nextButton': 'Seuraava',
   'onboarding.privacyPolicy.switch': 'Hyväksyn tietojeni käsittelyn',
@@ -214,11 +215,14 @@ export const messages = {
 
   'onboarding.welcome.apuu.link': 'Apuu-chatissa',
   'onboarding.welcome.button': 'Aloita',
-  'onboarding.welcome.text1': 'Kiva, että otit palvelun käyttöön!',
+  'onboarding.welcome.sekasin.link': 'Sekasin-chatissa',
+  'onboarding.welcome.text1': 'Kiva, että otit Ylitse MentorAppin käyttöön!',
   'onboarding.welcome.text2':
-    'Voit kysyä mentoreilta mieltäsi painavista asioista luottamuksellisesti.',
-  'onboarding.welcome.text3': `Palvelu on tarkoitettu 17 vuotta täyttäneille. Jos olet alle 17-vuotias vieraile:`,
-  'onboarding.welcome.text4': 'Mukavia keskusteluja!',
+    'Voit jutella mentoreiden kanssa mielessäsi olevista asioista.',
+  'onboarding.welcome.text3': `Palvelu on tarkoitettu 17 vuotta täyttäneille.`,
+  'onboarding.welcome.text4': `Mikäli olet alle 15-vuotias, vieraile:`,
+  'onboarding.welcome.text5': `Mikäli olet alle 17-vuotias, vieraile:`,
+  'onboarding.welcome.text6': 'Mukavia keskusteluja!',
   'onboarding.welcome.title': 'Moi!',
 
   'tabs.chats': 'Keskustelut',
