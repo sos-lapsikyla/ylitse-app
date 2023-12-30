@@ -11,11 +11,10 @@ import useLayout from '../../lib/use-layout';
 import Card from '../components/Card';
 import SosBanner from '../components/CreatedBySosBanner';
 import AppTitle from '../components/AppTitle';
-import Message from '../components/Message';
+import Message, { MessageWithLink } from '../components/Message';
 import MessageButton from '../components/MessageButton';
 import fonts from '../components/fonts';
 import colors from '../components/colors';
-import Link from '../components/Link';
 
 export type WelcomeRoute = {
   'Onboarding/Welcome': {};
@@ -45,23 +44,23 @@ export default ({ navigation }: Props) => {
           <Message style={styles.text} id={'onboarding.welcome.text1'} />
           <Message style={styles.text} id={'onboarding.welcome.text2'} />
           <Message style={styles.text} id={'onboarding.welcome.text3'} />
-          <Message
-            style={styles.textWithoutMargin}
+          <MessageWithLink
+            style={styles.text}
             id={'onboarding.welcome.text4'}
+            link={{
+              linkName: 'onboarding.welcome.apuu.link',
+              style: styles.link,
+              url: config.apuuUrl,
+            }}
           />
-          <Link
-            style={styles.link}
-            linkName="onboarding.welcome.apuu.link"
-            url={config.apuuUrl}
-          />
-          <Message
-            style={styles.textWithoutMargin}
+          <MessageWithLink
+            style={styles.text}
             id={'onboarding.welcome.text5'}
-          />
-          <Link
-            style={styles.link}
-            linkName="onboarding.welcome.sekasin.link"
-            url={config.sekasinUrl}
+            link={{
+              style: styles.link,
+              linkName: 'onboarding.welcome.sekasin.link',
+              url: config.sekasinUrl,
+            }}
           />
           <Message style={styles.text} id={'onboarding.welcome.text6'} />
           <MessageButton
@@ -94,13 +93,14 @@ const styles = RN.StyleSheet.create({
     justifyContent: 'space-between',
   },
   card: {
-    marginTop: 32,
-    paddingHorizontal: 24,
+    padding: 24,
+    display: 'flex',
+    flexDirection: 'column',
+    gap: 24,
     marginHorizontal: 24,
-    marginBottom: 32,
+    marginVertical: 32,
   },
   appTitle: {
-    marginTop: 40,
     alignSelf: 'center',
     zIndex: 1,
   },
@@ -110,32 +110,24 @@ const styles = RN.StyleSheet.create({
     marginBottom: 16,
   },
   titleText: {
-    marginTop: 40,
     ...fonts.titleLargeBold,
     textAlign: 'center',
-    marginBottom: 24,
     color: colors.darkestBlue,
   },
   text: {
     ...fonts.regularBold,
     textAlign: 'center',
-    marginBottom: 32,
     color: colors.darkestBlue,
   },
-  textWithoutMargin: {
-    ...fonts.regularBold,
-    textAlign: 'center',
-    color: colors.darkestBlue,
+  link: {
+    marginTop: -4,
   },
   button: {
     alignSelf: 'center',
     paddingHorizontal: 60,
-    marginBottom: 32,
-    marginTop: 12,
   },
   buttonText: {
     ...fonts.largeBold,
     textAlign: 'center',
   },
-  link: { alignSelf: 'center', marginBottom: 32, fontSize: 10 },
 });

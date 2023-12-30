@@ -21,25 +21,24 @@ const Link = ({ style, linkName, url }: Props) => {
   return (
     <RN.TouchableOpacity style={[styles.touchable, style]} onPress={onPress}>
       <Message style={styles.linkText} id={linkName} />
-      <RN.Image
-        source={require('../images/link.svg')}
-        style={{ tintColor: colors.purple }}
-      />
+      <RN.Image source={require('../images/link.svg')} style={styles.icon} />
     </RN.TouchableOpacity>
   );
 };
 
 const styles = RN.StyleSheet.create({
   touchable: {
+    display: 'flex',
     flexDirection: 'row',
-    flexWrap: 'wrap',
-    alignItems: 'center',
+    gap: 3,
   },
   linkText: {
     ...fonts.largeBold,
     color: colors.purple,
     textDecorationLine: 'underline',
-    marginRight: 4,
+  },
+  icon: {
+    tintColor: colors.purple,
   },
 });
 
