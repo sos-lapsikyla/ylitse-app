@@ -7,7 +7,7 @@ import * as mentorState from '../../../state/reducers/mentors';
 import * as filterMentorState from '../../../state/reducers/filterMentors';
 import * as actions from '../../../state/actions';
 
-import TextButton from '../../components/TextButton';
+import TextButton from './SkillButton';
 import colors from '../../components/colors';
 
 type Props = {

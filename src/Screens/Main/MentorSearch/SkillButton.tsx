@@ -1,7 +1,7 @@
 import React from 'react';
 import RN from 'react-native';
 
-import ButtonContainer from './ButtonContainer';
+import ButtonContainer from '../../components/ButtonContainer';
 
 interface Props {
   onPress: () => void | undefined;

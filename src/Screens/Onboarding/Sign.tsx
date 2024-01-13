@@ -51,7 +51,7 @@ export default ({ navigation }: Props) => {
           messageId="meta.back"
           messageStyle={styles.signText}
           onPress={goBack}
-          emphasis="low"
+          emphasis="medium"
           testID="onboarding.back"
         />
       </Card>

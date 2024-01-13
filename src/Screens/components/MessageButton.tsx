@@ -13,7 +13,7 @@ interface Props {
   style?: RN.StyleProp<RN.ViewStyle>;
   messageId: localization.MessageId;
   messageStyle?: RN.StyleProp<RN.TextStyle>;
-  emphasis?: 'high' | 'low';
+  emphasis?: 'high' | 'medium' | 'low';
   testID?: string;
 }
 
@@ -59,11 +59,12 @@ const styles = RN.StyleSheet.create({
   highContainer: {
     backgroundColor: colors.purple,
   },
-  lowContainer: {
+  mediumContainer: {
     backgroundColor: colors.white,
     borderColor: colors.purple,
     borderWidth: 2,
   },
+  lowContainer: { backgroundColor: undefined },
   commonMessage: {
     textAlign: 'center',
     flexDirection: 'column',
@@ -72,8 +73,12 @@ const styles = RN.StyleSheet.create({
     ...fonts.largeBold,
     color: colors.orangeLight,
   },
-  lowMessage: {
+  mediumMessage: {
     ...fonts.large,
+    color: colors.purple,
+  },
+  lowMessage: {
+    ...fonts.regularBold,
     color: colors.purple,
   },
 });

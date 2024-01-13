@@ -13,6 +13,10 @@ import { StackRoutes } from '..';
 
 import OnboardingBackground from '../components/OnboardingBackground';
 import LoginCard from '../components/LoginCard';
+import MessageButton from '../components/MessageButton';
+import Message from '../components/Message';
+import fonts from '../components/fonts';
+import colors from '../components/colors';
 
 export type SignInRoute = {
   'Onboarding/SignIn': {};
@@ -29,6 +33,8 @@ type OwnProps = StackScreenProps<StackRoutes, 'Onboarding/SignIn'>;
 type Props = StateProps & DispatchProps & OwnProps;
 
 const SignIn = (props: Props) => {
+  const [isAdminLogin, setIsAdminLogin] = React.useState(false);
+
   React.useEffect(() => {
     if (option.isSome(props.accessToken.currentToken)) {
       props.navigation.navigate('Main/Tabs', {});
@@ -39,8 +45,14 @@ const SignIn = (props: Props) => {
     props.navigation.goBack();
   };
 
-  const onLogin = (credentials: authApi.Credentials) => {
+  const onLogin = ({ mfa, ...creds }: authApi.Credentials) => {
+    const credentials = isAdminLogin ? { mfa, ...creds } : creds;
+
     props.login(credentials);
+  };
+
+  const toggleAdminLogin = () => {
+    setIsAdminLogin(!isAdminLogin);
   };
 
   return (
@@ -53,7 +65,22 @@ const SignIn = (props: Props) => {
         getErrorMessageId={() => 'onboarding.signIn.failure'}
         onPressBack={goBack}
         onPressNext={onLogin}
+        isAdminLogin={isAdminLogin}
       />
+      <RN.View style={styles.infoContainer}>
+        {isAdminLogin && (
+          <Message id="onboarding.sign.in.admin.info" style={styles.infoText} />
+        )}
+        <MessageButton
+          messageId={
+            isAdminLogin
+              ? 'onboarding.sign.in.admin.link'
+              : 'onboarding.sign.in.admin'
+          }
+          onPress={toggleAdminLogin}
+          emphasis="low"
+        />
+      </RN.View>
     </OnboardingBackground>
   );
 };
@@ -61,6 +88,16 @@ const SignIn = (props: Props) => {
 const styles = RN.StyleSheet.create({
   card: {
     flex: 1,
+  },
+  infoContainer: {
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  infoText: {
+    ...fonts.regular,
+    color: colors.darkestBlue,
   },
 });
 

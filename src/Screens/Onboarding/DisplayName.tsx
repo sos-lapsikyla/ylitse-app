@@ -62,7 +62,7 @@ const DisplayName = ({ navigation, route }: Props) => {
             onPress={goBack}
             noShadow={true}
             style={styles.backButton}
-            emphasis="low"
+            emphasis="medium"
           />
 
           <Button

@@ -101,7 +101,7 @@ const PrivacyPolicy = ({ navigation, route }: Props) => {
             messageId="meta.back"
             onPress={goBack}
             noShadow={true}
-            emphasis="low"
+            emphasis="medium"
           />
           <Button
             style={

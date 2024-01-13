@@ -43,7 +43,7 @@ export const BottomActions = ({
         onPress={onPressReset}
         messageId={'main.searchMentor.resetButton'}
         testID={'main.searchMentor.resetButton'}
-        emphasis="low"
+        emphasis="medium"
       />
       <MessageButton
         style={styles.button}

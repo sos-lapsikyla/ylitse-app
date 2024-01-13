@@ -9,7 +9,7 @@ import fonts from '../components/fonts';
 import { textShadow } from '../components/shadow';
 
 import * as localization from '../../localization';
-import MessageButtonWithIcon from './MessageButtonWithIcon';
+import MessageButtonWithIcon from '../Main/MentorSearch/FilterButton';
 
 interface Props extends RN.TextProps {
   id: localization.MessageId;
