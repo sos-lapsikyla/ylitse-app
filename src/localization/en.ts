@@ -191,6 +191,9 @@ export const messages: { [key in MessageId]: string } = {
   'onboarding.privacyPolicy.title': 'Data Privacy & Security',
 
   'onboarding.sign.in': 'Sign in',
+  'onboarding.sign.in.admin': 'Admin-login',
+  'onboarding.sign.admin.info': 'Are you not an admin?',
+  'onboarding.sign.admin.link': 'Login as a regular user',
   'onboarding.sign.up': 'Sign up',
 
   'onboarding.signIn.button': 'Login',

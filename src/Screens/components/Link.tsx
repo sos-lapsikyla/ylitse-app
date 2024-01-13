@@ -26,6 +26,26 @@ const Link = ({ style, linkName, url }: Props) => {
   );
 };
 
+interface MessageLinkProps extends RN.TextProps {
+  id: localization.MessageId;
+  link: {
+    linkName: localization.MessageId;
+    url: string;
+    style?: RN.StyleProp<RN.ViewStyle>;
+  };
+}
+
+export const MessageWithLink = ({
+  id,
+  link,
+  ...textProps
+}: MessageLinkProps) => (
+  <RN.Text {...textProps}>
+    {localization.trans(id)}
+    <Link {...link} />
+  </RN.Text>
+);
+
 const styles = RN.StyleSheet.create({
   touchable: {
     display: 'flex',
