@@ -6,6 +6,14 @@ const API_USER = process.env.YLITSE_API_USER || 'admin';
 const API_PASS = process.env.YLITSE_API_PASS || '';
 const MFA_SECRET = process.env.YLITSE_MFA_SECRET || '';
 
+export const getAdminCredentials = () => {
+  return {
+    user: API_USER,
+    pass: API_PASS,
+    token: generateToken(MFA_SECRET)?.token,
+  };
+};
+
 /**
  * Scrolls view down if needed and taps the given element
  */
