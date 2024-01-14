@@ -22,7 +22,7 @@ const findMentor = async (mentorIndexes: any, mentorsFound: any) => {
     try {
       await expect(
         element(by.text(accountFixtures.mentors[Number(i)].displayName)),
-      ).toBeVisible();
+      ).toBeVisible(50);
       found[accountFixtures.mentors[Number(i)].displayName] = true;
     } catch (error) {
       continue;

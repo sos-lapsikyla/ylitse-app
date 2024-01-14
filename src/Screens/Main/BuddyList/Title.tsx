@@ -34,7 +34,11 @@ export const Title: React.FC<Props> = ({
             source={require('../../images/three-dot-menu.svg')}
             style={styles.kebabIcon}
           />
-          <UnseenDot hasUnseen={hasUnseenArchivedMessages} style={styles.dot} />
+          <UnseenDot
+            hasUnseen={hasUnseenArchivedMessages}
+            style={styles.dot}
+            testID="main.chat.kebabicon.unseenDot"
+          />
         </>
       </RN.TouchableHighlight>
     </RN.SafeAreaView>

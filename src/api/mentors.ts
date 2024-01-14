@@ -1,7 +1,6 @@
 import * as t from 'io-ts';
 import * as TE from 'fp-ts/lib/TaskEither';
 
-import isFinnishPhone from '../lib/isFinnishPhone';
 import * as http from '../lib/http';
 
 import * as config from './config';
@@ -95,25 +94,6 @@ export const fetchMentors: () => TE.TaskEither<
     fromMentorList,
   );
 
-export function compareLang(a: Mentor, b: Mentor) {
-  if (isFinnishPhone) {
-    return 0;
-  }
-
-  const lang = 'Italian';
-  const hasLang = ({ languages }: Mentor) => languages.includes(lang);
-
-  if (hasLang(a) && !hasLang(b)) {
-    return -1;
-  }
-
-  if (!hasLang(a) && hasLang(b)) {
-    return 1;
-  }
-
-  return 0;
-}
-
 const compareIds = (userId: string | undefined, a: Mentor, b: Mentor) => {
   const x: number = userId ? userId.charCodeAt(0) : 0;
   const y = a.buddyId.charCodeAt(0);
@@ -122,9 +102,13 @@ const compareIds = (userId: string | undefined, a: Mentor, b: Mentor) => {
   return Math.abs(x - z) - Math.abs(x - y);
 };
 
-const sortMe = (myUserId: string | undefined, a: Mentor, _b: Mentor) => {
+const sortMe = (myUserId: string | undefined, a: Mentor, b: Mentor) => {
   if (a.buddyId === myUserId) {
     return -1;
+  }
+
+  if (b.buddyId === myUserId) {
+    return 1;
   }
 
   return 0;
@@ -145,9 +129,6 @@ const sortVacationing = (a: Mentor, b: Mentor) => {
 export const compare =
   (userId: string | undefined) => (a: Mentor, b: Mentor) => {
     return (
-      sortMe(userId, a, b) ||
-      sortVacationing(a, b) ||
-      compareLang(a, b) ||
-      compareIds(userId, a, b)
+      sortVacationing(a, b) || sortMe(userId, a, b) || compareIds(userId, a, b)
     );
   };

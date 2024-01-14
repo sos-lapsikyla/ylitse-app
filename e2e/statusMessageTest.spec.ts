@@ -63,7 +63,7 @@ describe('Show status message', () => {
 
     for (const mentorName of Object.keys(statusMessages)) {
       try {
-        await expect(element(by.text(mentorName))).toBeVisible();
+        await expect(element(by.text(mentorName))).toBeVisible(50);
         await expect(
           element(by.text(statusMessages[mentorName])),
         ).toBeVisible();

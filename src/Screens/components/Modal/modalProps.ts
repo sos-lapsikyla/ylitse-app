@@ -6,7 +6,7 @@ export const props = {
     icon: require('../../images/error_icon.svg'),
   },
   success: {
-    backgroundColor: colors.green,
+    backgroundColor: colors.greenLight,
     icon: require('../../images/success_icon.svg'),
   },
   info: {

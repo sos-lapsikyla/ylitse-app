@@ -136,6 +136,7 @@ describe('SignIn', () => {
       0,
     );
 
+    await element(by.id('tabs.settings')).tap();
     await expect(
       element(by.id('main.settings.account.displayName')),
     ).toHaveText(mentee.displayName);

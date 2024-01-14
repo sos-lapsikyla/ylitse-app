@@ -45,7 +45,11 @@ const Button = ({ style, buddyId, name, onPress, ...viewProps }: Props) => {
           </RN.Text>
         </RN.View>
         <RN.View style={styles.blob}>
-          <UnseenDot hasUnseen={hasNewMessages} style={styles.dot} />
+          <UnseenDot
+            hasUnseen={hasNewMessages}
+            style={styles.dot}
+            testID="main.buddyList.button.unseenDot"
+          />
           {mentor?.is_vacationing ? (
             <RN.Image
               source={require('../../images/umbrella-beach.svg')}

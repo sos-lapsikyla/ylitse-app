@@ -30,6 +30,7 @@ const colors = {
 
   // greens
   green: '#75C550',
+  greenLight: '#81BC70',
 };
 
 export default colors;

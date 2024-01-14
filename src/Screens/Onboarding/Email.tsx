@@ -67,7 +67,7 @@ const Email = ({ navigation, route }: Props) => {
             onPress={goBack}
             noShadow={true}
             style={styles.backButton}
-            emphasis="low"
+            emphasis="medium"
           />
           <Button
             style={styles.nextButton}

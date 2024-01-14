@@ -55,7 +55,7 @@ const Modal: React.FC<Props> = props => {
                   onPress={props.onSecondaryPress}
                   messageId={props.secondaryButtonMessage ?? 'meta.ok'}
                   style={[styles.button, styles.secondaryButton]}
-                  emphasis="low"
+                  emphasis="medium"
                 />
               )}
               {props.onPrimaryPress && (
