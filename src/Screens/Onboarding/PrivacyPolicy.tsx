@@ -123,7 +123,7 @@ const PrivacyPolicy = ({ navigation, route }: Props) => {
 
 const styles = RN.StyleSheet.create({
   card: {
-    padding: 30,
+    padding: 24,
     alignSelf: 'stretch',
     display: 'flex',
     flexDirection: 'column',
@@ -164,11 +164,11 @@ const styles = RN.StyleSheet.create({
   nextButton: {
     flex: 2,
     height: 32,
-    width: 32,
   },
   badgeStyle: {
     height: 32,
     width: 32,
+    marginLeft: 4,
   },
   switchMessage: {
     ...fonts.regular,
