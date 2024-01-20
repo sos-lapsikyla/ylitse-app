@@ -54,7 +54,7 @@ export default ({ onPress, testID }: Props) => {
             contentContainerStyle={{
               paddingLeft: (PADDING / 2) * measuredWidth,
             }}
-            data={[...mentors].sort(mentorApi.compare(userId))}
+            data={mentorApi.sort(userId, mentors)}
             renderItem={renderMentorCard(height, measuredWidth, onPress)}
             keyExtractor={({ buddyId }) => buddyId}
             horizontal={true}
