@@ -102,9 +102,9 @@ export const messages = {
   'main.settings.account.profile.button': 'Muokkaa profiilia',
   'main.settings.account.profile.title': 'Profiili',
 
-  'main.settings.account.status.fail': 'Oman tilan muutos epäonnistui!',
-  'main.settings.account.status.success': 'Oman tilan muutos onnistui!',
-  'main.settings.account.status.title': 'Oma tila',
+  'main.settings.account.status.fail': 'Profiilitekstin muutos epäonnistui!',
+  'main.settings.account.status.success': 'Profiilitekstin muutos onnistui!',
+  'main.settings.account.status.title': 'Profiiliteksti',
 
   'main.settings.account.title': 'Asetukset',
   'main.settings.account.userName': 'Käyttäjätunnus',
@@ -182,9 +182,9 @@ export const messages = {
   'onboarding.privacyPolicy.bodyText1':
     'Käytämme tietojasi ainoastaan tämän palvelun mahdollistamiseksi. Noudatamme tarkkoja tietoturvastandardeja, jotta tietosi säilyvät turvassa ja yksityisinä.',
   'onboarding.privacyPolicy.bodyText2':
-    'Huomaathan, että keräämme anonyymejä tilastoja, jotta voimme kehittää palvelua entistä paremmaksi.',
+    'Huomaathan, että keräämme anonyymeja tilastoja, jotta voimme kehittää palvelua entistä paremmaksi.',
   'onboarding.privacyPolicy.bodyText3':
-    'Rekisteröitymällä Ylitse MentorApin käyttäjäksi hyväksyt, että käsittelemme tietojasi. Seuraavasta linkistä löydät aiheesta lisää',
+    'Rekisteröitymällä Ylitse MentorAppin käyttäjäksi hyväksyt, että käsittelemme tietojasi. Seuraavasta linkistä löydät aiheesta lisää:',
   'onboarding.privacyPolicy.link': 'Tietoja yksityisyydensuojasta',
   'onboarding.privacyPolicy.nextButton': 'Seuraava',
   'onboarding.privacyPolicy.switch': 'Hyväksyn tietojeni käsittelyn',
@@ -223,9 +223,9 @@ export const messages = {
   'onboarding.welcome.text1': 'Kiva, että otit Ylitse MentorAppin käyttöön!',
   'onboarding.welcome.text2':
     'Voit jutella mentoreiden kanssa mielessäsi olevista asioista.',
-  'onboarding.welcome.text3': `Palvelu on tarkoitettu 17 vuotta täyttäneille.`,
-  'onboarding.welcome.text4': `Mikäli olet alle 15-vuotias, vieraile:`,
-  'onboarding.welcome.text5': `Mikäli olet alle 17-vuotias, vieraile:`,
+  'onboarding.welcome.text3': `Palvelu on tarkoitettu 17 vuotta täyttäneille. Mikäli olet alle 17-vuotias, voit vierailla 7—15-vuotiaille tarkoitutetussa Apuu-chatissa tai 13—29-vuotiaille tarkoitetussa Sekasin-chatissa.`,
+  'onboarding.welcome.text4': `Mikäli olet alle 15-vuotias, voit vierailla`,
+  'onboarding.welcome.text5': `Mikäli olet alle 17-vuotias, voit vierailla`,
   'onboarding.welcome.text6': 'Mukavia keskusteluja!',
   'onboarding.welcome.title': 'Moi!',
 

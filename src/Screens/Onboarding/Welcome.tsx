@@ -122,6 +122,7 @@ const styles = RN.StyleSheet.create({
   },
   link: {
     marginTop: -4,
+    paddingLeft: 4,
   },
   button: {
     alignSelf: 'center',
