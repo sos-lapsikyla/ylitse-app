@@ -9,19 +9,30 @@ import colors from './colors';
 
 type Props = {
   style?: RN.StyleProp<RN.ViewStyle>;
+  linkTextStyle?: RN.StyleProp<RN.TextStyle>;
+  linkIconStyle?: RN.StyleProp<RN.ImageStyle>;
   linkName: localization.MessageId;
   url: string;
 };
 
-const Link = ({ style, linkName, url }: Props) => {
+const Link = ({
+  style,
+  linkTextStyle,
+  linkName,
+  linkIconStyle,
+  url,
+}: Props) => {
   const onPress = () => {
     RN.Linking.openURL(url);
   };
 
   return (
     <RN.TouchableOpacity style={[styles.touchable, style]} onPress={onPress}>
-      <Message style={styles.linkText} id={linkName} />
-      <RN.Image source={require('../images/link.svg')} style={styles.icon} />
+      <Message style={[styles.commonText, linkTextStyle]} id={linkName} />
+      <RN.Image
+        source={require('../images/link.svg')}
+        style={[styles.commonIcon, linkIconStyle]}
+      />
     </RN.TouchableOpacity>
   );
 };
@@ -42,7 +53,11 @@ export const MessageWithLink = ({
 }: MessageLinkProps) => (
   <RN.Text {...textProps}>
     {localization.trans(id)}
-    <Link {...link} />
+    <Link
+      {...link}
+      linkTextStyle={[styles.commonText, styles.linkMessageText]}
+      linkIconStyle={[styles.commonIcon, styles.textLinkIcon]}
+    />
   </RN.Text>
 );
 
@@ -52,13 +67,22 @@ const styles = RN.StyleSheet.create({
     flexDirection: 'row',
     gap: 3,
   },
-  linkText: {
+  commonText: {
     ...fonts.largeBold,
     color: colors.purple,
     textDecorationLine: 'underline',
   },
-  icon: {
+  linkMessageText: {
+    ...fonts.smallBold,
+    marginBottom: -5,
+  },
+  commonIcon: {
     tintColor: colors.purple,
+  },
+  textLinkIcon: {
+    width: 20,
+    height: 20,
+    marginBottom: -5,
   },
 });
 

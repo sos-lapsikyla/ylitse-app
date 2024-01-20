@@ -84,6 +84,7 @@ const styles = RN.StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'space-between',
+    paddingVertical: 24,
   },
   scroll: {
     flex: 1,
@@ -121,7 +122,6 @@ const styles = RN.StyleSheet.create({
     color: colors.darkestBlue,
   },
   link: {
-    marginTop: -4,
     paddingLeft: 4,
   },
   button: {

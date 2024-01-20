@@ -64,7 +64,7 @@ const styles = RN.StyleSheet.create({
     ...fonts.titleBold,
   },
   card: {
-    marginTop: hasNotch() ? 64 : 0,
+    marginTop: hasNotch() ? 64 : 24,
     display: 'flex',
     flexDirection: 'column',
     gap: 64,
