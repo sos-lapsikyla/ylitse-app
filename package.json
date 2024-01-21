@@ -55,7 +55,7 @@
     "@typescript-eslint/parser": "5.57.1",
     "babel-jest": "29.5.0",
     "babel-plugin-module-resolver": "5.0.0",
-    "detox": "20.12.1",
+    "detox": "20.16.0",
     "eslint": "8.38.0",
     "eslint-config-prettier": "8.8.0",
     "eslint-plugin-import": "2.27.5",

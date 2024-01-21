@@ -12,7 +12,7 @@ export type MessageId = fi.MessageId;
 
 type Language = t.TypeOf<typeof langCode>;
 
-export const lang: Language = isFinnishPhone ? 'fi' : 'fi';
+export const lang: Language = isFinnishPhone ? 'fi' : 'en';
 
 const messages = {
   fi: fi.messages,
