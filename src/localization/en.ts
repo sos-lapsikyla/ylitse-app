@@ -223,10 +223,10 @@ export const messages: { [key in MessageId]: string } = {
   'onboarding.welcome.text1': 'Thank you for using Ylitse MentorApp',
   'onboarding.welcome.text2': 'Start a confidential conversation with a mentor',
   'onboarding.welcome.text3':
-    'The service is intended for people over 17 years of age',
-  'onboarding.welcome.text4': 'If you are under 15, you can visit',
-  'onboarding.welcome.text5': 'If you are under 17, you can visit',
-  'onboarding.welcome.text6': 'We hope you will enjoy the service',
+    'The service is intended for people over 17 years of age. If you are under 17 years old, you can visit the Apuu chat for 7-15 year olds or the Sekasin chat for 13-29 year olds.',
+  'onboarding.welcome.text4': 'If you are under 15, you can visit:',
+  'onboarding.welcome.text5': 'If you are under 17, you can visit:',
+  'onboarding.welcome.text6': 'We hope you will enjoy the service!',
   'onboarding.welcome.title': 'Hello!',
 
   'tabs.chats': 'Chats',
