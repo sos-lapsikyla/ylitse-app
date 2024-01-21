@@ -191,7 +191,7 @@ export const messages = {
   'onboarding.privacyPolicy.title': 'Yksityisyydensuoja',
 
   'onboarding.sign.in': 'Kirjaudu',
-  'onboarding.sign.in.admin': 'Admin-sisäänkirjautuminen',
+  'onboarding.sign.in.admin': 'Admin-kirjautuminen',
   'onboarding.sign.in.admin.info': 'Etkö ole admin?',
   'onboarding.sign.in.admin.link': 'Kirjaudu sisään tavallisena käyttäjänä',
   'onboarding.sign.up': 'Rekisteröidy',
