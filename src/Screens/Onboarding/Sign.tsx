@@ -3,7 +3,7 @@ import RN from 'react-native';
 
 import { StackScreenProps } from '@react-navigation/stack';
 import { StackRoutes } from '..';
-import { hasNotch } from '../../lib/isDevice';
+import { isDevice, hasNotch } from '../../lib/isDevice';
 
 import OnboardingBackground from '../components/OnboardingBackground';
 import Card from '../components/Card';
@@ -59,12 +59,22 @@ export default ({ navigation }: Props) => {
   );
 };
 
+const getTopMargin = () => {
+  const isAndroid = isDevice('android');
+
+  if (isAndroid) {
+    return 24;
+  }
+
+  return hasNotch() ? 64 : 0;
+};
+
 const styles = RN.StyleSheet.create({
   signText: {
     ...fonts.titleBold,
   },
   card: {
-    marginTop: hasNotch() ? 64 : 24,
+    marginTop: getTopMargin(),
     display: 'flex',
     flexDirection: 'column',
     gap: 64,
