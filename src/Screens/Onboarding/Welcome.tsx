@@ -12,7 +12,7 @@ import Card from '../components/Card';
 import SosBanner from '../components/CreatedBySosBanner';
 import AppTitle from '../components/AppTitle';
 import Message from '../components/Message';
-import { MessageWithLink } from '../components/Link';
+import Link from '../components/Link';
 import MessageButton from '../components/MessageButton';
 import fonts from '../components/fonts';
 import colors from '../components/colors';
@@ -45,24 +45,26 @@ export default ({ navigation }: Props) => {
           <Message style={styles.text} id={'onboarding.welcome.text1'} />
           <Message style={styles.text} id={'onboarding.welcome.text2'} />
           <Message style={styles.text} id={'onboarding.welcome.text3'} />
-          <MessageWithLink
-            style={styles.text}
-            id={'onboarding.welcome.text4'}
-            link={{
-              linkName: 'onboarding.welcome.apuu.link',
-              style: styles.link,
-              url: config.apuuUrl,
-            }}
-          />
-          <MessageWithLink
-            style={styles.text}
-            id={'onboarding.welcome.text5'}
-            link={{
-              style: styles.link,
-              linkName: 'onboarding.welcome.sekasin.link',
-              url: config.sekasinUrl,
-            }}
-          />
+          <RN.View>
+            <Message style={styles.text} id={'onboarding.welcome.text4'} />
+            <Link
+              style={styles.link}
+              linkTextStyle={styles.linkText}
+              linkIconStyle={styles.linkIcon}
+              linkName="onboarding.welcome.apuu.link"
+              url={config.apuuUrl}
+            />
+          </RN.View>
+          <RN.View>
+            <Message style={styles.text} id={'onboarding.welcome.text5'} />
+            <Link
+              style={styles.link}
+              linkTextStyle={styles.linkText}
+              linkIconStyle={styles.linkIcon}
+              linkName="onboarding.welcome.sekasin.link"
+              url={config.sekasinUrl}
+            />
+          </RN.View>
           <Message style={styles.text} id={'onboarding.welcome.text6'} />
           <MessageButton
             style={styles.button}
@@ -122,7 +124,14 @@ const styles = RN.StyleSheet.create({
     color: colors.darkestBlue,
   },
   link: {
-    paddingLeft: 4,
+    alignSelf: 'center',
+  },
+  linkText: {
+    ...fonts.smallBold,
+  },
+  linkIcon: {
+    width: 20,
+    height: 20,
   },
   button: {
     alignSelf: 'center',

@@ -224,8 +224,8 @@ export const messages = {
   'onboarding.welcome.text2':
     'Voit jutella mentoreiden kanssa mielessäsi olevista asioista.',
   'onboarding.welcome.text3': `Palvelu on tarkoitettu 17 vuotta täyttäneille. Mikäli olet alle 17-vuotias, voit vierailla 7—15-vuotiaille tarkoitutetussa Apuu-chatissa tai 13—29-vuotiaille tarkoitetussa Sekasin-chatissa.`,
-  'onboarding.welcome.text4': `Mikäli olet alle 15-vuotias, voit vierailla`,
-  'onboarding.welcome.text5': `Mikäli olet alle 17-vuotias, voit vierailla`,
+  'onboarding.welcome.text4': `Mikäli olet alle 15-vuotias, voit vierailla:`,
+  'onboarding.welcome.text5': `Mikäli olet alle 17-vuotias, voit vierailla:`,
   'onboarding.welcome.text6': 'Mukavia keskusteluja!',
   'onboarding.welcome.title': 'Moi!',
 
