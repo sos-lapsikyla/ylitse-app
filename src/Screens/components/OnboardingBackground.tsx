@@ -16,7 +16,7 @@ const OnboardinBackground: React.FC<Props> = ({
   testID,
   ...viewProps
 }) => {
-  const [{ width, height }, onLayout] = useLayout();
+  const [{ width, height }, onLayout] = useLayout(true);
 
   return (
     <Background {...viewProps} onLayout={onLayout}>
