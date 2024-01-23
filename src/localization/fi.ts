@@ -102,9 +102,9 @@ export const messages = {
   'main.settings.account.profile.button': 'Muokkaa profiilia',
   'main.settings.account.profile.title': 'Profiili',
 
-  'main.settings.account.status.fail': 'Profiilitekstin muutos epäonnistui!',
-  'main.settings.account.status.success': 'Profiilitekstin muutos onnistui!',
-  'main.settings.account.status.title': 'Profiiliteksti',
+  'main.settings.account.status.fail': 'Tilaviestin muutos epäonnistui!',
+  'main.settings.account.status.success': 'Tilaviestin muutos onnistui!',
+  'main.settings.account.status.title': 'Tilaviesti',
 
   'main.settings.account.title': 'Asetukset',
   'main.settings.account.userName': 'Käyttäjätunnus',
@@ -217,9 +217,9 @@ export const messages = {
   'onboarding.signUp.title': 'Rekisteröidy',
   'onboarding.signUp.userName': 'Käyttäjänimi',
 
-  'onboarding.welcome.apuu.link': 'Apuu-chatissa',
+  'onboarding.welcome.apuu.link': 'Apuu-chattiin',
   'onboarding.welcome.button': 'Aloita',
-  'onboarding.welcome.sekasin.link': 'Sekasin-chatissa',
+  'onboarding.welcome.sekasin.link': 'Sekasin-chattiin',
   'onboarding.welcome.text1': 'Kiva, että otit Ylitse MentorAppin käyttöön!',
   'onboarding.welcome.text2':
     'Voit jutella mentoreiden kanssa mielessäsi olevista asioista.',

@@ -46,7 +46,6 @@ export default ({ navigation }: Props) => {
           <Message style={styles.text} id={'onboarding.welcome.text2'} />
           <Message style={styles.text} id={'onboarding.welcome.text3'} />
           <RN.View>
-            <Message style={styles.text} id={'onboarding.welcome.text4'} />
             <Link
               style={styles.link}
               linkTextStyle={styles.linkText}
@@ -56,7 +55,6 @@ export default ({ navigation }: Props) => {
             />
           </RN.View>
           <RN.View>
-            <Message style={styles.text} id={'onboarding.welcome.text5'} />
             <Link
               style={styles.link}
               linkTextStyle={styles.linkText}
@@ -127,7 +125,7 @@ const styles = RN.StyleSheet.create({
     alignSelf: 'center',
   },
   linkText: {
-    ...fonts.smallBold,
+    ...fonts.regularBold,
   },
   linkIcon: {
     width: 20,
