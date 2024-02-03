@@ -94,6 +94,7 @@ const styles = RN.StyleSheet.create({
     flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'center',
+    paddingVertical: 8,
   },
   infoText: {
     ...fonts.regular,

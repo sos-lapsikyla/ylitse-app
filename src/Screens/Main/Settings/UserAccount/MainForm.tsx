@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import * as RD from '@devexperts/remote-data-ts';
 import { tuple } from 'fp-ts/lib/function';
 
+import * as config from '../../../../api/config';
 import * as userAccountState from '../../../../state/reducers/userAccount';
 import * as actions from '../../../../state/actions';
 
@@ -13,6 +14,7 @@ import fonts from '../../../components/fonts';
 
 import RemoteData from '../../../components/RemoteData';
 import Message from '../../../components/Message';
+import Button from '../../../components/Button';
 import MentorForm from './MentorForm';
 import { FormItem } from './FormItem';
 
@@ -32,6 +34,10 @@ export default ({ openPasswordForm, openEmailForm }: Props) => {
   const data = RD.remoteData.map(userAccount, account =>
     tuple(account, account.userName !== account.displayName),
   );
+
+  const openProfile = () => {
+    RN.Linking.openURL(config.loginUrl);
+  };
 
   return (
     <>
@@ -93,6 +99,17 @@ export default ({ openPasswordForm, openEmailForm }: Props) => {
             >
               <RN.Text style={styles.fieldValueText}>{'********'}</RN.Text>
             </FormItem>
+            <RN.View style={styles.dataContainer}>
+              <Message
+                style={styles.fieldName}
+                id="main.settings.account.profile.title"
+              />
+              <Button
+                style={styles.button}
+                onPress={openProfile}
+                messageId="main.settings.account.profile.button"
+              />
+            </RN.View>
             {role === 'mentor' ? <MentorForm userId={userId} /> : null}
           </>
         )}
@@ -107,8 +124,22 @@ const styles = RN.StyleSheet.create({
     paddingBottom: 32,
     marginBottom: 32,
   },
+  dataContainer: {
+    paddingVertical: 16,
+    borderTopColor: colors.formBorderGray,
+    borderTopWidth: 1,
+  },
+  fieldName: {
+    ...fonts.regularBold,
+    color: colors.darkestBlue,
+    marginTop: 16,
+  },
   dataContainerLast: {
     paddingVertical: 16,
+  },
+  button: {
+    marginTop: 8,
+    alignSelf: 'flex-start',
   },
   accountSettingsText: {
     ...fonts.titleBold,
