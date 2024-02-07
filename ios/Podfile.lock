@@ -495,7 +495,7 @@ PODS:
     - React-perflogger (= 0.71.6)
   - RNCAsyncStorage (1.18.1):
     - React-Core
-  - RNDeviceInfo (10.11.0):
+  - RNDeviceInfo (10.12.0):
     - React-Core
   - RNFBApp (18.3.2):
     - Firebase/CoreOnly (= 10.14.0)
@@ -794,7 +794,7 @@ SPEC CHECKSUMS:
   React-runtimeexecutor: 8692ac548bec648fa121980ccb4304afd136d584
   ReactCommon: 0c43eaeaaee231d7d8dc24fc5a6e4cf2b75bf196
   RNCAsyncStorage: b90b71f45b8b97be43bc4284e71a6af48ac9f547
-  RNDeviceInfo: bf8a32acbcb875f568217285d1793b0e8588c974
+  RNDeviceInfo: db5c64a060e66e5db3102d041ebe3ef307a85120
   RNFBApp: 0b534885354024f4d171ede8da04521d81bc1767
   RNFBMessaging: a2ebefff4dd99eba6b16105bbc0b931bfdb0ce74
   RNGestureHandler: 071d7a9ad81e8b83fe7663b303d132406a7d8f39
@@ -804,6 +804,6 @@ SPEC CHECKSUMS:
   Yoga: ba09b6b11e6139e3df8229238aa794205ca6a02a
   YogaKit: f782866e155069a2cca2517aafea43200b01fd5a
 
-PODFILE CHECKSUM: 5420f96dab79d181a3c1ad392459902ee8895352
+PODFILE CHECKSUM: 48004b0a41f3fdabc3a4ce2250b385f6ded12ae0
 
 COCOAPODS: 1.12.0
