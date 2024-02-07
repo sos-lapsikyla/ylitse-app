@@ -42,7 +42,7 @@ describe('SignIn', () => {
     );
   });
 
-  it('admin succesfully', async () => {
+  xit('admin succesfully', async () => {
     const signInView = element(by.id('onboarding.signIn.view'));
 
     await scrollDownAndTap(
@@ -87,7 +87,7 @@ describe('SignIn', () => {
     );
   });
 
-  it('mentee can login even if fill mfa', async () => {
+  xit('mentee can login even if fill mfa', async () => {
     const mentee = accountFixtures.mentees[0];
     await APISignUpMentee(mentee);
 

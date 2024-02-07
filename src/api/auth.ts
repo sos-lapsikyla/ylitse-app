@@ -57,19 +57,16 @@ function toAccessToken({
 export type Credentials = {
   userName: string;
   password: string;
-  mfa?: string;
 };
 
 export function login({
   userName,
   password,
-  mfa,
 }: Credentials): TE.TaskEither<string, AccessToken> {
   return http.validateResponse(
     http.post(`${config.baseUrl}/login`, {
       login_name: userName,
       password,
-      ...(mfa && { mfa_token: mfa }),
     }),
     tokenType,
     toAccessToken,

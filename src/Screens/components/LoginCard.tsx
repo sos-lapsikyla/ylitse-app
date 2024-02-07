@@ -27,7 +27,6 @@ interface Props extends RN.ViewProps {
   getErrorMessageId: (u: unknown) => localization.MessageId;
   onChange?: (credentials: authApi.Credentials) => void | undefined;
   isSignup?: boolean;
-  isAdminLogin?: boolean;
 }
 
 const LoginCard = ({
@@ -39,7 +38,6 @@ const LoginCard = ({
   getErrorMessageId,
   onChange,
   isSignup = false,
-  isAdminLogin = false,
   style,
   ...viewProps
 }: Props) => {
@@ -72,19 +70,12 @@ const LoginCard = ({
   const onPasswordChange = (password: string) =>
     onChangeCredentials({ ...credentials, password });
 
-  const onMfaChange = (mfa: string) => {
-    onChangeCredentials({ ...credentials, mfa });
-  };
-
   const isEmptyFields = !credentials.password || !credentials.userName;
 
   return (
     <Card style={[styles.card, style]} {...viewProps}>
       <RN.View style={styles.formFields}>
-        <Message
-          style={styles.title}
-          id={isAdminLogin ? 'onboarding.sign.in.admin' : titleMessageId}
-        />
+        <Message style={styles.title} id={titleMessageId} />
         <NamedInputField
           autoCapitalize="none"
           name="onboarding.signUp.userName"
@@ -103,16 +94,6 @@ const LoginCard = ({
           onSubmitEditing={handlePasswordValidate}
           isError={isInvalidPassword}
         />
-        {isAdminLogin && (
-          <NamedInputField
-            autoCapitalize="none"
-            name="onboarding.signIn.mfa"
-            onChangeText={onMfaChange}
-            autoComplete="off"
-            testID="onboarding.signIn.mfa"
-            keyboardType="numeric"
-          />
-        )}
         {isSignup && (
           <InfoBox messageId="main.settings.account.password.requirements" />
         )}

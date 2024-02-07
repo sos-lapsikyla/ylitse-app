@@ -22,7 +22,7 @@ const OnboardinBackground: React.FC<Props> = ({
     <Background {...viewProps} onLayout={onLayout}>
       <AppTitle style={[styles.appTitle, { width, height: height / 6 }]} />
       <CreatedBySosBanner style={styles.banner} />
-      <RN.KeyboardAvoidingView style={styles.keyboardAvoider} behavior="height">
+      <RN.View style={styles.keyboardAvoider}>
         <RN.ScrollView
           contentContainerStyle={styles.scrollContent}
           showsVerticalScrollIndicator={false}
@@ -31,7 +31,7 @@ const OnboardinBackground: React.FC<Props> = ({
         >
           <SafeAreaView style={styles.container}>{children}</SafeAreaView>
         </RN.ScrollView>
-      </RN.KeyboardAvoidingView>
+      </RN.View>
     </Background>
   );
 };
