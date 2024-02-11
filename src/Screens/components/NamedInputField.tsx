@@ -37,6 +37,13 @@ const NamedInputField = ({
     setIsFocused(true);
   };
 
+  const handleBlur = (
+    e: RN.NativeSyntheticEvent<RN.TextInputFocusEventData>,
+  ) => {
+    setIsFocused(false);
+    textInputProps?.onBlur && textInputProps.onBlur(e);
+  };
+
   return (
     <RN.View style={style}>
       <Message style={[styles.nameText, labelStyle]} id={name} />
@@ -51,8 +58,8 @@ const NamedInputField = ({
           editable={true}
           secureTextEntry={isSecureText}
           onFocus={handleFocus}
-          onBlur={() => setIsFocused(false)}
           {...textInputProps}
+          onBlur={handleBlur}
         />
         {isPasswordInput ? (
           <RN.TouchableOpacity
