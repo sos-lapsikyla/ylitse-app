@@ -17,8 +17,7 @@ export default function (
 
   const isKeyboardVisible = useIsKeyboardShown();
 
-  const shouldSetHeight =
-    keyboardShouldNotSetHeight && isKeyboardVisible ? false : true;
+  const shouldSetHeight = !(keyboardShouldNotSetHeight && isKeyboardVisible);
 
   const onLayout = (event: RN.LayoutChangeEvent) => {
     const { width, height } = event.nativeEvent.layout;

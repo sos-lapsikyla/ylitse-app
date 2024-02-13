@@ -13,8 +13,6 @@ import { StackRoutes } from '..';
 
 import OnboardingBackground from '../components/OnboardingBackground';
 import LoginCard from '../components/LoginCard';
-import fonts from '../components/fonts';
-import colors from '../components/colors';
 
 export type SignInRoute = {
   'Onboarding/SignIn': {};
@@ -41,8 +39,8 @@ const SignIn = (props: Props) => {
     props.navigation.goBack();
   };
 
-  const onLogin = (creds: authApi.Credentials) => {
-    props.login(creds);
+  const onLogin = (credentials: authApi.Credentials) => {
+    props.login(credentials);
   };
 
   return (
@@ -63,17 +61,6 @@ const SignIn = (props: Props) => {
 const styles = RN.StyleSheet.create({
   card: {
     flex: 1,
-  },
-  infoContainer: {
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-    justifyContent: 'center',
-    paddingVertical: 8,
-  },
-  infoText: {
-    ...fonts.regular,
-    color: colors.darkestBlue,
   },
 });
 
