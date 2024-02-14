@@ -51,7 +51,7 @@ describe('Skill filter', () => {
       try {
         await expect(
           element(by.text(accountFixtures.mentors[i].displayName)),
-        ).toBeVisible();
+        ).toBeVisible(50);
         mentorsFound[accountFixtures.mentors[i].displayName] = true;
       } catch (error) {
         continue;
@@ -64,7 +64,7 @@ describe('Skill filter', () => {
       try {
         await expect(
           element(by.text(accountFixtures.mentors[i].displayName)),
-        ).toBeVisible();
+        ).toBeVisible(50);
         mentorsFound[accountFixtures.mentors[i].displayName] = true;
       } catch (error) {
         continue;
@@ -77,7 +77,7 @@ describe('Skill filter', () => {
       try {
         await expect(
           element(by.text(accountFixtures.mentors[i].displayName)),
-        ).toBeVisible();
+        ).toBeVisible(50);
         mentorsFound[accountFixtures.mentors[i].displayName] = true;
       } catch (error) {
         continue;

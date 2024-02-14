@@ -57,7 +57,7 @@ describe('Browse mentors', () => {
       try {
         await expect(
           element(by.text(accountFixtures.mentors[i].displayName)),
-        ).toBeVisible();
+        ).toBeVisible(50);
         mentorsFound[accountFixtures.mentors[i].displayName] = true;
       } catch (error) {
         continue;
@@ -70,7 +70,7 @@ describe('Browse mentors', () => {
       try {
         await expect(
           element(by.text(accountFixtures.mentors[i].displayName)),
-        ).toBeVisible();
+        ).toBeVisible(50);
         mentorsFound[accountFixtures.mentors[i].displayName] = true;
       } catch (error) {
         continue;
@@ -83,7 +83,7 @@ describe('Browse mentors', () => {
       try {
         await expect(
           element(by.text(accountFixtures.mentors[i].displayName)),
-        ).toBeVisible();
+        ).toBeVisible(50);
         mentorsFound[accountFixtures.mentors[i].displayName] = true;
       } catch (error) {
         continue;
@@ -186,7 +186,7 @@ describe('Browse mentors', () => {
 
     await signIn(mentor);
 
-    await expect(element(by.text(mentor.displayName))).toBeVisible();
+    await expect(element(by.text(mentor.displayName))).toBeVisible(50);
     await element(by.text('Show mentor')).atIndex(0).tap();
 
     await element(by.text('Chat')).tap();

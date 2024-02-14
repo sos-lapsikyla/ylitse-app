@@ -60,6 +60,8 @@ export const messages: { [key in MessageId]: string } = {
   'main.chat.unban.confirmation.button': 'Restore',
 
   'main.mentor.other': 'I can also support with:',
+  'main.mentor.special.notAvailable': 'Not available',
+  'main.mentor.special.you': 'You',
   'main.mentor.story': 'My story',
   'main.mentor.subject': 'Subject:',
 
@@ -136,7 +138,8 @@ export const messages: { [key in MessageId]: string } = {
   'main.settings.other.termsLink': 'Terms and conditions',
   'main.settings.other.title': 'Other',
   'main.settings.other.userGuide': 'Mentoring guide (in Finnish)',
-  'main.settings.other.whatToAgree': 'What do I agree when using this app?',
+  'main.settings.other.whatToAgree':
+    'What do I agree when using Ylitse MentorApp?',
   'main.settings.title': 'Settings',
 
   'main.userreport.bodyText1':
@@ -161,8 +164,8 @@ export const messages: { [key in MessageId]: string } = {
   'meta.save': 'Save',
   'onboarding.age.switch': 'I am over 17 years old',
   'onboarding.displayName.bodyText':
-    'If you want to remain anonymous, do not use your real name',
-  'onboarding.displayName.inputTitle': 'Display name*',
+    'Choose a nickname for yourself that you are not recognizable by. Your nickname will be visible in the application to other users.',
+  'onboarding.displayName.inputTitle': 'Nickname',
   'onboarding.displayName.nextButton': 'Continue',
   'onboarding.displayName.title': 'Almost ready',
 
@@ -188,10 +191,14 @@ export const messages: { [key in MessageId]: string } = {
   'onboarding.privacyPolicy.title': 'Data Privacy & Security',
 
   'onboarding.sign.in': 'Sign in',
+  'onboarding.sign.in.admin': 'Admin-login',
+  'onboarding.sign.in.admin.info': 'Are you not an admin?',
+  'onboarding.sign.in.admin.link': 'Login as a regular user',
   'onboarding.sign.up': 'Sign up',
 
   'onboarding.signIn.button': 'Login',
   'onboarding.signIn.failure': 'Login failed',
+  'onboarding.signIn.mfa': 'MFA',
   'onboarding.signIn.title': 'Login',
 
   'onboarding.signUp.back': 'Back',
@@ -212,11 +219,14 @@ export const messages: { [key in MessageId]: string } = {
 
   'onboarding.welcome.apuu.link': 'Apuu-chat',
   'onboarding.welcome.button': 'Start',
-  'onboarding.welcome.text1': 'Thank you for using our service',
+  'onboarding.welcome.sekasin.link': 'Sekasin-chat',
+  'onboarding.welcome.text1': 'Thank you for using Ylitse MentorApp',
   'onboarding.welcome.text2': 'Start a confidential conversation with a mentor',
   'onboarding.welcome.text3':
-    'The service is intended for people over 17 years of age. If you are under 17, visit Apuu-chat.',
-  'onboarding.welcome.text4': 'We hope you will enjoy the service',
+    'The service is intended for people over 17 years of age. If you are under 17 years old, you can visit the Apuu chat for 7-15 year olds or the Sekasin chat for 12-29 year olds.',
+  'onboarding.welcome.text4': 'If you are under 15, you can visit:',
+  'onboarding.welcome.text5': 'If you are under 17, you can visit:',
+  'onboarding.welcome.text6': 'We hope you will enjoy the service!',
   'onboarding.welcome.title': 'Hello!',
 
   'tabs.chats': 'Chats',

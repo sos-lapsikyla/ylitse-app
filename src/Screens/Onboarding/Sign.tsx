@@ -3,6 +3,7 @@ import RN from 'react-native';
 
 import { StackScreenProps } from '@react-navigation/stack';
 import { StackRoutes } from '..';
+import { isDevice, hasNotch } from '../../lib/isDevice';
 
 import OnboardingBackground from '../components/OnboardingBackground';
 import Card from '../components/Card';
@@ -34,23 +35,23 @@ export default ({ navigation }: Props) => {
         <MessageButton
           messageId="onboarding.sign.up"
           messageStyle={styles.signText}
-          style={styles.nextButton}
+          style={styles.button}
           onPress={navigateSignUp}
           testID="onboarding.sign.up"
         />
         <MessageButton
           messageId="onboarding.sign.in"
           messageStyle={styles.signText}
-          style={styles.nextButton}
+          style={styles.button}
           onPress={navigateSignIn}
           testID="onboarding.sign.in"
         />
         <MessageButton
-          style={styles.backButton}
+          style={styles.button}
           messageId="meta.back"
           messageStyle={styles.signText}
           onPress={goBack}
-          emphasis="low"
+          emphasis="medium"
           testID="onboarding.back"
         />
       </Card>
@@ -58,25 +59,30 @@ export default ({ navigation }: Props) => {
   );
 };
 
+const getTopMargin = () => {
+  const isAndroid = isDevice('android');
+
+  if (isAndroid) {
+    return 24;
+  }
+
+  return hasNotch() ? 64 : 0;
+};
+
 const styles = RN.StyleSheet.create({
   signText: {
     ...fonts.titleBold,
   },
   card: {
-    marginVertical: 24,
-    paddingHorizontal: 24,
-    paddingTop: 64,
-    paddingBottom: 48,
+    marginTop: getTopMargin(),
+    display: 'flex',
+    flexDirection: 'column',
+    gap: 64,
+    padding: 64,
     alignSelf: 'stretch',
     zIndex: 2,
   },
-  nextButton: {
+  button: {
     minHeight: 64,
-    marginBottom: 48,
-    marginHorizontal: 32,
-  },
-  backButton: {
-    minHeight: 64,
-    marginHorizontal: 32,
   },
 });

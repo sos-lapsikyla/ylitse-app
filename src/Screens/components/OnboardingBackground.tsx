@@ -3,6 +3,7 @@ import RN from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { hasNotch } from '../../lib/isDevice';
+import useLayout from '../../lib/use-layout';
 
 import Background from './Background';
 import CreatedBySosBanner from '../components/CreatedBySosBanner';
@@ -14,22 +15,26 @@ const OnboardinBackground: React.FC<Props> = ({
   children,
   testID,
   ...viewProps
-}) => (
-  <Background {...viewProps}>
-    <AppTitle style={styles.appTitle} />
-    <CreatedBySosBanner style={styles.banner} />
-    <RN.KeyboardAvoidingView style={styles.keyboardAvoider} behavior="height">
-      <RN.ScrollView
-        contentContainerStyle={styles.scrollContent}
-        showsVerticalScrollIndicator={false}
-        showsHorizontalScrollIndicator={false}
-        testID={testID}
-      >
-        <SafeAreaView style={styles.container}>{children}</SafeAreaView>
-      </RN.ScrollView>
-    </RN.KeyboardAvoidingView>
-  </Background>
-);
+}) => {
+  const [{ width, height }, onLayout] = useLayout(true);
+
+  return (
+    <Background {...viewProps} onLayout={onLayout}>
+      <AppTitle style={[styles.appTitle, { width, height: height / 6 }]} />
+      <CreatedBySosBanner style={styles.banner} />
+      <RN.View style={styles.keyboardAvoider}>
+        <RN.ScrollView
+          contentContainerStyle={styles.scrollContent}
+          showsVerticalScrollIndicator={false}
+          showsHorizontalScrollIndicator={false}
+          testID={testID}
+        >
+          <SafeAreaView style={styles.container}>{children}</SafeAreaView>
+        </RN.ScrollView>
+      </RN.View>
+    </Background>
+  );
+};
 
 const styles = RN.StyleSheet.create({
   appTitle: {

@@ -12,6 +12,7 @@ export interface Props extends RN.TextInputProps {
   isPasswordInput?: boolean;
   inputStyle?: RN.StyleProp<RN.ViewStyle>;
   labelStyle?: RN.StyleProp<RN.TextStyle>;
+  isError?: boolean;
 }
 
 const NamedInputField = ({
@@ -20,6 +21,7 @@ const NamedInputField = ({
   style,
   inputStyle,
   labelStyle,
+  isError = false,
   ...textInputProps
 }: Props) => {
   const [isSecureText, setSecureText] = React.useState(
@@ -35,6 +37,13 @@ const NamedInputField = ({
     setIsFocused(true);
   };
 
+  const handleBlur = (
+    e: RN.NativeSyntheticEvent<RN.TextInputFocusEventData>,
+  ) => {
+    setIsFocused(false);
+    textInputProps?.onBlur && textInputProps.onBlur(e);
+  };
+
   return (
     <RN.View style={style}>
       <Message style={[styles.nameText, labelStyle]} id={name} />
@@ -44,12 +53,13 @@ const NamedInputField = ({
             styles.inputText,
             inputStyle,
             isFocused && styles.focusedBorder,
+            isError && styles.errorBorder,
           ]}
           editable={true}
           secureTextEntry={isSecureText}
           onFocus={handleFocus}
-          onBlur={() => setIsFocused(false)}
           {...textInputProps}
+          onBlur={handleBlur}
         />
         {isPasswordInput ? (
           <RN.TouchableOpacity
@@ -57,7 +67,10 @@ const NamedInputField = ({
             onPress={toggleSecureText}
           >
             <RN.Image
-              style={styles.icon}
+              style={[
+                styles.icon,
+                { tintColor: isError ? colors.danger : colors.purple },
+              ]}
               source={
                 isSecureText
                   ? require('../images/eye-off-outline.svg')
@@ -72,15 +85,13 @@ const NamedInputField = ({
 };
 
 const styles = RN.StyleSheet.create({
+  container: {
+    marginVertical: 2,
+  },
   nameText: {
     ...fonts.regularBold,
     color: colors.darkestBlue,
     marginBottom: 8,
-  },
-  inputContainer: {
-    justifyContent: 'center',
-    alignContent: 'center',
-    alignItems: 'center',
   },
   inputText: {
     ...fonts.regular,
@@ -96,7 +107,16 @@ const styles = RN.StyleSheet.create({
     borderWidth: 1,
     borderRadius: 4,
   },
-  focusedBorder: { borderWidth: 2, backgroundColor: colors.whiteBlue },
+  focusedBorder: {
+    borderWidth: 2,
+    margin: -1,
+    backgroundColor: colors.whiteBlue,
+  },
+  errorBorder: {
+    borderWidth: 2,
+    borderColor: colors.danger,
+    backgroundColor: colors.white,
+  },
   button: {
     position: 'absolute',
     right: 16,
@@ -106,7 +126,7 @@ const styles = RN.StyleSheet.create({
     alignSelf: 'center',
     justifyContent: 'center',
   },
-  icon: { height: 24, width: 24, tintColor: colors.purple },
+  icon: { height: 24, width: 24 },
 });
 
 export default NamedInputField;

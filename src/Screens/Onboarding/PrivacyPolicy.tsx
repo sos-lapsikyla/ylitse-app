@@ -64,27 +64,23 @@ const PrivacyPolicy = ({ navigation, route }: Props) => {
           style={styles.bodyText}
           id="onboarding.privacyPolicy.bodyText2"
         />
-
         <Message
           style={styles.bodyText3}
           id="onboarding.privacyPolicy.bodyText3"
         />
         <Link
-          style={styles.link}
           linkName="onboarding.privacyPolicy.link"
           url={config.termsUrl}
+          style={styles.link}
         />
-
-        <ErrorMessage
-          style={styles.errorText}
-          getMessageId={() => 'meta.error'}
-          data={createUserState}
-        />
-
+        {RD.isFailure(createUserState) && (
+          <ErrorMessage
+            getMessageId={() => 'meta.error'}
+            data={createUserState}
+          />
+        )}
         <MessageSwitch
-          style={styles.switch}
           messageStyle={styles.switchMessage}
-          containerStyle={styles.toggleMargin}
           onPress={() => setIsOver15(!isOver15)}
           value={isOver15}
           testID={'onboarding.age.switch'}
@@ -92,9 +88,7 @@ const PrivacyPolicy = ({ navigation, route }: Props) => {
           messageOff={'onboarding.age.switch'}
         />
         <MessageSwitch
-          style={styles.switch}
           messageStyle={styles.switchMessage}
-          containerStyle={styles.toggleMargin}
           onPress={() => setAgreed(!isAgreed)}
           value={isAgreed}
           testID={'onboarding.privacyPolicy.switch'}
@@ -107,9 +101,8 @@ const PrivacyPolicy = ({ navigation, route }: Props) => {
             messageId="meta.back"
             onPress={goBack}
             noShadow={true}
-            emphasis="low"
+            emphasis="medium"
           />
-
           <Button
             style={
               isAgreed && isOver15 ? styles.nextButton : styles.notValidButton
@@ -130,67 +123,53 @@ const PrivacyPolicy = ({ navigation, route }: Props) => {
 
 const styles = RN.StyleSheet.create({
   card: {
-    padding: 30,
+    padding: 24,
     alignSelf: 'stretch',
+    display: 'flex',
+    flexDirection: 'column',
+    gap: 24,
   },
   title: {
     ...fonts.titleBold,
     textAlign: 'center',
     color: colors.darkestBlue,
-    marginBottom: 32,
-  },
-  nickNameInput: {
-    marginBottom: 24,
   },
   bodyText: {
     ...fonts.regular,
     color: colors.darkestBlue,
-    marginBottom: 32,
   },
   bodyText3: {
     ...fonts.regular,
     color: colors.darkestBlue,
-    marginBottom: 5,
+  },
+  link: {
+    marginTop: -16,
   },
   buttonContainer: {
-    marginTop: 16,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
+    gap: 24,
   },
   backButton: {
     flex: 1.2,
-    marginHorizontal: 4,
     height: 32,
-    marginTop: 4,
   },
   notValidButton: {
     backgroundColor: colors.background,
     flex: 2,
     height: 32,
     width: 32,
-    marginTop: 4,
-    marginLeft: 18,
   },
   nextButton: {
     flex: 2,
     height: 32,
-    width: 32,
-    marginTop: 4,
-    marginLeft: 18,
   },
   badgeStyle: {
     height: 32,
     width: 32,
-    marginTop: 5,
     marginLeft: 4,
   },
-  toggleMargin: {
-    marginBottom: 16,
-  },
-  link: {},
-  errorText: {},
-  switch: {},
   switchMessage: {
     ...fonts.regular,
   },

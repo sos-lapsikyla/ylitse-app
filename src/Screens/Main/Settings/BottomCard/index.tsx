@@ -33,16 +33,6 @@ export default ({ navigateToDeleteAccount, navigateToLogout }: Props) => {
         linkName="main.settings.other.feedBackLink"
         url={config.feedBackUrl}
       />
-      {isMentor ? (
-        <>
-          <Message style={styles.fieldName} id="main.settings.other.howTo" />
-          <Link
-            style={styles.link}
-            linkName="main.settings.other.userGuide"
-            url={config.userGuideUrl}
-          />
-        </>
-      ) : null}
       <Message style={styles.fieldName} id="main.settings.other.whatToAgree" />
       <Link
         style={styles.link}

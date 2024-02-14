@@ -31,6 +31,7 @@ You can edit the config file as suited:
 | `termsUrl`         | Terms and conditions URL |
 | `userGuideUrl`     | User's manual URL        |
 | `apuuUrl`          | Apuu-chat URL            |
+| `sekasinUrl`       | Sekasin-chat URL         |
 | `messageFetchDelay`| Delay between polling    |
 
 

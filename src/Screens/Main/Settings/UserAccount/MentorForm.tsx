@@ -5,12 +5,10 @@ import { useDispatch, useSelector } from 'react-redux';
 import { pipe } from 'fp-ts/lib/function';
 import * as RD from '@devexperts/remote-data-ts';
 
-import * as config from '../../../../api/config';
 import * as actions from '../../../../state/actions';
 import * as mentorState from '../../../../state/reducers/mentors';
 import * as mentorUpdate from '../../../../state/reducers/updateMentorData';
 
-import Button from '../../../components/Button';
 import Message from '../../../components/Message';
 import Spinner from '../../../components/Spinner';
 import { Toast } from '../../../components/Toast';
@@ -43,10 +41,6 @@ export default ({ userId }: Props) => {
   const statusMessageState = useSelector(
     mentorUpdate.selectMentorDataUpdatingStateFor('status_message'),
   );
-
-  const openProfile = () => {
-    RN.Linking.openURL(config.loginUrl);
-  };
 
   const updateMentorData = (
     updateData: mentorUpdate.MentorUpdateData,
@@ -88,17 +82,6 @@ export default ({ userId }: Props) => {
 
   return (
     <RN.View>
-      <RN.View style={styles.dataContainer}>
-        <Message
-          style={styles.fieldName}
-          id="main.settings.account.profile.title"
-        />
-        <Button
-          style={styles.button}
-          onPress={openProfile}
-          messageId="main.settings.account.profile.button"
-        />
-      </RN.View>
       <RN.View style={styles.dataContainer}>
         <Message
           style={styles.fieldName}
@@ -145,6 +128,7 @@ export default ({ userId }: Props) => {
             () => <Spinner />,
             () => (
               <AlertModal
+                title="meta.error"
                 modalType="danger"
                 messageId="main.settings.account.status.fail"
                 onSecondaryPress={resetStatusMessage}

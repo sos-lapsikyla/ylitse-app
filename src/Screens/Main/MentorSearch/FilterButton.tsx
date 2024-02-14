@@ -1,8 +1,8 @@
 import React from 'react';
 import RN from 'react-native';
 
-import colors from './colors';
-import ButtonContainer from './ButtonContainer';
+import colors from '../../components/colors';
+import ButtonContainer from '../../components/ButtonContainer';
 
 interface Props {
   onPress: () => void | undefined;
@@ -26,7 +26,7 @@ const FilterButton: React.FC<Props> = ({
     >
       <RN.Image
         style={styles.icon}
-        source={require('../images/search.svg')}
+        source={require('../../images/search.svg')}
         resizeMode="stretch"
         resizeMethod="scale"
       />

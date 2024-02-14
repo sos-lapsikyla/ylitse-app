@@ -11,6 +11,7 @@ import {
   signIn,
   forceLogout,
   waitAndTypeText,
+  scrollDownAndTap,
 } from './helpers';
 
 describe('reportUser', () => {
@@ -68,7 +69,8 @@ describe('reportUser', () => {
     const reportReason = 'Harrasment';
     const contactInfo = 'my@email.com';
 
-    await waitAndTypeText(descriptionTestId, reportReason);
+    await waitAndTypeText(descriptionTestId, reportReason, true);
+    await scrollDownAndTap('main.userreport.index.view', contactTestId);
     await waitAndTypeText(contactTestId, contactInfo);
 
     await element(by.id('main.userreport.send.button')).tap();
@@ -162,8 +164,11 @@ describe('reportUser', () => {
 
     const descriptionTestId = 'main.userreport.description.input';
     const contactTestId = 'main.userreport.contact.input';
+    const reportReason = 'Harrasment';
+
+    await waitAndTypeText(descriptionTestId, reportReason, true);
     await element(by.id(descriptionTestId)).clearText();
-    await element(by.id(contactTestId)).tap();
+    await scrollDownAndTap('main.userreport.index.view', contactTestId);
 
     // Now we see error
     await expect(

@@ -9,21 +9,29 @@ import colors from './colors';
 
 type Props = {
   style?: RN.StyleProp<RN.ViewStyle>;
+  linkTextStyle?: RN.StyleProp<RN.TextStyle>;
+  linkIconStyle?: RN.StyleProp<RN.ImageStyle>;
   linkName: localization.MessageId;
   url: string;
 };
 
-const Link = ({ style, linkName, url }: Props) => {
+const Link = ({
+  style,
+  linkTextStyle,
+  linkName,
+  linkIconStyle,
+  url,
+}: Props) => {
   const onPress = () => {
     RN.Linking.openURL(url);
   };
 
   return (
     <RN.TouchableOpacity style={[styles.touchable, style]} onPress={onPress}>
-      <Message style={styles.linkText} id={linkName} />
+      <Message style={[styles.text, linkTextStyle]} id={linkName} />
       <RN.Image
         source={require('../images/link.svg')}
-        style={{ tintColor: colors.purple }}
+        style={[styles.icon, linkIconStyle]}
       />
     </RN.TouchableOpacity>
   );
@@ -31,15 +39,17 @@ const Link = ({ style, linkName, url }: Props) => {
 
 const styles = RN.StyleSheet.create({
   touchable: {
+    display: 'flex',
     flexDirection: 'row',
-    flexWrap: 'wrap',
-    alignItems: 'center',
+    gap: 3,
   },
-  linkText: {
+  text: {
     ...fonts.largeBold,
     color: colors.purple,
     textDecorationLine: 'underline',
-    marginRight: 4,
+  },
+  icon: {
+    tintColor: colors.purple,
   },
 });
 

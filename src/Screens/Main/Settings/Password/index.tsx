@@ -98,6 +98,7 @@ export default ({ navigation }: Props) => {
               () => <Spinner style={styles.spinner} />,
               () => (
                 <AlertModal
+                  title="meta.error"
                   modalType="danger"
                   messageId="main.settings.account.password.failure"
                   onSecondaryPress={reset}

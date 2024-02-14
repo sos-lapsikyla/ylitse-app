@@ -16,6 +16,7 @@ import Message from '../components/Message';
 import colors from '../components/colors';
 import Button from '../components/Button';
 import NamedInputField from '../components/NamedInputField';
+import InfoBox from '../components/InfoBox';
 
 export type EmailRoute = {
   'Onboarding/Email': {
@@ -58,7 +59,7 @@ const Email = ({ navigation, route }: Props) => {
             value={email}
             testID="onboarding.email.inputTitle"
           />
-          <Message style={styles.bodyText} id="onboarding.email.bodyText" />
+          <InfoBox messageId="onboarding.email.bodyText" />
         </RN.View>
         <RN.View style={styles.buttonContainer}>
           <Button
@@ -66,7 +67,7 @@ const Email = ({ navigation, route }: Props) => {
             onPress={goBack}
             noShadow={true}
             style={styles.backButton}
-            emphasis="low"
+            emphasis="medium"
           />
           <Button
             style={styles.nextButton}
@@ -105,11 +106,6 @@ const styles = RN.StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-around',
-  },
-  bodyText: {
-    ...fonts.regular,
-    color: colors.darkestBlue,
-    marginBottom: 40,
   },
   backButton: {
     flex: 1.2,

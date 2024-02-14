@@ -15,7 +15,7 @@ interface Props {
   badgeStyle?: RN.StyleProp<RN.ImageStyle>;
   messageId: localization.MessageId;
   messageStyle?: RN.StyleProp<RN.TextStyle>;
-  emphasis?: 'high' | 'low';
+  emphasis?: 'high' | 'medium' | 'low';
   badge?: RN.ImageSourcePropType;
   disabled?: boolean;
   loading?: boolean;
@@ -97,10 +97,13 @@ const styles = RN.StyleSheet.create({
   highContainer: {
     backgroundColor: colors.purple,
   },
-  lowContainer: {
+  mediumContainer: {
     backgroundColor: colors.white,
     borderColor: colors.purple,
     borderWidth: 2,
+  },
+  lowContainer: {
+    backgroundColor: undefined,
   },
   shadow: shadow(7),
   disabled: {
@@ -143,8 +146,12 @@ const styles = RN.StyleSheet.create({
     ...fonts.largeBold,
     color: colors.orangeLight,
   },
-  lowMessage: {
+  mediumMessage: {
     ...fonts.large,
+    color: colors.purple,
+  },
+  lowMessage: {
+    ...fonts.regularBold,
     color: colors.purple,
   },
 });

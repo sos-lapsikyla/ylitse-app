@@ -2,23 +2,19 @@ import colors from '../colors';
 
 export const props = {
   danger: {
-    backgroundColor: colors.lightDanger,
-    tintColor: colors.danger,
+    backgroundColor: colors.red,
     icon: require('../../images/error_icon.svg'),
   },
   success: {
-    backgroundColor: colors.lighterGreen,
-    tintColor: colors.green,
+    backgroundColor: colors.greenLight,
     icon: require('../../images/success_icon.svg'),
   },
   info: {
-    backgroundColor: colors.lightBlue,
-    tintColor: colors.darkestBlue,
+    backgroundColor: colors.blue,
     icon: require('../../images/info_icon.svg'),
   },
   warning: {
-    backgroundColor: colors.orangeLight,
-    tintColor: colors.purple,
+    backgroundColor: colors.orangeLighter,
     icon: require('../../images/alert_icon.svg'),
   },
 };

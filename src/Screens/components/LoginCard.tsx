@@ -8,14 +8,15 @@ import * as localization from '../../localization';
 import { ValidPassword } from '../../lib/validators';
 import { isLeft } from 'fp-ts/lib/Either';
 
-import fonts from '../components/fonts';
-import colors from '../components/colors';
+import fonts from './fonts';
+import colors from './colors';
 
-import Card from '../components/Card';
-import Message from '../components/Message';
-import NamedInputField from '../components/NamedInputField';
-import Button from '../components/Button';
-import ErrorMessage from '../components/ErrorMessage';
+import Card from './Card';
+import Message from './Message';
+import NamedInputField from './NamedInputField';
+import Button from './Button';
+import ErrorMessage from './ErrorMessage';
+import InfoBox from './InfoBox';
 
 interface Props extends RN.ViewProps {
   onPressBack: () => void | undefined;
@@ -68,15 +69,15 @@ const LoginCard = ({
 
   const onPasswordChange = (password: string) =>
     onChangeCredentials({ ...credentials, password });
+
   const isEmptyFields = !credentials.password || !credentials.userName;
 
   return (
     <Card style={[styles.card, style]} {...viewProps}>
-      <RN.View>
+      <RN.View style={styles.formFields}>
         <Message style={styles.title} id={titleMessageId} />
         <NamedInputField
           autoCapitalize="none"
-          style={styles.input}
           name="onboarding.signUp.userName"
           onChangeText={onUserNameChange}
           autoComplete="off"
@@ -84,7 +85,6 @@ const LoginCard = ({
         />
         <NamedInputField
           autoCapitalize="none"
-          style={styles.input}
           name="onboarding.signUp.password"
           isPasswordInput={true}
           onChangeText={onPasswordChange}
@@ -92,23 +92,17 @@ const LoginCard = ({
           testID="onboarding.signUp.password"
           onBlur={handlePasswordValidate}
           onSubmitEditing={handlePasswordValidate}
+          isError={isInvalidPassword}
         />
         {isSignup && (
-          <Message
-            style={[
-              styles.commonMessage,
-              isInvalidPassword && styles.passwordErrorMessage,
-            ]}
-            id={'main.settings.account.password.requirements'}
-          />
+          <InfoBox messageId="main.settings.account.password.requirements" />
         )}
+        <ErrorMessage
+          getMessageId={getErrorMessageId}
+          data={remoteAction}
+          testID={'components.loginCard.errorMessage'}
+        />
       </RN.View>
-      <ErrorMessage
-        style={styles.errorText}
-        getMessageId={getErrorMessageId}
-        data={remoteAction}
-        testID={'components.loginCard.errorMessage'}
-      />
 
       <RN.View style={styles.buttonContainer}>
         <Button
@@ -116,7 +110,7 @@ const LoginCard = ({
           onPress={onPressBack}
           noShadow={true}
           style={styles.backButton}
-          emphasis="low"
+          emphasis="medium"
         />
         <Button
           style={styles.nextButton}
@@ -145,24 +139,17 @@ const styles = RN.StyleSheet.create({
     ...fonts.titleBold,
     textAlign: 'center',
     color: colors.darkestBlue,
-    marginBottom: 10,
   },
-  input: {
-    marginBottom: 10,
-  },
-  commonMessage: {
-    ...fonts.regular,
-  },
-  passwordErrorMessage: {
-    color: colors.danger,
-  },
-  errorText: {
-    marginBottom: 16,
+  formFields: {
+    flexDirection: 'column',
+    justifyContent: 'space-between',
+    gap: 24,
   },
   buttonContainer: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
+    gap: 24,
   },
   backButton: {
     flex: 1.2,
@@ -171,7 +158,6 @@ const styles = RN.StyleSheet.create({
   nextButton: {
     flex: 2,
     height: 32,
-    marginLeft: 24,
   },
   badgeStyle: {
     height: 32,

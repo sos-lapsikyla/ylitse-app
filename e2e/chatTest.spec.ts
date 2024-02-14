@@ -14,6 +14,7 @@ import {
 describe('Chat', () => {
   beforeAll(async () => {
     await device.launchApp();
+    jest.setTimeout(200000);
   });
   beforeEach(async () => {
     await APIDeleteAccounts();

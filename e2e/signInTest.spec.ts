@@ -2,7 +2,12 @@ import { by, element, expect, device } from 'detox';
 import { describe, it, beforeEach, beforeAll } from '@jest/globals';
 import accountFixtures from './fixtures/accounts.json';
 
-import { APISignUpMentee, APIDeleteAccounts, signIn } from './helpers';
+import {
+  APISignUpMentee,
+  APIDeleteAccounts,
+  signIn,
+  forceLogout,
+} from './helpers';
 
 describe('SignIn', () => {
   beforeAll(async () => {
@@ -11,6 +16,9 @@ describe('SignIn', () => {
   beforeEach(async () => {
     await APIDeleteAccounts();
     await device.reloadReactNative();
+  });
+  afterEach(async () => {
+    await forceLogout();
   });
 
   it('mentee succesfully', async () => {

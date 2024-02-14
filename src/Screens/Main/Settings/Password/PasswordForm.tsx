@@ -7,13 +7,10 @@ import {
   PasswordState,
 } from './getState';
 
-import fonts from '../../../components/fonts';
-import colors from '../../../components/colors';
-
 import Button from '../../../components/Button';
 import NamedInputField from '../../../components/NamedInputField';
 import IconButton from '../../../components/IconButton';
-import Message from '../../../components/Message';
+import InfoBox from 'src/Screens/components/InfoBox';
 
 type Props = {
   currentPassword: string;
@@ -68,7 +65,9 @@ export default (props: Props) => {
           isPasswordInput={true}
           value={props.newPassword}
           onChangeText={value => handleChange(props.setNewPassword, value)}
+          onBlur={handlePasswordValidate}
           testID="main.settings.account.password.new"
+          isError={passwordState.first}
         />
         <NamedInputField
           style={styles.field}
@@ -78,18 +77,12 @@ export default (props: Props) => {
           onChangeText={value =>
             handleChange(props.setRepeatedNewPassword, value)
           }
-          onBlur={handlePasswordValidate}
           onSubmitEditing={handlePasswordValidate}
           testID="main.settings.account.password.repeat"
+          isError={passwordState.second}
         />
+        <InfoBox messageId={passwordState.messageId} />
       </RN.View>
-      <Message
-        style={[
-          styles.commonMessage,
-          !passwordState.isOkay && styles.errorMessage,
-        ]}
-        id={passwordState.messageId}
-      />
       <RN.View style={styles.buttonContainer}>
         <IconButton
           badge={require('../../../images/chevron-left.svg')}
@@ -126,13 +119,6 @@ const styles = RN.StyleSheet.create({
     justifyContent: 'space-between',
     marginVertical: 24,
     gap: 24,
-  },
-  commonMessage: {
-    ...fonts.regular,
-    marginBottom: -24,
-  },
-  errorMessage: {
-    color: colors.danger,
   },
   badge: {
     width: 32,

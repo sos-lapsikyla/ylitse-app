@@ -6,15 +6,16 @@ import { StackScreenProps } from '@react-navigation/stack';
 import { StackRoutes } from '..';
 
 import * as config from '../../api/config';
+import useLayout from '../../lib/use-layout';
 
 import Card from '../components/Card';
 import SosBanner from '../components/CreatedBySosBanner';
 import AppTitle from '../components/AppTitle';
 import Message from '../components/Message';
+import Link from '../components/Link';
 import MessageButton from '../components/MessageButton';
 import fonts from '../components/fonts';
 import colors from '../components/colors';
-import Link from '../components/Link';
 
 export type WelcomeRoute = {
   'Onboarding/Welcome': {};
@@ -27,8 +28,10 @@ export default ({ navigation }: Props) => {
     navigation.navigate('Onboarding/MentorList', {});
   };
 
+  const [{ width, height }, onLayout] = useLayout();
+
   return (
-    <SafeAreaView style={styles.background}>
+    <SafeAreaView style={styles.background} onLayout={onLayout}>
       <RN.ScrollView
         style={styles.scroll}
         contentContainerStyle={styles.scrollContent}
@@ -36,21 +39,31 @@ export default ({ navigation }: Props) => {
         showsHorizontalScrollIndicator={false}
         testID={'onboarding.welcome.view'}
       >
-        <AppTitle style={styles.appTitle} />
+        <AppTitle style={[styles.appTitle, { width, height: height / 6 }]} />
         <Card style={styles.card}>
           <Message style={styles.titleText} id={'onboarding.welcome.title'} />
           <Message style={styles.text} id={'onboarding.welcome.text1'} />
           <Message style={styles.text} id={'onboarding.welcome.text2'} />
-          <Message
-            style={styles.textWithoutMargin}
-            id={'onboarding.welcome.text3'}
-          />
-          <Link
-            style={styles.link}
-            linkName="onboarding.welcome.apuu.link"
-            url={config.apuuUrl}
-          />
-          <Message style={styles.text} id={'onboarding.welcome.text4'} />
+          <Message style={styles.text} id={'onboarding.welcome.text3'} />
+          <RN.View>
+            <Link
+              style={styles.link}
+              linkTextStyle={styles.linkText}
+              linkIconStyle={styles.linkIcon}
+              linkName="onboarding.welcome.apuu.link"
+              url={config.apuuUrl}
+            />
+          </RN.View>
+          <RN.View>
+            <Link
+              style={styles.link}
+              linkTextStyle={styles.linkText}
+              linkIconStyle={styles.linkIcon}
+              linkName="onboarding.welcome.sekasin.link"
+              url={config.sekasinUrl}
+            />
+          </RN.View>
+          <Message style={styles.text} id={'onboarding.welcome.text6'} />
           <MessageButton
             style={styles.button}
             messageStyle={styles.buttonText}
@@ -71,6 +84,7 @@ const styles = RN.StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'space-between',
+    paddingVertical: 24,
   },
   scroll: {
     flex: 1,
@@ -81,13 +95,14 @@ const styles = RN.StyleSheet.create({
     justifyContent: 'space-between',
   },
   card: {
-    marginTop: 32,
-    paddingHorizontal: 24,
+    padding: 24,
+    display: 'flex',
+    flexDirection: 'column',
+    gap: 24,
     marginHorizontal: 24,
-    marginBottom: 32,
+    marginVertical: 32,
   },
   appTitle: {
-    marginTop: 40,
     alignSelf: 'center',
     zIndex: 1,
   },
@@ -97,32 +112,31 @@ const styles = RN.StyleSheet.create({
     marginBottom: 16,
   },
   titleText: {
-    marginTop: 40,
     ...fonts.titleLargeBold,
     textAlign: 'center',
-    marginBottom: 24,
     color: colors.darkestBlue,
   },
   text: {
     ...fonts.regularBold,
     textAlign: 'center',
-    marginBottom: 32,
     color: colors.darkestBlue,
   },
-  textWithoutMargin: {
+  link: {
+    alignSelf: 'center',
+  },
+  linkText: {
     ...fonts.regularBold,
-    textAlign: 'center',
-    color: colors.darkestBlue,
+  },
+  linkIcon: {
+    width: 20,
+    height: 20,
   },
   button: {
     alignSelf: 'center',
     paddingHorizontal: 60,
-    marginBottom: 32,
-    marginTop: 12,
   },
   buttonText: {
     ...fonts.largeBold,
     textAlign: 'center',
   },
-  link: { alignSelf: 'center', marginBottom: 32, fontSize: 10 },
 });

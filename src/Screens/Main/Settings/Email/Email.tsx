@@ -97,6 +97,7 @@ export default ({ navigation }: Props) => {
               ),
               () => (
                 <AlertModal
+                  title="meta.error"
                   modalType="danger"
                   messageId="main.settings.account.email.fail"
                   onPrimaryPress={changeEmail}

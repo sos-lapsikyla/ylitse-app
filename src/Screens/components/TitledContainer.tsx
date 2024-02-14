@@ -7,6 +7,7 @@ import shadow from '../components/shadow';
 type Props = RN.ViewProps & {
   TitleComponent: React.ReactElement;
   color: string;
+  backgroundColor?: string;
   onTitleLayout?: RN.ViewProps['onLayout'];
 };
 
@@ -15,10 +16,14 @@ const TitledContainer: React.FC<Props> = ({
   TitleComponent,
   onLayout,
   onTitleLayout,
+  backgroundColor = colors.background,
   children,
 }) => {
   return (
-    <RN.View style={styles.background} onLayout={onLayout}>
+    <RN.View
+      style={[styles.background, { backgroundColor }]}
+      onLayout={onLayout}
+    >
       <RN.SafeAreaView
         onLayout={onTitleLayout}
         style={[styles.shadow, { backgroundColor: color }]}
@@ -33,7 +38,6 @@ const TitledContainer: React.FC<Props> = ({
 const styles = RN.StyleSheet.create({
   background: {
     flex: 1,
-    backgroundColor: colors.background,
   },
   shadow: {
     ...shadow(7),

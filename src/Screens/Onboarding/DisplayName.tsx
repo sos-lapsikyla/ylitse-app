@@ -16,6 +16,7 @@ import Message from '../components/Message';
 import colors from '../components/colors';
 import Button from '../components/Button';
 import NamedInputField from '../components/NamedInputField';
+import InfoBox from '../components/InfoBox';
 
 export type DisplayNameRoute = {
   'Onboarding/DisplayName': { credentials: authApi.Credentials };
@@ -53,10 +54,7 @@ const DisplayName = ({ navigation, route }: Props) => {
             value={displayName}
             testID="onboarding.displayName.inputTitle"
           />
-          <Message
-            style={styles.bodyText}
-            id="onboarding.displayName.bodyText"
-          />
+          <InfoBox messageId="onboarding.displayName.bodyText" />
         </RN.View>
         <RN.View style={styles.buttonContainer}>
           <Button
@@ -64,7 +62,7 @@ const DisplayName = ({ navigation, route }: Props) => {
             onPress={goBack}
             noShadow={true}
             style={styles.backButton}
-            emphasis="low"
+            emphasis="medium"
           />
 
           <Button
@@ -101,11 +99,6 @@ const styles = RN.StyleSheet.create({
   },
   nickNameInput: {
     marginBottom: 24,
-  },
-  bodyText: {
-    ...fonts.regular,
-    color: colors.darkestBlue,
-    marginBottom: 40,
   },
   buttonContainer: {
     flexDirection: 'row',

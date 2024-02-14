@@ -71,7 +71,7 @@ const UserReport = ({ navigation, route }: Props) => {
         style={styles.scrollView}
         contentContainerStyle={styles.scrollContent}
         showsVerticalScrollIndicator={false}
-        testID={'main.settings.index.view'}
+        testID={'main.userreport.index.view'}
       >
         <RN.View>
           <Message style={styles.bodyText} id="main.userreport.bodyText1" />

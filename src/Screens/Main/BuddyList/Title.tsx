@@ -6,6 +6,7 @@ import fonts from '../../components/fonts';
 import { textShadow } from '../../components/shadow';
 
 import Message from '../../components/Message';
+import { UnseenDot } from '../../components/UnseenDot';
 
 type Props = {
   openDropdown: () => void | undefined;
@@ -33,12 +34,11 @@ export const Title: React.FC<Props> = ({
             source={require('../../images/three-dot-menu.svg')}
             style={styles.kebabIcon}
           />
-          {hasUnseenArchivedMessages && (
-            <RN.View
-              style={styles.dot}
-              testID={'main.chat.kebabicon.unseenDot'}
-            />
-          )}
+          <UnseenDot
+            hasUnseen={hasUnseenArchivedMessages}
+            style={styles.dot}
+            testID="main.chat.kebabicon.unseenDot"
+          />
         </>
       </RN.TouchableHighlight>
     </RN.SafeAreaView>
@@ -76,13 +76,9 @@ const styles = RN.StyleSheet.create({
   },
   kebabIcon: { tintColor: colors.darkestBlue },
   dot: {
-    zIndex: 2,
-    borderRadius: 8,
-    right: 0,
-    top: 4,
-    width: 12,
-    height: 12,
-    backgroundColor: colors.yellow,
-    position: 'absolute',
+    transform: [{ translateX: 12 }, { translateY: -12 }],
+    borderWidth: 2,
+    height: 14,
+    width: 14,
   },
 });

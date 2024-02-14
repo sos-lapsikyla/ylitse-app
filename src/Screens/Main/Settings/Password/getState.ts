@@ -2,7 +2,12 @@ import { MessageId } from '../../../../localization';
 import { ValidPassword } from '../../../../lib/validators';
 import { isRight } from 'fp-ts/lib/Either';
 
-export type PasswordState = { isOkay: boolean; messageId: MessageId };
+export type PasswordState = {
+  isOkay: boolean;
+  messageId: MessageId;
+  first?: boolean;
+  second?: boolean;
+};
 
 export const passwordRequirementsMessage = {
   messageId: 'main.settings.account.password.requirements',
@@ -23,18 +28,22 @@ export const getPasswordState = (
   )
     return {
       isOkay: true,
+      first: false,
+      second: false,
       ...passwordRequirementsMessage,
     };
 
-  if (newPassword !== repeatedNewPassword) {
+  if (!isValidPassword) {
     return {
       isOkay: false,
-      messageId: 'main.settings.account.password.invalid.same',
+      first: true,
+      ...passwordRequirementsMessage,
     };
   }
 
   return {
     isOkay: false,
-    ...passwordRequirementsMessage,
+    second: true,
+    messageId: 'main.settings.account.password.invalid.same',
   };
 };

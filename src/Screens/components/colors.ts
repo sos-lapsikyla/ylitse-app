@@ -17,13 +17,11 @@ const colors = {
   purple: '#4A2ACB',
   purplePale: '#E5E4FF',
   orangeLight: '#F0BA8C',
+  orangeLighter: '#FFD79B',
   blue: '#01A5EC',
   lightBlue: '#D3EFFF',
   darkBlue: '#43BFFF',
   darkestBlue: '#1C325D',
-
-  // yellows
-  yellow: '#FFDA17',
 
   // reds
   red: '#EB727C',
@@ -32,7 +30,7 @@ const colors = {
 
   // greens
   green: '#75C550',
-  lighterGreen: '#E4FDD3',
+  greenLight: '#81BC70',
 };
 
 export default colors;
