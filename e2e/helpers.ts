@@ -209,6 +209,17 @@ export async function APIDeleteAccounts() {
 }
 
 /**
+ * Makes HTTP API calls to delete user
+ */
+export async function APIDeleteAccount(id: string, headers: Record<string, string>) {
+  
+    await fetch(`${API_URL}/accounts/${id}`, {
+      method: 'DELETE',
+      headers,
+    });
+}
+
+/**
  * SignUp new mentee
  */
 export async function APISignUpMentee(mentee: any) {
@@ -370,6 +381,7 @@ export async function APIGetSendInfo(sender: any, reciever: any) {
 
   return {
     sender_id: senderInfo.id,
+    sender_info: senderInfo,
     recipient_id: recieverInfo.id,
     senderHeaders: toHeader(accessTokenSender),
     recieverHeaders: toHeader(accessTokenReciever),
