@@ -1,10 +1,5 @@
 import React from 'react';
 import RN from 'react-native';
-import * as redux from 'redux';
-import { useDispatch } from 'react-redux';
-
-import { markSeen } from '../../../../state/reducers/markSeen';
-import * as actions from '../../../../state/actions';
 
 import colors from '../../../components/colors';
 import fonts from '../../../components/fonts';
@@ -16,19 +11,19 @@ export type MessageProps = {
   type: 'Message';
   value: messageApi.Message;
   id: string;
+  isSeen: boolean;
 };
 
 const Message = ({ value: message }: MessageProps) => {
   const { content, sentTime, type } = message;
-  const dispatch = useDispatch<redux.Dispatch<actions.Action>>();
-  React.useEffect(() => {
-    if (!message.isSeen && message.type === 'Received') {
-      dispatch(markSeen({ message }));
-    }
-  }, []);
 
   const bubbleStyle =
     type === 'Received' ? styles.leftBubble : styles.rightBubble;
+
+  const isSeenTemp =
+    type === 'Received' && !message.isSeen
+      ? { borderWidth: 2, borderColor: 'red' }
+      : { borderWidth: 2, borderColor: 'green' };
 
   const addZero = (n: number) => (n < 10 ? `0${n}` : `${n}`);
   const date = new Date(sentTime);
@@ -37,7 +32,7 @@ const Message = ({ value: message }: MessageProps) => {
   const timeText = `${hours}:${minutes}`;
 
   return (
-    <RN.View style={[bubbleStyle, styles.bubble]}>
+    <RN.View style={[bubbleStyle, isSeenTemp, styles.bubble]}>
       <RN.View>
         <RN.Text style={styles.text}>{content}</RN.Text>
       </RN.View>

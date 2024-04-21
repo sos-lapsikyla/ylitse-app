@@ -14,25 +14,40 @@ export const reducer: automaton.Reducer<State, actions.Action> = (
   action,
 ) => {
   switch (action.type) {
-    case 'messages/markSeen':
-      const message = action.payload.message;
-      const id = message.messageId;
-
-      if (id in state || message.isSeen || message.type === 'Sent') {
-        return state;
-      }
-
-      const markSeenTask = api.markSeen(action.payload.message);
-
-      return automaton.loop(
-        { ...state, [id]: true },
-        withToken(markSeenTask, () => ({
+    case 'messages/markSeen': {
+      const hasMessages = action.payload.messages.length > 0;
+      if (!hasMessages) {
+        return automaton.loop(state, {
           type: 'messages/markSeen/end',
           payload: undefined,
-        })),
-      );
+        });
+      }
 
-    default:
+      const [first, ...messages] = action.payload.messages;
+
+      console.log('markSeen action for message', first.content);
+      const nextState =
+        first.messageId in state || first.isSeen || first.type === 'Sent'
+          ? state
+          : { ...state, [first.messageId]: true };
+
+      const markSeenTask = api.markSeen(first);
+
+      return automaton.loop(
+        nextState,
+        // withToken(markSeenTask, () => ({
+        //   type: 'messages/markSeen',
+        //   payload: { messages },
+        // })),
+        {
+          type: 'messages/markSeen',
+          payload: { messages },
+        },
+      );
+    }
+
+    default: {
       return state;
+    }
   }
 };

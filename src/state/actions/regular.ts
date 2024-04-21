@@ -83,7 +83,7 @@ type RegularActions = {
   'messages/setPollingParams': messages.PollingParams;
   'messages/get/completed': E.Either<string, messageApi.MessageResponse>;
 
-  'messages/markSeen': { message: messageApi.Message };
+  'messages/markSeen': { messages: Array<messageApi.Message> };
   'messages/markSeen/end': undefined;
 
   'buddies/completed': Result<typeof buddyApi.fetchBuddies>;

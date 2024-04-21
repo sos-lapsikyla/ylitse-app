@@ -159,9 +159,14 @@ export const reducer: automaton.Reducer<State, actions.Action> = (
     }
 
     case 'messages/markSeen': {
-      const { messageId, buddyId, type, isSeen } = action.payload.message;
+      const hasMessages = action.payload.messages.length > 0;
+      if (!hasMessages) {
+        return state;
+      }
 
-      if (type === 'Sent' || isSeen === true) {
+      const [first, ..._rest] = action.payload.messages;
+
+      if (first.type === 'Sent' || first.isSeen === true) {
         return state;
       }
 
@@ -170,14 +175,14 @@ export const reducer: automaton.Reducer<State, actions.Action> = (
         : {};
 
       const updatedMessage = {
-        ...action.payload.message,
+        ...first,
         isSeen: true,
       };
 
       const updatedMessageRecord = {
-        [buddyId]: {
-          ...oldMessages[buddyId],
-          [messageId]: updatedMessage,
+        [first.buddyId]: {
+          ...oldMessages[first.buddyId],
+          [first.messageId]: updatedMessage,
         },
       };
 
@@ -225,17 +230,8 @@ export const ordMessage: ord.Ord<messageApi.Message> = ord.fromCompare((a, b) =>
 export const hasUnseen: (
   buddyId: string,
 ) => (appState: types.AppState) => boolean = buddyId => appState =>
-  pipe(
-    getMessagesByBuddyId(buddyId)(appState),
-    array.sort(ordMessage),
-    array.last,
-    O.map(
-      ({ type, isSeen }) =>
-        type === 'Received' &&
-        isSeen === false &&
-        !getIsBanned(buddyId)(appState),
-    ),
-    O.fold(() => false, identity),
+  pipe(getMessagesByBuddyId(buddyId)(appState), messages =>
+    messages.some(({ type, isSeen }) => type === 'Received' && !isSeen),
   );
 
 export const isAnyMessageUnseen = (appState: types.AppState) =>
@@ -259,17 +255,13 @@ export const hasUnseenMessagesOfStatus =
 export const hasUnseenMessagesByType =
   (buddyId: string, chatType: buddyApi.ChatStatus) =>
   (appState: types.AppState) =>
-    pipe(
-      getMessagesByBuddyId(buddyId)(appState),
-      array.sort(ordMessage),
-      array.last,
-      O.map(
+    pipe(getMessagesByBuddyId(buddyId)(appState), messages =>
+      messages.some(
         ({ type, isSeen }) =>
           type === 'Received' &&
           !isSeen &&
           getBuddyStatus(buddyId)(appState) === chatType,
       ),
-      O.fold(() => false, identity),
     );
 export const getMessage = (
   { messages: messageState }: types.AppState,

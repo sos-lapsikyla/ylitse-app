@@ -16,7 +16,7 @@ import { isDevice } from '../../../lib/isDevice';
 
 import Title from './Title';
 import Input from './Input';
-import { MemoizedMessageList } from './MessageList';
+import { MessageList } from './MessageList';
 import DropDown, { DropDownItem } from '../../components/DropDownMenu';
 import Modal from '../../components/Modal';
 import { dialogProperties, changeChatStatusOptions } from './chatProperties';
@@ -185,7 +185,7 @@ const Chat = ({ navigation, route }: Props) => {
             messageId="main.chat.send.failure"
           />
         )}
-        <MemoizedMessageList
+        <MessageList
           messageList={sortedMessageList}
           getPreviousMessages={getPreviousMessages}
           isLoading={isLoading}
