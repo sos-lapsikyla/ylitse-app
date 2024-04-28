@@ -93,16 +93,32 @@ export const reducer: automaton.Reducer<State, actions.Action> = (
 
       const previousMsgId = messageApi.extractMostRecentId(nextMessages);
 
-      const [pollingParams, nextPollingParams] = messageApi.getNextParams(
+      const isFetchingOlderMessagesAndIsOldestFetchedUnread =
+        state.currentParams.type === 'OlderThan'
+          ? messageApi.getIsOldestFetchedMessageUnread(
+              newMessages[state.currentParams.buddyId],
+            )
+          : false;
+
+      const [first, rest] = messageApi.getNextParams(
         action.payload,
         state.pollingQueue,
         state.currentParams,
         previousMsgId,
       );
 
+      const { nextFetch, nextCurrent, nextQueue } =
+        isFetchingOlderMessagesAndIsOldestFetchedUnread
+          ? {
+              nextCurrent: state.currentParams,
+              nextFetch: state.currentParams,
+              nextQueue: [first, ...rest],
+            }
+          : { nextCurrent: first, nextFetch: first, nextQueue: rest };
+
       const nextCmd = withToken(
         flow(
-          messageApi.fetchMessages(pollingParams),
+          messageApi.fetchMessages(nextFetch),
           T.delay(config.messageFetchDelay),
         ),
         actions.make('messages/get/completed'),
@@ -113,8 +129,8 @@ export const reducer: automaton.Reducer<State, actions.Action> = (
           ...state,
           messages: RD.success(nextMessages),
           previousMsgId,
-          pollingQueue: nextPollingParams,
-          currentParams: pollingParams,
+          pollingQueue: nextQueue,
+          currentParams: nextCurrent,
         },
         nextCmd,
       );

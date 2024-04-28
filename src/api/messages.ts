@@ -205,6 +205,16 @@ const sortSentTime = (a: Message, b: Message) => {
   return a.sentTime < b.sentTime ? -1 : 1;
 };
 
+export const getIsOldestFetchedMessageUnread = (
+  fetchedBuddyMessages: Record<string, Message>,
+) => {
+  const sorted = Object.keys(fetchedBuddyMessages)
+    .map(msgId => fetchedBuddyMessages[msgId])
+    .sort(sortSentTime);
+
+  return !sorted[sorted.length - 1].isSeen;
+};
+
 export const extractMostRecentId = (messages: MessageMapping) => {
   const flattenedMessages = Object.keys(messages).reduce<
     Record<string, Message>
