@@ -205,15 +205,40 @@ const sortSentTime = (a: Message, b: Message) => {
   return a.sentTime < b.sentTime ? -1 : 1;
 };
 
-export const getIsOldestFetchedMessageUnread = (
-  fetchedBuddyMessages: Record<string, Message>,
-) => {
-  const sorted = Object.keys(fetchedBuddyMessages)
-    .map(msgId => fetchedBuddyMessages[msgId])
-    .sort(sortSentTime);
+export const getParamsForUnreadMessages = (
+  messages: MessageMapping,
+  params: PollingParams,
+): Array<PollingParams> => {
+  switch (params.type) {
+    case 'OlderThan': {
+      return getOlderThanParamsIfOldestUnread(messages)(params.buddyId);
+    }
 
-  return !sorted[sorted.length - 1].isSeen;
+    case 'InitialMessages': {
+      return params.buddyIds.flatMap(
+        getOlderThanParamsIfOldestUnread(messages),
+      );
+    }
+
+    default: {
+      return [];
+    }
+  }
 };
+
+export const getOlderThanParamsIfOldestUnread =
+  (messages: MessageMapping) =>
+  (buddyId: string): Array<PollingParams> => {
+    const sorted = Object.keys(messages[buddyId])
+      .map(msgId => messages[buddyId][msgId])
+      .sort(sortSentTime);
+    const oldest = sorted.length > 0 ? sorted[sorted.length - 1] : null;
+    const isOldestUnseen = oldest && !oldest.isSeen;
+
+    return isOldestUnseen
+      ? [{ type: 'OlderThan', buddyId, messageId: oldest.messageId }]
+      : [];
+  };
 
 export const extractMostRecentId = (messages: MessageMapping) => {
   const flattenedMessages = Object.keys(messages).reduce<

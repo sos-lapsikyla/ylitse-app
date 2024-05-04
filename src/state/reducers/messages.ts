@@ -93,32 +93,30 @@ export const reducer: automaton.Reducer<State, actions.Action> = (
 
       const previousMsgId = messageApi.extractMostRecentId(nextMessages);
 
-      const isFetchingOlderMessagesAndIsOldestFetchedUnread =
-        state.currentParams.type === 'OlderThan'
-          ? messageApi.getIsOldestFetchedMessageUnread(
-              newMessages[state.currentParams.buddyId],
-            )
-          : false;
+      // TODO: add some e2e-test
+      // case 1: oldermessage-fetching (for example initial)
+      //  - mentee sends 20 messages to mentor
+      //  - mentor login
+      //  - mentor waits 5 seconds (the poll interval)
+      //  - mentor scrolls up to the converstaion ( all messages have been loaded )
+      //  - mentor opens chat
+      // case 2: marking unread message
+      // case 3: marking unread only for messages that are seen 100%
+      const newOlderThanParams = messageApi.getParamsForUnreadMessages(
+        newMessages,
+        state.currentParams,
+      );
 
-      const [first, rest] = messageApi.getNextParams(
+      const [nextCurrent, nextQueue] = messageApi.getNextParams(
         action.payload,
         state.pollingQueue,
         state.currentParams,
         previousMsgId,
       );
 
-      const { nextFetch, nextCurrent, nextQueue } =
-        isFetchingOlderMessagesAndIsOldestFetchedUnread
-          ? {
-              nextCurrent: state.currentParams,
-              nextFetch: state.currentParams,
-              nextQueue: [first, ...rest],
-            }
-          : { nextCurrent: first, nextFetch: first, nextQueue: rest };
-
       const nextCmd = withToken(
         flow(
-          messageApi.fetchMessages(nextFetch),
+          messageApi.fetchMessages(nextCurrent),
           T.delay(config.messageFetchDelay),
         ),
         actions.make('messages/get/completed'),
@@ -129,8 +127,8 @@ export const reducer: automaton.Reducer<State, actions.Action> = (
           ...state,
           messages: RD.success(nextMessages),
           previousMsgId,
-          pollingQueue: nextQueue,
           currentParams: nextCurrent,
+          pollingQueue: [...nextQueue, ...newOlderThanParams],
         },
         nextCmd,
       );
@@ -181,7 +179,7 @@ export const reducer: automaton.Reducer<State, actions.Action> = (
         return state;
       }
 
-      const [first, ..._rest] = action.payload.messages;
+      const [first] = action.payload.messages;
 
       if (first.type === 'Sent' || first.isSeen === true) {
         return state;

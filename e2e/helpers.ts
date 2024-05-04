@@ -211,12 +211,14 @@ export async function APIDeleteAccounts() {
 /**
  * Makes HTTP API calls to delete user
  */
-export async function APIDeleteAccount(id: string, headers: Record<string, string>) {
-  
-    await fetch(`${API_URL}/accounts/${id}`, {
-      method: 'DELETE',
-      headers,
-    });
+export async function APIDeleteAccount(
+  id: string,
+  headers: Record<string, string>,
+) {
+  await fetch(`${API_URL}/accounts/${id}`, {
+    method: 'DELETE',
+    headers,
+  });
 }
 
 /**

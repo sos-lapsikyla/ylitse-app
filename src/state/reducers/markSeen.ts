@@ -41,6 +41,10 @@ export const reducer: automaton.Reducer<State, actions.Action> = (
           type: 'messages/markSeen',
           payload: { messages },
         })),
+        // {
+        //   type: 'messages/markSeen',
+        //   payload: { messages },
+        // },
       );
     }
 
