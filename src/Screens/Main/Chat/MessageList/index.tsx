@@ -105,6 +105,7 @@ export const MessageList = ({
     viewableItems: Array<RN.ViewToken>;
     changed: Array<RN.ViewToken>;
   };
+
   const handleViewableChanged = ({ changed }: ViewArgs) => {
     // TODO: Helper here, decode the changed maybe
     const unSeenMessagesOnScreen = changed
@@ -124,6 +125,7 @@ export const MessageList = ({
     itemVisiblePercentThreshold: 100,
     minimumViewTime: 1000,
   };
+
   const viewabilityConfigCallbackPairs = React.useRef([
     { viewabilityConfig, onViewableItemsChanged: handleViewableChanged },
   ]);

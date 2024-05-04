@@ -16,7 +16,7 @@ import * as actions from '../actions';
 import * as types from '../types';
 
 import { withToken } from './accessToken';
-import { getIsBanned, getBuddyStatus } from '../selectors';
+import { getBuddyStatus } from '../selectors';
 
 export type State = types.AppState['messages'];
 export type LoopState = actions.LS<State>;
@@ -176,6 +176,7 @@ export const reducer: automaton.Reducer<State, actions.Action> = (
 
     case 'messages/markSeen': {
       const hasMessages = action.payload.messages.length > 0;
+
       if (!hasMessages) {
         return state;
       }

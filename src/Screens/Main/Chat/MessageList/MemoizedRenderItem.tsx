@@ -34,6 +34,7 @@ const equalProps = (
   ) {
     const prev = prevProps.item as MessageProps;
     const next = nextProps.item as MessageProps;
+
     return prev.id === next.id && prev.isSeen === next.isSeen;
   }
 
