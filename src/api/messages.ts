@@ -209,15 +209,14 @@ export const getParamsForUnreadMessages = (
   messages: MessageMapping,
   params: PollingParams,
 ): Array<PollingParams> => {
+  console.log('getParamsForUnreadMessages');
   switch (params.type) {
     case 'OlderThan': {
-      return getOlderThanParamsIfOldestUnread(messages)(params.buddyId);
+      return getOlderThanParamsIfHasUnread(messages)(params.buddyId);
     }
 
     case 'InitialMessages': {
-      return params.buddyIds.flatMap(
-        getOlderThanParamsIfOldestUnread(messages),
-      );
+      return params.buddyIds.flatMap(getOlderThanParamsIfHasUnread(messages));
     }
 
     default: {
@@ -226,17 +225,21 @@ export const getParamsForUnreadMessages = (
   }
 };
 
-export const getOlderThanParamsIfOldestUnread =
+export const getOlderThanParamsIfHasUnread =
   (messages: MessageMapping) =>
   (buddyId: string): Array<PollingParams> => {
-    const sorted = Object.keys(messages[buddyId])
-      .map(msgId => messages[buddyId][msgId])
-      .sort(sortSentTime);
-    const oldest = sorted.length > 0 ? sorted[sorted.length - 1] : null;
-    const isOldestUnseen = oldest && !oldest.isSeen;
+    console.log('getOlderThanParamsIfHasUnread for buddyId:', buddyId);
+    const buddyMessages = messages[buddyId] ?? {};
+    const sorted = Object.keys(buddyMessages).map(
+      msgId => buddyMessages[msgId],
+    );
 
-    return isOldestUnseen
-      ? [{ type: 'OlderThan', buddyId, messageId: oldest.messageId }]
+    const hasUnread = sorted.some(message => !message.isSeen);
+
+    console.log('hasUnread', hasUnread);
+
+    return hasUnread
+      ? [{ type: 'OlderThan', buddyId, messageId: sorted[0].messageId }]
       : [];
   };
 
