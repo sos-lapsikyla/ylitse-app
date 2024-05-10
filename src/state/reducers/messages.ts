@@ -103,6 +103,7 @@ export const reducer: automaton.Reducer<State, actions.Action> = (
       // case 2: marking unread message
       // case 3: marking unread only for messages that are seen 100%
       console.log('got messages', newMessages);
+
       const newOlderThanParams = messageApi.getParamsForUnreadMessages(
         newMessages,
         state.currentParams,
@@ -132,7 +133,7 @@ export const reducer: automaton.Reducer<State, actions.Action> = (
           messages: RD.success(nextMessages),
           previousMsgId,
           currentParams: nextCurrent,
-          pollingQueue: [...nextQueue, ...newOlderThanParams],
+          pollingQueue: [...newOlderThanParams, ...nextQueue],
         },
         nextCmd,
       );

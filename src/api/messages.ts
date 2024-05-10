@@ -230,6 +230,7 @@ export const getOlderThanParamsIfHasUnread =
   (buddyId: string): Array<PollingParams> => {
     console.log('getOlderThanParamsIfHasUnread for buddyId:', buddyId);
     const buddyMessages = messages[buddyId] ?? {};
+
     const sorted = Object.keys(buddyMessages).map(
       msgId => buddyMessages[msgId],
     );
