@@ -116,8 +116,6 @@ export const MessageList = ({
       )
       .map<messageApi.Message>(({ item }) => item.value);
 
-    console.log('changed', unSeenMessagesOnScreen);
-
     dispatch(markSeen({ messages: unSeenMessagesOnScreen }));
   };
 

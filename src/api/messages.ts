@@ -209,7 +209,6 @@ export const getParamsForUnreadMessages = (
   messages: MessageMapping,
   params: PollingParams,
 ): Array<PollingParams> => {
-  console.log('getParamsForUnreadMessages');
   switch (params.type) {
     case 'OlderThan': {
       return getOlderThanParamsIfHasUnread(messages)(params.buddyId);
@@ -228,7 +227,6 @@ export const getParamsForUnreadMessages = (
 export const getOlderThanParamsIfHasUnread =
   (messages: MessageMapping) =>
   (buddyId: string): Array<PollingParams> => {
-    console.log('getOlderThanParamsIfHasUnread for buddyId:', buddyId);
     const buddyMessages = messages[buddyId] ?? {};
 
     const sorted = Object.keys(buddyMessages).map(
@@ -236,8 +234,6 @@ export const getOlderThanParamsIfHasUnread =
     );
 
     const hasUnread = sorted.some(message => !message.isSeen);
-
-    console.log('hasUnread', hasUnread);
 
     return hasUnread
       ? [{ type: 'OlderThan', buddyId, messageId: sorted[0].messageId }]

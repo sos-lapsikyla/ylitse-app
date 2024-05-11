@@ -1,4 +1,5 @@
 import { by, element, waitFor, device } from 'detox';
+import { NativeMatcher } from 'detox/detox';
 import { generateToken } from 'node-2fa';
 
 const API_URL = process.env.YLITSE_API_URL || 'http://127.0.0.1:8080';
@@ -520,4 +521,18 @@ export async function APIUpdateMentor(mentorName: string, mentor: any) {
     headers: headers,
     body: JSON.stringify(updatedMentor),
   });
+}
+
+export async function detoxElementCount(matcher: NativeMatcher) {
+  try {
+    const attributes = await element(matcher)?.getAttributes();
+
+    if ('elements' in attributes) {
+      return attributes.elements.length;
+    } else {
+      return 1;
+    }
+  } catch (e) {
+    return 0;
+  }
 }

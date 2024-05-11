@@ -101,6 +101,7 @@ const MentorCardExpanded = ({ navigation, route }: Props) => {
             style={styles.button}
             onPress={shouldNavigateBack ? goBack : navigateToChat}
             messageId="main.mentorCardExpanded.button"
+            testID="main.mentorCardExpanded.button"
             disabled={isChatDisabled || isMe}
           />
         </SafeAreaView>

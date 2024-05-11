@@ -100,17 +100,12 @@ export const reducer: automaton.Reducer<State, actions.Action> = (
       //  - mentor waits 5 seconds (the poll interval)
       //  - mentor scrolls up to the converstaion ( all messages have been loaded )
       //  - mentor opens chat
-      // case 2: marking unread message
-      // case 3: marking unread only for messages that are seen 100%
-      console.log('got messages', newMessages);
+      // TODO: remove borders of message-bubbles
 
       const newOlderThanParams = messageApi.getParamsForUnreadMessages(
         newMessages,
         state.currentParams,
       );
-
-      console.log('polled with', state.currentParams);
-      console.log('new older than params', newOlderThanParams);
 
       const [nextCurrent, nextQueue] = messageApi.getNextParams(
         action.payload,
