@@ -27,17 +27,26 @@ export default ({ navigateToDeleteAccount, navigateToLogout }: Props) => {
         style={styles.accountSettingsText}
         id="main.settings.other.title"
       />
-      <Message style={styles.fieldName} id="main.settings.other.feedBack" />
       <Link
         style={styles.link}
         linkName="main.settings.other.feedBackLink"
         url={config.feedBackUrl}
       />
-      <Message style={styles.fieldName} id="main.settings.other.whatToAgree" />
+      <Message style={styles.fieldName} id="main.settings.other.feedBack" />
       <Link
         style={styles.link}
         linkName="main.settings.other.termsLink"
         url={config.termsUrl}
+      />
+      <Message style={styles.fieldName} id="main.settings.other.whatToAgree" />
+      <Link
+        style={styles.link}
+        linkName="main.settings.other.saferSpaceLink"
+        url={config.saferSpaceUrl}
+      />
+      <Message
+        style={styles.fieldName}
+        id="main.settings.other.principalsForSaferSpace"
       />
       <MessageButton
         style={styles.logOutButton}
@@ -67,15 +76,14 @@ const styles = RN.StyleSheet.create({
   accountSettingsText: {
     ...fonts.titleBold,
     color: colors.darkestBlue,
-    marginBottom: 24,
   },
   fieldName: {
     ...fonts.regular,
     color: colors.blueGray,
   },
   link: {
-    marginTop: 8,
-    marginBottom: 24,
+    marginTop: 24,
+    marginBottom: 8,
   },
   buttonText: {
     ...fonts.largeBold,
