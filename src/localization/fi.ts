@@ -135,6 +135,9 @@ export const messages = {
   'main.settings.other.feedBack': 'Anna palautetta : )',
   'main.settings.other.feedBackLink': 'Palautelomake',
   'main.settings.other.howTo': 'Kuinka tätä käytetään?',
+  'main.settings.other.principalsForSaferSpace':
+    'Linkistä pääset lukemaan SOS-Lapsikylän digityön turvallisemman tilan periaatteet.',
+  'main.settings.other.saferSpaceLink': 'Turvallisemman tilan periaatteet',
   'main.settings.other.termsLink': 'Yksityisyydensuoja',
   'main.settings.other.title': 'Muuta',
   'main.settings.other.userGuide': 'Opas mentoreille',

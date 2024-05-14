@@ -135,6 +135,9 @@ export const messages: { [key in MessageId]: string } = {
   'main.settings.other.feedBack': 'Give us feedback : )',
   'main.settings.other.feedBackLink': 'Feedback form',
   'main.settings.other.howTo': 'How should I use this application?',
+  'main.settings.other.principalsForSaferSpace':
+    "You can read the principles of creating a safer space for digital work at SOS Children's Village from the link.",
+  'main.settings.other.saferSpaceLink': 'Principals for a safer space',
   'main.settings.other.termsLink': 'Terms and conditions',
   'main.settings.other.title': 'Other',
   'main.settings.other.userGuide': 'Mentoring guide (in Finnish)',
