@@ -67,6 +67,18 @@ export async function scrollUpTo(elementId: string, viewId: string) {
 }
 
 /**
+ * Scrolls view up until element with text is found
+ */
+export async function scrollUpAndFindText(text: string, viewId: string) {
+  await waitFor(element(by.text(text)))
+    .toBeVisible()
+    .whileElement(by.id(viewId))
+    // Needs to scroll from x=0.1, y=0.2
+    // because of the big sticky toolbar
+    .scroll(100, 'up', 0.1, 0.2);
+}
+
+/**
  * Waits until input is visible and then types given text
  */
 export async function waitAndTypeText(
@@ -523,7 +535,7 @@ export async function APIUpdateMentor(mentorName: string, mentor: any) {
   });
 }
 
-export async function detoxElementCount(matcher: NativeMatcher) {
+export async function countElements(matcher: NativeMatcher) {
   try {
     const attributes = await element(matcher)?.getAttributes();
 
@@ -535,4 +547,10 @@ export async function detoxElementCount(matcher: NativeMatcher) {
   } catch (e) {
     return 0;
   }
+}
+
+export async function sleep(seconds: number) {
+  return new Promise(resolve => {
+    setTimeout(resolve, seconds * 1000);
+  });
 }

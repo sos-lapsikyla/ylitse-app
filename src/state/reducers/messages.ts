@@ -93,15 +93,6 @@ export const reducer: automaton.Reducer<State, actions.Action> = (
 
       const previousMsgId = messageApi.extractMostRecentId(nextMessages);
 
-      // TODO: add some e2e-test
-      // case 1: oldermessage-fetching (for example initial)
-      //  - mentee sends 20 messages to mentor
-      //  - mentor login
-      //  - mentor waits 5 seconds (the poll interval)
-      //  - mentor scrolls up to the converstaion ( all messages have been loaded )
-      //  - mentor opens chat
-      // TODO: remove borders of message-bubbles
-
       const newOlderThanParams = messageApi.getParamsForUnreadMessages(
         newMessages,
         state.currentParams,

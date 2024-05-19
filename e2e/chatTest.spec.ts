@@ -7,11 +7,14 @@ import {
   APISignUpMentor,
   APIGetSendInfo,
   APIDeleteAccounts,
+  APIDeleteAccount,
   APISendMessage,
   waitAndTypeText,
   signIn,
   forceLogout,
-  detoxElementCount,
+  countElements,
+  sleep,
+  scrollUpAndFindText,
 } from './helpers';
 
 describe('Chat', () => {
@@ -101,7 +104,7 @@ describe('Chat', () => {
     await signIn(mentor);
     await element(by.id('tabs.chats')).tap();
 
-    const unseenDotsAmountBefore = await detoxElementCount(
+    const unseenDotsAmountBefore = await countElements(
       by.id('main.buddyList.button.unseenDot'),
     );
     jestExpect(unseenDotsAmountBefore).toBe(2);
@@ -112,7 +115,7 @@ describe('Chat', () => {
 
     await element(by.id('chat.back.button')).tap();
 
-    const unseenDotsAmountAfter = await detoxElementCount(
+    const unseenDotsAmountAfter = await countElements(
       by.id('main.buddyList.button.unseenDot'),
     );
     jestExpect(unseenDotsAmountAfter).toBe(1);
@@ -140,5 +143,77 @@ describe('Chat', () => {
 
     await element(by.id('chat.back.button')).tap();
     await expect(element(by.id('main.tabs.unseenDot'))).toBeVisible();
+  });
+
+  it('loads more messages if all newest unread', async () => {
+    const mentee = accountFixtures.mentees[0];
+    await APISignUpMentee(mentee);
+    const mentor = accountFixtures.mentors[0];
+    await APISignUpMentor(mentor);
+
+    const {
+      sender_id: menteeId,
+      recipient_id: mentorId,
+      senderHeaders: menteeHeaders,
+    } = await APIGetSendInfo(mentee, mentor);
+    await sendMultiple(menteeId, mentorId, menteeHeaders, 'Hello', 20);
+
+    await signIn(mentor);
+    await element(by.id('tabs.chats')).tap();
+
+    // wait for 2 message-polls, so all messages are fetched
+    await sleep(10);
+    await element(by.text(mentee.displayName)).tap();
+    await expect(element(by.text('Hello 19'))).toBeVisible();
+    await scrollUpAndFindText('Hello 0', 'main.buddy.messageList');
+  });
+
+  it('if buddy with most recent message deletes account, can receive still messages from other users', async () => {
+    const mentee = accountFixtures.mentees[0];
+    await APISignUpMentee(mentee);
+    const mentor = accountFixtures.mentors[0];
+    await APISignUpMentor(mentor);
+
+    // mentee sends a msg to mentor
+    const {
+      sender_id: menteeId,
+      sender_info: mentee_info,
+      recipient_id: mentorId,
+      senderHeaders: menteeHeaders,
+    } = await APIGetSendInfo(mentee, mentor);
+    await APISendMessage({
+      sender_id: menteeId,
+      recipient_id: mentorId,
+      content: 'Hi first',
+      headers: menteeHeaders,
+    });
+
+    await signIn(mentor);
+    await element(by.id('tabs.chats')).tap();
+    await element(by.text(mentee.displayName)).tap();
+    await element(by.id('chat.back.button')).tap();
+
+    // delete mentee account
+    await APIDeleteAccount(mentee_info.account_id, menteeHeaders);
+
+    // new mentee
+    const newMentee = accountFixtures.mentees[1];
+    await APISignUpMentee(newMentee);
+
+    const { sender_id: newMenteeId, senderHeaders: newMenteeHeaders } =
+      await APIGetSendInfo(newMentee, mentor);
+    await APISendMessage({
+      sender_id: newMenteeId,
+      recipient_id: mentorId,
+      content: 'Hi second',
+      headers: newMenteeHeaders,
+    });
+
+    await sleep(5);
+    await expect(element(by.text(mentee.displayName))).not.toBeVisible();
+    await element(by.text(newMentee.displayName)).tap();
+    await waitFor(element(by.text('Hi second')))
+      .toBeVisible()
+      .withTimeout(10000);
   });
 });

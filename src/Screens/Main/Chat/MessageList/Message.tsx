@@ -20,10 +20,9 @@ const Message = ({ value: message }: MessageProps) => {
   const bubbleStyle =
     type === 'Received' ? styles.leftBubble : styles.rightBubble;
 
-  const isSeenTemp =
-    type === 'Received' && !message.isSeen
-      ? { borderWidth: 2, borderColor: 'red' }
-      : { borderWidth: 2, borderColor: 'green' };
+  // TODO: Visual aid, remove this after review
+  const isSeenBorder = type === 'Received' &&
+    !message.isSeen && { borderWidth: 2, borderColor: colors.orangeLight };
 
   const addZero = (n: number) => (n < 10 ? `0${n}` : `${n}`);
   const date = new Date(sentTime);
@@ -32,7 +31,7 @@ const Message = ({ value: message }: MessageProps) => {
   const timeText = `${hours}:${minutes}`;
 
   return (
-    <RN.View style={[bubbleStyle, isSeenTemp, styles.bubble]}>
+    <RN.View style={[bubbleStyle, isSeenBorder, styles.bubble]}>
       <RN.View>
         <RN.Text style={styles.text}>{content}</RN.Text>
       </RN.View>

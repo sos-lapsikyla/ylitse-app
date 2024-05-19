@@ -94,7 +94,9 @@ export const MessageList = ({
   const dispatch = useDispatch();
 
   const getPreviousMessagesIfNotLoading = () => {
-    if (isLoading) {
+    console.log('messageList.length', messageList.length);
+
+    if (isLoading || messageList.length < messageApi.MAX_MESSAGES_AT_ONCE) {
       return;
     }
 
@@ -107,7 +109,7 @@ export const MessageList = ({
   };
 
   const handleViewableChanged = ({ changed }: ViewArgs) => {
-    // TODO: Helper here, decode the changed maybe
+    // TODO: Decode 'changed' maybe
     const unSeenMessagesOnScreen = changed
       .filter(item => item.isViewable)
       .filter(
@@ -130,6 +132,7 @@ export const MessageList = ({
 
   return (
     <RN.FlatList
+      testID="main.buddy.messageList"
       contentContainerStyle={styles.scrollContent}
       data={messages}
       renderItem={({ item }) => <MemoizedRenderItem item={item} />}
