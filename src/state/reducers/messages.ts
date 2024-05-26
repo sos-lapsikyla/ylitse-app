@@ -16,7 +16,7 @@ import * as actions from '../actions';
 import * as types from '../types';
 
 import { withToken } from './accessToken';
-import { getBuddyStatus } from '../selectors';
+import { getBuddyStatus, getIsBanned } from '../selectors';
 
 export type State = types.AppState['messages'];
 export type LoopState = actions.LS<State>;
@@ -237,7 +237,10 @@ export const hasUnseen: (
   buddyId: string,
 ) => (appState: types.AppState) => boolean = buddyId => appState =>
   pipe(getMessagesByBuddyId(buddyId)(appState), messages =>
-    messages.some(({ type, isSeen }) => type === 'Received' && !isSeen),
+    messages.some(
+      ({ type, isSeen }) =>
+        type === 'Received' && !isSeen && !getIsBanned(buddyId)(appState),
+    ),
   );
 
 export const isAnyMessageUnseen = (appState: types.AppState) =>
