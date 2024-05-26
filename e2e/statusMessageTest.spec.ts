@@ -96,7 +96,7 @@ describe('Change status message', () => {
     await element(by.id('tabs.settings')).tap();
 
     await scrollDownAndTap(
-      'main.settings.account.status.title',
+      'main.settings.account.status.input',
       'main.settings.index.view',
     );
     // @ts-ignore
@@ -115,8 +115,17 @@ describe('Change status message', () => {
       0.2,
     );
 
-    await expect(element(by.text(newStatusMessage))).toBeVisible();
+    // first tap is for closing keyboard (multiline), second for save
+    await element(by.id('main.settings.account.status.save')).tap();
 
     await forceLogout();
+    await scrollDownAndTap(
+      'onboarding.welcome.button',
+      'onboarding.welcome.view',
+    );
+
+    // Show updated status message in mentor list...
+    await expect(element(by.id('components.mentorList'))).toBeVisible();
+    await expect(element(by.text(newStatusMessage))).toBeVisible();
   });
 });
