@@ -94,8 +94,6 @@ export const MessageList = ({
   const dispatch = useDispatch();
 
   const getPreviousMessagesIfNotLoading = () => {
-    console.log('messageList.length', messageList.length);
-
     if (isLoading || messageList.length < messageApi.MAX_MESSAGES_AT_ONCE) {
       return;
     }
