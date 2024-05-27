@@ -11,6 +11,7 @@ import { StackScreenProps } from '@react-navigation/stack';
 import { StackRoutes } from '../..';
 import { ValidDescription } from 'src/lib/validators';
 import { isRight } from 'fp-ts/lib/Either';
+import { isDevice } from '../../../lib/isDevice';
 
 import { Title } from './Title';
 import TitledContainer from 'src/Screens/components/TitledContainer';
@@ -29,6 +30,8 @@ type Props = StackScreenProps<StackRoutes, 'Main/UserReport'>;
 
 const UserReport = ({ navigation, route }: Props) => {
   const reportedId = route.params?.reportedId;
+
+  const keyboardViewBehaviour = isDevice('ios') ? 'padding' : undefined;
 
   const { isLoading, isSuccess, isError } = ReactRedux.useSelector(
     selectUserReportStatus,
@@ -67,50 +70,54 @@ const UserReport = ({ navigation, route }: Props) => {
       TitleComponent={<Title onBack={handleBackPress} />}
       color={colors.darkBlue}
     >
-      <RN.ScrollView
-        style={styles.scrollView}
-        contentContainerStyle={styles.scrollContent}
-        showsVerticalScrollIndicator={false}
-        testID={'main.userreport.index.view'}
+      <RN.KeyboardAvoidingView
+        behavior={keyboardViewBehaviour}
+        style={styles.keyboardAvoider}
       >
-        <RN.View>
-          <Message style={styles.bodyText} id="main.userreport.bodyText1" />
-          <Message style={styles.bodyText} id="main.userreport.bodyText2" />
-          <NamedInputField
-            testID="main.userreport.description.input"
-            name="main.userreport.description.label"
-            style={styles.descriptionInput}
-            labelStyle={
-              isValidDescription ? styles.inputLabel : styles.errorLabel
-            }
-            inputStyle={
-              !isValidDescription ? styles.descriptionValidationError : {}
-            }
-            value={description}
-            onChangeText={setDescription}
-            onBlur={checkIsDescriptionValid}
-            multiline
-          />
-          {!isValidDescription && (
-            <Message
-              style={styles.validationMessage}
-              id="main.userreport.description.validationerror"
+        <RN.ScrollView
+          style={styles.scrollView}
+          contentContainerStyle={styles.scrollContent}
+          showsVerticalScrollIndicator={false}
+        >
+          <RN.View testID={'main.userreport.index.view'}>
+            <Message style={styles.bodyText} id="main.userreport.bodyText1" />
+            <Message style={styles.bodyText} id="main.userreport.bodyText2" />
+            <NamedInputField
+              testID="main.userreport.description.input"
+              name="main.userreport.description.label"
+              style={styles.descriptionInput}
+              labelStyle={
+                isValidDescription ? styles.inputLabel : styles.errorLabel
+              }
+              inputStyle={
+                !isValidDescription ? styles.descriptionValidationError : {}
+              }
+              value={description}
+              onChangeText={setDescription}
+              onBlur={checkIsDescriptionValid}
+              multiline
             />
-          )}
-          <NamedInputField
-            testID="main.userreport.contact.input"
-            name="main.userreport.contact.label"
-            labelStyle={styles.inputLabel}
-            value={contact}
-            onChangeText={setContact}
+            {!isValidDescription && (
+              <Message
+                style={styles.validationMessage}
+                id="main.userreport.description.validationerror"
+              />
+            )}
+            <NamedInputField
+              testID="main.userreport.contact.input"
+              name="main.userreport.contact.label"
+              labelStyle={styles.inputLabel}
+              value={contact}
+              onChangeText={setContact}
+            />
+          </RN.View>
+          <BottomActions
+            onBack={handleBackPress}
+            onSend={handleReport}
+            isSendDisabled={!isValidDescription || description.length === 0}
           />
-        </RN.View>
-        <BottomActions
-          onBack={handleBackPress}
-          onSend={handleReport}
-          isSendDisabled={!isValidDescription || description.length === 0}
-        />
-      </RN.ScrollView>
+        </RN.ScrollView>
+      </RN.KeyboardAvoidingView>
       {isError && (
         <Toast
           toastType="danger"
@@ -123,6 +130,9 @@ const UserReport = ({ navigation, route }: Props) => {
 };
 
 const styles = RN.StyleSheet.create({
+  keyboardAvoider: {
+    flex: 1,
+  },
   scrollView: {
     zIndex: 1,
     marginTop: -16,

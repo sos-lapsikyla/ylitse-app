@@ -20,6 +20,8 @@ import { isLeft } from 'fp-ts/lib/Either';
 
 type ApiMessage = t.TypeOf<typeof messageType>;
 
+export const MAX_MESSAGES_AT_ONCE = 10;
+
 const messageType = t.interface({
   content: t.string,
   recipient_id: t.string,
@@ -94,23 +96,21 @@ const reduceToMsgRecord = (acc: MessageMapping, message: Message) => ({
 });
 
 const createFetchParams = (pollingParams: PollingParams) => {
-  const maxMessagesAtOnce = 10;
-
   if (pollingParams.type === 'New' && pollingParams.previousMsgId.length > 0) {
-    return `from_message_id=${pollingParams.previousMsgId}&desc=false&max=${maxMessagesAtOnce}`;
+    return `from_message_id=${pollingParams.previousMsgId}&desc=false&max=${MAX_MESSAGES_AT_ONCE}`;
   }
 
   if (pollingParams.type === 'InitialMessages') {
     const userIds = pollingParams.buddyIds.join(',');
 
-    return `contact_user_ids=${userIds}&max=${maxMessagesAtOnce}&desc=true`;
+    return `contact_user_ids=${userIds}&max=${MAX_MESSAGES_AT_ONCE}&desc=true`;
   }
 
   if (pollingParams.type === 'OlderThan') {
-    return `contact_user_ids=${pollingParams.buddyId}&from_message_id=${pollingParams.messageId}&max=${maxMessagesAtOnce}&desc=true`;
+    return `contact_user_ids=${pollingParams.buddyId}&from_message_id=${pollingParams.messageId}&max=${MAX_MESSAGES_AT_ONCE}&desc=true`;
   }
 
-  return `max=${maxMessagesAtOnce}&desc=true`;
+  return `max=${MAX_MESSAGES_AT_ONCE}&desc=true`;
 };
 
 export type MessageResponse = {
@@ -204,6 +204,41 @@ export const readMessage = (buddyId: string) =>
 const sortSentTime = (a: Message, b: Message) => {
   return a.sentTime < b.sentTime ? -1 : 1;
 };
+
+export const getParamsForUnreadMessages = (
+  messages: MessageMapping,
+  params: PollingParams,
+): Array<PollingParams> => {
+  switch (params.type) {
+    case 'OlderThan': {
+      return getOlderThanParamsIfHasUnread(messages)(params.buddyId);
+    }
+
+    case 'InitialMessages': {
+      return params.buddyIds.flatMap(getOlderThanParamsIfHasUnread(messages));
+    }
+
+    default: {
+      return [];
+    }
+  }
+};
+
+export const getOlderThanParamsIfHasUnread =
+  (messages: MessageMapping) =>
+  (buddyId: string): Array<PollingParams> => {
+    const buddyMessages = messages[buddyId] ?? {};
+
+    const sorted = Object.keys(buddyMessages).map(
+      msgId => buddyMessages[msgId],
+    );
+
+    const hasUnread = sorted.some(message => !message.isSeen);
+
+    return hasUnread
+      ? [{ type: 'OlderThan', buddyId, messageId: sorted[0].messageId }]
+      : [];
+  };
 
 export const extractMostRecentId = (messages: MessageMapping) => {
   const flattenedMessages = Object.keys(messages).reduce<

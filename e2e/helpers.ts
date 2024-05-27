@@ -1,4 +1,5 @@
 import { by, element, waitFor, device } from 'detox';
+import { NativeMatcher } from 'detox/detox';
 import { generateToken } from 'node-2fa';
 
 const API_URL = process.env.YLITSE_API_URL || 'http://127.0.0.1:8080';
@@ -58,6 +59,18 @@ export async function scrollDownTo(
  */
 export async function scrollUpTo(elementId: string, viewId: string) {
   await waitFor(element(by.id(elementId)))
+    .toBeVisible()
+    .whileElement(by.id(viewId))
+    // Needs to scroll from x=0.1, y=0.2
+    // because of the big sticky toolbar
+    .scroll(100, 'up', 0.1, 0.2);
+}
+
+/**
+ * Scrolls view up until element with text is found
+ */
+export async function scrollUpAndFindText(text: string, viewId: string) {
+  await waitFor(element(by.text(text)))
     .toBeVisible()
     .whileElement(by.id(viewId))
     // Needs to scroll from x=0.1, y=0.2
@@ -206,6 +219,19 @@ export async function APIDeleteAccounts() {
       headers: headers,
     });
   }
+}
+
+/**
+ * Makes HTTP API calls to delete user
+ */
+export async function APIDeleteAccount(
+  id: string,
+  headers: Record<string, string>,
+) {
+  await fetch(`${API_URL}/accounts/${id}`, {
+    method: 'DELETE',
+    headers,
+  });
 }
 
 /**
@@ -370,6 +396,7 @@ export async function APIGetSendInfo(sender: any, reciever: any) {
 
   return {
     sender_id: senderInfo.id,
+    sender_info: senderInfo,
     recipient_id: recieverInfo.id,
     senderHeaders: toHeader(accessTokenSender),
     recieverHeaders: toHeader(accessTokenReciever),
@@ -505,5 +532,25 @@ export async function APIUpdateMentor(mentorName: string, mentor: any) {
     method: 'PUT',
     headers: headers,
     body: JSON.stringify(updatedMentor),
+  });
+}
+
+export async function countElements(matcher: NativeMatcher) {
+  try {
+    const attributes = await element(matcher)?.getAttributes();
+
+    if ('elements' in attributes) {
+      return attributes.elements.length;
+    } else {
+      return 1;
+    }
+  } catch (e) {
+    return 0;
+  }
+}
+
+export async function sleep(seconds: number) {
+  return new Promise(resolve => {
+    setTimeout(resolve, seconds * 1000);
   });
 }

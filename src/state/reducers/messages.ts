@@ -16,7 +16,7 @@ import * as actions from '../actions';
 import * as types from '../types';
 
 import { withToken } from './accessToken';
-import { getIsBanned, getBuddyStatus } from '../selectors';
+import { getBuddyStatus, getIsBanned } from '../selectors';
 
 export type State = types.AppState['messages'];
 export type LoopState = actions.LS<State>;
@@ -93,7 +93,12 @@ export const reducer: automaton.Reducer<State, actions.Action> = (
 
       const previousMsgId = messageApi.extractMostRecentId(nextMessages);
 
-      const [pollingParams, nextPollingParams] = messageApi.getNextParams(
+      const newOlderThanParams = messageApi.getParamsForUnreadMessages(
+        newMessages,
+        state.currentParams,
+      );
+
+      const [nextCurrent, nextQueue] = messageApi.getNextParams(
         action.payload,
         state.pollingQueue,
         state.currentParams,
@@ -102,7 +107,7 @@ export const reducer: automaton.Reducer<State, actions.Action> = (
 
       const nextCmd = withToken(
         flow(
-          messageApi.fetchMessages(pollingParams),
+          messageApi.fetchMessages(nextCurrent),
           T.delay(config.messageFetchDelay),
         ),
         actions.make('messages/get/completed'),
@@ -113,8 +118,8 @@ export const reducer: automaton.Reducer<State, actions.Action> = (
           ...state,
           messages: RD.success(nextMessages),
           previousMsgId,
-          pollingQueue: nextPollingParams,
-          currentParams: pollingParams,
+          currentParams: nextCurrent,
+          pollingQueue: [...newOlderThanParams, ...nextQueue],
         },
         nextCmd,
       );
@@ -159,9 +164,15 @@ export const reducer: automaton.Reducer<State, actions.Action> = (
     }
 
     case 'messages/markSeen': {
-      const { messageId, buddyId, type, isSeen } = action.payload.message;
+      const hasMessages = action.payload.messages.length > 0;
 
-      if (type === 'Sent' || isSeen === true) {
+      if (!hasMessages) {
+        return state;
+      }
+
+      const [first] = action.payload.messages;
+
+      if (first.type === 'Sent' || first.isSeen === true) {
         return state;
       }
 
@@ -170,14 +181,14 @@ export const reducer: automaton.Reducer<State, actions.Action> = (
         : {};
 
       const updatedMessage = {
-        ...action.payload.message,
+        ...first,
         isSeen: true,
       };
 
       const updatedMessageRecord = {
-        [buddyId]: {
-          ...oldMessages[buddyId],
-          [messageId]: updatedMessage,
+        [first.buddyId]: {
+          ...oldMessages[first.buddyId],
+          [first.messageId]: updatedMessage,
         },
       };
 
@@ -225,17 +236,11 @@ export const ordMessage: ord.Ord<messageApi.Message> = ord.fromCompare((a, b) =>
 export const hasUnseen: (
   buddyId: string,
 ) => (appState: types.AppState) => boolean = buddyId => appState =>
-  pipe(
-    getMessagesByBuddyId(buddyId)(appState),
-    array.sort(ordMessage),
-    array.last,
-    O.map(
+  pipe(getMessagesByBuddyId(buddyId)(appState), messages =>
+    messages.some(
       ({ type, isSeen }) =>
-        type === 'Received' &&
-        isSeen === false &&
-        !getIsBanned(buddyId)(appState),
+        type === 'Received' && !isSeen && !getIsBanned(buddyId)(appState),
     ),
-    O.fold(() => false, identity),
   );
 
 export const isAnyMessageUnseen = (appState: types.AppState) =>
@@ -259,17 +264,13 @@ export const hasUnseenMessagesOfStatus =
 export const hasUnseenMessagesByType =
   (buddyId: string, chatType: buddyApi.ChatStatus) =>
   (appState: types.AppState) =>
-    pipe(
-      getMessagesByBuddyId(buddyId)(appState),
-      array.sort(ordMessage),
-      array.last,
-      O.map(
+    pipe(getMessagesByBuddyId(buddyId)(appState), messages =>
+      messages.some(
         ({ type, isSeen }) =>
           type === 'Received' &&
           !isSeen &&
           getBuddyStatus(buddyId)(appState) === chatType,
       ),
-      O.fold(() => false, identity),
     );
 export const getMessage = (
   { messages: messageState }: types.AppState,

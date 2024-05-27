@@ -52,6 +52,7 @@ const MentorCard: React.FC<Props> = ({ onPress, style, mentor }) => {
           <Button
             style={styles.button}
             messageId="components.mentorCard.readMore"
+            testID="components.mentorCard.readMore"
             onPress={() => onPress(mentor)}
           />
         </RN.View>

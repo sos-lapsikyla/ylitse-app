@@ -1,8 +1,10 @@
 import React from 'react';
 import RN from 'react-native';
+import { useDispatch } from 'react-redux';
 
 import * as localization from '../../../../localization';
 
+import { markSeen } from '../../../../state/reducers/markSeen';
 import * as messageApi from '../../../../api/messages';
 
 import { MessageProps } from './Message';
@@ -55,6 +57,7 @@ export function toRenderable(
         type: 'Message' as const,
         value: m,
         id: m.messageId,
+        isSeen: m.isSeen,
       };
       const date = getDate(next.value.sentTime);
       const nextDate = { type: 'Date' as const, value: date, id: date };
@@ -81,27 +84,57 @@ export function toRenderable(
     : messageList;
 }
 
-const MessageList = ({
+export const MessageList = ({
   messageList,
   getPreviousMessages,
   isLoading,
 }: Props) => {
   const messages = toRenderable(messageList, isLoading);
   const previousItem = messageList.length > 0 ? messageList[0].messageId : '0';
+  const dispatch = useDispatch();
 
   const getPreviousMessagesIfNotLoading = () => {
-    if (isLoading) {
+    if (isLoading || messageList.length < messageApi.MAX_MESSAGES_AT_ONCE) {
       return;
     }
 
     getPreviousMessages(previousItem);
   };
 
+  type ViewArgs = {
+    viewableItems: Array<RN.ViewToken>;
+    changed: Array<RN.ViewToken>;
+  };
+
+  const handleViewableChanged = ({ changed }: ViewArgs) => {
+    // TODO: Decode 'changed' maybe
+    const unSeenMessagesOnScreen = changed
+      .filter(item => item.isViewable)
+      .filter(
+        ({ item }) =>
+          !item.isSeen && item.value && item.value.type === 'Received',
+      )
+      .map<messageApi.Message>(({ item }) => item.value);
+
+    dispatch(markSeen({ messages: unSeenMessagesOnScreen }));
+  };
+
+  const viewabilityConfig: RN.ViewabilityConfig = {
+    itemVisiblePercentThreshold: 100,
+    minimumViewTime: 1000,
+  };
+
+  const viewabilityConfigCallbackPairs = React.useRef([
+    { viewabilityConfig, onViewableItemsChanged: handleViewableChanged },
+  ]);
+
   return (
     <RN.FlatList
+      testID="main.buddy.messageList"
       contentContainerStyle={styles.scrollContent}
       data={messages}
       renderItem={({ item }) => <MemoizedRenderItem item={item} />}
+      viewabilityConfigCallbackPairs={viewabilityConfigCallbackPairs.current}
       keyExtractor={item => item.id}
       inverted={true}
       onEndReachedThreshold={0.01}
@@ -109,15 +142,6 @@ const MessageList = ({
     />
   );
 };
-
-const equalProps = (
-  prevProps: React.ComponentProps<typeof MessageList>,
-  nextProps: React.ComponentProps<typeof MessageList>,
-) =>
-  prevProps.messageList.length === nextProps.messageList.length &&
-  prevProps.isLoading === nextProps.isLoading;
-
-export const MemoizedMessageList = React.memo(MessageList, equalProps);
 
 const styles = RN.StyleSheet.create({
   scrollContent: {

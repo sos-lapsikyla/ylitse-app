@@ -9,9 +9,16 @@
         },
         {
             "loginName": "mentee1",
-            "displayName": "mentee1_nick",
+            "displayName": "mentee_mummo",
             "password": "Menteementee!",
             "email": "mentee1@mentee.mentee",
+            "role": "mentee"
+        },
+        {
+            "loginName": "mentee2",
+            "displayName": "mentee_seppo",
+            "password": "Menteementee!",
+            "email": "mentee2@mentee.mentee",
             "role": "mentee"
         }
     ],
