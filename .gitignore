@@ -30,6 +30,11 @@ build/
 local.properties
 *.iml
 *.hprof
+.cxx/
+.settings
+.project
+android/app/.project
+android/app/.classpath
 
 # Visual Studio Code
 #

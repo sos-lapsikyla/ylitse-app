@@ -1,4 +1,4 @@
-package com.rndiffapp
+package com.ylitse
  
 import android.app.Application
 import com.facebook.react.PackageList
