@@ -20,6 +20,7 @@ DerivedData
 *.hmap
 *.ipa
 *.xcuserstate
+ios/.xcode.env.local
 project.xcworkspace
 
 # Android/IntelliJ
@@ -30,6 +31,11 @@ build/
 local.properties
 *.iml
 *.hprof
+.cxx/
+.settings
+.project
+android/app/.project
+android/app/.classpath
 
 # Visual Studio Code
 #
