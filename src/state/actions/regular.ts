@@ -10,6 +10,7 @@ import * as messageApi from '../../api/messages';
 import * as statApi from '../../api/stat';
 import * as userReportApi from '../../api/userReport';
 import * as feedbackApi from '../../api/feedback';
+import * as minimumVersionApi from '../../api/minimumVersion';
 import * as messages from '../reducers/messages';
 import * as updateMentorData from '../reducers/updateMentorData';
 
@@ -126,6 +127,9 @@ type RegularActions = {
   'feedback/sendAnswer/start': feedbackApi.Answer;
   'feedback/sendAnswer/end': Result<ReturnType<typeof feedbackApi.sendAnswer>>;
   'feedback/reset/': undefined;
+
+  'minimumVersion/get/start': undefined;
+  'minimumVersion/get/end': Result<typeof minimumVersionApi.fetchVersions>;
 };
 
 // TODO name plz.

@@ -26,6 +26,7 @@ import * as userReport from './userReport';
 import * as updateMentorData from './updateMentorData';
 import * as questions from './questions';
 import * as filterMentors from './filterMentors';
+import * as minimumVersion from './minimumVersion';
 
 import * as actions from '../actions';
 
@@ -72,6 +73,7 @@ export const rootReducer: automaton.Reducer<AppState, actions.Action> =
       markMessageSeen: markSeen.reducer,
       feedbackQuestions: questions.reducer,
       filterMentors: filterMentors.filterMentorsReducer,
+      minimumVersion: minimumVersion.reducer,
     }),
   );
 
@@ -96,4 +98,5 @@ export const initialState: AppState = {
   markMessageSeen: {},
   feedbackQuestions: questions.initialState,
   filterMentors: filterMentors.initialState,
+  minimumVersion: minimumVersion.initialState,
 };

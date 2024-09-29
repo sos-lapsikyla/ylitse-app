@@ -28,8 +28,10 @@ import DeleteAccount, {
 import PasswordChange, { PasswordChangeRoute } from './Main/Settings/Password';
 import EmailChange, { EmailChangeRoute } from './Main/Settings/Email/Email';
 import UserReport, { UserReportRoute } from './Main/UserReport';
+import { VersionCheckRoute } from './VersionCheck';
 
 export type StackRoutes = SplashRoute &
+  VersionCheckRoute &
   WelcomeRoute &
   MentorListRoute &
   SignRoute &
@@ -54,7 +56,7 @@ const Stack = reactNavigationStack.createStackNavigator<StackRoutes>();
 export default () => (
   <NavigationContainer>
     <Stack.Navigator
-      initialRouteName="Splash"
+      initialRouteName="VersionCheck"
       screenOptions={{ headerShown: false }}
     >
       <Stack.Screen name="Splash" component={Splash} />
