@@ -2,13 +2,12 @@ import { Reducer } from 'redux-automaton';
 import * as RD from '@devexperts/remote-data-ts';
 import * as automaton from 'redux-automaton';
 import * as actions from '../actions';
-import * as T from 'fp-ts/lib/Task';
 
 import * as minimumVersionApi from '../../api/minimumVersion';
-import { cmd } from '../middleware';
 
 import { Action } from '../actions';
 import { AppState } from '../types';
+import { withToken } from './accessToken';
 
 import { pipe } from 'fp-ts/lib/function';
 
@@ -26,11 +25,9 @@ export const reducer: Reducer<AppState['minimumVersion'], Action> = (
 
       return automaton.loop(
         RD.pending,
-        cmd(
-          pipe(
-            minimumVersionApi.fetchVersions(),
-            T.map(actions.make('minimumVersion/get/end')),
-          ),
+        withToken(
+          minimumVersionApi.fetchVersions,
+          actions.make('minimumVersion/get/end'),
         ),
       );
     }
@@ -45,5 +42,16 @@ export const reducer: Reducer<AppState['minimumVersion'], Action> = (
   }
 };
 
-export const selectClientVersions = ({ minimumVersion }: AppState) =>
-  minimumVersion;
+export const selectClientVersion =
+  (client: string) =>
+  ({ minimumVersion }: AppState) => {
+    return pipe(
+      minimumVersion,
+      RD.fold(
+        () => undefined, // NotAsked
+        () => undefined, // Loading
+        () => undefined, // Failure
+        clients => clients.find(p => p.client === client),
+      ),
+    );
+  };

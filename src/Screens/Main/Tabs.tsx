@@ -1,13 +1,18 @@
 import React from 'react';
 
 import * as ReactRedux from 'react-redux';
+import * as redux from 'redux';
 import { selectFirstQuestion } from '../../state/reducers/questions';
 
+import { selectClientVersion } from '../../state/reducers/minimumVersion';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import * as actions from '../../state/actions';
+
 import { StackScreenProps } from '@react-navigation/stack';
 import { CommonActions } from '@react-navigation/native';
 import { StackRoutes } from '..';
-import { useRefetch } from 'src/lib/use-refetch';
+import { useRefetch } from '../../lib/use-refetch';
+import { getClient } from '../../lib/isDevice';
 
 import BuddyList, { BuddyListRoute } from './BuddyList';
 import MentorList, { MentorListRoute } from './MentorList';
@@ -30,9 +35,12 @@ const Tab = createBottomTabNavigator<TabRoutes>();
 type Props = {} & StackScreenProps<StackRoutes, 'Main/Tabs'>;
 
 const Main = ({ navigation, route }: Props) => {
-  const dispatch = ReactRedux.useDispatch();
-
+  const dispatch = ReactRedux.useDispatch<redux.Dispatch<actions.Action>>();
   const initialRouteName = route.params?.initial;
+
+  const clientVersion = ReactRedux.useSelector(
+    selectClientVersion(getClient()),
+  );
 
   const handleRefetchData = () => {
     dispatch({ type: 'feedback/getQuestions/start', payload: undefined });
@@ -64,6 +72,12 @@ const Main = ({ navigation, route }: Props) => {
       });
     });
   }, []);
+
+  React.useEffect(() => {
+    dispatch({ type: 'minimumVersion/get/start', payload: undefined });
+  }, []);
+
+  console.log('got minimum client version from API', clientVersion);
 
   return (
     <>

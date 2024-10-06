@@ -52,6 +52,10 @@ export const isValidDescription = (value: string): boolean => {
   return /^(?!\s*$).+/.test(value);
 };
 
+const isValidVersion = (value: string): boolean => {
+  return /^\d{1,2}\.\d{1,2}\.\d{1,2}$/.test(value);
+};
+
 export const ValidEmail = new t.Type<string, string, unknown>(
   'ValidEmail',
   (input: unknown): input is string => typeof input === 'string',
@@ -89,5 +93,21 @@ export const ValidPassword = new t.Type<string, string, unknown>(
     typeof input === 'string' && isValidPassword(input)
       ? t.success(input)
       : t.failure(input, context),
+  t.identity,
+);
+
+export const ValidVersion = new t.Type<string, string, unknown>(
+  'ValidVersion',
+  (input: unknown): input is string => typeof input === 'string',
+  (input, context) =>
+    either.chain(t.string.validate(input, context), str => {
+      const noLeadingZeros = str
+        .split('.')
+        .every(part => part === '0' || !part.startsWith('0'));
+
+      return isValidVersion(str) && noLeadingZeros
+        ? t.success(str)
+        : t.failure(input, context);
+    }),
   t.identity,
 );
