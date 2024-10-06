@@ -64,11 +64,6 @@ const decode =
       TE.fromEither,
     );
 
-// const log = <A>(value: A) => {
-//   console.log(value);
-//   return value;
-// };
-
 export const validateResponse = <A, B, C>(
   task: TE.TaskEither<string, Response>,
   model: t.Type<A, B, unknown>,

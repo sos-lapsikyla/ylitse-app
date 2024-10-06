@@ -159,6 +159,11 @@ export const messages = {
     'SOS-Lapsikylän työntekijä selvittää tilanteen ja ottaa sinuun yhteyttä.',
   'main.userreport.title': 'Ilmianna',
 
+  'main.version.not.big.enough.button': 'Päivitä nyt',
+  'main.version.not.big.enough.text':
+    'Päivitys on tarpeen sovelluksen käytön jatkamiseksi. Napsauta alla olevaa painiketta ladataksesi uusimman version',
+  'main.version.not.big.enough.title': 'Päivitys saatavilla',
+
   'meta.back': 'Takaisin',
   'meta.blank': ' ',
   'meta.cancel': 'Peru',

@@ -23,17 +23,18 @@ cp config.template.ios.json config.json
 
 You can edit the config file as suited:
 
-| Parameter          | Description                      |
-| --------------     | ---------------------------------|
-| `baseUrl`          | Ylitse API base URL              |
-| `loginUrl`         | Ylitse service login URL         |
-| `feedBackUrl`      | Feedback form URL                |
-| `termsUrl`         | Terms and conditions URL         |
-| `userGuideUrl`     | User's manual URL                |
-| `apuuUrl`          | Apuu-chat URL                    |
-| `sekasinUrl`       | Sekasin-chat URL                 |
-| `saferSpaceUrl`    | Principals of a safer space URL  |
-| `messageFetchDelay`| Delay between polling            |
+| Parameter          | Description                            |
+| -----------------  | ---------------------------------------|
+| `baseUrl`          | Ylitse API base URL                    |
+| `loginUrl`         | Ylitse service login URL               |
+| `feedBackUrl`      | Feedback form URL                      |
+| `termsUrl`         | Terms and conditions URL               |
+| `userGuideUrl`     | User's manual URL                      |
+| `apuuUrl`          | Apuu-chat URL                          |
+| `sekasinUrl`       | Sekasin-chat URL                       |
+| `saferSpaceUrl`    | Principals of a safer space URL        |
+| `storeUrl`         | App marketplace URL (build specific)   |
+| `messageFetchDelay`| Delay between polling                  |
 
 
 ### Running on iOS

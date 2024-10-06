@@ -159,6 +159,11 @@ export const messages: { [key in MessageId]: string } = {
     'SOS-Lapsikylä representative will contact you after the investigation.',
   'main.userreport.title': 'Report',
 
+  'main.version.not.big.enough.button': 'Update',
+  'main.version.not.big.enough.text':
+    'An update is necessary to continue using the app. Click below to download the latest version.',
+  'main.version.not.big.enough.title': 'Update required',
+
   'meta.back': 'Back',
   'meta.blank': ' ',
   'meta.cancel': 'Cancel',

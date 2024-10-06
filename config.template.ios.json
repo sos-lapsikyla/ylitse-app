@@ -6,6 +6,7 @@
   "userGuideUrl": "http://localhost:3000",
   "apuuUrl": "http://localhost:3000",
   "sekasinUrl": "http://localhost:3000",
+  "storeUrl":"http://localhost:3000", 
   "saferSpaceUrl": "http://10.0.2.2:3000",
   "messageFetchDelay": 2000
 }
