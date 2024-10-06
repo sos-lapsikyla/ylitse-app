@@ -76,5 +76,5 @@ export type AppState = {
     sendDeviceToken: RemoteAction;
   };
   feedbackQuestions: RemoteData<Array<feedbackApi.Question>>;
-  minimumVersion: RemoteData<Array<minimumVersionApi.Version>>;
+  minimumVersion: RemoteData<Array<minimumVersionApi.AppClient>>;
 };

@@ -20,14 +20,14 @@ const versionsResponse = t.strict({
   resources: clientVersions,
 });
 
-export type Version = {
+export type AppClient = {
   client: string;
   major: number;
   minor: number;
   patch: number;
 };
 
-const toAppVersion = (value: Client): Version => {
+export const toAppClient = (value: Client): AppClient => {
   const splitted = value.version.split('.').map(Number);
 
   return {
@@ -40,11 +40,11 @@ const toAppVersion = (value: Client): Version => {
 
 export const fetchVersions = (
   token: authApi.AccessToken,
-): TE.TaskEither<string, Array<Version>> =>
+): TE.TaskEither<string, Array<AppClient>> =>
   http.validateResponse(
     http.get(`${config.baseUrl}/version/clients`, {
       headers: authApi.authHeader(token),
     }),
     versionsResponse,
-    response => response.resources.map(toAppVersion),
+    response => response.resources.map(toAppClient),
   );

@@ -42,16 +42,36 @@ export const reducer: Reducer<AppState['minimumVersion'], Action> = (
   }
 };
 
-export const selectClientVersion =
-  (client: string) =>
+const isVersionBigEnough = (
+  clientVersion: minimumVersionApi.AppClient,
+  requiredVersion: minimumVersionApi.AppClient,
+) => {
+  if (clientVersion.major > requiredVersion.major) return true; // eslint-disable-next-line padding-line-between-statements
+  if (clientVersion.major < requiredVersion.major) return false;
+
+  // if major version equal, cmpare minor
+  if (clientVersion.minor > requiredVersion.minor) return true; // eslint-disable-next-line padding-line-between-statements
+  if (clientVersion.minor < requiredVersion.minor) return false;
+
+  // compare patch
+  return clientVersion.patch >= requiredVersion.patch;
+};
+
+// Default to true if no client found, or error in fetching
+export const selectIsVersionBigEnough =
+  (app: minimumVersionApi.AppClient) =>
   ({ minimumVersion }: AppState) => {
     return pipe(
       minimumVersion,
       RD.fold(
-        () => undefined, // NotAsked
-        () => undefined, // Loading
-        () => undefined, // Failure
-        clients => clients.find(p => p.client === client),
+        () => true, // NotAsked
+        () => true, // Loading
+        () => true, // Failure
+        clients => {
+          const foundClient = clients.find(p => p.client === app.client);
+
+          return foundClient ? isVersionBigEnough(app, foundClient) : true;
+        },
       ),
     );
   };

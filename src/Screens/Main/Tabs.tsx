@@ -4,7 +4,7 @@ import * as ReactRedux from 'react-redux';
 import * as redux from 'redux';
 import { selectFirstQuestion } from '../../state/reducers/questions';
 
-import { selectClientVersion } from '../../state/reducers/minimumVersion';
+import { selectIsVersionBigEnough } from '../../state/reducers/minimumVersion';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import * as actions from '../../state/actions';
 
@@ -38,8 +38,8 @@ const Main = ({ navigation, route }: Props) => {
   const dispatch = ReactRedux.useDispatch<redux.Dispatch<actions.Action>>();
   const initialRouteName = route.params?.initial;
 
-  const clientVersion = ReactRedux.useSelector(
-    selectClientVersion(getClient()),
+  const isAppVersionBigEnough = ReactRedux.useSelector(
+    selectIsVersionBigEnough(getClient()),
   );
 
   const handleRefetchData = () => {
@@ -77,7 +77,7 @@ const Main = ({ navigation, route }: Props) => {
     dispatch({ type: 'minimumVersion/get/start', payload: undefined });
   }, []);
 
-  console.log('got minimum client version from API', clientVersion);
+  console.log('is app version is big enough:', isAppVersionBigEnough);
 
   return (
     <>

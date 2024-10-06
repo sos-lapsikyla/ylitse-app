@@ -1,6 +1,7 @@
 import RN from 'react-native';
 import { PlatformOSType } from 'react-native/types';
 import Device from 'react-native-device-info';
+import { toAppClient } from '../api/minimumVersion';
 
 export const isDevice = (platform: PlatformOSType) =>
   platform === RN.Platform.OS;
@@ -8,9 +9,8 @@ export const isDevice = (platform: PlatformOSType) =>
 export const hasNotch = () => Device.hasNotch();
 
 export const getClient = () => {
-  if (RN.Platform.OS === 'android') {
-    return 'ylitse_android';
-  }
+  const version = Device.getVersion();
+  const client = RN.Platform.OS === 'android' ? 'ylitse_android' : 'ylitse_ios';
 
-  return 'ylitse_ios';
+  return toAppClient({ version, client });
 };
