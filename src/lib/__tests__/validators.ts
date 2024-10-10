@@ -122,7 +122,7 @@ describe('Validate The invalid password', () => {
 });
 
 describe('Validate correct versions', () => {
-  ['1.23.3', '10.20.0', '3.99.99', '2.11.1'].forEach(version => {
+  ['1.23.3', '10.20.0', '3.99.99', '2.11.1', '3.110.5'].forEach(version => {
     it(`decodes valid  version ${version}`, () => {
       expect(isRight(validators.ValidVersion.decode(version))).toEqual(true);
     });
@@ -133,8 +133,6 @@ describe('Validate invalid versions', () => {
   [
     '1.2',
     '1.2.3.4',
-    '123.45.6',
-    '1.234.5',
     '01.2.3',
     '1.2.03',
     'a.b.c',

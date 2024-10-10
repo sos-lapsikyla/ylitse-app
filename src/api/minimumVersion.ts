@@ -28,13 +28,13 @@ export type AppClient = {
 };
 
 export const toAppClient = (value: Client): AppClient => {
-  const splitted = value.version.split('.').map(Number);
+  const [major, minor, patch] = value.version.split('.').map(Number);
 
   return {
     client: value.client,
-    major: splitted[0],
-    minor: splitted[1],
-    patch: splitted[2],
+    major,
+    minor,
+    patch,
   };
 };
 

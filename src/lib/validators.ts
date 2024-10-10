@@ -53,7 +53,7 @@ export const isValidDescription = (value: string): boolean => {
 };
 
 const isValidVersion = (value: string): boolean => {
-  return /^\d{1,2}\.\d{1,2}\.\d{1,2}$/.test(value);
+  return /^\d+\.\d+\.\d+$/.test(value);
 };
 
 export const ValidEmail = new t.Type<string, string, unknown>(
