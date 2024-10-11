@@ -23,17 +23,18 @@ cp config.template.ios.json config.json
 
 You can edit the config file as suited:
 
-| Parameter          | Description                      |
-| --------------     | ---------------------------------|
-| `baseUrl`          | Ylitse API base URL              |
-| `loginUrl`         | Ylitse service login URL         |
-| `feedBackUrl`      | Feedback form URL                |
-| `termsUrl`         | Terms and conditions URL         |
-| `userGuideUrl`     | User's manual URL                |
-| `apuuUrl`          | Apuu-chat URL                    |
-| `sekasinUrl`       | Sekasin-chat URL                 |
-| `saferSpaceUrl`    | Principals of a safer space URL  |
-| `messageFetchDelay`| Delay between polling            |
+| Parameter          | Description                            |
+| -----------------  | ---------------------------------------|
+| `baseUrl`          | Ylitse API base URL                    |
+| `loginUrl`         | Ylitse service login URL               |
+| `feedBackUrl`      | Feedback form URL                      |
+| `termsUrl`         | Terms and conditions URL               |
+| `userGuideUrl`     | User's manual URL                      |
+| `apuuUrl`          | Apuu-chat URL                          |
+| `sekasinUrl`       | Sekasin-chat URL                       |
+| `saferSpaceUrl`    | Principals of a safer space URL        |
+| `storeUrl`         | App marketplace URL (build specific)   |
+| `messageFetchDelay`| Delay between polling                  |
 
 
 ### Running on iOS
@@ -92,22 +93,7 @@ npx react-native run-android
 
 ### Debugging
 
-We are using [Flipper](https://fbflipper.com/) for debugging, so install the [Desktop application](https://fbflipper.com/docs/getting-started/) to your environment
-
-1. Run the application
-2. Open [Flipper](https://fbflipper.com/docs/getting-started/#setup-your-react-native-app)
-3. Install plugin [redux-debugger](https://github.com/jk-gan/flipper-plugin-redux-debugger)
-4. Now you should see all logs, networking and redux things in the Flipper tool
-
-For troubleshooting, please refer to the [Flipper documentation](https://fbflipper.com/docs/getting-started/troubleshooting/)
-
-#### Fixing issue when running API locally
-Setup adb reverse connections:
-```sh
-adb reverse tcp:8081 tcp:8081; adb reverse tcp:8080 tcp:8080
-```
-
-
+Follow the instructions to use the [hermes debugger](https://reactnative.dev/docs/debugging?js-debugger=hermes)
 
 ### Running end-to-end tests
 
@@ -163,3 +149,13 @@ Replace the moustached values with your values
 - If you get error ==ReferenceError: fetch is not defined== then you are not running the tests with npm 18, which ships with fetch. Refer to the _Node version_ section of this README
 
 - If you get error ==ECONNREFUSED== then you are probably using localhost as a value for the ${YLITSE_API_URL} env-variable. Replace localhost with 127.0.0.1
+
+- If you get error connecting to local API:
+
+Setup adb reverse connections:
+```sh
+adb reverse tcp:8081 tcp:8081; adb reverse tcp:8080 tcp:8080
+```
+
+
+

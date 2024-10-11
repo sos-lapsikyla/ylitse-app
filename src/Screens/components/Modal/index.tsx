@@ -36,49 +36,44 @@ const Modal: React.FC<Props> = props => {
   } as const;
 
   return (
-    <RN.View style={styles.container}>
-      <RN.Modal animationType="fade" transparent={true} visible={true}>
-        <RN.View style={styles.background}>
-          <RN.View style={[props.style, styles.modalContainer]}>
-            <RN.View style={[styles.titleContainer, { backgroundColor }]}>
-              <RN.Image style={styles.image} source={icon} />
-              <Message id={props.title} style={styles.title} />
-            </RN.View>
+    <RN.Modal animationType="fade" transparent={true} visible={true}>
+      <RN.View style={styles.background}>
+        <RN.View style={[props.style, styles.modalContainer]}>
+          <RN.View style={[styles.titleContainer, { backgroundColor }]}>
+            <RN.Image style={styles.image} source={icon} />
+            <Message id={props.title} style={styles.title} />
+          </RN.View>
 
-            <RN.View style={styles.textContainer}>
-              <Message id={props.messageId} style={styles.text} />
-            </RN.View>
+          <RN.View style={styles.textContainer}>
+            <Message id={props.messageId} style={styles.text} />
+          </RN.View>
 
-            <RN.View style={[styles.buttonContainer, justifyButtons]}>
-              {props.onSecondaryPress && (
-                <Button
-                  onPress={props.onSecondaryPress}
-                  messageId={props.secondaryButtonMessage ?? 'meta.ok'}
-                  style={[styles.button, styles.secondaryButton]}
-                  emphasis="medium"
-                />
-              )}
-              {props.onPrimaryPress && (
-                <Button
-                  onPress={props.onPrimaryPress}
-                  messageId={
-                    props.primaryButtonMessage ?? 'components.remoteData.retry'
-                  }
-                  style={[styles.button, styles.primaryButton]}
-                />
-              )}
-            </RN.View>
+          <RN.View style={[styles.buttonContainer, justifyButtons]}>
+            {props.onSecondaryPress && (
+              <Button
+                onPress={props.onSecondaryPress}
+                messageId={props.secondaryButtonMessage ?? 'meta.ok'}
+                style={[styles.button, styles.secondaryButton]}
+                emphasis="medium"
+              />
+            )}
+            {props.onPrimaryPress && (
+              <Button
+                onPress={props.onPrimaryPress}
+                messageId={
+                  props.primaryButtonMessage ?? 'components.remoteData.retry'
+                }
+                style={[styles.button, styles.primaryButton]}
+              />
+            )}
           </RN.View>
         </RN.View>
-      </RN.Modal>
-    </RN.View>
+      </RN.View>
+    </RN.Modal>
   );
 };
 
 const styles = RN.StyleSheet.create({
-  container: {
-    flex: 1,
-  },
   background: {
     backgroundColor: colors.transparentBlack,
     position: 'absolute',

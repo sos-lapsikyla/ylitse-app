@@ -7,6 +7,7 @@ import * as buddyApi from '../api/buddies';
 import * as mentorsApi from '../api/mentors';
 import * as messageApi from '../api/messages';
 import * as feedbackApi from '../api/feedback';
+import * as minimumVersionApi from '../api/minimumVersion';
 import { PollingParams } from './reducers/messages';
 import { UpdateKey } from './reducers/updateMentorData';
 
@@ -75,4 +76,5 @@ export type AppState = {
     sendDeviceToken: RemoteAction;
   };
   feedbackQuestions: RemoteData<Array<feedbackApi.Question>>;
+  minimumVersion: RemoteData<Array<minimumVersionApi.AppClient>>;
 };

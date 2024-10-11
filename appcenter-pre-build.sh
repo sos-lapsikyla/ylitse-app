@@ -12,6 +12,7 @@ tee config.json > /dev/null <<EOF
     "userGuideUrl": "$YLITSE_USERGUIDEURL",
     "apuuUrl": "$YLITSE_APUUURL",
     "sekasinUrl": "$YLITSE_SEKASINURL",
+    "storeUrl": "$YLITSE_STOREURL",
     "saferSpaceUrl": "$YLITSE_SAFERSPACEURL",
     "messageFetchDelay": $YLITSE_MESSAGEFETCHDELAY
 }

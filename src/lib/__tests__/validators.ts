@@ -108,15 +108,49 @@ describe('Validate The valid password to be true', () => {
   });
 });
 
-describe('Validate The invalid password to be true', () => {
+describe('Validate The invalid password', () => {
   [
     '',
     'password22',
     'PasswordSalasana',
     'ÄteritsiputeRitsipuolilautatsijänk',
   ].forEach(password => {
-    it(`decodes valid password ${password}`, () => {
+    it(`decodes inValid password ${password}`, () => {
       expect(isLeft(validators.ValidPassword.decode(password))).toEqual(true);
+    });
+  });
+});
+
+describe('Validate correct versions', () => {
+  ['1.23.3', '10.20.0', '3.99.99', '2.11.1', '3.110.5'].forEach(version => {
+    it(`decodes valid  version ${version}`, () => {
+      expect(isRight(validators.ValidVersion.decode(version))).toEqual(true);
+    });
+  });
+});
+
+describe('Validate invalid versions', () => {
+  [
+    '1.2',
+    '1.2.3.4',
+    '01.2.3',
+    '1.2.03',
+    'a.b.c',
+    '1.2.a',
+    '',
+    '1..2',
+    '.1.2.3',
+    '1.2.3.',
+    '1.2.',
+    '1..',
+    '1',
+    null,
+    undefined,
+    123,
+    {},
+  ].forEach(version => {
+    it(`invalidates invalid version ${version}`, () => {
+      expect(isLeft(validators.ValidVersion.decode(version))).toEqual(true);
     });
   });
 });
