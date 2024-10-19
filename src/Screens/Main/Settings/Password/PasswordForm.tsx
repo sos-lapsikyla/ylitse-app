@@ -46,10 +46,7 @@ export default (props: Props) => {
   };
 
   return (
-    <RN.KeyboardAvoidingView
-      style={styles.keyboardAvoider}
-      behavior={'padding'}
-    >
+    <RN.KeyboardAvoidingView style={styles.keyboardAvoider}>
       <RN.View>
         <NamedInputField
           style={styles.field}
@@ -78,6 +75,7 @@ export default (props: Props) => {
             handleChange(props.setRepeatedNewPassword, value)
           }
           onSubmitEditing={handlePasswordValidate}
+          onBlur={handlePasswordValidate}
           testID="main.settings.account.password.repeat"
           isError={passwordState.second}
         />
