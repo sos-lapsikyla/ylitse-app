@@ -44,9 +44,13 @@ export const Title: React.FC<Props> = ({
         />
       </RN.TouchableOpacity>
       <Message id={headerId} style={styles.screenTitleText} />
-      <RN.TouchableHighlight
-        style={styles.kebabIconHighlight}
-        underlayColor={colors.faintBackground}
+      <RN.Pressable
+        style={({ pressed }) => [
+          styles.kebabIconHighlight,
+          {
+            backgroundColor: pressed ? colors.faintBackground : 'transparent',
+          },
+        ]}
         testID={'main.folderedlist.kebabicon'}
         onPress={openDropdown}
       >
@@ -54,7 +58,7 @@ export const Title: React.FC<Props> = ({
           source={require('../../images/three-dot-menu.svg')}
           style={styles.kebabIcon}
         />
-      </RN.TouchableHighlight>
+      </RN.Pressable>
     </RN.SafeAreaView>
   );
 };

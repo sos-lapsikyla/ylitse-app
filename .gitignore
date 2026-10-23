@@ -70,3 +70,4 @@ src/Screens/images/flags/.png-cache/
 
 # Ylitse config
 config.json
+ios/.xcode.env.local

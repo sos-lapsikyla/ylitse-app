@@ -92,10 +92,14 @@ const Title: React.FC<Props> = ({
             </RN.Text>
           </RN.Pressable>
         )}
-        <RN.TouchableHighlight
-          style={styles.kebabIconHighlight}
+        <RN.Pressable
+          style={({ pressed }) => [
+            styles.kebabIconHighlight,
+            {
+              backgroundColor: pressed ? colors.faintBackground : 'transparent',
+            },
+          ]}
           onPress={openDropdown}
-          underlayColor={colors.faintBackground}
           testID={'main.chat.title.kebabicon'}
           hitSlop={{ top: 30, bottom: 30, left: 30, right: 30 }}
         >
@@ -103,7 +107,7 @@ const Title: React.FC<Props> = ({
             source={require('../../images/three-dot-menu-chat.svg')}
             style={styles.kebabIcon}
           />
-        </RN.TouchableHighlight>
+        </RN.Pressable>
       </SafeAreaView>
     </RN.View>
   );

@@ -90,8 +90,7 @@ npx react-native run-android
 ```
 
 
-### Debugging
-
+### Debugging [depricated]
 We are using [Flipper](https://fbflipper.com/) for debugging, so install the [Desktop application](https://fbflipper.com/docs/getting-started/) to your environment
 
 1. Run the application

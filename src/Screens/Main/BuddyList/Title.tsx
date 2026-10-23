@@ -23,9 +23,13 @@ export const Title: React.FC<Props> = ({
     <RN.SafeAreaView style={[styles.shadow]} onLayout={onLayout}>
       <RN.View style={styles.spacer} />
       <Message id="buddyList.title" style={styles.screenTitleText} />
-      <RN.TouchableHighlight
-        style={styles.kebabIconHighlight}
-        underlayColor={colors.faintBackground}
+      <RN.Pressable
+        style={({ pressed }) => [
+          styles.kebabIconHighlight,
+          {
+            backgroundColor: pressed ? colors.faintBackground : 'transparent',
+          },
+        ]}
         testID={'main.buddylist.kebabicon'}
         onPress={openDropdown}
       >
@@ -40,7 +44,7 @@ export const Title: React.FC<Props> = ({
             testID="main.chat.kebabicon.unseenDot"
           />
         </>
-      </RN.TouchableHighlight>
+      </RN.Pressable>
     </RN.SafeAreaView>
   );
 };
