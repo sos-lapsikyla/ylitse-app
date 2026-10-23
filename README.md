@@ -79,6 +79,12 @@ npx react-native run-ios
  "loginUrl": "http://localhost:3000/login",
 ```
 
+Or copy the Android emulator template (`10.0.2.2` for the host machine):
+
+```sh
+cp config.template.android.json config.json
+```
+
 Start metro bundler
 ```
 npx react-native start
@@ -89,16 +95,24 @@ Start the app on a emulator
 npx react-native run-android
 ```
 
+#### Android startup (React Native 0.81)
 
-### Debugging [depricated]
-We are using [Flipper](https://fbflipper.com/) for debugging, so install the [Desktop application](https://fbflipper.com/docs/getting-started/) to your environment
+On React Native 0.81, `MainApplication.onCreate()` must call `loadReactNative(this)`. That generated helper initializes SoLoader (native `.so` libraries) and related startup flags. Without it the app can build successfully but crash immediately on open.
 
-1. Run the application
-2. Open [Flipper](https://fbflipper.com/docs/getting-started/#setup-your-react-native-app)
-3. Install plugin [redux-debugger](https://github.com/jk-gan/flipper-plugin-redux-debugger)
-4. Now you should see all logs, networking and redux things in the Flipper tool
+This project follows the official 0.81 Android template for that path:
 
-For troubleshooting, please refer to the [Flipper documentation](https://fbflipper.com/docs/getting-started/troubleshooting/)
+- `MainApplication.kt` / `MainActivity.kt` (Kotlin)
+- Kotlin Android plugin enabled in `android/app/build.gradle`
+- `android.enableJetifier=false` in `android/gradle.properties` (Jetifier breaks the RN 0.81 AAR transform)
+
+If the native shell opens but Metro cannot bundle, check that `config.json` exists (it is gitignored). Missing config looks like a redbox / “Unable to resolve module … config.json”, not a native crash.
+
+
+### Debugging
+
+[Flipper](https://fbflipper.com/) does not work with React Native 0.81 and is no longer used in this project. Flipper-related dependencies and native setup have been removed.
+
+Use React Native DevTools / Metro for JS debugging instead.
 
 #### Fixing issue when running API locally
 Setup adb reverse connections:
