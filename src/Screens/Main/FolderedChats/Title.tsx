@@ -1,5 +1,6 @@
 import React from 'react';
 import RN from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 import colors from '../../components/colors';
 import fonts from '../../components/fonts';
@@ -24,7 +25,8 @@ export const Title: React.FC<Props> = ({
   folderType,
 }) => {
   return (
-    <RN.SafeAreaView
+    <SafeAreaView
+      edges={['top']}
       style={[
         styles.shadow,
         {
@@ -55,7 +57,7 @@ export const Title: React.FC<Props> = ({
           style={styles.kebabIcon}
         />
       </RN.TouchableHighlight>
-    </RN.SafeAreaView>
+    </SafeAreaView>
   );
 };
 
