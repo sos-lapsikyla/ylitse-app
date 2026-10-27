@@ -1,5 +1,6 @@
 import React from 'react';
 import RN from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import * as ReactRedux from 'react-redux';
 import { selectFirstQuestion } from '../../state/reducers/questions';
@@ -8,7 +9,6 @@ import { BottomTabBarProps } from '@react-navigation/bottom-tabs';
 import { Answer } from '../../api/feedback';
 
 import * as localization from '../../localization';
-import { isDevice } from '../../lib/isDevice';
 import { isAnyMessageUnseen } from '../../state/reducers/messages';
 
 import colors from '../components/colors';
@@ -50,6 +50,7 @@ type Props = BottomTabBarProps;
 
 export const TabBar = ({ state, navigation }: Props) => {
   const dispatch = ReactRedux.useDispatch();
+  const insets = useSafeAreaInsets();
 
   const feedbackQuestion = ReactRedux.useSelector(selectFirstQuestion);
 
@@ -62,7 +63,9 @@ export const TabBar = ({ state, navigation }: Props) => {
     dispatch({ type: 'feedback/sendAnswer/start', payload: answer });
 
   return (
-    <RN.View style={styles.tabBar}>
+    <RN.View
+      style={[styles.tabBar, { paddingBottom: Math.max(insets.bottom, 8) }]}
+    >
       {state.routes.map((route, index) => {
         const testID = TabMap[index].testID;
         const isFocused = state.index === index;
@@ -133,7 +136,6 @@ const styles = RN.StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     paddingTop: 16,
-    paddingBottom: isDevice('ios') ? 20 : 8,
   },
   container: {
     flex: 1,
