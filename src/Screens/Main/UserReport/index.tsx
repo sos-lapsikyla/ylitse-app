@@ -11,8 +11,6 @@ import { StackScreenProps } from '@react-navigation/stack';
 import { StackRoutes } from '../..';
 import { ValidDescription } from 'src/lib/validators';
 import { isRight } from 'fp-ts/lib/Either';
-import { isDevice } from '../../../lib/isDevice';
-
 import { Title } from './Title';
 import TitledContainer from 'src/Screens/components/TitledContainer';
 import colors from 'src/Screens/components/colors';
@@ -30,8 +28,6 @@ type Props = StackScreenProps<StackRoutes, 'Main/UserReport'>;
 
 const UserReport = ({ navigation, route }: Props) => {
   const reportedId = route.params?.reportedId;
-
-  const keyboardViewBehaviour = isDevice('ios') ? 'padding' : undefined;
 
   const { isLoading, isSuccess, isError } = ReactRedux.useSelector(
     selectUserReportStatus,
@@ -70,10 +66,7 @@ const UserReport = ({ navigation, route }: Props) => {
       TitleComponent={<Title onBack={handleBackPress} />}
       color={colors.darkBlue}
     >
-      <RN.KeyboardAvoidingView
-        behavior={keyboardViewBehaviour}
-        style={styles.keyboardAvoider}
-      >
+      <RN.KeyboardAvoidingView behavior="padding" style={styles.keyboardAvoider}>
         <RN.ScrollView
           style={styles.scrollView}
           contentContainerStyle={styles.scrollContent}

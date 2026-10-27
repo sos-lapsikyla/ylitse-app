@@ -1,5 +1,6 @@
 import React from 'react';
 import RN from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 import colors from '../../components/colors';
 import fonts from '../../components/fonts';
@@ -11,7 +12,7 @@ type Props = { onBack: () => void };
 
 export const Title: React.FC<Props> = ({ onBack }) => {
   return (
-    <RN.SafeAreaView style={[styles.shadow]}>
+    <SafeAreaView edges={['top']} style={[styles.shadow]}>
       <RN.TouchableOpacity style={styles.backButtonTouchable} onPress={onBack}>
         <RN.Image
           source={require('../../images/chevron-left.svg')}
@@ -19,7 +20,7 @@ export const Title: React.FC<Props> = ({ onBack }) => {
         />
       </RN.TouchableOpacity>
       <Message id="main.userreport.title" style={styles.screenTitleText} />
-    </RN.SafeAreaView>
+    </SafeAreaView>
   );
 };
 

@@ -76,3 +76,6 @@ src/Screens/images/flags/.png-cache/
 
 # Ylitse config
 config.json
+
+# Local secrets
+secrets/

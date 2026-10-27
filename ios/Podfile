@@ -5,6 +5,10 @@ require Pod::Executable.execute_command('node', ['-p',
     {paths: [process.argv[1]]},
   )', __dir__]).strip
 
+# RN 0.81 opts iOS into the New Architecture by default; Android still runs the
+# old one (newArchEnabled=false), so keep both platforms on the same renderer.
+ENV['RCT_NEW_ARCH_ENABLED'] = '0'
+
 platform :ios, min_ios_version_supported
 prepare_react_native_project!
 
@@ -40,5 +44,28 @@ target 'ylitse' do
       :mac_catalyst_enabled => false,
       # :ccache_enabled => true
     )
+
+    # Resource-bundle targets (Firebase, AsyncStorage, etc.) keep the podspec
+    # deployment target, which Xcode 26 rejects below 15.0.
+    installer.pods_project.targets.each do |target|
+      target.build_configurations.each do |build_config|
+        current = build_config.build_settings['IPHONEOS_DEPLOYMENT_TARGET']
+        if current.nil? || current.to_f < min_ios_version_supported.to_f
+          build_config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = min_ios_version_supported
+        end
+      end
+    end
+    installer.pods_project.build_configurations.each do |build_config|
+      build_config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = min_ios_version_supported
+    end
+
+    # fmt 11.0.2's consteval format checks fail on Xcode 26. C++17 turns them off.
+    installer.pods_project.targets.each do |target|
+      next unless target.name == 'fmt'
+
+      target.build_configurations.each do |build_config|
+        build_config.build_settings['CLANG_CXX_LANGUAGE_STANDARD'] = 'c++17'
+      end
+    end
   end
 end

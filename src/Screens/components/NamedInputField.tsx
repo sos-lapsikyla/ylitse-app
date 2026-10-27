@@ -37,11 +37,9 @@ const NamedInputField = ({
     setIsFocused(true);
   };
 
-  const handleBlur = (
-    e: RN.NativeSyntheticEvent<RN.TextInputFocusEventData>,
-  ) => {
+  const handleBlur: RN.TextInputProps['onBlur'] = e => {
     setIsFocused(false);
-    textInputProps?.onBlur && textInputProps.onBlur(e);
+    textInputProps?.onBlur?.(e);
   };
 
   return (

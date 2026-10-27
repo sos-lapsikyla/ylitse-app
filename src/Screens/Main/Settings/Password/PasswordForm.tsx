@@ -46,7 +46,10 @@ export default (props: Props) => {
   };
 
   return (
-    <RN.KeyboardAvoidingView style={styles.keyboardAvoider}>
+    <RN.KeyboardAvoidingView
+      style={styles.keyboardAvoider}
+      behavior="padding"
+    >
       <RN.View>
         <NamedInputField
           style={styles.field}
