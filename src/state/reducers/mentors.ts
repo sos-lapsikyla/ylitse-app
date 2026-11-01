@@ -12,8 +12,6 @@ import * as mentorsApi from '../../api/mentors';
 import { cmd } from '../middleware';
 import * as actions from '../actions';
 import * as types from '../types';
-import { getAccount } from '../selectors';
-
 export type State = types.AppState['mentors'];
 
 export const initialState = RD.initial;
@@ -61,40 +59,45 @@ export const reducer: automaton.Reducer<State, actions.Action> = (
 export const getSelectedSkills = (state: types.AppState) =>
   state.filterMentors.skillFilter;
 
-export type ActiveFilters =
-  | { kind: 'NoFilters'; message: string }
-  | { kind: 'FiltersActive'; message: string };
 export function getActiveFilters({
   filterMentors,
-}: types.AppState): ActiveFilters {
+}: types.AppState): string {
   const amount = filterMentors.skillFilter.length;
 
   if (amount === 0) {
-    return {
-      kind: 'NoFilters',
-      message: localization.trans('main.mentorsTitleAndSearchButton'),
-    };
+    return localization.trans('main.mentorsTitleAndSearchButton');
   }
 
-  return {
-    kind: 'FiltersActive',
-    message: `${localization.trans(
-      'main.mentorsTitleAndSearchButtonFiltersActive',
-    )}: ${amount}`,
-  };
+  return `${localization.trans(
+    'main.mentorsTitleAndSearchButtonFiltersActive',
+  )}: ${amount}`;
 }
+
+const emptySkillList: string[] = [];
+let prevSkillList = emptySkillList;
 
 export const getSkillList = (state: types.AppState) => {
   const remoteDataMentorList = get(state);
 
-  return pipe(
+  const nextSkillList = pipe(
     remoteDataMentorList,
     RD.getOrElse<unknown, mentorsApi.Mentor[]>(() => []),
   )
     .map(mentor => mentor.skills)
     .flat()
-    .filter((item, index, self) => self.indexOf(item) === index) // remove duplicates
+    .filter((item, index, self) => self.indexOf(item) === index)
     .sort();
+
+  if (
+    prevSkillList.length === nextSkillList.length &&
+    prevSkillList.every((skill, i) => skill === nextSkillList[i])
+  ) {
+    return prevSkillList;
+  }
+
+  prevSkillList = nextSkillList.length === 0 ? emptySkillList : nextSkillList;
+
+  return prevSkillList;
 };
 
 export const getMentorByUserId = (userId: string) =>
@@ -119,23 +122,32 @@ const withVacationing =
   (hideVacationing: boolean) => (mentor: mentorsApi.Mentor) =>
     hideVacationing ? !mentor.is_vacationing : true;
 
+let prevMentorList: RD.RemoteData<string, mentorsApi.Mentor[]> = RD.initial;
+
 export const selectMentorList = (appState: types.AppState) => {
   const remoteMentors = get(appState);
   const { skillFilter, shouldHideInactiveMentors } = appState.filterMentors;
 
-  return RD.remoteData.map(remoteMentors, mentors =>
+  const nextMentorList = RD.remoteData.map(remoteMentors, mentors =>
     mentors
       .filter(withSelectedSkills(skillFilter))
       .filter(withVacationing(shouldHideInactiveMentors)),
   );
+
+  if (
+    RD.isSuccess(prevMentorList) &&
+    RD.isSuccess(nextMentorList) &&
+    prevMentorList.value.length === nextMentorList.value.length &&
+    prevMentorList.value.every(
+      (mentor, i) => mentor === nextMentorList.value[i],
+    )
+  ) {
+    return prevMentorList;
+  }
+
+  prevMentorList = nextMentorList;
+
+  return nextMentorList;
 };
 
 export const select = ({ mentors: state }: types.AppState) => state;
-
-export const getMentorFormData =
-  (buddyId: string) => (appState: types.AppState) => {
-    const mentor = getMentorByUserId(buddyId)(appState);
-    const account = getAccount(appState);
-
-    return { mentor, account };
-  };

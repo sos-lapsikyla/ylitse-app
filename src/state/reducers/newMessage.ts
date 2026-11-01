@@ -29,21 +29,46 @@ type NewMessageState = {
   messageContent: string;
   isSendingDisabled: boolean;
 };
+
+const emptyMessageState: NewMessageState = {
+  isPending: false,
+  messageContent: '',
+  isSendingDisabled: false,
+};
+
+const messageStateCache = new Map<string, NewMessageState>();
+
 type getMessage = (buddyId: string) => (appState: AppState) => NewMessageState;
-export const getMessage: getMessage = (buddyId: string) =>
-  flow(
-    get(buddyId),
-    O.map(({ text, sendRequest }) => ({
-      isPending: RD.isPending(sendRequest),
-      messageContent: text,
-      isSendingDisabled: text === '' || RD.isPending(sendRequest),
-    })),
-    O.getOrElse<NewMessageState>(() => ({
-      isPending: false,
-      messageContent: '',
-      isSendingDisabled: false,
-    })),
+export const getMessage: getMessage = (buddyId: string) => (appState: AppState) => {
+  const next = pipe(
+    get(buddyId)(appState),
+    O.map(({ text, sendRequest }) => {
+      const isPending = RD.isPending(sendRequest);
+
+      return {
+        isPending,
+        messageContent: text,
+        isSendingDisabled: text === '' || isPending,
+      };
+    }),
+    O.getOrElse(() => emptyMessageState),
   );
+
+  const prev = messageStateCache.get(buddyId);
+
+  if (
+    prev &&
+    prev.isPending === next.isPending &&
+    prev.messageContent === next.messageContent &&
+    prev.isSendingDisabled === next.isSendingDisabled
+  ) {
+    return prev;
+  }
+
+  messageStateCache.set(buddyId, next);
+
+  return next;
+};
 
 type getMessageSendFailed = (
   buddyId: string,

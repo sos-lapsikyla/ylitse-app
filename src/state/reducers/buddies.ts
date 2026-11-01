@@ -173,8 +173,10 @@ const getBuddiesWithStatus = (status: buddyApi.Buddy['status']) =>
     ),
   );
 
-const getBuddies =
-  (status: buddyApi.Buddy['status']) => (appState: types.AppState) => {
+const getBuddies = (status: buddyApi.Buddy['status']) => {
+  let prevResult: RD.RemoteData<string, buddyApi.Buddy[]> = RD.initial;
+
+  return (appState: types.AppState) => {
     const remoteBuddies = getBuddiesWithStatus(status)(appState);
 
     const remoteBuddyOrder = messageState.getOrder(appState);
@@ -188,12 +190,26 @@ const getBuddies =
 
     const both = RD.combine(remoteBuddies, remoteBuddyOrder);
 
-    return RD.remoteData.map(both, ([buddyList, buddyOrder]) =>
+    const nextResult = RD.remoteData.map(both, ([buddyList, buddyOrder]) =>
       [...buddyList].sort(
         (a, b) => (buddyOrder[b.buddyId] || 0) - (buddyOrder[a.buddyId] || 0),
       ),
     );
+
+    if (
+      RD.isSuccess(prevResult) &&
+      RD.isSuccess(nextResult) &&
+      prevResult.value.length === nextResult.value.length &&
+      prevResult.value.every((buddy, i) => buddy === nextResult.value[i])
+    ) {
+      return prevResult;
+    }
+
+    prevResult = nextResult;
+
+    return nextResult;
   };
+};
 
 export const getBannedBuddies = getBuddies('banned');
 

@@ -17,7 +17,7 @@ interface Props extends RN.TextProps {
 }
 
 const MentorsTitleAndSearchButton = ({ id, onPress }: Props) => {
-  const { message } = useSelector(mentorState.getActiveFilters);
+  const message = useSelector(mentorState.getActiveFilters);
 
   return (
     <RN.View style={styles.container}>

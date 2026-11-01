@@ -208,14 +208,32 @@ export const reducer: automaton.Reducer<State, actions.Action> = (
 const getMessages = ({ messages: { messages } }: types.AppState) =>
   RD.toOption(messages);
 
+const emptyMessages: messageApi.Message[] = [];
+const messagesByBuddyCache = new Map<string, messageApi.Message[]>();
+
 export const getMessagesByBuddyId =
-  (buddyId: string) => (appState: types.AppState) =>
-    pipe(
+  (buddyId: string) => (appState: types.AppState) => {
+    const next = pipe(
       getMessages(appState),
       O.chain(r => record.lookup(buddyId, r)),
       O.map(r => Object.values(r)),
-      O.fold(() => [], identity),
+      O.fold(() => emptyMessages, identity),
     );
+
+    const prev = messagesByBuddyCache.get(buddyId);
+
+    if (
+      prev &&
+      prev.length === next.length &&
+      prev.every((message, i) => message === next[i])
+    ) {
+      return prev;
+    }
+
+    messagesByBuddyCache.set(buddyId, next);
+
+    return next;
+  };
 
 export const getLastMessageByBuddyId =
   (buddyId: string) => (appState: types.AppState) => {

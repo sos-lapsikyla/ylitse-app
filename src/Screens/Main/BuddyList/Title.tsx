@@ -30,7 +30,7 @@ export const Title: React.FC<Props> = ({
         testID={'main.buddylist.kebabicon'}
         onPress={openDropdown}
       >
-        <>
+        <RN.View>
           <RN.Image
             source={require('../../images/three-dot-menu.svg')}
             style={styles.kebabIcon}
@@ -40,7 +40,7 @@ export const Title: React.FC<Props> = ({
             style={styles.dot}
             testID="main.chat.kebabicon.unseenDot"
           />
-        </>
+        </RN.View>
       </RN.TouchableHighlight>
     </SafeAreaView>
   );
