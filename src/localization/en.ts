@@ -202,7 +202,6 @@ export const messages: { [key in MessageId]: string } = {
   'onboarding.sign.in.admin': 'Admin-login',
   'onboarding.sign.in.admin.info': 'Are you not an admin?',
   'onboarding.sign.in.admin.link': 'Login as a regular user',
-  'onboarding.sign.up': 'Sign up',
 
   'onboarding.signIn.button': 'Login',
   'onboarding.signIn.failure': 'Login failed',
