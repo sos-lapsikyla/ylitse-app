@@ -23,11 +23,15 @@ function RemoteData<E, A>({
   fetchData,
   errorStyle,
 }: Props<E, A>): React.ReactElement {
+  const isInitial = RD.isInitial(data);
+  const fetchDataRef = React.useRef(fetchData);
+  fetchDataRef.current = fetchData;
+
   React.useEffect(() => {
-    if (RD.isInitial(data) && fetchData) {
-      fetchData();
+    if (isInitial) {
+      fetchDataRef.current?.();
     }
-  });
+  }, [isInitial]);
 
   return pipe(
     data,

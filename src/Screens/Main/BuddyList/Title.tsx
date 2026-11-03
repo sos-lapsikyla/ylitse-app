@@ -1,5 +1,6 @@
 import React from 'react';
 import RN from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 import colors from '../../components/colors';
 import fonts from '../../components/fonts';
@@ -20,7 +21,7 @@ export const Title: React.FC<Props> = ({
   hasUnseenArchivedMessages,
 }) => {
   return (
-    <RN.SafeAreaView style={[styles.shadow]} onLayout={onLayout}>
+    <SafeAreaView edges={['top']} style={[styles.shadow]} onLayout={onLayout}>
       <RN.View style={styles.spacer} />
       <Message id="buddyList.title" style={styles.screenTitleText} />
       <RN.TouchableHighlight
@@ -29,7 +30,7 @@ export const Title: React.FC<Props> = ({
         testID={'main.buddylist.kebabicon'}
         onPress={openDropdown}
       >
-        <>
+        <RN.View>
           <RN.Image
             source={require('../../images/three-dot-menu.svg')}
             style={styles.kebabIcon}
@@ -39,9 +40,9 @@ export const Title: React.FC<Props> = ({
             style={styles.dot}
             testID="main.chat.kebabicon.unseenDot"
           />
-        </>
+        </RN.View>
       </RN.TouchableHighlight>
-    </RN.SafeAreaView>
+    </SafeAreaView>
   );
 };
 

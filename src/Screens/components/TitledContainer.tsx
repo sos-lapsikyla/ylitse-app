@@ -1,5 +1,6 @@
 import React from 'react';
 import RN from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 import colors from '../components/colors';
 import shadow from '../components/shadow';
@@ -24,12 +25,13 @@ const TitledContainer: React.FC<Props> = ({
       style={[styles.background, { backgroundColor }]}
       onLayout={onLayout}
     >
-      <RN.SafeAreaView
+      <SafeAreaView
+        edges={['top']}
         onLayout={onTitleLayout}
         style={[styles.shadow, { backgroundColor: color }]}
       >
         {TitleComponent}
-      </RN.SafeAreaView>
+      </SafeAreaView>
       {children}
     </RN.View>
   );

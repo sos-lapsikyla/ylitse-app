@@ -8,6 +8,7 @@ import * as RD from '@devexperts/remote-data-ts';
 import * as actions from '../../../../state/actions';
 import * as mentorState from '../../../../state/reducers/mentors';
 import * as mentorUpdate from '../../../../state/reducers/updateMentorData';
+import { getAccount } from '../../../../state/selectors';
 
 import Message from '../../../components/Message';
 import Spinner from '../../../components/Spinner';
@@ -23,24 +24,29 @@ type Props = {
   userId: string;
 };
 
+const selectVacationStatus =
+  mentorUpdate.selectMentorDataUpdatingStateFor('is_vacationing');
+  
+const selectStatusMessageState =
+  mentorUpdate.selectMentorDataUpdatingStateFor('status_message');
+
 export default ({ userId }: Props) => {
-  const { mentor, account } = useSelector(
-    mentorState.getMentorFormData(userId),
+  const selectMentor = React.useMemo(
+    () => mentorState.getMentorByUserId(userId),
+    [userId],
   );
+  const mentor = useSelector(selectMentor);
+  const account = useSelector(getAccount);
 
   const [statusMessage, setStatusMessage] = React.useState(
     mentor?.status_message ?? '',
   );
 
-  const vacationStatusState = useSelector(
-    mentorUpdate.selectMentorDataUpdatingStateFor('is_vacationing'),
-  );
+  const vacationStatusState = useSelector(selectVacationStatus);
 
   const dispatch = useDispatch<redux.Dispatch<actions.Action>>();
 
-  const statusMessageState = useSelector(
-    mentorUpdate.selectMentorDataUpdatingStateFor('status_message'),
-  );
+  const statusMessageState = useSelector(selectStatusMessageState);
 
   const updateMentorData = (
     updateData: mentorUpdate.MentorUpdateData,

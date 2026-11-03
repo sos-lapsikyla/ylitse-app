@@ -4,6 +4,8 @@ import RN from 'react-native';
 import * as redux from 'redux';
 import * as ReactRedux from 'react-redux';
 import * as selectors from '../../../state/selectors';
+import * as messagesState from '../../../state/reducers/messages';
+import * as mentorsState from '../../../state/reducers/mentors';
 import * as newMessageState from '../../../state/reducers/newMessage';
 import * as tokenState from '../../../state/reducers/accessToken';
 import * as actions from '../../../state/actions';
@@ -12,7 +14,6 @@ import { StackScreenProps } from '@react-navigation/stack';
 import { StackRoutes } from 'src/Screens';
 
 import useLayout from '../../../lib/use-layout';
-import { isDevice } from '../../../lib/isDevice';
 
 import Title from './Title';
 import Input from './Input';
@@ -42,13 +43,41 @@ const Chat = ({ navigation, route }: Props) => {
   const isMentor = useSelector(tokenState.isMentor);
   const buddyId = route.params?.buddyId;
 
-  const { messageList, isLoading, mentor, isMessageSendFailed, buddyStatus } =
-    ReactRedux.useSelector(selectors.getChatDataFor(buddyId));
+  const selectMessageList = React.useMemo(
+    () => messagesState.getMessagesByBuddyId(buddyId),
+    [buddyId],
+  );
+
+  const selectIsLoading = React.useMemo(
+    () => messagesState.isLoadingBuddyMessages(buddyId),
+    [buddyId],
+  );
+
+  const selectMentor = React.useMemo(
+    () => mentorsState.getMentorByUserId(buddyId),
+    [buddyId],
+  );
+
+  const selectMessageSendFailed = React.useMemo(
+    () => newMessageState.getMessageSendFailed(buddyId),
+    [buddyId],
+  );
+  
+  const selectBuddyStatus = React.useMemo(
+    () => selectors.getBuddyStatus(buddyId),
+    [buddyId],
+  );
+
+  const messageList = ReactRedux.useSelector(selectMessageList);
+  const isLoading = ReactRedux.useSelector(selectIsLoading);
+  const mentor = ReactRedux.useSelector(selectMentor);
+  const isMessageSendFailed = ReactRedux.useSelector(selectMessageSendFailed);
+  const buddyStatus = ReactRedux.useSelector(selectBuddyStatus);
 
   const dispatch = ReactRedux.useDispatch<redux.Dispatch<actions.Action>>();
 
   const sortedMessageList = React.useMemo(
-    () => messageList.sort(({ sentTime: A }, { sentTime: B }) => A - B),
+    () => [...messageList].sort(({ sentTime: A }, { sentTime: B }) => A - B),
     [messageList],
   );
 
@@ -62,8 +91,6 @@ const Chat = ({ navigation, route }: Props) => {
   >();
 
   const [{ height }, onLayout] = useLayout();
-
-  const keyboardViewBehaviour = isDevice('ios') ? 'padding' : undefined;
 
   const getPreviousMessages = (messageId: string) => {
     dispatch({
@@ -174,10 +201,7 @@ const Chat = ({ navigation, route }: Props) => {
           onSecondaryPress={() => setDialogs('dialogOpen', false)}
         />
       )}
-      <RN.KeyboardAvoidingView
-        style={styles.container}
-        behavior={keyboardViewBehaviour}
-      >
+      <RN.KeyboardAvoidingView style={styles.container} behavior="padding">
         {isMessageSendFailed && (
           <Toast
             toastType="danger"

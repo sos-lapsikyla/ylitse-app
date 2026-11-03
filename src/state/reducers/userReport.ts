@@ -59,10 +59,13 @@ export const reducer: automaton.Reducer<
 export const selectUserReportRequest = ({ userReport: state }: AppState) =>
   state;
 
-export const selectUserReportStatus = (state: AppState) => {
-  return {
-    isLoading: RD.isPending(state.userReport),
-    isSuccess: RD.isSuccess(state.userReport),
-    isError: RD.isFailure(state.userReport),
-  };
-};
+const userReportStatusByTag = {
+  RemoteInitial: { isLoading: false, isSuccess: false, isError: false },
+  RemotePending: { isLoading: true, isSuccess: false, isError: false },
+  RemoteFailure: { isLoading: false, isSuccess: false, isError: true },
+  RemoteSuccess: { isLoading: false, isSuccess: true, isError: false },
+} as const;
+
+export const selectUserReportStatus = ({ userReport }: AppState) =>
+  userReportStatusByTag[userReport._tag];
+
