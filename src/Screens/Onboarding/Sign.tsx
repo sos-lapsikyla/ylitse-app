@@ -17,9 +17,6 @@ export type SignRoute = {
 type Props = StackScreenProps<StackRoutes, 'Onboarding/Sign'>;
 
 export default ({ navigation }: Props) => {
-  const navigateSignUp = () => {
-    navigation.navigate('Onboarding/SignUp', {});
-  };
 
   const navigateSignIn = () => {
     navigation.navigate('Onboarding/SignIn', {});
@@ -32,13 +29,6 @@ export default ({ navigation }: Props) => {
   return (
     <OnboardingBackground testID="onboarding.sign.view">
       <Card style={styles.card}>
-        <MessageButton
-          messageId="onboarding.sign.up"
-          messageStyle={styles.signText}
-          style={styles.button}
-          onPress={navigateSignUp}
-          testID="onboarding.sign.up"
-        />
         <MessageButton
           messageId="onboarding.sign.in"
           messageStyle={styles.signText}

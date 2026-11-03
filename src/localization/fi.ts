@@ -202,7 +202,6 @@ export const messages = {
   'onboarding.sign.in.admin': 'Admin-kirjautuminen',
   'onboarding.sign.in.admin.info': 'Etkö ole admin?',
   'onboarding.sign.in.admin.link': 'Kirjaudu sisään tavallisena käyttäjänä',
-  'onboarding.sign.up': 'Rekisteröidy',
 
   'onboarding.signIn.button': 'Kirjaudu',
   'onboarding.signIn.failure': 'Kirjautuminen epäonnistui',

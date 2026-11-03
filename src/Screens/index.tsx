@@ -6,7 +6,6 @@ import Splash, { SplashRoute } from './Splash';
 import Welcome, { WelcomeRoute } from './Onboarding/Welcome';
 import MentorList, { MentorListRoute } from './Onboarding/MentorList';
 import Sign, { SignRoute } from './Onboarding/Sign';
-import SignUp, { SignUpRoute } from './Onboarding/SignUp';
 import DisplayName, { DisplayNameRoute } from './Onboarding/DisplayName';
 import Email, { EmailRoute } from './Onboarding/Email';
 import PrivacyPolicy, { PrivacyPolicyRoute } from './Onboarding/PrivacyPolicy';
@@ -46,8 +45,7 @@ export type StackRoutes = SplashRoute &
   LogoutRoute &
   DeleteAccountRoute &
   PasswordChangeRoute &
-  EmailChangeRoute &
-  SignUpRoute;
+  EmailChangeRoute;
 
 const Stack = reactNavigationStack.createStackNavigator<StackRoutes>();
 
@@ -61,7 +59,6 @@ export default () => (
       <Stack.Screen name="Onboarding/Welcome" component={Welcome} />
       <Stack.Screen name="Onboarding/MentorList" component={MentorList} />
       <Stack.Screen name="Onboarding/Sign" component={Sign} />
-      <Stack.Screen name="Onboarding/SignUp" component={SignUp} />
       <Stack.Screen name="Onboarding/SignIn" component={SignIn} />
       <Stack.Screen name="Onboarding/DisplayName" component={DisplayName} />
       <Stack.Screen name="Onboarding/Email" component={Email} />
