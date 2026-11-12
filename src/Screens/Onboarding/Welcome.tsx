@@ -11,7 +11,7 @@ import useLayout from '../../lib/use-layout';
 import Card from '../components/Card';
 import SosBanner from '../components/CreatedBySosBanner';
 import AppTitle from '../components/AppTitle';
-import Message from '../components/Message';
+import Message, { LinkedMessage } from '../components/Message';
 import Link from '../components/Link';
 import MessageButton from '../components/MessageButton';
 import fonts from '../components/fonts';
@@ -43,7 +43,12 @@ export default ({ navigation }: Props) => {
         <Card style={styles.card}>
           <Message style={styles.titleText} id={'onboarding.welcome.title'} />
           <Message style={styles.text} id={'onboarding.welcome.text1'} />
-          <Message style={styles.text} id={'onboarding.welcome.text2'} />
+          <LinkedMessage
+            style={styles.text}
+            linkStyle={styles.inlineLink}
+            linkIconStyle={styles.inlineLinkIcon}
+            id={'onboarding.welcome.text2'}
+          />
           <Message style={styles.text} id={'onboarding.welcome.text3'} />
           <RN.View>
             <Link
@@ -123,6 +128,14 @@ const styles = RN.StyleSheet.create({
   },
   link: {
     alignSelf: 'center',
+  },
+  inlineLink: {
+    color: colors.purple,
+  },
+  inlineLinkIcon: {
+    width: 20,
+    height: 20,
+    tintColor: colors.purple,
   },
   linkText: {
     ...fonts.regularBold,
