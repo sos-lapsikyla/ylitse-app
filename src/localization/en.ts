@@ -228,7 +228,7 @@ export const messages: { [key in MessageId]: string } = {
   'onboarding.welcome.button': 'Start',
   'onboarding.welcome.sekasin.link': 'Sekasin-chat',
   'onboarding.welcome.text1': "Ylitse peer mentoring in its current form will end at the end of 2026. Users who logged in to the service before November 2026 can discuss the possibility of staying in contact with their own mentor. SOS Children’s Villages Finland will guide volunteer mentors on the practical arrangements.",
-  'onboarding.welcome.text2': "People with experience of child welfare services can seek peer support through the <a href=\"https://pesapuu.fi/toiminta/lapset-ja-nuoret-kehittajina/nuorten-turvasatama-yhteiso/\">Nuorten Turvasatama</a> community. Through <a href=\"https://olkatoiminta.fi/toivo/\">OLKA</a>, you can also find peer support for a wide variety of life situations.",
+  'onboarding.welcome.text2': "People with lived experience of child welfare services can seek peer support through the <a href=\"https://pesapuu.fi/toiminta/lapset-ja-nuoret-kehittajina/nuorten-turvasatama-yhteiso/\">Nuorten Turvasatama</a> community. Through <a href=\"https://olkatoiminta.fi/toivo/\">OLKA</a>, you can also find peer support for a wide variety of life situations.",
   'onboarding.welcome.text3':
     'If you are under 17 years old, you can visit the Apuu chat for 7-15 year olds or the Sekasin chat for 12-29 year olds.',
   'onboarding.welcome.text4': 'If you are under 15, you can visit:',
