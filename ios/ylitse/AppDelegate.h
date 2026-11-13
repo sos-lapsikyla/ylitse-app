@@ -3,4 +3,8 @@
 
 @interface AppDelegate : RCTAppDelegate
 
+@property (nonatomic, copy) NSDictionary *launchOptions;
+
+- (UIViewController *)rootViewControllerWithLaunchOptions:(NSDictionary *)launchOptions;
+
 @end

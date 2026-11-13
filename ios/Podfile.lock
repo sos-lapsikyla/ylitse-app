@@ -2845,7 +2845,7 @@ SPEC CHECKSUMS:
   hermes-engine: 7219f6e751ad6ec7f3d7ec121830ee34dae40749
   nanopb: d4d75c12cd1316f4a64e3c6963f879ecd4b5e0d5
   PromisesObjC: 752c3227f599e3467650e47ea36f433eeb10c273
-  RCT-Folly: 59ec0ac1f2f39672a0c6e6cecdd39383b764646f
+  RCT-Folly: 846fda9475e61ec7bcbf8a3fe81edfcaeb090669
   RCTDeprecation: d4ef510f229cea15314176aee5e3ba10064a8496
   RCTRequired: 1e41b794629558f6626e2bc39c166ac0ec1c5878
   RCTTypeSafety: 62c8105cf08af634c93d38ea1e8ec8a57b7abc2c
