@@ -105,8 +105,8 @@ android {
         applicationId "com.ylitse"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 49
-        versionName "2.15.0"
+        versionCode 1794766582
+        versionName "2.16.0"
         testBuildType System.getProperty('testBuildType', 'debug')  // This will later be used to control the test apk build type
         testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
     }
